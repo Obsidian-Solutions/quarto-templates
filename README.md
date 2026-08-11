@@ -5,17 +5,20 @@ produces a clean, professional PDF for print and offline use, plus an
 HTML version for reading, from one source file.
 
 The template follows the document standards in the standards library
-(UK PDF document standards, LaTeX/Pandoc/Quarto production) and the
-professional floor they set: full metadata surface, pagination
-control, accessible companion output, and a traceable baseline. The
-style is neutral and professional. It does not mimic any government
+(UK PDF document standards, LaTeX/Pandoc/Quarto production,
+GOV.UK and MOD design-review floors) and the professional conventions
+those systems establish: full metadata surface, pagination control,
+a classification marking on every page, WCAG-checked contrast, and a
+traceable baseline. The identity is our own monochrome brand: a
+near-black primary drawn from the website brand colour, with greys
+for secondary text and rules. It does not mimic any government
 identity.
 
 ## Requirements
 
 - Quarto 1.3 or later
 - A LaTeX engine (lualatex)
-- Liberation fonts
+- TeX Gyre Pagella, Montserrat and Liberation Mono fonts
 
 ## Use as a template
 
@@ -52,7 +55,7 @@ this repository both work with any Quarto project.
 ## Front matter
 
 Populate the full metadata surface. The fields feed the cover, the
-footer, and the PDF metadata.
+running header, the footer, and the PDF metadata.
 
 | Field | Purpose |
 |---|---|
@@ -60,10 +63,13 @@ footer, and the PDF metadata.
 | subtitle | Subtitle |
 | author | Author or organisation |
 | date | Publication date |
-| reference | Document reference number |
+| reference | Document reference, shown as the document id |
 | version | Document version |
-| confidentiality | Marking such as "Private and Confidential" |
-| short-title | Running header text |
+| confidentiality | Classification marking, shown top and bottom of every page |
+| short-title | Running header title |
+| doc-type | Label above the title on the cover (for example "Policy Document") |
+| edition | Edition line on the cover |
+| review-date | Review date on the cover |
 | keywords | Search terms |
 | abstract | Summary |
 | lang | Language, set to en-GB |
@@ -72,9 +78,9 @@ Set `baseline` manually only if you render without `render.sh`.
 
 ## Output
 
-- **PDF**: cover page, contents, numbered sections, running header
-  and footer with baseline and page numbers, widow and orphan
-  control.
+- **PDF**: branded cover page, contents on its own page, numbered
+  sections, running header and footer with the classification marking,
+  baseline and page numbers, widow and orphan control.
 - **HTML**: the accessible companion for reading, per the HTML-first
   rule.
 
@@ -88,11 +94,26 @@ section heading in the document.
 For archival copies, enable the PDF/A option in `_extension.yml` and
 validate with veraPDF. The default output is not PDF/A.
 
+## Brand
+
+The palette is monochrome, drawn from the website brand colour:
+
+| Role | Hex | Contrast on white |
+|---|---|---|
+| Primary text | `#121212` | 16.8:1 |
+| Secondary text | `#4f4f4f` | 7.4:1 |
+| Rules and borders | `#b1b4b6` | 3.15:1 |
+
+The values follow the monochrome hierarchy the GOV.UK Design System
+uses (near-black text, grey borders) without its identity colours.
+Change the `\definecolor` block in `include-in-header.tex` to rebrand.
+
 ## Fonts
 
-Liberation Serif and Sans are used. GDS Transport is proprietary and
-limited to gov.uk domains, and no public MOD typeface exists, so
-Liberation is the professional free fallback.
+TeX Gyre Pagella (body), Montserrat (headings) and Liberation Mono.
+GDS Transport is proprietary and limited to gov.uk domains, and no
+public MOD typeface exists, so these are the professional free
+fallbacks.
 
 ## Licence
 

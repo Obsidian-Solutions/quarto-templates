@@ -1,48 +1,66 @@
-% Cover page: clean, simple, professional.
-% Header and footer values are defined here because this partial is
-% template-processed; include-in-header.tex is not.
+% Cover page and document-control values.
+% This partial is template-processed, so $variables$ from the front
+% matter are interpolated here. include-in-header.tex is not processed
+% and reads the values through the commands defined below.
 
-$if(baseline)$\newcommand{\obsidianbaseline}{Baseline: $baseline$}$else$\newcommand{\obsidianbaseline}{}$endif$
-$if(confidentiality)$\newcommand{\obsidianconfidentiality}{$confidentiality$}$else$\newcommand{\obsidianconfidentiality}{}$endif$
-$if(short-title)$\newcommand{\obsidianshorttitle}{$short-title$}$else$\newcommand{\obsidianshorttitle}{}$endif$
+% ---- Document control values (used by the running header and footer) ----
+$if(reference)$\newcommand{\docref}{$reference$}$else$\newcommand{\docref}{Obsidian Solutions}$endif$
+$if(short-title)$\newcommand{\doctitle}{$short-title$}$else$\newcommand{\doctitle}{$title$}$endif$
+$if(confidentiality)$\newcommand{\classification}{{\scriptsize\bfseries\textsc{\color{obsidianl}$confidentiality$}}}$else$\newcommand{\classification}{}$endif$
+$if(date)$\newcommand{\obsidianpubdate}{$date$}$else$\newcommand{\obsidianpubdate}{\today}$endif$
+$if(doc-type)$\newcommand{\obsidiandoclabel}{\textcolor{obsidianl}{\small\bfseries $doc-type$}}$else$\newcommand{\obsidiandoclabel}{}$endif$
+$if(edition)$\newcommand{\obsidianedition}{$edition$}$else$\newcommand{\obsidianedition}{}$endif$
+$if(review-date)$\newcommand{\obsidianreview}{Review: $review-date$}$else$\newcommand{\obsidianreview}{}$endif$
 
+% ---- Cover page: clean monochrome ----
 \begin{titlepage}
 \thispagestyle{empty}
 
-% Confidentiality marking, top right.
-$if(confidentiality)$
+% Classification marking, top right.
 \begin{flushright}
-{\small\sffamily\textcolor{obsidian-accent}{$confidentiality$}}
+\classification
 \end{flushright}
-\vspace*{6cm}
-$else$
-\vspace*{8cm}
-$endif$
+\vspace*{2.5cm}
+
+% Brand logo, top left.
+\noindent\includegraphics[width=0.27\textwidth]{obsidian-logo.png}\par
+\vspace{2.2cm}
 
 % Title block.
-{\sffamily\bfseries\Large\textcolor{obsidian-text}{$title$}}\\[0.5em]
-$if(subtitle)$
-{\sffamily\large\textcolor{obsidian-accent}{$subtitle$}}\\[1.5em]
-$endif$
-{\color{obsidian-rule}\rule{10cm}{0.8pt}}\\[2em]
-
-% Document control metadata.
-$if(author)$
-{\sffamily $author$}\\[1em]
-$endif$
-$if(reference)$
-{\sffamily\small Reference: $reference$}\\[0.3em]
-$endif$
-$if(version)$
-{\sffamily\small Version: $version$}\\[0.3em]
-$endif$
-$if(date)$
-{\sffamily\small Date: $date$}\\[0.3em]
-$endif$
-$if(baseline)$
-{\sffamily\small Baseline: $baseline$}\\[0.3em]
-$endif$
+\begin{minipage}{0.88\textwidth}
+  \raggedright
+  {\obsidiandoclabel\par}
+  $if(doc-type)$\vspace{0.5em}$endif$
+  {\LARGE\bfseries $title$\par}
+  $if(subtitle)$
+  \vspace{0.8em}
+  {\normalsize\textcolor{obsidianl}{$subtitle$}\par}
+  $endif$
+  \vspace{1em}
+  {\textcolor{obsidian}{\rule{6cm}{0.8pt}}}\\[1.5em]
+  $if(author)$
+  {\normalsize $author$}\\[0.4em]
+  $endif$
+  $if(date)$
+  {\small\textcolor{obsidianl}{$date$}}\\[0.3em]
+  $endif$
+  $if(reference)$
+  {\small\textcolor{obsidianl}{Reference: $reference$}}\\[0.3em]
+  $endif$
+  $if(version)$
+  {\small\textcolor{obsidianl}{Version: $version$}}\\[0.3em]
+  $endif$
+  $if(baseline)$
+  {\small\textcolor{obsidianl}{Baseline: $baseline$}}\\[0.3em]
+  $endif$
+\end{minipage}
 
 \vfill
-{\small\sffamily\textcolor{obsidian-accent}{Obsidian Solutions}}
+
+% Bottom line: document identity.
+\begin{center}
+{\small\textcolor{obsidianl}{\docref{}
+  \ifdefempty{\obsidianedition}{}{\textbar{} \obsidianedition{}}
+  \ifdefempty{\obsidianreview}{}{\textbar{} \obsidianreview{}}}}
+\end{center}
 \end{titlepage}

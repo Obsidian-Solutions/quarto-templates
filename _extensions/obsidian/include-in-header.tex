@@ -1,46 +1,129 @@
-% Obsidian Solutions PDF format
-% Pagination control and running header and footer.
-% See the pagination floor in uk-pdf-document-standards.md.
+% Obsidian Solutions house style
+% Adapted from the production report preamble. The values shown by
+% \docref, \doctitle and \classification are defined in
+% partials/before-body.tex, which is template-processed; this file is
+% not, so no $variables$ appear here.
 
-\usepackage{needspace}
-\usepackage{lastpage}
-\usepackage{fancyhdr}
+\usepackage{graphicx}
 \usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{tocloft}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{needspace}
+\usepackage{etoolbox}
+\usepackage{caption}
+\SetTracking{encoding=*, family={Montserrat}}{80}
 
-\definecolor{obsidian-text}{HTML}{1A1A1A}
-\definecolor{obsidian-accent}{HTML}{4A5A6A}
-\definecolor{obsidian-rule}{HTML}{B0B8C0}
+% ---- Palette ----
+% Monochrome brand identity: near-black primary, drawn from the
+% website brand colour (#121212). The hierarchy follows the GOV.UK
+% monochrome convention: near-black text, grey borders.
+\definecolor{obsidian}{RGB}{18,18,18}    % primary text (16.8:1 on white)
+\definecolor{obsidianl}{RGB}{79,79,79}   % secondary text (7.4:1 on white)
+\definecolor{obsidianlink}{RGB}{79,79,79} % links, shown by underline (7.4:1)
+\definecolor{ruled}{RGB}{177,180,182}   % rules and borders (3.15:1, GOV.UK floor)
+\definecolor{cream}{RGB}{245,245,245}   % off-white for dark surfaces
 
-% Link colours are set by Quarto via linkcolor and urlcolor in
-% _extension.yml. The colours above are defined before hyperref loads.
+% ---- Link colours ----
+% Quarto emits its own \hypersetup after this header, so a bare
+% \hypersetup here would be overridden. \AtBeginDocument runs at
+% \begin{document}, after every preamble call, so these values win.
+\AtBeginDocument{%
+  \hypersetup{colorlinks=true, linkcolor=obsidianlink, urlcolor=obsidianlink, citecolor=obsidianlink}%
+}
 
-% Pagination floor: no widows, orphans, or dangling headings.
+% ---- Pagination floor: no widows, orphans, or dangling headings ----
 \widowpenalty=10000
 \clubpenalty=10000
-\brokenpenalty=10000
+\displaywidowpenalty=10000
 \raggedbottom
-
-% Keep headings with the following content.
-\usepackage{etoolbox}
+% Keep section headings with the first lines of their body.
 \pretocmd{\section}{\needspace{5\baselineskip}}{}{}
 \pretocmd{\subsection}{\needspace{3\baselineskip}}{}{}
 
-% Pin tables in place so a section heading and its table cannot split
-% across pages. Floating tables caused an orphaned heading.
-\usepackage{float}
+% ---- Pin tables in place so a heading and its table cannot split ----
 \floatplacement{table}{H}
-% Keep the paragraph before a table with the table itself.
 \BeforeBeginEnvironment{table}{\nopagebreak}
 
-% Running header and footer.
-% The command values come from front matter and are defined in
-% partials/before-body.tex, which is template-processed. This file is
-% not template-processed, so no $variables$ are used here.
+% ---- Section headings: letterspaced, thin rule under sections ----
+\titleformat{\section}
+  {\Large\bfseries\sffamily\color{obsidian}\lsstyle}
+  {\thesection.}{0.6em}{}
+  [\vspace{0.15em}{\color{obsidian}\titlerule[0.8pt]}]
+\titleformat{\subsection}
+  {\large\bfseries\sffamily\color{obsidianl}\lsstyle}
+  {\thesubsection.}{0.6em}{}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\sffamily\color{obsidianl}\lsstyle}
+  {\thesubsubsection.}{0.6em}{}
+\titlespacing*{\section}{0pt}{2.2ex}{1.5ex}
+\titlespacing*{\subsection}{0pt}{1.6ex}{0.9ex}
+\titlespacing*{\subsubsection}{0pt}{1.4ex}{0.8ex}
+
+% Keep the current section name in the running header.
+\renewcommand{\sectionmark}[1]{\markright{\thesection.~{\sffamily#1}}}
+
+% ---- Captions: small, bold slate label ----
+\captionsetup{font={small}, labelfont={bf,color=obsidianl}, labelsep=colon}
+
+% ---- Running header and footer ----
+% Two-row header: classification band on top, document identity below.
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small\itshape\obsidianshorttitle}
-\fancyhead[R]{\small\sffamily\obsidianconfidentiality}
-\fancyfoot[L]{\small\obsidianbaseline}
-\fancyfoot[R]{\small Page \thepage\ of \pageref{LastPage}}
-\renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0pt}
+\fancyhead[L]{\parbox[b][1.05cm][c]{\textwidth}{%
+  {\centering\classification\par}%
+  \vspace{1pt}%
+  {\IfFileExists{obsidian-favicon.png}{\includegraphics[height=0.5cm]{obsidian-favicon.png}\hspace{0.4em}}{}%
+   \small\color{obsidianl}\docref{} ~\textbar{}~ \doctitle}%
+  \hfill{\small\color{obsidianl}\thepage\ / \pageref*{LastPage}}%
+}}
+\fancyhead[C]{}
+\fancyhead[R]{}
+\fancyfoot[C]{\parbox[t][0.9cm][c]{\textwidth}{%
+  {\small\color{obsidianl}Obsidian Solutions ~\textbar{}~ \href{https://www.obsidiansolutions.co.uk}{\color{obsidianl}obsidiansolutions.co.uk} ~\textbar{}~ \obsidianpubdate}\\[2pt]
+  {\centering\classification\par}%
+}}
+\setlength{\headheight}{34pt}
+\setlength{\footskip}{1.3cm}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\headrule}{\color{obsidian}\hrule width\headwidth height 0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\footrule}{\color{ruled}\hrule height 0.4pt}
+
+% ---- Contents: dot leaders ----
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+
+% The TOC and similar pages use the plain page style by default.
+% Make it match so every page carries the same marking.
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyhead[L]{\parbox[b][1.05cm][c]{\textwidth}{%
+    {\centering\classification\par}%
+    \vspace{1pt}%
+    {\IfFileExists{obsidian-favicon.png}{\includegraphics[height=0.5cm]{obsidian-favicon.png}\hspace{0.4em}}{}%
+     \small\color{obsidianl}\docref{} ~\textbar{}~ \doctitle}%
+    \hfill{\small\color{obsidianl}\thepage\ / \pageref*{LastPage}}%
+  }}%
+  \fancyhead[C]{}
+  \fancyhead[R]{}
+  \fancyfoot[C]{\parbox[t][0.9cm][c]{\textwidth}{%
+    {\small\color{obsidianl}Obsidian Solutions ~\textbar{}~ \href{https://www.obsidiansolutions.co.uk}{\color{obsidianl}obsidiansolutions.co.uk} ~\textbar{}~ \obsidianpubdate}\\[2pt]
+    {\centering\classification\par}%
+  }}%
+  \renewcommand{\headrule}{\color{obsidian}\hrule width\headwidth height 0.6pt}
+  \renewcommand{\footrule}{\color{ruled}\hrule height 0.4pt}
+}
+
+% The TOC must sit on its own page. tocloft redefines \tableofcontents
+% in its own \AtBeginDocument (after this preamble), so this wrapper
+% must register after tocloft's or it would be clobbered.
+\AtBeginDocument{%
+  \let\oldtoc\tableofcontents
+  \renewcommand{\tableofcontents}{\thispagestyle{fancy}\oldtoc\clearpage}%
+}

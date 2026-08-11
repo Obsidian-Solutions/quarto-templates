@@ -11,8 +11,11 @@ abstract: |
   handling that every Obsidian Solutions document should use.
 reference: "OS-DOC-001"
 version: "1.0.0"
-confidentiality: "Private and Confidential"
+confidentiality: "Commercial in Confidence"
 short-title: "Example Policy Document"
+doc-type: "Policy Document"
+edition: "First Edition"
+review-date: "February 2027"
 toc: true
 number-sections: true
 format:
