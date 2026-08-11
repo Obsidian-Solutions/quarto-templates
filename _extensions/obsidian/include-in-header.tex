@@ -57,9 +57,12 @@
 
 % ---- Contents heading ----
 % Quarto renders the table of contents heading outside titlesec, so
-% it falls back to black. Fix it to the brand primary.
+% it falls back to black. Fix it to the brand primary, and match the
+% list of tables and figures headings.
 \AtBeginDocument{%
   \renewcommand{\contentsname}{\textcolor{obsidian}{Contents}}%
+  \renewcommand{\listfigurename}{\textcolor{obsidian}{List of Figures}}%
+  \renewcommand{\listtablename}{\textcolor{obsidian}{List of Tables}}%
 }
 
 % ---- Pagination floor: no widows, orphans, or dangling headings ----
@@ -150,9 +153,10 @@
 % The TOC must sit on its own page. tocloft redefines \tableofcontents
 % in its own \AtBeginDocument (after this preamble), so this wrapper
 % must register after tocloft's or it would be clobbered.
-% Front matter (abstract, contents) is roman-numbered. The clearpage
-% ships the TOC page first, then the body switches to arabic.
+% Front matter (abstract, contents) is roman-numbered. The arabic
+% switch lives in partials/toc.tex, after the lists, so list of
+% tables and figures also stay roman (JSP 101 layout).
 \AtBeginDocument{%
   \let\oldtoc\tableofcontents
-  \renewcommand{\tableofcontents}{\clearpage\thispagestyle{fancy}\oldtoc\clearpage\pagenumbering{arabic}}%
+  \renewcommand{\tableofcontents}{\clearpage\thispagestyle{fancy}\oldtoc\clearpage}%
 }

@@ -1,0 +1,27 @@
+$if(toc)$
+$if(toc-title)$
+\renewcommand*\contentsname{$toc-title$}
+$endif$
+{
+$if(colorlinks)$
+$if(toccolor)$
+\hypersetup{linkcolor=$toccolor$}
+$endif$
+$endif$
+\setcounter{tocdepth}{$toc-depth$}
+\tableofcontents
+}
+$endif$
+$if(lof)$
+\clearpage
+\listoffigures
+$endif$
+$if(lot)$
+\clearpage
+\listoftables
+$endif$
+% Front matter ends here. Body numbering switches from roman to arabic
+% only after the lists, so every front-matter page carries a roman
+% number (JSP 101 layout).
+\clearpage
+\pagenumbering{arabic}

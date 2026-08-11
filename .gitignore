@@ -5,6 +5,7 @@ example_files/
 *.pdf
 *.html
 page-*.png
+r[0-9]*-*.png
 
 /.quarto/
 **/*.quarto_ipynb

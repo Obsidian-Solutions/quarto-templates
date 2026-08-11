@@ -39,6 +39,7 @@ changes:
     summary: "Initial issue"
 toc: true
 number-sections: true
+bibliography: references.bib
 format:
   obsidian-pdf: default
   html: default
@@ -63,7 +64,11 @@ traceable to the repository state it was built from.
 The format is for business documents: policies, proposals, reports,
 and anything distributed in confidence. It follows the document
 standards in the standards library, adapted to a neutral
-professional style.
+professional style. The configuration-management and writing
+standards that govern the underlying processes are [@jsp945; @jsp101],
+and the security posture follows [@iso27001] and the Cyber
+Governance Code [@cybergovernance]. Writing is controlled language
+per ASD-STE100 [@ste100].
 
 # Security commitments {#sec-commitments}
 
@@ -85,6 +90,12 @@ Do not forward them without the owner's consent.
 
 # Data summary
 
+@fig-logo shows the brand mark. Figures use numbered captions and
+appear in the List of Figures, the same way tables appear in the
+List of Tables.
+
+![Obsidian Solutions brand mark](obsidian-logo.png){#fig-logo}
+
 @tbl-data summarises what the backup policy covers. The inventory
 lists every data class the policy protects, the system that holds it,
 and whether the nightly backup covers it. Secrets are not backed up
@@ -105,3 +116,31 @@ This example is a template, not a policy. Copy it, replace the front
 matter and content, and render with the `render.sh` script. The
 resulting PDF and HTML ship together: PDF for print, HTML for
 reading.^[Footnotes demonstrate the footnote style.]
+
+# References
+
+::: {#refs}
+:::
+
+# Compliance matrix {.appendix}
+
+The compliance matrix maps each control in this document to the
+governing standard. It demonstrates the appendix feature: sections
+after an `{.appendix}` heading are numbered A, B, C and listed in
+the table of contents.
+
+| Control | Standard |
+|---|---|
+| Two-factor authentication | @cybergovernance |
+| Configuration management | @jsp945 |
+| Document control | @jsp101 |
+
+# Glossary {.appendix}
+
+A short glossary demonstrates a second appendix section. The letter
+comes from LaTeX's `\appendix` switch, so the heading has no letter
+of its own.
+
+- **Baseline**: the repository state a document was built from.
+- **Classification**: the confidentiality marking carried in the
+  running header and PDF metadata.

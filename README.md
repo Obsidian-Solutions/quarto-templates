@@ -120,13 +120,40 @@ re-enable PDF/UA-2 without losing links.
 
 ## Output
 
-- **PDF**: branded cover page, optional approval page, abstract, and
-  contents each on their own page, roman-numbered front matter and
-  arabic body, numbered sections, running header and footer with the
-  classification marking, baseline and page numbers, widow and orphan
-  control, optional diagonal watermark.
+- **PDF**: branded cover page, optional approval page, abstract,
+  revision history, and contents each on their own page,
+  roman-numbered front matter and arabic body, numbered sections,
+  running header and footer with the classification marking, baseline
+  and page numbers, widow and orphan control, optional diagonal
+  watermark.
 - **HTML**: the accessible companion for reading, per the HTML-first
   rule.
+
+### List of tables and figures
+
+The front matter carries a List of Figures and a List of Tables after
+the Contents (JSP 101 layout), in the roman-numbered section. They
+render only when the document contains a labelled figure or table.
+Disable with `lof: false` / `lot: false` in the front matter.
+
+### Citations
+
+Set `bibliography:` in the front matter to a BibTeX file, then cite
+with `@key`. The template bundles a numbered CSL (IEEE style), so
+in-text citations render as `[1]` and link to the numbered
+References section at the end of the document. The References heading
+is listed in the table of contents automatically.
+
+### Appendices
+
+Give a section the `{.appendix}` class to start the appendices:
+
+```markdown
+# Compliance matrix {.appendix}
+```
+
+LaTeX numbers subsequent sections A, B, C and lists them in the table
+of contents. Write the heading without its own letter.
 
 ### Page breaks
 

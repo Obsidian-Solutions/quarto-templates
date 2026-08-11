@@ -19,7 +19,17 @@ contributes:
       toc: true
       toc-depth: 2
       toc-title: Contents
+      # List of tables and figures in the roman-numbered front matter
+      # (JSP 101 layout). Disable with `lof: false` / `lot: false`.
+      lof: true
+      lot: true
       number-sections: true
+      # Citations: numbered references via a bundled CSL. Documents
+      # supply a `bibliography:` path; in-text citations become
+      # clickable links to the references list.
+      citeproc: true
+      link-citations: true
+      csl: numeric.csl
       # Archival PDF/A-2b output. Requires LuaLaTeX and LaTeX 2023+,
       # which the template pins via pdf-engine and TeX Live 2026.
       # Validate with: quarto install verapdf
@@ -36,6 +46,9 @@ contributes:
         - partials/before-body.tex
         - partials/hypersetup.latex
         - partials/document-metadata.latex
+        - partials/toc.tex
+      filters:
+        - filters/appendix.lua
       # Monochrome callouts: Quarto's default callout-warning draws an
       # amber triangle. Disable the icon and use a near-black border so
       # the palette stays clean.
