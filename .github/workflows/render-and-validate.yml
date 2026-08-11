@@ -1,0 +1,133 @@
+name: render-and-validate
+# Renders the example document in all three formats and gates on the
+# validation the template guarantees. Applies the "verify every
+# change" rule to the template itself: a document that renders here
+# is the "properly ready" state for the public flip.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.10.18
+
+      - name: Install TinyTeX
+        run: quarto install tinytex
+
+      - name: Install LaTeX packages
+        run: |
+          tlmgr install \
+            caption etoolbox float fontspec booktabs \
+            titlesec fancyhdr lastpage zref draftwatermark \
+            tocloft embedfile needspace microtype tcolorbox \
+            graphics geometry xcolor l3packages l3kernel \
+            tex-gyre liberation-fonts
+
+      - name: Install Montserrat (Google font, not in TeX Live)
+        run: |
+          mkdir -p ~/.fonts
+          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-Regular.ttf" -o ~/.fonts/Montserrat-Regular.ttf
+          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-Bold.ttf" -o ~/.fonts/Montserrat-Bold.ttf
+          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-SemiBold.ttf" -o ~/.fonts/Montserrat-SemiBold.ttf
+          fc-cache -f ~/.fonts
+
+      - name: Install verapdf and qpdf
+        run: |
+          quarto install verapdf
+          sudo apt-get update && sudo apt-get install -y qpdf
+
+      - name: Render default document (PDF/A-4f)
+        run: ./render.sh example.qmd
+
+      - name: Assert PDF/A-4f validation passed
+        run: |
+          # render.sh already ran verapdf and failed on violation.
+          # Re-validate explicitly so the CI log shows the result.
+          VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
+          "$VERAPDF" --format text example.pdf | grep -q "PASS.*4f"
+
+      - name: Assert self-contained provenance
+        run: |
+          qpdf --qdf --object-streams=disable example.pdf /tmp/tree.pdf
+          grep -q "AFRelationship" /tmp/tree.pdf
+          grep -q "EmbeddedFiles" /tmp/tree.pdf
+          grep -q "OS-DOC-001" example.pdf
+
+      - name: Render HTML companion
+        run: quarto render example.qmd --to obsidian-html
+
+      - name: Assert HTML classification banner
+        run: |
+          grep -q "obsidian-classification" example.html
+          grep -q "Commercial in Confidence" example.html
+
+      - name: Render DOCX companion
+        run: quarto render example.qmd --to obsidian-docx
+
+      - name: Assert DOCX is a valid archive
+        run: |
+          python3 - <<'EOF'
+          import zipfile
+          z = zipfile.ZipFile('example.docx')
+          assert z.testzip() is None
+          assert 'word/document.xml' in z.namelist()
+          EOF
+
+  # The UA-2 path is informational: the structure gate fails on the
+  # documented upstream gap (Quarto/KOMA emit a flat tag tree with no
+  # heading roles; veraPDF passes by design). continue-on-error keeps
+  # the finding visible in CI without blocking the default pipeline.
+  ua2:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.10.18
+
+      - name: Install TinyTeX
+        run: quarto install tinytex
+
+      - name: Install LaTeX packages
+        run: |
+          tlmgr install \
+            caption etoolbox float fontspec booktabs \
+            titlesec fancyhdr lastpage zref draftwatermark \
+            tocloft embedfile needspace microtype tcolorbox \
+            graphics geometry xcolor l3packages l3kernel \
+            tex-gyre liberation-fonts
+
+      - name: Install Montserrat
+        run: |
+          mkdir -p ~/.fonts
+          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-Regular.ttf" -o ~/.fonts/Montserrat-Regular.ttf
+          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-Bold.ttf" -o ~/.fonts/Montserrat-Bold.ttf
+          fc-cache -f ~/.fonts
+
+      - name: Install verapdf
+        run: quarto install verapdf
+
+      - name: Render with PDF/UA-2
+        run: |
+          sed -i 's/pdf-standard: \[a-4f\]/pdf-standard: [a-4f, ua-2]/' _extensions/obsidian/_extension.yml
+          sed -i '\|partials/document-metadata.latex|d' _extensions/obsidian/_extension.yml
+          ./render.sh example.qmd || true
+
+      - name: Show the structure-gate finding
+        run: |
+          python3 scripts/check-ua.py example.pdf || \
+            echo "EXPECTED: heading-role gap documented in README (upstream KOMA/tagging limitation)"
+          VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
+          "$VERAPDF" --format text example.pdf | tail -3
