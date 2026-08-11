@@ -1,0 +1,80 @@
+---
+title: "Example Policy Document"
+subtitle: "Demonstrating the Obsidian Solutions document format"
+author: "Obsidian Solutions"
+date: "2026-08-11"
+lang: en-GB
+keywords: ["example", "policy", "document", "template"]
+abstract: |
+  This example demonstrates the document format. It shows the cover
+  page, the metadata surface, contents, cross-references, and table
+  handling that every Obsidian Solutions document should use.
+reference: "OS-DOC-001"
+version: "1.0.0"
+confidentiality: "Private and Confidential"
+short-title: "Example Policy Document"
+toc: true
+number-sections: true
+format:
+  obsidian-pdf: default
+  html: default
+---
+
+# Introduction
+
+This is the introduction. Every section that needs a number is
+labelled and referenced, never described as "the section above".
+For example, the security commitments are in @sec-commitments and the
+data summary is in @tbl-data.
+
+## Purpose
+
+The format produces a clean, professional PDF for print and offline
+use, and an HTML version for reading. Both come from this single
+source. The PDF carries its baseline so a recipient's copy is
+traceable to the repository state it was built from.
+
+## Scope
+
+The format is for business documents: policies, proposals, reports,
+and anything distributed in confidence. It follows the document
+standards in the standards library, adapted to a neutral
+professional style.
+
+# Security commitments {#sec-commitments}
+
+The business commits to:
+
+- Two-factor authentication on every account
+- Signed commits on all repositories
+- No secrets in repositories
+- Dependency and vulnerability scanning
+- Incident response with a written process
+
+A missed commitment is recorded in the risk register, not hidden.
+This is a callout demonstration:
+
+::: {.callout-warning}
+Confidential documents carry the marking set in the front matter.
+Do not forward them without the owner's consent.
+:::
+
+# Data summary
+
+Table @tbl-data summarises what the backup policy covers.
+
+| Data | Source | Covered |
+|---|---|---|
+| Repositories | GitHub organisation | Yes, nightly mirror |
+| Policy and documentation | business-policy | Yes |
+| Client notes and configurations | working files | Yes |
+| Secrets | secrets manager | Export path |
+
+: Data coverage summary {#tbl-data}
+
+# Conclusion
+
+This example is a template, not a policy. Copy it, replace the front
+matter and content, and render with the `render.sh` script. The
+resulting PDF and HTML ship together: PDF for print, HTML for
+reading.^[Footnotes demonstrate the footnote style.]

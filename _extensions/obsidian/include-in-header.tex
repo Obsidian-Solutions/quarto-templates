@@ -1,0 +1,39 @@
+% Obsidian Solutions PDF format
+% Pagination control and running header and footer.
+% See the pagination floor in uk-pdf-document-standards.md.
+
+\usepackage{needspace}
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+
+\definecolor{obsidian-text}{HTML}{1A1A1A}
+\definecolor{obsidian-accent}{HTML}{4A5A6A}
+\definecolor{obsidian-rule}{HTML}{B0B8C0}
+
+% Link colours are set by Quarto via linkcolor and urlcolor in
+% _extension.yml. The colours above are defined before hyperref loads.
+
+% Pagination floor: no widows, orphans, or dangling headings.
+\widowpenalty=10000
+\clubpenalty=10000
+\brokenpenalty=10000
+\raggedbottom
+
+% Keep headings with the following content.
+\usepackage{etoolbox}
+\pretocmd{\section}{\needspace{4\baselineskip}}{}{}
+\pretocmd{\subsection}{\needspace{3\baselineskip}}{}{}
+
+% Running header and footer.
+% The command values come from front matter and are defined in
+% partials/before-body.tex, which is template-processed. This file is
+% not template-processed, so no $variables$ are used here.
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape\obsidianshorttitle}
+\fancyhead[R]{\small\sffamily\obsidianconfidentiality}
+\fancyfoot[L]{\small\obsidianbaseline}
+\fancyfoot[R]{\small Page \thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}

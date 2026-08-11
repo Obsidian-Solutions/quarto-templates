@@ -1,0 +1,48 @@
+% Cover page: clean, simple, professional.
+% Header and footer values are defined here because this partial is
+% template-processed; include-in-header.tex is not.
+
+$if(baseline)$\newcommand{\obsidianbaseline}{Baseline: $baseline$}$else$\newcommand{\obsidianbaseline}{}$endif$
+$if(confidentiality)$\newcommand{\obsidianconfidentiality}{$confidentiality$}$else$\newcommand{\obsidianconfidentiality}{}$endif$
+$if(short-title)$\newcommand{\obsidianshorttitle}{$short-title$}$else$\newcommand{\obsidianshorttitle}{}$endif$
+
+\begin{titlepage}
+\thispagestyle{empty}
+
+% Confidentiality marking, top right.
+$if(confidentiality)$
+\begin{flushright}
+{\small\sffamily\textcolor{obsidian-accent}{$confidentiality$}}
+\end{flushright}
+\vspace*{6cm}
+$else$
+\vspace*{8cm}
+$endif$
+
+% Title block.
+{\sffamily\bfseries\Large\textcolor{obsidian-text}{$title$}}\\[0.5em]
+$if(subtitle)$
+{\sffamily\large\textcolor{obsidian-accent}{$subtitle$}}\\[1.5em]
+$endif$
+{\color{obsidian-rule}\rule{10cm}{0.8pt}}\\[2em]
+
+% Document control metadata.
+$if(author)$
+{\sffamily $author$}\\[1em]
+$endif$
+$if(reference)$
+{\sffamily\small Reference: $reference$}\\[0.3em]
+$endif$
+$if(version)$
+{\sffamily\small Version: $version$}\\[0.3em]
+$endif$
+$if(date)$
+{\sffamily\small Date: $date$}\\[0.3em]
+$endif$
+$if(baseline)$
+{\sffamily\small Baseline: $baseline$}\\[0.3em]
+$endif$
+
+\vfill
+{\small\sffamily\textcolor{obsidian-accent}{Obsidian Solutions}}
+\end{titlepage}
