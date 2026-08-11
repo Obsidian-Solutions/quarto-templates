@@ -73,6 +73,7 @@ running header, the footer, and the PDF metadata.
 | review-date | Review date on the cover; if in the past, the render carries a REVIEW OVERDUE warning |
 | supersedes | Document this one replaces, shown on the cover as "Supersedes:" |
 | attach | List of files embedded in the PDF/A-4f archive, each with `source`, `description`, `mimetype` |
+| sections-new-page | `true` starts each numbered section on a fresh page (formal documents; short documents flow better without it) |
 | keywords | Search terms |
 | abstract | Summary, on its own page in the front matter |
 | lang | Language, set to en-GB |
