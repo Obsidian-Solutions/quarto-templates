@@ -61,7 +61,10 @@ Do not forward them without the owner's consent.
 
 # Data summary
 
-Table @tbl-data summarises what the backup policy covers.
+@tbl-data summarises what the backup policy covers. The inventory
+lists every data class the policy protects, the system that holds it,
+and whether the nightly backup covers it. Secrets are not backed up
+in plaintext; the secrets manager export path is the recovery route.
 
 | Data | Source | Covered |
 |---|---|---|

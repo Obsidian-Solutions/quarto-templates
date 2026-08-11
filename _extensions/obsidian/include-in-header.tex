@@ -22,8 +22,15 @@
 
 % Keep headings with the following content.
 \usepackage{etoolbox}
-\pretocmd{\section}{\needspace{4\baselineskip}}{}{}
+\pretocmd{\section}{\needspace{5\baselineskip}}{}{}
 \pretocmd{\subsection}{\needspace{3\baselineskip}}{}{}
+
+% Pin tables in place so a section heading and its table cannot split
+% across pages. Floating tables caused an orphaned heading.
+\usepackage{float}
+\floatplacement{table}{H}
+% Keep the paragraph before a table with the table itself.
+\BeforeBeginEnvironment{table}{\nopagebreak}
 
 % Running header and footer.
 % The command values come from front matter and are defined in

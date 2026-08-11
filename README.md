@@ -78,7 +78,14 @@ Set `baseline` manually only if you render without `render.sh`.
 - **HTML**: the accessible companion for reading, per the HTML-first
   rule.
 
-For archival copies, enable the PDF/A option in `_format.yml` and
+### Page breaks
+
+The template keeps headings with their content and pins tables in
+place, so sections do not split across pages. If a short section
+ends at a page boundary with a table, place `\clearpage` before the
+section heading in the document.
+
+For archival copies, enable the PDF/A option in `_extension.yml` and
 validate with veraPDF. The default output is not PDF/A.
 
 ## Fonts

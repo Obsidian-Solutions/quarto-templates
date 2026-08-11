@@ -5,3 +5,6 @@ example_files/
 *.pdf
 *.html
 page-*.png
+
+/.quarto/
+**/*.quarto_ipynb
