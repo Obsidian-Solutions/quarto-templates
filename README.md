@@ -1,8 +1,9 @@
-# Quarto Docs Template
+# Quarto Templates
 
-A distributable Quarto template for Obsidian Solutions documents. It
-produces a clean, professional PDF for print and offline use, plus an
-HTML version for reading, from one source file.
+A distributable set of Quarto templates for Obsidian Solutions. One
+source file produces a clean, professional PDF for print and offline
+use, an HTML version for reading, a DOCX for client editing, a
+revealjs deck for presenting, and a dashboard for live figures.
 
 The template follows the document standards in the standards library
 (UK PDF document standards, LaTeX/Pandoc/Quarto production,
@@ -35,7 +36,7 @@ footer automatically.
 Add the format to any project:
 
 ```
-quarto add Obsidian-Solutions/quarto-docs-template
+quarto add Obsidian-Solutions/quarto-templates
 ```
 
 Then set in the document front matter:
@@ -47,7 +48,7 @@ format: obsidian-pdf
 ## Use as a submodule
 
 ```
-git submodule add git@github.com:Obsidian-Solutions/quarto-docs-template.git docs/template
+git submodule add git@github.com:Obsidian-Solutions/quarto-templates.git docs/template
 ```
 
 The extension lives in `_extensions/`, so a submodule or a copy of
