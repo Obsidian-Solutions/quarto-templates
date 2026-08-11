@@ -27,19 +27,75 @@ jobs:
         with:
           version: 1.10.18
 
-      - name: Render the example site
+      - name: Install TeX Live (TinyTeX, matches the 2026 dev toolchain)
         run: |
-          # The example renders to HTML with the brand theme and the
-          # classification banner. Render into a site directory so the
-          # asset files (example_files/) ship with the page, and name
-          # the entry point index.html so the site root serves it.
-          # The brand logo is tracked in the extension assets and
-          # referenced by the figure; copy it into the site so the
-          # published page shows the image.
+          # The Pages site ships PDF and DOCX alongside the HTML, so
+          # the full TeX toolchain is needed here too. TinyTeX is a
+          # rolling distribution matching the Arch TeX Live 2026 the
+          # template is developed against.
+          quarto install tinytex --update-path
+          tlmgr install \
+            titlesec fancyhdr zref draftwatermark tocloft embedfile \
+            tcolorbox needspace caption microtype booktabs etoolbox float \
+            fontspec tex-gyre
+          which tlmgr lualatex && lualatex --version | head -1
+
+      - name: Install Montserrat (Google font, not in TeX Live)
+        run: |
+          mkdir -p ~/.fonts
+          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-Regular.ttf" -o ~/.fonts/Montserrat-Regular.ttf
+          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-Bold.ttf" -o ~/.fonts/Montserrat-Bold.ttf
+          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-SemiBold.ttf" -o ~/.fonts/Montserrat-SemiBold.ttf
+          fc-cache -f ~/.fonts
+
+      - name: Install qpdf and fonts
+        run: |
+          sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation
+
+      - name: Render the example (HTML, PDF, DOCX)
+        run: |
+          # Render all three document formats. The example's front
+          # matter declares obsidian-pdf, obsidian-html and
+          # obsidian-docx; render.sh stamps the baseline and validates.
+          quarto render example.qmd --to obsidian-html
+          quarto render example.qmd --to obsidian-pdf
+          quarto render example.qmd --to obsidian-docx
+          cp _extensions/obsidian/assets/obsidian-logo.png obsidian-logo.png
+
+      - name: Assemble the site
+        run: |
           mkdir -p site
-          quarto render example.qmd --to obsidian-html --output-dir site
-          mv site/example.html site/index.html
-          cp _extensions/obsidian/assets/obsidian-logo.png site/obsidian-logo.png
+          cp example.html site/index.html
+          cp example.pdf site/example.pdf
+          cp example.docx site/example.docx
+          cp obsidian-logo.png site/obsidian-logo.png
+          cp -r example_files site/example_files
+
+      - name: Add format download links to the page
+        run: |
+          python3 - <<'PYEOF'
+          # Insert a small download bar under the title so visitors
+          # can fetch the PDF (controlled record) and DOCX (working
+          # copy) as well as read the HTML.
+          html = open('site/index.html').read()
+          bar = (
+            '<div style="font-family: Montserrat, sans-serif; font-size: 0.85rem; '
+            'border: 1px solid #cecece; border-left: 3px solid #121212; '
+            'padding: 0.6rem 1rem; margin: 1rem 0; color: #484949;">'
+            'Download: '
+            '<a href="example.pdf">PDF</a> &nbsp;|&nbsp; '
+            '<a href="example.docx">DOCX</a> &nbsp;|&nbsp; '
+            '<a href="index.html">HTML</a>'
+            '</div>'
+          )
+          # Insert after the title block header.
+          marker = '</header>'
+          if marker in html:
+            html = html.replace(marker, marker + bar, 1)
+          else:
+            html = html.replace('</body>', bar + '</body>', 1)
+          open('site/index.html', 'w').write(html)
+          PYEOF
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
