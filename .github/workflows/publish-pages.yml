@@ -31,9 +31,11 @@ jobs:
         run: |
           # The example renders to HTML with the brand theme and the
           # classification banner. Render into a site directory so the
-          # asset files (example_files/) ship with the page.
+          # asset files (example_files/) ship with the page, and name
+          # the entry point index.html so the site root serves it.
           mkdir -p site
           quarto render example.qmd --to obsidian-html --output-dir site
+          mv site/example.html site/index.html
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
