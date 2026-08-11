@@ -11,6 +11,11 @@
 \usepackage{lastpage}
 \usepackage[user,totpages]{zref}
 \usepackage{draftwatermark}
+% tocloft must load BEFORE hyperref: tocloft redefines \contentsline,
+% and hyperref patches it last to make TOC entries clickable links.
+% (Quarto also loads tocloft later in its template; the second load
+% is a no-op.)
+\usepackage{tocloft}
 \usepackage{hyperref}
 \usepackage{float}
 \usepackage{tocloft}
@@ -105,7 +110,8 @@
 \fancyhead[C]{}
 \fancyhead[R]{}
 \fancyfoot[C]{\parbox[t][0.9cm][c]{\textwidth}{%
-  {\small\color{obsidianl}Obsidian Solutions ~\textbar{}~ \href{https://www.obsidiansolutions.co.uk}{\color{obsidianl}obsidiansolutions.co.uk} ~\textbar{}~ \obsidianpubdate}\\[2pt]
+  {\small\color{obsidianl}Obsidian Solutions ~\textbar{}~ obsidiansolutions.co.uk ~\textbar{}~ \obsidianpubdate%
+   \ifdefempty{\obsidianversion}{}{\textbar{} \obsidianversion}}\\[2pt]
   {\centering\classification\par}%
 }}
 \setlength{\headheight}{34pt}
@@ -133,7 +139,8 @@
   \fancyhead[C]{}
   \fancyhead[R]{}
   \fancyfoot[C]{\parbox[t][0.9cm][c]{\textwidth}{%
-    {\small\color{obsidianl}Obsidian Solutions ~\textbar{}~ \href{https://www.obsidiansolutions.co.uk}{\color{obsidianl}obsidiansolutions.co.uk} ~\textbar{}~ \obsidianpubdate}\\[2pt]
+    {\small\color{obsidianl}Obsidian Solutions ~\textbar{}~ obsidiansolutions.co.uk ~\textbar{}~ \obsidianpubdate%
+     \ifdefempty{\obsidianversion}{}{\textbar{} \obsidianversion}}\\[2pt]
     {\centering\classification\par}%
   }}%
   \renewcommand{\headrule}{\color{obsidian}\hrule width\headwidth height 0.6pt}

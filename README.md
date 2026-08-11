@@ -82,11 +82,10 @@ running header, the footer, and the PDF metadata.
 
 Set `baseline` manually only if you render without `render.sh`.
 
-## PDF/A
+## PDF/A and PDF/UA
 
-The format renders PDF/A-2b by default (`pdf-standard: [a-2b]` in
-`_extension.yml`). The render validates automatically when veraPDF is
-installed:
+The format renders PDF/A-4f by default (`pdf-standard: [a-4f]` in
+`_extension.yml`), validated automatically when veraPDF is installed:
 
 ```
 quarto install verapdf
@@ -94,7 +93,30 @@ quarto install verapdf
 
 The PDF/A requirement is archival: the document carries its reference,
 version, baseline and confidentiality in the PDF metadata, so a file
-is traceable without opening it.
+is traceable without opening it. PDF/A-4f uses PDF 2.0 and does not
+require the tagged structure tree, so the table of contents stays
+clickable: every entry is a real link to its section.
+
+### PDF/UA-2 (screen readers)
+
+PDF/UA-2 produces a tagged structure tree for assistive technology.
+The current LaTeX toolchain cannot produce PDF/UA-2 and clickable TOC
+links at the same time: `\DocumentMetadata` disables hyperref's TOC
+link annotations (latex3/tagging-project issue 1157).
+
+The default is the non-accessible version: PDF/A-4f with clickable
+TOC links. Use the accessible version only when a client requests it,
+as it is rarely needed. To render a document with PDF/UA-2 instead:
+
+1. In `_extension.yml`, change the default to
+   `pdf-standard: [a-4f, ua-2]`.
+2. Remove `partials/document-metadata.latex` from the
+   `template-partials` list, so Quarto's `\DocumentMetadata` is used.
+3. Accept that the TOC page will not contain clickable links.
+
+Body cross-references keep working in both modes. Revisit after the
+upstream fix: the escape-hatch partial exists so the template can
+re-enable PDF/UA-2 without losing links.
 
 ## Output
 
