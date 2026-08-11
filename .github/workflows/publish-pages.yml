@@ -30,9 +30,10 @@ jobs:
       - name: Render the example site
         run: |
           # The example renders to HTML with the brand theme and the
-          # classification banner. The full PDF pipeline is covered by
-          # render-and-validate.yml; the site only needs the HTML.
-          quarto render example.qmd --to obsidian-html
+          # classification banner. Render into a site directory so the
+          # asset files (example_files/) ship with the page.
+          mkdir -p site
+          quarto render example.qmd --to obsidian-html --output-dir site
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -40,7 +41,7 @@ jobs:
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: example.html
+          path: site
 
       - name: Deploy
         id: deployment
