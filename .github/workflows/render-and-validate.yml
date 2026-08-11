@@ -15,21 +15,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Quarto
+      - name: Install Quarto and TinyTeX
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: 1.10.18
-
-      - name: Install TinyTeX
-        run: quarto install tinytex
+          tinytex: true
 
       - name: Install LaTeX packages
         run: |
-          # Quarto installs TinyTeX outside PATH; locate tlmgr and
-          # add its bin directory so lualatex/tlmgr resolve.
-          TLMGR=$(find "$HOME" -name tlmgr -type f 2>/dev/null | head -1)
-          echo "tlmgr at: $TLMGR"
-          echo "$(dirname "$TLMGR")" >> "$GITHUB_PATH"
+          # TinyTeX is on PATH via the setup action.
           tlmgr install \
             caption etoolbox float fontspec booktabs \
             titlesec fancyhdr lastpage zref draftwatermark \
@@ -97,21 +91,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Quarto
+      - name: Install Quarto and TinyTeX
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: 1.10.18
-
-      - name: Install TinyTeX
-        run: quarto install tinytex
+          tinytex: true
 
       - name: Install LaTeX packages
         run: |
-          # Quarto installs TinyTeX outside PATH; locate tlmgr and
-          # add its bin directory so lualatex/tlmgr resolve.
-          TLMGR=$(find "$HOME" -name tlmgr -type f 2>/dev/null | head -1)
-          echo "tlmgr at: $TLMGR"
-          echo "$(dirname "$TLMGR")" >> "$GITHUB_PATH"
+          # TinyTeX is on PATH via the setup action.
           tlmgr install \
             caption etoolbox float fontspec booktabs \
             titlesec fancyhdr lastpage zref draftwatermark \
