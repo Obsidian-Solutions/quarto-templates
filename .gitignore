@@ -8,3 +8,5 @@ page-*.png
 
 /.quarto/
 **/*.quarto_ipynb
+# Quarto format-resources copies these into the working directory
+obsidian-*.png
