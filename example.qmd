@@ -16,6 +16,16 @@ short-title: "Example Policy Document"
 doc-type: "Policy Document"
 edition: "First Edition"
 review-date: "February 2027"
+# Uncomment to show a diagonal watermark on every page
+# (accepts any text; the draft: true flag sets it to DRAFT):
+# watermark: "Commercial in Confidence"
+# Uncomment to render a draft review copy: watermark DRAFT, status
+# marking prefixed in the classification line:
+# draft: true
+# Uncomment to add a document approval page after the cover:
+# approver: "Matthew Barker"
+# approver-role: "Sole trader"
+# approval-date: "2026-08-11"
 toc: true
 number-sections: true
 format:

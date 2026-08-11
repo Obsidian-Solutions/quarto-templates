@@ -6,11 +6,13 @@
 % ---- Document control values (used by the running header and footer) ----
 $if(reference)$\newcommand{\docref}{$reference$}$else$\newcommand{\docref}{Obsidian Solutions}$endif$
 $if(short-title)$\newcommand{\doctitle}{$short-title$}$else$\newcommand{\doctitle}{$title$}$endif$
-$if(confidentiality)$\newcommand{\classification}{{\scriptsize\bfseries\textsc{\color{obsidianl}$confidentiality$}}}$else$\newcommand{\classification}{}$endif$
+$if(confidentiality)$\newcommand{\classification}{{\scriptsize\bfseries\textsc{\color{obsidianl}\ifdefempty{\obsidianstatus}{}{\obsidianstatus{} -- }$confidentiality$}}}$else$\newcommand{\classification}{}$endif$
 $if(date)$\newcommand{\obsidianpubdate}{$date$}$else$\newcommand{\obsidianpubdate}{\today}$endif$
 $if(doc-type)$\newcommand{\obsidiandoclabel}{\textcolor{obsidianl}{\small\bfseries $doc-type$}}$else$\newcommand{\obsidiandoclabel}{}$endif$
 $if(edition)$\newcommand{\obsidianedition}{$edition$}$else$\newcommand{\obsidianedition}{}$endif$
 $if(review-date)$\newcommand{\obsidianreview}{Review: $review-date$}$else$\newcommand{\obsidianreview}{}$endif$
+$if(watermark)$\newcommand{\obsidianwatermark}{$watermark$}$else$$if(draft)$\newcommand{\obsidianwatermark}{DRAFT}$else$\newcommand{\obsidianwatermark}{}$endif$$endif$
+$if(draft)$\newcommand{\obsidianstatus}{DRAFT}$else$\newcommand{\obsidianstatus}{}$endif$
 
 % ---- Cover page: clean monochrome ----
 \begin{titlepage}
@@ -64,3 +66,51 @@ $if(review-date)$\newcommand{\obsidianreview}{Review: $review-date$}$else$\newco
   \ifdefempty{\obsidianreview}{}{\textbar{} \obsidianreview{}}}}
 \end{center}
 \end{titlepage}
+
+% ---- Front matter page numbering: roman, body arabic ----
+% The cover is unnumbered. Front matter (abstract, approval,
+% contents) uses roman numerals. The body switches to arabic after
+% the TOC ships; see the TOC wrapper in include-in-header.tex.
+\pagenumbering{roman}
+
+% ---- Approval page (only when approver is set) ----
+$if(approver)$
+\clearpage
+\thispagestyle{fancy}
+\vspace*{2cm}
+\begin{center}
+{\Large\bfseries\textcolor{obsidian}{Document approval}\par}
+\vspace{1em}
+{\textcolor{obsidian}{\rule{6cm}{0.8pt}}}\\[2em]
+\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+  \textcolor{obsidianl}{\small Approved by} & $approver$\\[0.8em]
+$if(approver-role)$  \textcolor{obsidianl}{\small Role} & $approver-role$\\[0.8em]
+$endif$
+$if(approval-date)$  \textcolor{obsidianl}{\small Date} & $approval-date$\\[0.8em]
+$endif$
+\end{tabular}
+\vspace{2em}
+
+{\small\textcolor{obsidianl}{Signature}}\par
+\vspace{0.4em}
+{\textcolor{obsidian}{\rule{8cm}{0.4pt}}}
+\end{center}
+\clearpage
+$endif$
+
+% ---- Front matter: abstract ----
+% Quarto's own before-body partial emitted the abstract; our override
+% replaces it, so we reproduce the block here.
+$if(abstract)$
+\begin{abstract}
+$abstract$
+\end{abstract}
+$endif$
+
+% ---- Watermark ----
+% Set at body time so \obsidianwatermark is defined. Light grey,
+% diagonal, behind the text. Disabled (stamp=false) when no watermark
+% is set: the package default text is DRAFT, which must not appear.
+\ifdefempty{\obsidianwatermark}%
+  {\DraftwatermarkOptions{stamp=false}}%
+  {\SetWatermarkText{\obsidianwatermark}\SetWatermarkColor[gray]{0.85}\SetWatermarkScale{3}}

@@ -20,6 +20,10 @@ contributes:
       toc-depth: 2
       toc-title: Contents
       number-sections: true
+      # Archival PDF/A-2b output. Requires LuaLaTeX and LaTeX 2023+,
+      # which the template pins via pdf-engine and TeX Live 2026.
+      # Validate with: quarto install verapdf
+      pdf-standard: [a-2b]
       mainfont: "TeX Gyre Pagella"
       sansfont: "Montserrat"
       monofont: "Liberation Mono"
@@ -30,6 +34,7 @@ contributes:
       template-partials:
         - partials/title.tex
         - partials/before-body.tex
+        - partials/hypersetup.latex
       # Monochrome callouts: Quarto's default callout-warning draws an
       # amber triangle. Disable the icon and use a near-black border so
       # the palette stays clean.

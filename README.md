@@ -16,9 +16,10 @@ identity.
 
 ## Requirements
 
-- Quarto 1.3 or later
-- A LaTeX engine (lualatex)
+- Quarto 1.9 or later
+- A LaTeX engine (lualatex) on TeX Live 2023 or later
 - TeX Gyre Pagella, Montserrat and Liberation Mono fonts
+- Optionally `quarto install verapdf` for PDF/A validation
 
 ## Use as a template
 
@@ -71,16 +72,37 @@ running header, the footer, and the PDF metadata.
 | edition | Edition line on the cover |
 | review-date | Review date on the cover |
 | keywords | Search terms |
-| abstract | Summary |
+| abstract | Summary, on its own page in the front matter |
 | lang | Language, set to en-GB |
+| watermark | Diagonal watermark on every page (for example "Commercial in Confidence") |
+| draft | `true` renders a review copy: watermark DRAFT, status prefixed in the classification line |
+| approver | Adds a document approval page after the cover |
+| approver-role | Role of the approver, on the approval page |
+| approval-date | Date of approval, on the approval page |
 
 Set `baseline` manually only if you render without `render.sh`.
 
+## PDF/A
+
+The format renders PDF/A-2b by default (`pdf-standard: [a-2b]` in
+`_extension.yml`). The render validates automatically when veraPDF is
+installed:
+
+```
+quarto install verapdf
+```
+
+The PDF/A requirement is archival: the document carries its reference,
+version, baseline and confidentiality in the PDF metadata, so a file
+is traceable without opening it.
+
 ## Output
 
-- **PDF**: branded cover page, contents on its own page, numbered
-  sections, running header and footer with the classification marking,
-  baseline and page numbers, widow and orphan control.
+- **PDF**: branded cover page, optional approval page, abstract, and
+  contents each on their own page, roman-numbered front matter and
+  arabic body, numbered sections, running header and footer with the
+  classification marking, baseline and page numbers, widow and orphan
+  control, optional diagonal watermark.
 - **HTML**: the accessible companion for reading, per the HTML-first
   rule.
 
@@ -90,9 +112,6 @@ The template keeps headings with their content and pins tables in
 place, so sections do not split across pages. If a short section
 ends at a page boundary with a table, place `\clearpage` before the
 section heading in the document.
-
-For archival copies, enable the PDF/A option in `_extension.yml` and
-validate with veraPDF. The default output is not PDF/A.
 
 ## Brand
 

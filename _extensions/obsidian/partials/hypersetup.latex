@@ -1,0 +1,50 @@
+% Hyperlink and PDF metadata setup.
+% This partial replaces Quarto's hypersetup.latex so the PDF file
+% itself carries the document-control fields, not just the visible
+% cover. Variables from the front matter interpolate here.
+% Fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+$if(title-meta)$
+  pdftitle={$title-meta$},
+$endif$
+$if(author-meta)$
+  pdfauthor={$author-meta$},
+$endif$
+$if(lang)$
+  pdflang={$lang$},
+$endif$
+$if(subject)$
+  pdfsubject={$subject$},
+$endif$
+$if(keywords)$
+  pdfkeywords={$for(keywords)$\xmpquote{$keywords$}$sep$, $endfor$},
+$endif$
+$if(colorlinks)$
+  colorlinks=true,
+  linkcolor={$if(linkcolor)$$linkcolor$$else$obsidianlink$endif$},
+  filecolor={$if(filecolor)$$filecolor$$else$obsidianlink$endif$},
+  citecolor={$if(citecolor)$$citecolor$$else$obsidianlink$endif$},
+  urlcolor={$if(urlcolor)$$urlcolor$$else$obsidianlink$endif$},
+$else$
+$if(boxlinks)$
+$else$
+  hidelinks,
+$endif$
+$endif$
+$if(reference)$
+  pdfinfo={
+    Reference={$reference$},
+$if(version)$    Version={$version$},
+$endif$
+$if(baseline)$    Baseline={$baseline$},
+$endif$
+$if(confidentiality)$    Confidentiality={$confidentiality$},
+$endif$
+$if(draft)$    Status={Draft},
+$endif$
+  },
+$endif$
+  pdfcreator={LaTeX via pandoc}}
