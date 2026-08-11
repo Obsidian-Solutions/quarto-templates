@@ -3,6 +3,13 @@ _site/
 *.synctex.gz
 example_files/
 *_files/
+# LaTeX intermediates (kept because latex-clean: false)
+*.aux
+*.log
+*.lot
+*.lof
+*.toc
+*.out
 *.pdf
 *.html
 *.docx
