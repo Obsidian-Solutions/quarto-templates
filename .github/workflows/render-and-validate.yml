@@ -20,13 +20,22 @@ jobs:
         with:
           version: 1.10.18
 
-      - name: Install TeX Live
+      - name: Install TeX Live (TinyTeX, matches the 2026 dev toolchain)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            texlive-latex-extra texlive-latex-recommended texlive-fonts-recommended \
-            texlive-luatex fonts-liberation
-          which tlmgr lualatex
+          # Ubuntu's apt TeX Live 2023 cannot run \DocumentMetadata with
+          # pdf-standard (missing the 2025+ pdfmanagement rename). TinyTeX
+          # is a rolling distribution that matches the Arch TeX Live 2026
+          # the template is developed against. --update-path puts tlmgr
+          # and lualatex on PATH (the flag the Quarto docs name).
+          quarto install tinytex --update-path
+          # TinyTeX base already carries Latin Modern, fontspec and the
+          # kernel. Install the document-class packages the template
+          # preamble uses, plus TeX Gyre Pagella (the main font).
+          tlmgr install \
+            titlesec fancyhdr zref draftwatermark tocloft embedfile \
+            tcolorbox needspace caption microtype booktabs etoolbox float \
+            fontspec tex-gyre lmodern
+          which tlmgr lualatex && lualatex --version | head -1
 
       - name: Install Montserrat (Google font, not in TeX Live)
         run: |
@@ -39,7 +48,7 @@ jobs:
       - name: Install verapdf and qpdf
         run: |
           quarto install verapdf
-          sudo apt-get update && sudo apt-get install -y qpdf
+          sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation
 
       - name: Render default document (PDF/A-4f)
         run: ./render.sh example.qmd
@@ -93,13 +102,22 @@ jobs:
         with:
           version: 1.10.18
 
-      - name: Install TeX Live
+      - name: Install TeX Live (TinyTeX, matches the 2026 dev toolchain)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            texlive-latex-extra texlive-latex-recommended texlive-fonts-recommended \
-            texlive-luatex fonts-liberation
-          which tlmgr lualatex
+          # Ubuntu's apt TeX Live 2023 cannot run \DocumentMetadata with
+          # pdf-standard (missing the 2025+ pdfmanagement rename). TinyTeX
+          # is a rolling distribution that matches the Arch TeX Live 2026
+          # the template is developed against. --update-path puts tlmgr
+          # and lualatex on PATH (the flag the Quarto docs name).
+          quarto install tinytex --update-path
+          # TinyTeX base already carries Latin Modern, fontspec and the
+          # kernel. Install the document-class packages the template
+          # preamble uses, plus TeX Gyre Pagella (the main font).
+          tlmgr install \
+            titlesec fancyhdr zref draftwatermark tocloft embedfile \
+            tcolorbox needspace caption microtype booktabs etoolbox float \
+            fontspec tex-gyre lmodern
+          which tlmgr lualatex && lualatex --version | head -1
 
       - name: Install Montserrat
         run: |
