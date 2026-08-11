@@ -45,14 +45,13 @@ Then set in the document front matter:
 format: obsidian-pdf
 ```
 
-## Use as a submodule
+The extension installs as a tracked copy under
+`_extensions/Obsidian-Solutions/obsidian/`. Pull template updates
+with:
 
 ```
-git submodule add git@github.com:Obsidian-Solutions/quarto-templates.git docs/template
+quarto update Obsidian-Solutions/quarto-templates
 ```
-
-The extension lives in `_extensions/`, so a submodule or a copy of
-this repository both work with any Quarto project.
 
 ## Front matter
 
