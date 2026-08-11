@@ -1,0 +1,14 @@
+$--
+$-- PDF standard support (PDF/A, PDF/UA, PDF/X)
+$-- Replaces Quarto's document-metadata.latex.
+$-- Uses the LaTeX-team escape hatch (ltnews42 s2.1):
+$-- \RequirePackage{pdfmanagement} + \SetKeys instead of \DocumentMetadata,
+$-- so hyperref keeps its classic \contentsline TOC-link patch.
+$-- PDF/A conformance is still enforced by l3pdfmeta and verapdf.
+$-- NOTE: ua-2 requires the tagging code that \DocumentMetadata loads;
+$-- with the escape hatch, PDF/UA-2 is not produced.
+$--
+$if(pdfstandard)$
+\RequirePackage{pdfmanagement}
+\SetKeys[document/metadata]{$if(pdfstandard.version)$pdfversion=$pdfstandard.version$,$endif$$if(pdfstandard.standards)$pdfstandard={$for(pdfstandard.standards)$$it$$sep$,$endfor$}$endif$$if(lang)$, lang=$lang$$endif$, xmp=true}
+$endif$

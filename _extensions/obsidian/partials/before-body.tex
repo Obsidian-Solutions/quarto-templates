@@ -11,6 +11,7 @@ $if(date)$\newcommand{\obsidianpubdate}{$date$}$else$\newcommand{\obsidianpubdat
 $if(doc-type)$\newcommand{\obsidiandoclabel}{\textcolor{obsidianl}{\small\bfseries $doc-type$}}$else$\newcommand{\obsidiandoclabel}{}$endif$
 $if(edition)$\newcommand{\obsidianedition}{$edition$}$else$\newcommand{\obsidianedition}{}$endif$
 $if(review-date)$\newcommand{\obsidianreview}{Review: $review-date$}$else$\newcommand{\obsidianreview}{}$endif$
+$if(version)$\newcommand{\obsidianversion}{V$version$}$else$\newcommand{\obsidianversion}{}$endif$
 $if(watermark)$\newcommand{\obsidianwatermark}{$watermark$}$else$$if(draft)$\newcommand{\obsidianwatermark}{DRAFT}$else$\newcommand{\obsidianwatermark}{}$endif$$endif$
 $if(draft)$\newcommand{\obsidianstatus}{DRAFT}$else$\newcommand{\obsidianstatus}{}$endif$
 
@@ -105,6 +106,29 @@ $if(abstract)$
 \begin{abstract}
 $abstract$
 \end{abstract}
+$endif$
+
+% ---- Revision history (JSP 945: before Contents, own page) ----
+% Change record: newest entry first. Date format 24 August 2026.
+$if(changes)$
+\clearpage
+\thispagestyle{fancy}
+\section*{Revision History}
+\addcontentsline{toc}{section}{Revision History}
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}p{2.2cm}p{3.2cm}p{3.2cm}p{6.4cm}@{}}
+\textcolor{obsidianl}{\small\textbf{Version}} &
+\textcolor{obsidianl}{\small\textbf{Date}} &
+\textcolor{obsidianl}{\small\textbf{Author}} &
+\textcolor{obsidianl}{\small\textbf{Summary of Change}} \\
+\hline
+$for(changes)$
+$changes.version$ & $changes.date$ & $changes.author$ & $changes.summary$ \\
+$endfor$
+\end{tabular}
+\end{center}
+\clearpage
 $endif$
 
 % ---- Watermark ----
