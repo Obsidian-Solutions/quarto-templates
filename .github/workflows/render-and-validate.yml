@@ -34,7 +34,7 @@ jobs:
           tlmgr install \
             titlesec fancyhdr zref draftwatermark tocloft embedfile \
             tcolorbox needspace caption microtype booktabs etoolbox float \
-            fontspec tex-gyre lmodern
+            fontspec tex-gyre
           which tlmgr lualatex && lualatex --version | head -1
 
       - name: Install Montserrat (Google font, not in TeX Live)
@@ -116,7 +116,7 @@ jobs:
           tlmgr install \
             titlesec fancyhdr zref draftwatermark tocloft embedfile \
             tcolorbox needspace caption microtype booktabs etoolbox float \
-            fontspec tex-gyre lmodern
+            fontspec tex-gyre
           which tlmgr lualatex && lualatex --version | head -1
 
       - name: Install Montserrat
