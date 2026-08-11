@@ -33,12 +33,13 @@ jobs:
           # classification banner. Render into a site directory so the
           # asset files (example_files/) ship with the page, and name
           # the entry point index.html so the site root serves it.
-          # The brand logo is a format-resource copied to the input
-          # directory at render time; move it into the site too.
+          # The brand logo is tracked in the extension assets and
+          # referenced by the figure; copy it into the site so the
+          # published page shows the image.
           mkdir -p site
           quarto render example.qmd --to obsidian-html --output-dir site
           mv site/example.html site/index.html
-          cp obsidian-logo.png site/obsidian-logo.png
+          cp _extensions/obsidian/assets/obsidian-logo.png site/obsidian-logo.png
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
