@@ -1,0 +1,63 @@
+/*-- Obsidian Solutions revealjs theme --*/
+/* Monochrome brand identity for presentations: near-black on white,
+   Montserrat headings, thin grey rules. Same palette as the
+   document formats, applied to the revealjs variable set. */
+
+/*-- scss:defaults --*/
+$theme-obsidian: #121212;
+$theme-obsidianl: #484949;
+$theme-ruled: #cecece;
+
+$body-bg: #ffffff;
+$body-color: $theme-obsidian;
+$link-color: $theme-obsidianl;
+$link-color-hover: $theme-obsidian;
+
+$presentation-heading-font: Montserrat, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+$presentation-heading-color: $theme-obsidian;
+$presentation-heading-line-height: 1.2;
+$presentation-heading-letter-spacing: 0.02em;
+$presentation-heading-text-transform: none;
+$presentation-heading-text-shadow: none;
+$presentation-heading-font-weight: 600;
+
+$presentation-font-size: 24px;
+$presentation-font-family: "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+$presentation-title-slide-text-align: left;
+
+$code-color: $theme-obsidian;
+$code-bg: #f3f3f3;
+$code-block-bg: #f3f3f3;
+$code-block-border-color: $theme-ruled;
+
+$border-color: $theme-ruled;
+$border-width: 1px;
+$border-radius: 0;
+
+/*-- scss:rules --*/
+
+/* Focus: visible near-black ring, WCAG 2.4.7 */
+:focus-visible {
+  outline: 3px solid $theme-obsidian;
+  outline-offset: 2px;
+}
+
+/* Links: permanent underline, colour never the only cue */
+.reveal a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Secondary text stays at 9:1 */
+.reveal .slide .muted,
+.reveal .slide .caption {
+  color: $theme-obsidianl;
+}
+
+/* Footer-style slide numbers and progress bar in brand greys */
+.reveal .slide-number {
+  color: $theme-obsidianl;
+}
+.reveal .progress {
+  color: $theme-obsidian;
+}

@@ -1,15 +1,18 @@
 -- classification.lua
--- Injects a classification banner into the HTML companion so the
--- reading copy carries the same marking as the PDF. Fires only for
--- HTML output; the PDF carries the marking in its running header.
+-- Injects a classification banner into the HTML and revealjs
+-- companions so the reading copy carries the same marking as the
+-- PDF. Fires only for HTML-family output; the PDF carries the
+-- marking in its running header.
 --
 -- Banner text: "DRAFT – Commercial in Confidence" from the front
 -- matter fields `draft` and `confidentiality`.
 
+local html_formats = { html = true, revealjs = true }
+
 function Pandoc(doc)
   -- FORMAT is pandoc's writer-format global; PANDOC_WRITER_OPTIONS
   -- is not populated under Quarto.
-  if FORMAT ~= 'html' then
+  if not html_formats[FORMAT] then
     return doc
   end
   local meta = doc.meta

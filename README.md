@@ -163,6 +163,12 @@ KOMA; revisit this after a Quarto or LaTeX release addresses it.
   full front-matter machinery (cover, approval page, revision
   history), which is LaTeX-only. The PDF remains the controlled
   record; the DOCX is a working copy.
+- **Revealjs** (`obsidian-revealjs`): client presentations. The
+  revealjs theme carries the house palette and typography; the
+  classification filter marks the deck. Use `##` for slides.
+- **Dashboard** (`obsidian-dashboard`): client-facing dashboards for
+  live data. Uses the html theme. Only the classification filter
+  applies, since review warnings are for documents.
 
 ### List of tables and figures
 

@@ -21,11 +21,19 @@ jobs:
           version: 1.10.18
           tinytex: true
 
+      - name: Locate TinyTeX (diagnostic)
+        run: |
+          echo "HOME=$HOME"
+          echo "GITHUB_PATH:"; cat "$GITHUB_PATH" 2>/dev/null
+          command -v tlmgr || echo "no tlmgr on PATH"
+          find "$HOME" -name tlmgr -type f 2>/dev/null | head -3
+          find / -maxdepth 6 -name tlmgr -type f 2>/dev/null | head -3
+
       - name: Install LaTeX packages
         run: |
           # The setup action's PATH registration is unreliable on
           # this Quarto version; locate tlmgr defensively.
-          TLMGR=$(command -v tlmgr 2>/dev/null             || find "$HOME/.TinyTeX" -name tlmgr -type f 2>/dev/null | head -1)
+          TLMGR=$(command -v tlmgr 2>/dev/null             || find "$HOME" -name tlmgr -type f 2>/dev/null | head -1)
           if [ -z "$TLMGR" ]; then
             echo "tlmgr not found after TinyTeX install" >&2
             exit 1
@@ -105,11 +113,19 @@ jobs:
           version: 1.10.18
           tinytex: true
 
+      - name: Locate TinyTeX (diagnostic)
+        run: |
+          echo "HOME=$HOME"
+          echo "GITHUB_PATH:"; cat "$GITHUB_PATH" 2>/dev/null
+          command -v tlmgr || echo "no tlmgr on PATH"
+          find "$HOME" -name tlmgr -type f 2>/dev/null | head -3
+          find / -maxdepth 6 -name tlmgr -type f 2>/dev/null | head -3
+
       - name: Install LaTeX packages
         run: |
           # The setup action's PATH registration is unreliable on
           # this Quarto version; locate tlmgr defensively.
-          TLMGR=$(command -v tlmgr 2>/dev/null             || find "$HOME/.TinyTeX" -name tlmgr -type f 2>/dev/null | head -1)
+          TLMGR=$(command -v tlmgr 2>/dev/null             || find "$HOME" -name tlmgr -type f 2>/dev/null | head -1)
           if [ -z "$TLMGR" ]; then
             echo "tlmgr not found after TinyTeX install" >&2
             exit 1

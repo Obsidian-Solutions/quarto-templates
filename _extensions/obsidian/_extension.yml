@@ -85,3 +85,25 @@ contributes:
       filters:
         - filters/classification.lua
         - filters/review-overdue.lua
+    revealjs:
+      # Client presentations. The revealjs theme carries the house
+      # palette and typography; the classification filter marks each
+      # slide deck.
+      theme: theme-reveal.scss
+      toc: true
+      toc-depth: 2
+      citeproc: true
+      link-citations: true
+      csl: numeric.csl
+      filters:
+        - filters/classification.lua
+        - filters/review-overdue.lua
+    dashboard:
+      # Client-facing dashboards. The html theme carries the house
+      # palette and typography; dashboards are live-data products,
+      # so only the classification filter applies (review warnings
+      # are for documents).
+      theme: theme.scss
+      toc: true
+      filters:
+        - filters/classification.lua
