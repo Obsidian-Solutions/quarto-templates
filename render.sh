@@ -38,6 +38,19 @@ EOF
 
 quarto render "$FILE" -M baseline="$HASH, $DATE"
 
+# Page-overflow gate. LaTeX reports content wider or taller than the
+# printable area as Overfull \hbox / \vbox warnings in its log. The
+# format sets latex-clean: false so the log survives; fail the render
+# when any overfull box is present, so no document ships with content
+# clipped at a margin. Underfull is cosmetic (loose spacing), not
+# clipping, so it is not a failure.
+LOG="${BASE}.log"
+if [ -f "$LOG" ] && grep -qE "Overfull \\\\(h|v)box" "$LOG"; then
+  echo "PAGE OVERFLOW DETECTED in $FILE:"
+  grep -nE "Overfull" "$LOG"
+  exit 1
+fi
+
 # PDF/UA-2 structure gate. Quarto's tagging emits a flat tree without
 # heading roles (upstream gap: KOMA + \DocumentMetadata{tagging=on}
 # never promotes sections to H1-H6; veraPDF passes by design). This

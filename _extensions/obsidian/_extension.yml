@@ -34,6 +34,10 @@ contributes:
       # which the template pins via pdf-engine and TeX Live 2026.
       # Validate with: quarto install verapdf
       pdf-standard: [a-4f]
+      # Keep the LaTeX log so render.sh can check it for overfull
+      # boxes (content overflowing the printable area). Quarto deletes
+      # the log by default (latex-clean: true), hiding the signal.
+      latex-clean: false
       mainfont: "TeX Gyre Pagella"
       sansfont: "Montserrat"
       monofont: "Liberation Mono"
