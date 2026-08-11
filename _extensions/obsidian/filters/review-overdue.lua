@@ -33,9 +33,6 @@ end
 
 function Pandoc(doc)
   local review = stringify(doc.meta['review-date'])
-  if review == '' then
-    return doc
-  end
   local review_num = parse_date(review)
   if not review_num then
     return doc

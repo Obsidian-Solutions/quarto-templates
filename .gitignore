@@ -7,6 +7,8 @@ example_files/
 *.docx
 page-*.png
 r[0-9]*-*.png
+# Quarto writes a math probe on every render
+*-luamml-mathml.html
 # But keep the house reference document that styles the DOCX output:
 !_extensions/obsidian/obsidian-reference.docx
 
