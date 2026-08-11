@@ -38,6 +38,19 @@ EOF
 
 quarto render "$FILE" -M baseline="$HASH, $DATE"
 
+# PDF/UA-2 structure gate. Quarto's tagging emits a flat tree without
+# heading roles (upstream gap: KOMA + \DocumentMetadata{tagging=on}
+# never promotes sections to H1-H6; veraPDF passes by design). This
+# checker fails honestly when a UA-2 document lacks heading roles, so
+# we never ship a heading-less document as accessible. It fires only
+# when the extension is configured for ua-2 (the default a-4f is
+# deliberately untagged to keep the TOC clickable).
+if grep -q "ua-2" "$(dirname "$0")/_extensions/obsidian/_extension.yml"; then
+  if [ -x "$(dirname "$0")/scripts/check-ua.py" ]; then
+    python3 "$(dirname "$0")/scripts/check-ua.py" "${BASE}.pdf"
+  fi
+fi
+
 if ! command -v qpdf >/dev/null 2>&1; then
   echo "qpdf not found: skipping optimisation and encryption" >&2
   exit 0

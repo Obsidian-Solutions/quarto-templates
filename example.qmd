@@ -106,7 +106,7 @@ Do not forward them without the owner's consent.
 appear in the List of Figures, the same way tables appear in the
 List of Tables.
 
-![Obsidian Solutions brand mark](obsidian-logo.png){#fig-logo}
+![Obsidian Solutions brand mark](obsidian-logo.png){#fig-logo fig-alt="The Obsidian Solutions brand mark, a dark geometric glyph on white."}
 
 @tbl-data summarises what the backup policy covers. The inventory
 lists every data class the policy protects, the system that holds it,

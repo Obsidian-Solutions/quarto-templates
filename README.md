@@ -128,6 +128,24 @@ Body cross-references keep working in both modes. Revisit after the
 upstream fix: the escape-hatch partial exists so the template can
 re-enable PDF/UA-2 without losing links.
 
+#### Known limitation: flat heading structure
+
+Quarto's PDF/UA-2 tagging does not assign heading roles (H1-H6) to
+section headings. The KOMA class and the kernel sectioning never
+promote sections to headings; tagpdf's namespace mapping is data-only
+and nothing reads it. The result is a structure tree of plain
+paragraph tags, and veraPDF passes it because it runs only
+machine-verifiable checks. This affects every Quarto PDF/UA-2
+document, not just this template. LaTeX-side patches (hooks,
+`\@sect` redefinitions, tagging sockets) each fail on this toolchain:
+compile errors, Hn-contains-P nesting violations, or tree corruption.
+
+`scripts/check-ua.py` is the honest gate. It fails when a UA-2 render
+lacks heading roles, so no heading-less document is ever shipped as
+accessible. `render.sh` runs it automatically for UA-2 renders. The
+upstream fix would be Quarto wiring section-to-heading tagging on
+KOMA; revisit this after a Quarto or LaTeX release addresses it.
+
 ## Output
 
 - **PDF**: branded cover page, optional approval page, abstract,
