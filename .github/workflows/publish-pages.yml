@@ -48,18 +48,18 @@ jobs:
           curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-SemiBold.ttf" -o ~/.fonts/Montserrat-SemiBold.ttf
           fc-cache -f ~/.fonts
 
-      - name: Install qpdf and fonts
+      - name: Install qpdf, fonts and verapdf
         run: |
           sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation
+          quarto install verapdf
 
       - name: Render the example (HTML, PDF, DOCX)
         run: |
-          # Render all three document formats. The example's front
-          # matter declares obsidian-pdf, obsidian-html and
-          # obsidian-docx; render.sh stamps the baseline and validates.
-          quarto render example.qmd --to obsidian-html
-          quarto render example.qmd --to obsidian-pdf
-          quarto render example.qmd --to obsidian-docx
+          # render.sh stamps the baseline and generates manifest.json
+          # (the embed filter attaches it to the PDF/A archive), then
+          # validates with verapdf. It renders the formats declared in
+          # the front matter: PDF, HTML and DOCX.
+          ./render.sh example.qmd
           cp _extensions/obsidian/assets/obsidian-logo.png obsidian-logo.png
 
       - name: Assemble the site
