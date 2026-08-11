@@ -49,6 +49,8 @@ contributes:
         - partials/toc.tex
       filters:
         - filters/appendix.lua
+        - filters/embed.lua
+        - filters/review-overdue.lua
       # Monochrome callouts: Quarto's default callout-warning draws an
       # amber triangle. Disable the icon and use a near-black border so
       # the palette stays clean.
@@ -69,3 +71,17 @@ contributes:
       citeproc: true
       link-citations: true
       csl: numeric.csl
+    html:
+      # Accessible reading companion, per the HTML-first rule. The
+      # theme carries the house palette, typography and focus states;
+      # the classification filter adds the marking banner.
+      theme: theme.scss
+      toc: true
+      toc-depth: 2
+      number-sections: true
+      citeproc: true
+      link-citations: true
+      csl: numeric.csl
+      filters:
+        - filters/classification.lua
+        - filters/review-overdue.lua

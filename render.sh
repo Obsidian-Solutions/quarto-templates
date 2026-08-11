@@ -25,6 +25,17 @@ HASH=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 DATE=$(date +%Y-%m-%d)
 BASE="${FILE%.qmd}"
 
+# Control manifest: embedded into the PDF so the archive is
+# self-contained provenance. The embed.lua filter attaches it (and
+# the source) via LaTeX's embedfile package.
+cat > manifest.json <<EOF
+{
+  "document": "$BASE",
+  "baseline": "$HASH",
+  "rendered": "$DATE"
+}
+EOF
+
 quarto render "$FILE" -M baseline="$HASH, $DATE"
 
 if ! command -v qpdf >/dev/null 2>&1; then

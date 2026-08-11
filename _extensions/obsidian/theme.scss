@@ -1,0 +1,93 @@
+/*-- Obsidian Solutions house theme for the HTML companion --*/
+/* Monochrome palette, mirroring the PDF format. The greys are the  */
+/* functional scale proven by GOV.UK and NHS design systems; the    */
+/* primary is the website brand colour.                             */
+
+/*-- scss:defaults --*/
+$theme-obsidian: #121212;   /* primary text, 16.8:1 on white */
+$theme-obsidianl: #484949;  /* secondary text, 9.0:1 (AAA)     */
+$theme-ruled: #cecece;      /* hairlines, decorative           */
+$theme-cream: #f3f3f3;      /* off-white surface               */
+
+$body-bg: #ffffff;
+$body-color: $theme-obsidian;
+$primary: $theme-obsidian;
+$link-color: $theme-obsidianl;
+$link-hover-color: $theme-obsidian;
+$code-bg: $theme-cream;
+$code-color: $theme-obsidian;
+
+$font-family-serif: "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+$font-family-sans-serif: Montserrat, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+$headings-font-family: $font-family-sans-serif;
+$headings-font-weight: 600;
+$headings-color: $theme-obsidian;
+
+/*-- scss:rules --*/
+
+/* Focus: visible 2.4px near-black ring, WCAG 2.4.7 */
+:focus-visible {
+  outline: 3px solid $theme-obsidian;
+  outline-offset: 2px;
+}
+
+/* Links: permanent underline so colour is never the only cue */
+a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Secondary text stays at 9:1 */
+.quarto-title-block .description,
+.quarto-title-block .subtitle,
+small,
+figcaption,
+.table-caption {
+  color: $theme-obsidianl;
+}
+
+/* Headings get a hairline under the top-level title, like the PDF */
+.quarto-title-block .title {
+  font-family: $font-family-sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Classification banner, injected by filters/classification.lua */
+.obsidian-classification {
+  border-bottom: 1px solid $theme-ruled;
+  color: $theme-obsidianl;
+  font-family: $font-family-sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.obsidian-classification .status {
+  color: $theme-obsidian;
+}
+
+/* Review-overdue warning, injected by filters/review-overdue.lua */
+.obsidian-review-overdue {
+  background-color: $theme-cream;
+  border: 1px solid $theme-obsidian;
+  color: $theme-obsidian;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Tables: top and bottom rules only, like booktabs */
+.table > :not(caption) > * > * {
+  border-bottom: 1px solid $theme-ruled;
+}
+
+/* Print: classification banner and headings render cleanly */
+@media print {
+  .obsidian-classification {
+    border-bottom: 1px solid $theme-obsidian;
+  }
+}

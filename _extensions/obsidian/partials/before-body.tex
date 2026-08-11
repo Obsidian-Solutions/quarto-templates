@@ -12,6 +12,7 @@ $if(doc-type)$\newcommand{\obsidiandoclabel}{\textcolor{obsidianl}{\small\bfseri
 $if(edition)$\newcommand{\obsidianedition}{$edition$}$else$\newcommand{\obsidianedition}{}$endif$
 $if(review-date)$\newcommand{\obsidianreview}{Review: $review-date$}$else$\newcommand{\obsidianreview}{}$endif$
 $if(version)$\newcommand{\obsidianversion}{V$version$}$else$\newcommand{\obsidianversion}{}$endif$
+$if(supersedes)$\newcommand{\obsidiansupersedes}{$supersedes$}$else$\newcommand{\obsidiansupersedes}{}$endif$
 $if(watermark)$\newcommand{\obsidianwatermark}{$watermark$}$else$$if(draft)$\newcommand{\obsidianwatermark}{DRAFT}$else$\newcommand{\obsidianwatermark}{}$endif$$endif$
 $if(draft)$\newcommand{\obsidianstatus}{DRAFT}$else$\newcommand{\obsidianstatus}{}$endif$
 
@@ -55,6 +56,9 @@ $if(draft)$\newcommand{\obsidianstatus}{DRAFT}$else$\newcommand{\obsidianstatus}
   $endif$
   $if(baseline)$
   {\small\textcolor{obsidianl}{Baseline: $baseline$}}\\[0.3em]
+  $endif$
+  $if(supersedes)$
+  {\small\textcolor{obsidianl}{Supersedes: $supersedes$}}\\[0.3em]
   $endif$
 \end{minipage}
 

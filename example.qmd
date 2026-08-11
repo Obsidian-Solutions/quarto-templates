@@ -16,6 +16,7 @@ short-title: "Example Policy Document"
 doc-type: "Policy Document"
 edition: "First Edition"
 review-date: "February 2027"
+supersedes: "OS-DOC-000 v2.1"
 # Uncomment to show a diagonal watermark on every page
 # (accepts any text; the draft: true flag sets it to DRAFT):
 watermark: "Commercial in Confidence"
@@ -37,12 +38,22 @@ changes:
     date: "11 August 2026"
     author: "Matthew Barker"
     summary: "Initial issue"
+# Self-contained provenance: the PDF/A-4f file carries its own source
+# and a control manifest, so the archive is traceable without the
+# repository. render.sh generates manifest.json before rendering.
+attach:
+  - source: example.qmd
+    description: Source document
+    mimetype: text/markdown
+  - source: manifest.json
+    description: Control manifest
+    mimetype: application/json
 toc: true
 number-sections: true
 bibliography: references.bib
 format:
   obsidian-pdf: default
-  html: default
+  obsidian-html: default
   obsidian-docx: default
 ---
 

@@ -70,7 +70,9 @@ running header, the footer, and the PDF metadata.
 | short-title | Running header title |
 | doc-type | Label above the title on the cover (for example "Policy Document") |
 | edition | Edition line on the cover |
-| review-date | Review date on the cover |
+| review-date | Review date on the cover; if in the past, the render carries a REVIEW OVERDUE warning |
+| supersedes | Document this one replaces, shown on the cover as "Supersedes:" |
+| attach | List of files embedded in the PDF/A-4f archive, each with `source`, `description`, `mimetype` |
 | keywords | Search terms |
 | abstract | Summary, on its own page in the front matter |
 | lang | Language, set to en-GB |
@@ -79,6 +81,10 @@ running header, the footer, and the PDF metadata.
 | approver | Adds a document approval page after the cover |
 | approver-role | Role of the approver, on the approval page |
 | approval-date | Date of approval, on the approval page |
+
+`attach` entries must exist in the working directory at render time.
+`render.sh` generates `manifest.json` with the document, baseline and
+render date; the example attaches it alongside the source.
 
 Set `baseline` manually only if you render without `render.sh`.
 
@@ -91,11 +97,15 @@ The format renders PDF/A-4f by default (`pdf-standard: [a-4f]` in
 quarto install verapdf
 ```
 
-The PDF/A requirement is archival: the document carries its reference,
-version, baseline and confidentiality in the PDF metadata, so a file
-is traceable without opening it. PDF/A-4f uses PDF 2.0 and does not
-require the tagged structure tree, so the table of contents stays
-clickable: every entry is a real link to its section.
+The PDF/A requirement is archival: the document carries its
+reference, version and baseline in the XMP `dc:source` field (the
+pdfmanagement metadata path drops custom Info keys, so the standard
+field carries the control identity), and the full source and control
+manifest are embedded as PDF/A-4f attachments. A file is traceable
+without opening it, and self-contained without the repository.
+PDF/A-4f uses PDF 2.0 and does not require the tagged structure tree,
+so the table of contents stays clickable: every entry is a real link
+to its section.
 
 ### PDF/UA-2 (screen readers)
 

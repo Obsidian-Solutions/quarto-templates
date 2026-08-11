@@ -16,6 +16,10 @@
 % (Quarto also loads tocloft later in its template; the second load
 % is a no-op.)
 \usepackage{tocloft}
+% Embeds the source and manifest into the PDF/A-4f file (self-
+% contained provenance). The \embedfile commands themselves come
+% from filters/embed.lua at the top of the body.
+\usepackage{embedfile}
 \usepackage{hyperref}
 \usepackage{float}
 \usepackage{tocloft}

@@ -35,16 +35,8 @@ $else$
 $endif$
 $endif$
 $if(reference)$
-  pdfinfo={
-    Reference={$reference$},
-$if(version)$    Version={$version$},
-$endif$
-$if(baseline)$    Baseline={$baseline$},
-$endif$
-$if(confidentiality)$    Confidentiality={$confidentiality$},
-$endif$
-$if(draft)$    Status={Draft},
-$endif$
-  },
+  % Document control identity, written to the XMP dc:source field
+  % (the pdfmanagement metadata path drops custom Info keys).
+  pdfsource={\xmpquote{$reference$}$if(version)$ v$version$$endif$$if(baseline)$ @ $baseline$$endif$},
 $endif$
   pdfcreator={LaTeX via pandoc}}
