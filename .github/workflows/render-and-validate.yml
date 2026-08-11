@@ -123,3 +123,57 @@ jobs:
             echo "EXPECTED: heading-role gap documented in README (upstream KOMA/tagging limitation)"
           VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
           "$VERAPDF" --format text example.pdf | tail -3
+
+  # HTML-family formats (revealjs, dashboard) need no TeX engine.
+  presentations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.10.18
+
+      - name: Render revealjs deck
+        run: |
+          printf '%s\n' \
+            '---' \
+            'title: "Obsidian Solutions"' \
+            'confidentiality: "Commercial in Confidence"' \
+            'format:' \
+            '  obsidian-revealjs: default' \
+            '---' \
+            '' \
+            '## One' \
+            '' \
+            'Slide one.' \
+            '' \
+            '## Two' \
+            '' \
+            'Slide two.' > slides.qmd
+          quarto render slides.qmd
+          grep -q "obsidian-classification" slides.html
+          grep -q "Commercial in Confidence" slides.html
+
+      - name: Render dashboard
+        run: |
+          printf '%s\n' \
+            '---' \
+            'title: "Service Health"' \
+            'confidentiality: "Commercial in Confidence"' \
+            'format:' \
+            '  obsidian-dashboard: default' \
+            '---' \
+            '' \
+            '::: {.row}' \
+            '::: {.col-lg-6}' \
+            '## Uptime' \
+            '' \
+            '| Service | Status |' \
+            '|---|---|' \
+            '| Website | Operational |' \
+            ':::' \
+            ':::' > dash.qmd
+          quarto render dash.qmd
+          grep -q "obsidian-classification" dash.html

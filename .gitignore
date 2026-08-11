@@ -2,6 +2,7 @@
 _site/
 *.synctex.gz
 example_files/
+*_files/
 *.pdf
 *.html
 *.docx
