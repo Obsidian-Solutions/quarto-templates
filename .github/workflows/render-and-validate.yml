@@ -23,8 +23,16 @@ jobs:
 
       - name: Install LaTeX packages
         run: |
-          # TinyTeX is on PATH via the setup action.
-          tlmgr install \
+          # The setup action's PATH registration is unreliable on
+          # this Quarto version; locate tlmgr defensively.
+          TLMGR=$(command -v tlmgr 2>/dev/null             || find "$HOME/.TinyTeX" -name tlmgr -type f 2>/dev/null | head -1)
+          if [ -z "$TLMGR" ]; then
+            echo "tlmgr not found after TinyTeX install" >&2
+            exit 1
+          fi
+          echo "tlmgr at: $TLMGR"
+          echo "$(dirname "$TLMGR")" >> "$GITHUB_PATH"
+          "$TLMGR" install \
             caption etoolbox float fontspec booktabs \
             titlesec fancyhdr lastpage zref draftwatermark \
             tocloft embedfile needspace microtype tcolorbox \
@@ -99,8 +107,16 @@ jobs:
 
       - name: Install LaTeX packages
         run: |
-          # TinyTeX is on PATH via the setup action.
-          tlmgr install \
+          # The setup action's PATH registration is unreliable on
+          # this Quarto version; locate tlmgr defensively.
+          TLMGR=$(command -v tlmgr 2>/dev/null             || find "$HOME/.TinyTeX" -name tlmgr -type f 2>/dev/null | head -1)
+          if [ -z "$TLMGR" ]; then
+            echo "tlmgr not found after TinyTeX install" >&2
+            exit 1
+          fi
+          echo "tlmgr at: $TLMGR"
+          echo "$(dirname "$TLMGR")" >> "$GITHUB_PATH"
+          "$TLMGR" install \
             caption etoolbox float fontspec booktabs \
             titlesec fancyhdr lastpage zref draftwatermark \
             tocloft embedfile needspace microtype tcolorbox \
