@@ -21,13 +21,14 @@
 
 % ---- Palette ----
 % Monochrome brand identity: near-black primary, drawn from the
-% website brand colour (#121212). The hierarchy follows the GOV.UK
-% monochrome convention: near-black text, grey borders.
+% website brand colour (#121212). The greys are the functional
+% monochrome scale proven by GOV.UK and NHS design systems (text,
+% secondary, hairline); the primary is our own brand value.
 \definecolor{obsidian}{RGB}{18,18,18}    % primary text (16.8:1 on white)
-\definecolor{obsidianl}{RGB}{79,79,79}   % secondary text (7.4:1 on white)
-\definecolor{obsidianlink}{RGB}{79,79,79} % links, shown by underline (7.4:1)
-\definecolor{ruled}{RGB}{177,180,182}   % rules and borders (3.15:1, GOV.UK floor)
-\definecolor{cream}{RGB}{245,245,245}   % off-white for dark surfaces
+\definecolor{obsidianl}{RGB}{72,73,73}   % secondary text (9.0:1, passes AAA)
+\definecolor{obsidianlink}{RGB}{72,73,73} % links, shown by underline (9.0:1)
+\definecolor{ruled}{RGB}{206,206,206}   % hairlines and rules (decorative)
+\definecolor{cream}{RGB}{243,243,243}   % off-white surface
 
 % ---- Link colours ----
 % Quarto emits its own \hypersetup after this header, so a bare
@@ -35,6 +36,23 @@
 % \begin{document}, after every preamble call, so these values win.
 \AtBeginDocument{%
   \hypersetup{colorlinks=true, linkcolor=obsidianlink, urlcolor=obsidianlink, citecolor=obsidianlink}%
+}
+
+% ---- Monochrome callout borders ----
+% Quarto hardcodes the per-type callout colours in its Lua filter and
+% ignores callout-color for PDF. Override the frame colours at
+% \begin{document}, after Quarto's \definecolor calls, so the warning
+% callout border is near-black instead of amber.
+\AtBeginDocument{%
+  \colorlet{quarto-callout-warning-color-frame}{obsidian}%
+  \colorlet{quarto-callout-color-frame}{obsidian}%
+}
+
+% ---- Contents heading ----
+% Quarto renders the table of contents heading outside titlesec, so
+% it falls back to black. Fix it to the brand primary.
+\AtBeginDocument{%
+  \renewcommand{\contentsname}{\textcolor{obsidian}{Contents}}%
 }
 
 % ---- Pagination floor: no widows, orphans, or dangling headings ----

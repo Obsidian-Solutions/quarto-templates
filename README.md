@@ -96,17 +96,18 @@ validate with veraPDF. The default output is not PDF/A.
 
 ## Brand
 
-The palette is monochrome, drawn from the website brand colour:
+The palette is monochrome, drawn from the website brand colour and
+the functional grey scale proven by the GOV.UK and NHS design
+systems:
 
 | Role | Hex | Contrast on white |
 |---|---|---|
 | Primary text | `#121212` | 16.8:1 |
-| Secondary text | `#4f4f4f` | 7.4:1 |
-| Rules and borders | `#b1b4b6` | 3.15:1 |
+| Secondary text | `#484949` | 9.0:1 (passes AAA) |
+| Rules and hairlines | `#cecece` | decorative |
 
-The values follow the monochrome hierarchy the GOV.UK Design System
-uses (near-black text, grey borders) without its identity colours.
-Change the `\definecolor` block in `include-in-header.tex` to rebrand.
+The greys are functional tokens, not a copied identity. Change the
+`\definecolor` block in `include-in-header.tex` to rebrand.
 
 ## Fonts
 

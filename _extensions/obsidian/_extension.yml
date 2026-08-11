@@ -30,3 +30,9 @@ contributes:
       template-partials:
         - partials/title.tex
         - partials/before-body.tex
+      # Monochrome callouts: Quarto's default callout-warning draws an
+      # amber triangle. Disable the icon and use a near-black border so
+      # the palette stays clean.
+      callout-appearance: simple
+      callout-icon: false
+      callout-color: '#121212'
