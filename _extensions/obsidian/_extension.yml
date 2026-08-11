@@ -55,3 +55,17 @@ contributes:
       callout-appearance: simple
       callout-icon: false
       callout-color: '#121212'
+    docx:
+      # Client-editable output. The reference document carries the
+      # house style: Palatino Linotype body, Montserrat headings,
+      # near-black and grey palette, booktabs tables, branded header
+      # and footer with page numbers. Palatino Linotype ships with
+      # Windows and macOS Office, so client machines render it without
+      # substitution.
+      reference-doc: obsidian-reference.docx
+      toc: true
+      toc-depth: 2
+      number-sections: true
+      citeproc: true
+      link-citations: true
+      csl: numeric.csl

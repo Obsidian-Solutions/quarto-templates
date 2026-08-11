@@ -43,6 +43,7 @@ bibliography: references.bib
 format:
   obsidian-pdf: default
   html: default
+  obsidian-docx: default
 ---
 
 # Introduction

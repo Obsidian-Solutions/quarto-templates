@@ -128,6 +128,13 @@ re-enable PDF/UA-2 without losing links.
   watermark.
 - **HTML**: the accessible companion for reading, per the HTML-first
   rule.
+- **DOCX**: the client-editable companion. Use it when a client needs
+  to amend the document. It carries the house style — Palatino
+  Linotype body, Montserrat headings, near-black and grey palette,
+  booktabs tables, branded header and numbered footer — but not the
+  full front-matter machinery (cover, approval page, revision
+  history), which is LaTeX-only. The PDF remains the controlled
+  record; the DOCX is a working copy.
 
 ### List of tables and figures
 

@@ -4,8 +4,11 @@ _site/
 example_files/
 *.pdf
 *.html
+*.docx
 page-*.png
 r[0-9]*-*.png
+# But keep the house reference document that styles the DOCX output:
+!_extensions/obsidian/obsidian-reference.docx
 
 /.quarto/
 **/*.quarto_ipynb
