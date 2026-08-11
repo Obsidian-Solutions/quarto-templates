@@ -1,0 +1,41 @@
+---
+title: "Service Health"
+subtitle: "Obsidian Solutions"
+author: "Obsidian Solutions"
+date: "2026-08-11"
+lang: en-GB
+keywords: ["dashboard", "example"]
+confidentiality: "Commercial in Confidence"
+format:
+  obsidian-dashboard: default
+---
+
+::: {.row}
+::: {.col-lg-4}
+## Uptime
+
+**99.9%** average over 90 days
+:::
+
+::: {.col-lg-4}
+## Incidents
+
+**2** open
+**1** in the last 30 days
+:::
+
+::: {.col-lg-4}
+## Coverage
+
+**14** services monitored
+**12** covered by backups
+:::
+:::
+
+## Service status
+
+| Service | Status | Response |
+|---|---|---|
+| Website | Operational | 200 in 240 ms |
+| Monitoring | Operational | 200 in 90 ms |
+| Backups | Running | last success 03:00 |

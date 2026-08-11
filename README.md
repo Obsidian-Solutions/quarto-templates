@@ -171,6 +171,31 @@ KOMA; revisit this after a Quarto or LaTeX release addresses it.
   live data. Uses the html theme. Only the classification filter
   applies, since review warnings are for documents.
 
+## Examples
+
+Each example file demonstrates one format from a single front
+matter block:
+
+| File | Format | Shows |
+|---|---|---|
+| `example.qmd` | `obsidian-pdf`, `obsidian-html`, `obsidian-docx` | The full document surface: cover, approval, revision history, citations, appendices, list of tables and figures |
+| `slides.qmd` | `obsidian-revealjs` | A client deck with the classification banner |
+| `dashboard.qmd` | `obsidian-dashboard` | A service-health dashboard with cards and a status table |
+
+Render one file per format:
+
+```bash
+quarto render example.qmd   # PDF + HTML + DOCX
+quarto render slides.qmd    # revealjs deck
+quarto render dashboard.qmd # dashboard
+```
+
+The example document is published to GitHub Pages from `main`:
+
+https://obsidian-solutions.github.io/quarto-templates/
+
+It is sanitised: the demo carries no personal or internal detail.
+
 ### List of tables and figures
 
 The front matter carries a List of Figures and a List of Tables after

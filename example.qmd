@@ -67,9 +67,11 @@ data summary is in @tbl-data.
 ## Purpose
 
 The format produces a clean, professional PDF for print and offline
-use, and an HTML version for reading. Both come from this single
-source. The PDF carries its baseline so a recipient's copy is
-traceable to the repository state it was built from.
+use, an HTML version for reading, and a DOCX for client editing.
+Presentations and live dashboards come from the same front matter in
+the `obsidian-revealjs` and `obsidian-dashboard` formats. The PDF
+carries its baseline so a recipient's copy is traceable to the
+repository state it was built from.
 
 ## Scope
 

@@ -1,0 +1,41 @@
+---
+title: "Service Delivery Overview"
+subtitle: "Obsidian Solutions"
+author: "Obsidian Solutions"
+date: "2026-08-11"
+lang: en-GB
+keywords: ["presentation", "example"]
+confidentiality: "Commercial in Confidence"
+short-title: "Service Delivery Overview"
+format:
+  obsidian-revealjs: default
+---
+
+## Agenda
+
+- What we deliver
+- How we work
+- Security posture
+
+## What we deliver
+
+- Monitoring and uptime for client services
+- Infrastructure configuration as code
+- Policy, strategy, and incident documentation
+
+## How we work
+
+- One source, many formats: PDF, HTML, DOCX, slides, dashboards
+- Document control on every deliverable
+- Baseline-traceable output
+
+## Security posture
+
+- Two-factor authentication on every account
+- Signed commits on all repositories
+- No secrets in repositories
+
+## Questions
+
+Thank you. Contact Obsidian Solutions at
+obsidiansolutions.co.uk.
