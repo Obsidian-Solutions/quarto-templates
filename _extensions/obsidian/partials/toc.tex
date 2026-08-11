@@ -13,12 +13,16 @@ $endif$
 }
 $endif$
 $if(lof)$
+$if(has-figures)$
 \clearpage
 \listoffigures
 $endif$
+$endif$
 $if(lot)$
+$if(has-tables)$
 \clearpage
 \listoftables
+$endif$
 $endif$
 % Front matter ends here. Body numbering switches from roman to arabic
 % only after the lists, so every front-matter page carries a roman
