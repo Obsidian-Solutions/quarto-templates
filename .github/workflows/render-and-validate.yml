@@ -106,11 +106,20 @@ jobs:
           assert 'word/document.xml' in z.namelist()
           EOF
 
-      - name: Render beamer deck (PDF slides)
+      - name: Render the deck formats
         run: |
-          quarto render examples/template-slides.qmd --to obsidian-beamer
-          # The classification marking and the frame number must sit on
-          # every slide, including the title slide.
+          # One command renders the deck's declared formats: revealjs
+          # html, beamer PDF, and pptx. The presentation formats need
+          # no TeX engine for the html, but the beamer PDF does; this
+          # job already carries the TeX toolchain.
+          quarto render examples/template-slides.qmd
+
+      - name: Assert beamer deck (PDF slides)
+        run: |
+          # render.sh rendered template-slides.qmd with its declared
+          # formats, which include the beamer PDF. The classification
+          # marking and the frame number must sit on every slide,
+          # including the title slide.
           pages=$(pdfinfo _output/examples/template-slides.pdf | awk '/^Pages/{print $2}')
           [ "$pages" -eq 6 ] || { echo "expected 6 slides, got $pages"; exit 1; }
           for p in $(seq 1 "$pages"); do
@@ -118,11 +127,11 @@ jobs:
               grep -q "Commercial in Confidence" || { echo "marking missing on slide $p"; exit 1; }
           done
 
-      - name: Render epub
+      - name: Assert epub carries banner and cover
         run: |
-          quarto render examples/template.qmd --to obsidian-epub
-          # The classification banner must be in the book, and the
-          # brand mark must be the cover image.
+          # render.sh produced the epub from the declared formats. The
+          # classification banner must be in the book, and the brand
+          # mark must be the cover image.
           python3 - <<'EOF'
           import zipfile
           z = zipfile.ZipFile('_output/examples/template.epub')
@@ -133,6 +142,29 @@ jobs:
               'classification banner missing from epub content'
           assert any('cover' in n.lower() for n in names), 'no cover image in epub'
           EOF
+
+      - name: Assert revealjs deck is marked
+        run: |
+          grep -q "obsidian-classification" _output/examples/template-slides.html
+          grep -q "Commercial in Confidence" _output/examples/template-slides.html
+
+      - name: Assert pptx marking on every slide
+        run: |
+          # The classification marking must be on every slide, via
+          # the reference-file footer mechanism.
+          python3 -c "
+          import zipfile
+          z = zipfile.ZipFile('_output/examples/template-slides.pptx')
+          slides = [n for n in z.namelist() if n.startswith('ppt/slides/slide') and n.endswith('.xml')]
+          assert len(slides) >= 2, 'deck has no slides'
+          for n in slides:
+              assert 'Commercial in Confidence' in z.read(n).decode(), f'marking missing in {n}'
+          print('classification on every slide: OK')"
+
+      - name: Assert dashboard is marked
+        run: |
+          quarto render examples/template-dashboard.qmd
+          grep -q "obsidian-classification" _output/examples/template-dashboard.html
 
   # The UA-2 path is informational: the structure gate fails on the
   # documented upstream gap (Quarto/KOMA emit a flat tag tree with no
@@ -192,39 +224,3 @@ jobs:
             echo "EXPECTED: heading-role gap documented in README (upstream KOMA/tagging limitation)"
           VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
           "$VERAPDF" --format text _output/examples/template.pdf | tail -3
-
-  # HTML-family formats (revealjs, dashboard) need no TeX engine.
-  presentations:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-
-      - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2
-        with:
-          version: 1.10.18
-
-      - name: Render revealjs deck
-        run: |
-          quarto render examples/template-slides.qmd
-          grep -q "obsidian-classification" _output/examples/template-slides.html
-          grep -q "Commercial in Confidence" _output/examples/template-slides.html
-
-      - name: Render dashboard
-        run: |
-          quarto render examples/template-dashboard.qmd
-          grep -q "obsidian-classification" _output/examples/template-dashboard.html
-
-      - name: Render pptx deck
-        run: |
-          quarto render examples/template-slides.qmd --to obsidian-pptx
-          # The classification marking must be on every slide, via
-          # the reference-file footer mechanism.
-          python3 -c "
-          import zipfile
-          z = zipfile.ZipFile('_output/examples/template-slides.pptx')
-          slides = [n for n in z.namelist() if n.startswith('ppt/slides/slide') and n.endswith('.xml')]
-          assert len(slides) >= 2, 'deck has no slides'
-          for n in slides:
-              assert 'Commercial in Confidence' in z.read(n).decode(), f'marking missing in {n}'
-          print('classification on every slide: OK')"

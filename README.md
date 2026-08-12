@@ -173,6 +173,15 @@ KOMA; revisit this after a Quarto or LaTeX release addresses it.
 
 ## Output
 
+One source file per artefact type, each declaring its full format
+family in the front matter. One render command per file produces the
+whole family with no content loss between formats: the document
+renders to PDF, HTML, DOCX, and EPUB from the same prose; the deck
+renders to revealjs, beamer PDF, and PPTX from the same slides. The
+three source files exist because a document, a deck, and a dashboard
+are different artefacts: a slide is a summary, not a paragraph, and
+merging the families would guarantee loss, not avoid it.
+
 - **PDF**: branded cover page, optional approval page, abstract,
   revision history, and contents each on their own page,
   roman-numbered front matter and arabic body, numbered sections,
@@ -224,11 +233,11 @@ matter block:
 | `examples/template-slides.qmd` | `obsidian-revealjs` | A client deck with the classification banner |
 | `examples/template-dashboard.qmd` | `obsidian-dashboard` | A service-health dashboard with cards and a status table |
 
-Render one file per format:
+Render one file per family:
 
 ```bash
-quarto render examples/template.qmd   # PDF + HTML + DOCX
-quarto render examples/template-slides.qmd    # revealjs deck
+quarto render examples/template.qmd        # PDF + HTML + DOCX + EPUB
+quarto render examples/template-slides.qmd # revealjs + beamer PDF + PPTX
 quarto render examples/template-dashboard.qmd # dashboard
 ```
 

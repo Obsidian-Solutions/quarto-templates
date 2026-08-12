@@ -57,20 +57,20 @@ jobs:
           # render.sh stamps the baseline and generates manifest.json
           # (the embed filter attaches it to the PDF/A archive), then
           # validates with verapdf. It renders the formats declared in
-          # the front matter: PDF, HTML and DOCX.
+          # the front matter: PDF, HTML, DOCX and EPUB.
           ./render.sh examples/template.qmd
           cp _extensions/obsidian/assets/obsidian-logo.png obsidian-logo.png
 
-      - name: Render the remaining formats (deck, dashboard, pptx)
+      - name: Render the remaining formats (deck, dashboard)
         run: |
-          # The example site ships every format the template produces:
-          # the revealjs deck, its beamer PDF and editable PPTX, the
-          # dashboard, and the epub of the document.
+          # The example site ships every format the template produces.
+          # Each example declares its full format family, so one
+          # command per file renders them all: the deck yields the
+          # revealjs html, its beamer PDF, and its editable PPTX; the
+          # dashboard yields its html. render.sh already produced the
+          # document's four formats (PDF, HTML, DOCX, EPUB) above.
           quarto render examples/template-slides.qmd
-          quarto render examples/template-slides.qmd --to obsidian-beamer
-          quarto render examples/template-slides.qmd --to obsidian-pptx
           quarto render examples/template-dashboard.qmd
-          quarto render examples/template.qmd --to obsidian-epub
 
       - name: Assemble the site
         run: |
