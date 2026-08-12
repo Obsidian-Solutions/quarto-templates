@@ -1,20 +1,21 @@
 // SPDX-License-Identifier: MIT
-/*-- Obsidian Solutions house theme for the HTML companion --*/
-/* Monochrome palette, mirroring the PDF format. The greys are the  */
-/* functional scale proven by GOV.UK and NHS design systems; the    */
-/* primary is the website brand colour.                             */
+/*-- Obsidian Solutions dark theme for the HTML companion --*/
+/* Inverted monochrome palette for users with dark-mode preference.
+   Contrast on the #121212 background: primary text 16.6:1, secondary
+   9.4:1 (both pass AAA). The rules section mirrors theme.scss; keep
+   the two files in step when you change shared styles. */
 
 /*-- scss:defaults --*/
-$theme-obsidian: #121212;   /* primary text, 16.8:1 on white */
-$theme-obsidianl: #484949;  /* secondary text, 9.0:1 (AAA)     */
-$theme-ruled: #cecece;      /* hairlines, decorative           */
-$theme-cream: #f3f3f3;      /* off-white surface               */
+$theme-obsidian: #f2f2f2;   /* primary text, 16.6:1 on #121212 */
+$theme-obsidianl: #b8b8b8;  /* secondary text, 9.4:1 (AAA)      */
+$theme-ruled: #484949;      /* hairlines, visible on dark       */
+$theme-cream: #1e1e1e;      /* raised surface                   */
 
-$body-bg: #ffffff;
+$body-bg: #121212;
 $body-color: $theme-obsidian;
 $primary: $theme-obsidian;
 $link-color: $theme-obsidianl;
-$link-hover-color: $theme-obsidian;
+$link-hover-color: #ffffff;
 $code-bg: $theme-cream;
 $code-color: $theme-obsidian;
 
@@ -26,7 +27,7 @@ $headings-color: $theme-obsidian;
 
 /*-- scss:rules --*/
 
-/* Focus: visible 2.4px near-black ring, WCAG 2.4.7 */
+/* Focus: visible 3px light ring, WCAG 2.4.7 */
 :focus-visible {
   outline: 3px solid $theme-obsidian;
   outline-offset: 2px;
@@ -86,9 +87,14 @@ figcaption,
   border-bottom: 1px solid $theme-ruled;
 }
 
-/* Print: classification banner and headings render cleanly */
+/* Print: light palette wins on paper */
 @media print {
   .obsidian-classification {
-    border-bottom: 1px solid $theme-obsidian;
+    border-bottom: 1px solid #121212;
+    color: #121212;
+  }
+  body {
+    background-color: #ffffff;
+    color: #121212;
   }
 }

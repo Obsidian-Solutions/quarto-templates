@@ -1,0 +1,31 @@
+% SPDX-License-Identifier: MIT
+% Beamer title partial: reproduces Quarto's beamer title setup
+% (title, author, date, institute, graphics, logo) and defines
+% \classification FIRST, in the preamble, so the footline in
+% include-in-header-beamer.tex renders the marking on every slide
+% including the title slide. The definition must live here, before
+% \begin{document}: beamer can expand the footline template as soon
+% as the document starts. Template-processed, so the front-matter
+% variables interpolate. The classification-gate filter runs earlier
+% and writes the resolved marking to doc.meta['confidentiality'].
+$if(confidentiality)$\newcommand{\classification}{{\scriptsize\bfseries\textsc{\color{obsidianl}$if(draft)$DRAFT -- $endif$$confidentiality$}}}$else$$if(classification)$\newcommand{\classification}{{\scriptsize\bfseries\textsc{\color{obsidianl}$if(draft)$DRAFT -- $endif$$classification$}}}$else$\newcommand{\classification}{}$endif$$endif$
+$if(title)$
+\title$if(shorttitle)$[$shorttitle$]$endif${\texorpdfstring{$title$}{$title-meta$}$if(thanks)$\thanks{$thanks$}$endif$}
+$endif$
+$if(subtitle)$
+\subtitle$if(shortsubtitle)$[$shortsubtitle$]$endif${\texorpdfstring{$subtitle$}{$subtitle-meta$}}
+$endif$
+\author$if(shortauthor)$[$shortauthor$]$endif${\texorpdfstring{$for(author)$$author$$sep$ \and $endfor$}{$author-meta$}}
+\date$if(shortdate)$[$shortdate$]$endif${$date$}
+$if(institute)$
+\institute$if(shortinstitute)$[$shortinstitute$]$endif${$for(institute)$$institute$$sep$ \and $endfor$}
+$endif$
+$if(titlegraphic)$
+\titlegraphic{
+$for(titlegraphic)$
+  \includegraphics$if(titlegraphicoptions)$[$for(titlegraphicoptions)$$titlegraphicoptions$$sep$, $endfor$]$endif${$titlegraphic$}$sep$\enspace
+$endfor$}
+$endif$
+$if(logo)$
+\logo{\includegraphics$if(logooptions)$[$for(logooptions)$$logooptions$$sep$, $endfor$]$endif${$logo$}}
+$endif$

@@ -1,0 +1,15 @@
+% SPDX-License-Identifier: MIT
+% Beamer before-body partial: reproduces the title frame that Quarto's
+% beamer template emits here. The \classification command is defined
+% in partials/beamer/title.tex, in the preamble, before the document
+% starts; this partial only emits the frame. Quarto emits
+% \begin{document} in its own template core, so this partial must not
+% repeat it.
+$if(title)$
+\frame{\titlepage}
+$endif$
+$if(toc)$
+\begin{frame}
+\tableofcontents[hideallsubsections]
+\end{frame}
+$endif$

@@ -1,3 +1,4 @@
+% SPDX-License-Identifier: MIT
 % Hyperlink and PDF metadata setup.
 % This partial replaces Quarto's hypersetup.latex so the PDF file
 % itself carries the document-control fields, not just the visible

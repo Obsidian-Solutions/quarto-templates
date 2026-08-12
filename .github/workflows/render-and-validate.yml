@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 name: render-and-validate
 # Renders the example document in all three formats and gates on the
 # validation the template guarantees. Applies the "verify every
@@ -9,14 +10,36 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   render:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: SBOM freshness check
+        run: |
+          # The committed SBOM must match what the generator produces
+          # from this tree, or the supply-chain record is stale. The
+          # document namespace and created timestamp are commit-derived
+          # by design (they identify the exact baseline), so the
+          # comparison ignores them and checks the package content.
+          python3 tools/make-sbom.py /tmp/sbom-check.json
+          python3 - <<'EOF'
+          import json
+          a = json.load(open('sbom.spdx.json'))
+          b = json.load(open('/tmp/sbom-check.json'))
+          for doc in (a, b):
+              doc.pop('documentNamespace', None)
+              doc['creationInfo'].pop('created', None)
+          assert a == b, 'sbom.spdx.json is stale - run tools/make-sbom.py and commit the result'
+          print('SBOM fresh')
+          EOF
 
       - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2
         with:
           version: 1.10.18
 
@@ -27,6 +50,10 @@ jobs:
           # is a rolling distribution that matches the Arch TeX Live 2026
           # the template is developed against. --update-path puts tlmgr
           # and lualatex on PATH (the flag the Quarto docs name).
+          # Accepted supply-chain risk: TinyTeX and its packages are
+          # unpinned (rolling by design). The GitHub Actions and the
+          # Montserrat fonts ARE pinned and checksum-verified; revisit
+          # TinyTeX pinning if this CI must meet a stricter baseline.
           quarto install tinytex --update-path
           # TinyTeX base already carries Latin Modern, fontspec and the
           # kernel. Install the document-class packages the template
@@ -37,55 +64,110 @@ jobs:
             fontspec tex-gyre
           which tlmgr lualatex && lualatex --version | head -1
 
-      - name: Install Montserrat (Google font, not in TeX Live)
-        run: |
-          mkdir -p ~/.fonts
-          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-Regular.ttf" -o ~/.fonts/Montserrat-Regular.ttf
-          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-Bold.ttf" -o ~/.fonts/Montserrat-Bold.ttf
-          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-SemiBold.ttf" -o ~/.fonts/Montserrat-SemiBold.ttf
-          fc-cache -f ~/.fonts
+      - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
+        run: bash tools/install-fonts.sh
 
       - name: Install verapdf and qpdf
         run: |
           quarto install verapdf
-          sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation
+          sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation poppler-utils
 
       - name: Render default document (PDF/A-4f)
-        run: ./render.sh example.qmd
+        run: ./render.sh examples/template.qmd
 
       - name: Assert PDF/A-4f validation passed
         run: |
           # render.sh already ran verapdf and failed on violation.
           # Re-validate explicitly so the CI log shows the result.
           VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
-          "$VERAPDF" --format text example.pdf | grep -q "PASS.*4f"
+          "$VERAPDF" --format text _output/examples/template.pdf | grep -q "PASS.*4f"
 
       - name: Assert self-contained provenance
         run: |
-          qpdf --qdf --object-streams=disable example.pdf /tmp/tree.pdf
+          qpdf --qdf --object-streams=disable _output/examples/template.pdf /tmp/tree.pdf
           grep -q "AFRelationship" /tmp/tree.pdf
           grep -q "EmbeddedFiles" /tmp/tree.pdf
-          grep -q "OS-DOC-001" example.pdf
+          grep -q "OS-DOC-001" _output/examples/template.pdf
 
       - name: Render HTML companion
-        run: quarto render example.qmd --to obsidian-html
+        run: quarto render examples/template.qmd --to obsidian-html
 
       - name: Assert HTML classification banner
         run: |
-          grep -q "obsidian-classification" example.html
-          grep -q "Commercial in Confidence" example.html
+          grep -q "obsidian-classification" _output/examples/template.html
+          grep -q "Commercial in Confidence" _output/examples/template.html
 
       - name: Render DOCX companion
-        run: quarto render example.qmd --to obsidian-docx
+        run: quarto render examples/template.qmd --to obsidian-docx
 
       - name: Assert DOCX is a valid archive
         run: |
           python3 - <<'EOF'
           import zipfile
-          z = zipfile.ZipFile('example.docx')
+          z = zipfile.ZipFile('_output/examples/template.docx')
           assert z.testzip() is None
           assert 'word/document.xml' in z.namelist()
           EOF
+
+      - name: Render the deck formats
+        run: |
+          # One command renders the deck's declared formats: revealjs
+          # html, beamer PDF, and pptx. The presentation formats need
+          # no TeX engine for the html, but the beamer PDF does; this
+          # job already carries the TeX toolchain.
+          quarto render examples/template-slides.qmd
+
+      - name: Assert beamer deck (PDF slides)
+        run: |
+          # render.sh rendered template-slides.qmd with its declared
+          # formats, which include the beamer PDF. The classification
+          # marking and the frame number must sit on every slide,
+          # including the title slide.
+          pages=$(pdfinfo _output/examples/template-slides.pdf | awk '/^Pages/{print $2}')
+          [ "$pages" -eq 6 ] || { echo "expected 6 slides, got $pages"; exit 1; }
+          for p in $(seq 1 "$pages"); do
+            pdftotext -f "$p" -l "$p" _output/examples/template-slides.pdf - | \
+              grep -q "Commercial in Confidence" || { echo "marking missing on slide $p"; exit 1; }
+          done
+
+      - name: Assert epub carries banner and cover
+        run: |
+          # render.sh produced the epub from the declared formats. The
+          # classification banner must be in the book, and the brand
+          # mark must be the cover image.
+          python3 - <<'EOF'
+          import zipfile
+          z = zipfile.ZipFile('_output/examples/template.epub')
+          names = z.namelist()
+          assert z.testzip() is None
+          content = [z.read(n).decode() for n in names if n.endswith(('.xhtml', '.html'))]
+          assert any('obsidian-classification' in c and 'Commercial in Confidence' in c for c in content), \
+              'classification banner missing from epub content'
+          assert any('cover' in n.lower() for n in names), 'no cover image in epub'
+          EOF
+
+      - name: Assert revealjs deck is marked
+        run: |
+          grep -q "obsidian-classification" _output/examples/template-slides.html
+          grep -q "Commercial in Confidence" _output/examples/template-slides.html
+
+      - name: Assert pptx marking on every slide
+        run: |
+          # The classification marking must be on every slide, via
+          # the reference-file footer mechanism.
+          python3 -c "
+          import zipfile
+          z = zipfile.ZipFile('_output/examples/template-slides.pptx')
+          slides = [n for n in z.namelist() if n.startswith('ppt/slides/slide') and n.endswith('.xml')]
+          assert len(slides) >= 2, 'deck has no slides'
+          for n in slides:
+              assert 'Commercial in Confidence' in z.read(n).decode(), f'marking missing in {n}'
+          print('classification on every slide: OK')"
+
+      - name: Assert dashboard is marked
+        run: |
+          quarto render examples/template-dashboard.qmd
+          grep -q "obsidian-classification" _output/examples/template-dashboard.html
 
   # The UA-2 path is informational: the structure gate fails on the
   # documented upstream gap (Quarto/KOMA emit a flat tag tree with no
@@ -95,10 +177,10 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2
         with:
           version: 1.10.18
 
@@ -109,6 +191,10 @@ jobs:
           # is a rolling distribution that matches the Arch TeX Live 2026
           # the template is developed against. --update-path puts tlmgr
           # and lualatex on PATH (the flag the Quarto docs name).
+          # Accepted supply-chain risk: TinyTeX and its packages are
+          # unpinned (rolling by design). The GitHub Actions and the
+          # Montserrat fonts ARE pinned and checksum-verified; revisit
+          # TinyTeX pinning if this CI must meet a stricter baseline.
           quarto install tinytex --update-path
           # TinyTeX base already carries Latin Modern, fontspec and the
           # kernel. Install the document-class packages the template
@@ -133,90 +219,11 @@ jobs:
         run: |
           sed -i 's/pdf-standard: \[a-4f\]/pdf-standard: [a-4f, ua-2]/' _extensions/obsidian/_extension.yml
           sed -i '\|partials/document-metadata.latex|d' _extensions/obsidian/_extension.yml
-          ./render.sh example.qmd || true
+          ./render.sh examples/template.qmd || true
 
       - name: Show the structure-gate finding
         run: |
-          python3 scripts/check-ua.py example.pdf || \
+          python3 tools/check-pdfua.py _output/examples/template.pdf || \
             echo "EXPECTED: heading-role gap documented in README (upstream KOMA/tagging limitation)"
           VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
-          "$VERAPDF" --format text example.pdf | tail -3
-
-  # HTML-family formats (revealjs, dashboard) need no TeX engine.
-  presentations:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          version: 1.10.18
-
-      - name: Render revealjs deck
-        run: |
-          printf '%s\n' \
-            '---' \
-            'title: "Obsidian Solutions"' \
-            'confidentiality: "Commercial in Confidence"' \
-            'format:' \
-            '  obsidian-revealjs: default' \
-            '---' \
-            '' \
-            '## One' \
-            '' \
-            'Slide one.' \
-            '' \
-            '## Two' \
-            '' \
-            'Slide two.' > slides.qmd
-          quarto render slides.qmd
-          grep -q "obsidian-classification" slides.html
-          grep -q "Commercial in Confidence" slides.html
-
-      - name: Render dashboard
-        run: |
-          printf '%s\n' \
-            '---' \
-            'title: "Service Health"' \
-            'confidentiality: "Commercial in Confidence"' \
-            'format:' \
-            '  obsidian-dashboard: default' \
-            '---' \
-            '' \
-            '::: {.row}' \
-            '::: {.col-lg-6}' \
-            '## Uptime' \
-            '' \
-            '| Service | Status |' \
-            '|---|---|' \
-            '| Website | Operational |' \
-            ':::' \
-            ':::' > dash.qmd
-          quarto render dash.qmd
-          grep -q "obsidian-classification" dash.html
-
-      - name: Render pptx deck
-        run: |
-          printf '%s\n' \
-            '---' \
-            'title: "Obsidian Solutions"' \
-            'confidentiality: "Commercial in Confidence"' \
-            'format:' \
-            '  obsidian-pptx: default' \
-            '---' \
-            '' \
-            '## One' \
-            '' \
-            'Slide one.' > deck.qmd
-          quarto render deck.qmd
-          # The classification marking must be on every slide, via
-          # the reference-file footer mechanism.
-          python3 -c "
-          import zipfile
-          z = zipfile.ZipFile('deck.pptx')
-          slides = [n for n in z.namelist() if n.startswith('ppt/slides/slide') and n.endswith('.xml')]
-          assert len(slides) >= 2, 'deck has no slides'
-          for n in slides:
-              assert 'Commercial in Confidence' in z.read(n).decode(), f'marking missing in {n}'
-          print('classification on every slide: OK')"
+          "$VERAPDF" --format text _output/examples/template.pdf | tail -3

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""check-ua.py - validate the tagged structure of a PDF/UA-2 render.
+# SPDX-License-Identifier: MIT
+"""check-pdfua.py - validate the tagged structure of a PDF/UA-2 render.
 
 veraPDF passes PDF/UA-2 documents that carry no heading roles in the
 structure tree: it runs only machine-verifiable Matterhorn checks,
@@ -16,7 +17,7 @@ Checks (each is a hard fail when violated):
   4. Heading levels do not skip (H1 then H3 without H2 is a fail).
   5. First heading is H1, so the hierarchy starts at the top.
 
-Usage: python3 check-ua.py document.pdf
+Usage: python3 check-pdfua.py document.pdf
 Exit code 0 = pass, 1 = fail. Output is plain text for CI logs.
 """
 
@@ -39,7 +40,7 @@ def decompress(pdf_path: str) -> bytes:
 
 def main() -> int:
     if len(sys.argv) != 2:
-        print("usage: check-ua.py document.pdf")
+        print("usage: check-pdfua.py document.pdf")
         return 2
     pdf = sys.argv[1]
     try:

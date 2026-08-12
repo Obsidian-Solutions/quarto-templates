@@ -1,6 +1,7 @@
+# SPDX-License-Identifier: MIT
 title: Obsidian Solutions Templates
 author: Obsidian Solutions
-version: 3.1.0
+version: 3.3.0
 description: >-
   Controlled business documents in the Obsidian Solutions brand: PDF/A-4f
   with provenance, accessible HTML, client-editable DOCX, revealjs decks,
@@ -57,6 +58,7 @@ contributes:
         - partials/document-metadata.latex
         - partials/toc.tex
       filters:
+        - filters/classification-gate.lua
         - filters/appendix.lua
         - filters/embed.lua
         - filters/review-overdue.lua
@@ -84,6 +86,7 @@ contributes:
       link-citations: true
       csl: numeric.csl
       filters:
+        - filters/classification-gate.lua
         - filters/classification.lua
         - filters/review-overdue.lua
     pptx:
@@ -97,12 +100,17 @@ contributes:
       slide-level: 2
       incremental: false
       filters:
+        - filters/classification-gate.lua
         - filters/classification.lua
     html:
       # Accessible reading companion, per the HTML-first rule. The
       # theme carries the house palette, typography and focus states;
-      # the classification filter adds the marking banner.
-      theme: theme.scss
+      # the classification filter adds the marking banner. The dark
+      # variant (theme-dark.scss) follows the reader's system
+      # preference.
+      theme:
+        light: theme.scss
+        dark: theme-dark.scss
       toc: true
       toc-depth: 2
       number-sections: true
@@ -110,6 +118,7 @@ contributes:
       link-citations: true
       csl: numeric.csl
       filters:
+        - filters/classification-gate.lua
         - filters/classification.lua
         - filters/review-overdue.lua
     revealjs:
@@ -123,8 +132,24 @@ contributes:
       link-citations: true
       csl: numeric.csl
       filters:
+        - filters/classification-gate.lua
         - filters/classification.lua
         - filters/review-overdue.lua
+    beamer:
+      # PDF presentations via LaTeX beamer. The article-style partials
+      # (cover, fancyhdr) do not apply; a beamer-specific header carries
+      # the monochrome palette, the classification footline, and the
+      # near-black rule. The title partial defines the classification
+      # command in the preamble, before the document starts. `##`
+      # headings become slides, matching the revealjs examples.
+      include-in-header: include-in-header-beamer.tex
+      template-partials:
+        - partials/beamer/title.tex
+        - partials/beamer/before-body.tex
+      filters:
+        - filters/classification-gate.lua
+      aspectratio: 169
+      slide-level: 2
     dashboard:
       # Client-facing dashboards. The html theme carries the house
       # palette and typography; dashboards are live-data products,
@@ -133,4 +158,14 @@ contributes:
       theme: theme.scss
       toc: true
       filters:
+        - filters/classification-gate.lua
+        - filters/classification.lua
+    epub:
+      # E-reader distribution. The classification banner and the
+      # controlled-language gate apply; the palette comes from
+      # epub.css, and the brand mark becomes the cover image.
+      css: epub.css
+      cover-image: assets/obsidian-logo.png
+      filters:
+        - filters/classification-gate.lua
         - filters/classification.lua

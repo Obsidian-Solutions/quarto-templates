@@ -1,2 +1,3 @@
 project:
   title: "Obsidian Solutions Documents"
+  output-dir: _output

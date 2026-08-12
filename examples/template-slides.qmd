@@ -9,6 +9,8 @@ confidentiality: "Commercial in Confidence"
 short-title: "Service Delivery Overview"
 format:
   obsidian-revealjs: default
+  obsidian-beamer: default
+  obsidian-pptx: default
 ---
 
 ## Agenda

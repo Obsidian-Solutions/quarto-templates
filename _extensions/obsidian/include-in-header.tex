@@ -1,3 +1,4 @@
+% SPDX-License-Identifier: MIT
 % Obsidian Solutions house style
 % Adapted from the production report preamble. The values shown by
 % \docref, \doctitle and \classification are defined in
@@ -119,7 +120,9 @@
 \fancyhead[C]{}
 \fancyhead[R]{}
 \fancyfoot[C]{\parbox[t][0.9cm][c]{\textwidth}{%
-  {\small\color{obsidianl}Obsidian Solutions ~\textbar{}~ obsidiansolutions.co.uk ~\textbar{}~ \obsidianpubdate%
+  {\small\color{obsidianl}Obsidian Solutions ~\textbar{}~ obsidiansolutions.co.uk%
+   \ifdefempty{\obsidianproprietor}{}{\textbar{} \obsidianproprietor}%
+   ~\textbar{}~ \obsidianpubdate%
    \ifdefempty{\obsidianversion}{}{\textbar{} \obsidianversion}}\\[2pt]
   {\centering\classification\par}%
 }}
@@ -148,7 +151,9 @@
   \fancyhead[C]{}
   \fancyhead[R]{}
   \fancyfoot[C]{\parbox[t][0.9cm][c]{\textwidth}{%
-    {\small\color{obsidianl}Obsidian Solutions ~\textbar{}~ obsidiansolutions.co.uk ~\textbar{}~ \obsidianpubdate%
+    {\small\color{obsidianl}Obsidian Solutions ~\textbar{}~ obsidiansolutions.co.uk%
+     \ifdefempty{\obsidianproprietor}{}{\textbar{} \obsidianproprietor}%
+     ~\textbar{}~ \obsidianpubdate%
      \ifdefempty{\obsidianversion}{}{\textbar{} \obsidianversion}}\\[2pt]
     {\centering\classification\par}%
   }}%

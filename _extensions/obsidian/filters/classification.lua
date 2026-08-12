@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: MIT
 -- classification.lua
 -- Injects a classification banner into the HTML, revealjs, DOCX and
 -- PPTX companions so every delivered copy carries the same marking
@@ -10,8 +11,8 @@
 -- Also records the watermark text into the metadata for formats
 -- that read it from a document property (DOCX header field).
 
-local banner_formats = { html = true, revealjs = true, docx = true }
-local plain_formats = { html = true, revealjs = true, docx = true, pptx = true }
+local banner_formats = { html = true, revealjs = true, docx = true, epub = true }
+local plain_formats = { html = true, revealjs = true, docx = true, pptx = true, epub = true }
 
 function Pandoc(doc)
   -- FORMAT is pandoc's writer-format global; PANDOC_WRITER_OPTIONS
@@ -20,7 +21,7 @@ function Pandoc(doc)
     return doc
   end
   local meta = doc.meta
-  local confidentiality = pandoc.utils.stringify(meta['confidentiality'] or '')
+  local confidentiality = pandoc.utils.stringify(meta['confidentiality'] or meta['classification'] or '')
   local draft = pandoc.utils.stringify(meta['draft'] or '')
   if confidentiality == '' and draft == '' then
     return doc

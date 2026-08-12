@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
 # Render a document with baseline stamping, then optimise and
 # optionally encrypt a distribution copy.
 #
@@ -20,19 +21,29 @@
 #                         (defaults to the user password if unset)
 set -euo pipefail
 
-FILE="${1:-example.qmd}"
+FILE="${1:-examples/template.qmd}"
 HASH=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 DATE=$(date +%Y-%m-%d)
 BASE="${FILE%.qmd}"
+SRC_DIR="$(dirname "$FILE")"
+# Quarto runs the PDF engine in the source file's directory, so the
+# embed filter resolves its attach paths relative to that directory.
+# The manifest must sit next to the source.
+# Quarto routes project renders to the project output-dir (_quarto.yml
+# sets _output). Override with OUTPUT_DIR=... if a project differs.
+OUT="${OUTPUT_DIR:-_output}"
 
 # Control manifest: embedded into the PDF so the archive is
 # self-contained provenance. The embed.lua filter attaches it (and
-# the source) via LaTeX's embedfile package.
-cat > manifest.json <<EOF
+# the source) via LaTeX's embedfile package. The timestamp is full
+# ISO-8601 with the local UTC offset, so two builds of the same
+# baseline are distinguishable.
+RENDERED=$(date +%Y-%m-%dT%H:%M:%S%z)
+cat > "${SRC_DIR}/manifest.json" <<EOF
 {
   "document": "$BASE",
   "baseline": "$HASH",
-  "rendered": "$DATE"
+  "rendered": "$RENDERED"
 }
 EOF
 
@@ -44,11 +55,43 @@ quarto render "$FILE" -M baseline="$HASH, $DATE"
 # when any overfull box is present, so no document ships with content
 # clipped at a margin. Underfull is cosmetic (loose spacing), not
 # clipping, so it is not a failure.
+# The LaTeX log. Quarto runs the engine with the project root as the
+# working directory, so the log lands next to the intermediate .tex
+# at the root even when the output-dir is set; check both places.
 LOG="${BASE}.log"
+[ -f "$LOG" ] || LOG="${OUT}/${BASE}.log"
 if [ -f "$LOG" ] && grep -qE "Overfull \\\\(h|v)box" "$LOG"; then
   echo "PAGE OVERFLOW DETECTED in $FILE:"
   grep -nE "Overfull" "$LOG"
   exit 1
+fi
+
+# Cross-reference gate. A broken \ref or \cite prints "??" and a
+# LaTeX warning; fail the render so no document ships with dead
+# links or missing bibliography entries.
+if [ -f "$LOG" ] && grep -qE "LaTeX Warning: .* undefined" "$LOG"; then
+  echo "UNDEFINED CROSS-REFERENCE in $FILE:"
+  grep -nE "LaTeX Warning: .* undefined" "$LOG"
+  exit 1
+fi
+
+# Font-embedding pre-flight. veraPDF is the definitive PDF/A gate but
+# is optional to install; pdffonts (poppler) is a fast check that
+# every font is embedded (emb) with a ToUnicode map (uni), which
+# PDF/A requires for text extraction. Fails on a missing or
+# incomplete embedding before the slower veraPDF run.
+if command -v pdffonts >/dev/null 2>&1; then
+  # Column offsets from the end: the type field can contain spaces
+  # ("CID Type 0C"), so emb/sub/uni are read relative to NF.
+  if pdffonts "${OUT}/${BASE}.pdf" | awk 'NR>2 {
+      if ($(NF-4) != "yes" || $(NF-2) != "yes") { print; bad = 1 }
+    } END { exit bad }'; then
+    :
+  else
+    echo "FONT EMBEDDING FAILURE in ${OUT}/${BASE}.pdf:"
+    pdffonts "${OUT}/${BASE}.pdf"
+    exit 1
+  fi
 fi
 
 # PDF/UA-2 structure gate. Quarto's tagging emits a flat tree without
@@ -59,10 +102,25 @@ fi
 # when the extension is configured for ua-2 (the default a-4f is
 # deliberately untagged to keep the TOC clickable).
 if grep -q "ua-2" "$(dirname "$0")/_extensions/obsidian/_extension.yml"; then
-  if [ -x "$(dirname "$0")/scripts/check-ua.py" ]; then
-    python3 "$(dirname "$0")/scripts/check-ua.py" "${BASE}.pdf"
+  if [ -x "$(dirname "$0")/tools/check-pdfua.py" ]; then
+    python3 "$(dirname "$0")/tools/check-pdfua.py" "${OUT}/${BASE}.pdf"
   fi
 fi
+
+# Controlled-language gate (JSP 101 / ASD-STE100). Fails on hard
+# violations (banned words, contractions, American spellings). A
+# document opts out with `ste: false` in its front matter.
+if [ -f "$(dirname "$0")/tools/check-ste.py" ]; then
+  python3 "$(dirname "$0")/tools/check-ste.py" "$FILE"
+fi
+
+# Tidy the working directory: the gates above have read the LaTeX
+# log, so move it into the output dir (it is the build record) and
+# drop the other intermediates Quarto leaves at the root.
+if [ -f "$LOG" ] && [ "$LOG" != "${OUT}/${BASE}.log" ]; then
+  mv "$LOG" "${OUT}/${BASE}.log"
+fi
+rm -f "${BASE}.aux" "${BASE}.toc" "${BASE}.lot" "${BASE}.lof" "${BASE}.out"
 
 if ! command -v qpdf >/dev/null 2>&1; then
   echo "qpdf not found: skipping optimisation and encryption" >&2
@@ -74,7 +132,7 @@ fi
 qpdf --object-streams=generate \
      --recompress-flate \
      --compression-level=9 \
-     "${BASE}.pdf" "${BASE}-dist.pdf"
+     "${OUT}/${BASE}.pdf" "${OUT}/${BASE}-dist.pdf"
 
 # Encrypt the distribution copy when passwords are supplied.
 # AES-256 with separate user/owner passwords. Permissions are
@@ -90,7 +148,7 @@ if [[ -n "${OS_DOC_USER_PASSWORD:-}" ]]; then
        --extract=n \
        --annotate=n \
        -- \
-       "${BASE}-dist.pdf" "${BASE}-enc.pdf"
-  echo "Encrypted copy: ${BASE}-enc.pdf"
-  qpdf --check --password="$OS_DOC_USER_PASSWORD" "${BASE}-enc.pdf"
+       "${OUT}/${BASE}-dist.pdf" "${OUT}/${BASE}-enc.pdf"
+  echo "Encrypted copy: ${OUT}/${BASE}-enc.pdf"
+  qpdf --check --password="$OS_DOC_USER_PASSWORD" "${OUT}/${BASE}-enc.pdf"
 fi

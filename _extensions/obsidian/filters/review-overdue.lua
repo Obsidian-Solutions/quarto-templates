@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: MIT
 -- review-overdue.lua
 -- Enforces JSP 945 review discipline: if the front-matter
 -- `review-date` (YYYY-MM-DD) is before the render date, the

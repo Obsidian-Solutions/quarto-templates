@@ -1,12 +1,12 @@
 ---
 title: "Example Policy Document"
-subtitle: "Demonstrating the Obsidian Solutions document format"
+subtitle: "Showing the Obsidian Solutions document format"
 author: "Obsidian Solutions"
 date: "2026-08-11"
 lang: en-GB
 keywords: ["example", "policy", "document", "template"]
 abstract: |
-  This example demonstrates the document format. It shows the cover
+  This example shows the document format. It shows the cover
   page, the metadata surface, contents, cross-references, and table
   handling that every Obsidian Solutions document should use.
 reference: "OS-DOC-001"
@@ -43,7 +43,7 @@ changes:
 # and a control manifest, so the archive is traceable without the
 # repository. render.sh generates manifest.json before rendering.
 attach:
-  - source: example.qmd
+  - source: template.qmd
     description: Source document
     mimetype: text/markdown
   - source: manifest.json
@@ -56,6 +56,7 @@ format:
   obsidian-pdf: default
   obsidian-html: default
   obsidian-docx: default
+  obsidian-epub: default
 ---
 
 # Introduction
@@ -96,7 +97,7 @@ The business commits to:
 - Incident response with a written process
 
 A missed commitment is recorded in the risk register, not hidden.
-This is a callout demonstration:
+This callout shows one:
 
 ::: {.callout-warning}
 Confidential documents carry the marking set in the front matter.
@@ -114,7 +115,7 @@ List of Tables.
 @tbl-data summarises what the backup policy covers. The inventory
 lists every data class the policy protects, the system that holds it,
 and whether the nightly backup covers it. Secrets are not backed up
-in plaintext; the secrets manager export path is the recovery route.
+in plaintext. The secrets manager export path is the recovery route.
 
 | Data | Source | Covered |
 |---|---|---|
@@ -130,7 +131,7 @@ in plaintext; the secrets manager export path is the recovery route.
 This example is a template, not a policy. Copy it, replace the front
 matter and content, and render with the `render.sh` script. The
 resulting PDF and HTML ship together: PDF for print, HTML for
-reading.^[Footnotes demonstrate the footnote style.]
+reading.^[Footnotes show the footnote style.]
 
 # References
 
@@ -140,7 +141,7 @@ reading.^[Footnotes demonstrate the footnote style.]
 # Compliance matrix {.appendix}
 
 The compliance matrix maps each control in this document to the
-governing standard. It demonstrates the appendix feature: sections
+governing standard. It shows the appendix feature: sections
 after an `{.appendix}` heading are numbered A, B, C and listed in
 the table of contents.
 
@@ -152,7 +153,7 @@ the table of contents.
 
 # Glossary {.appendix}
 
-A short glossary demonstrates a second appendix section. The letter
+A short glossary shows a second appendix section. The letter
 comes from LaTeX's `\appendix` switch, so the heading has no letter
 of its own.
 

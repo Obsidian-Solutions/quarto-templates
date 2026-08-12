@@ -1,0 +1,186 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "creationInfo": {
+    "created": "2026-08-12T09:50:26+01:00",
+    "creators": [
+      "Tool: tools/make-sbom.py",
+      "Organization: Obsidian Solutions"
+    ]
+  },
+  "dataLicense": "CC0-1.0",
+  "documentNamespace": "https://github.com/Obsidian-Solutions/quarto-templates/sbom/spdx/d0033f8a4a365073cca1826f4acef45b9af93688",
+  "name": "obsidian-quarto-templates",
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-liberation-mono",
+      "copyrightText": "See NOTICE",
+      "downloadLocation": "https://github.com/liberationfonts/liberation-fonts",
+      "licenseConcluded": "OFL-1.1",
+      "name": "Liberation Mono",
+      "supplier": "Organization: Red Hat",
+      "versionInfo": "from distro fonts-liberation"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-montserrat",
+      "copyrightText": "Copyright (c) Julieta Ulanovsky; see NOTICE",
+      "downloadLocation": "https://raw.githubusercontent.com/JulietaUla/Montserrat/555facfb2a18c72c3c0380f0d9c0f060453a9058/fonts/ttf/",
+      "licenseConcluded": "OFL-1.1",
+      "name": "Montserrat",
+      "supplier": "Person: Julieta Ulanovsky",
+      "versionInfo": "commit 555facfb2a18c72c3c0380f0d9c0f060453a9058"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-tex-gyre-pagella",
+      "copyrightText": "See NOTICE",
+      "downloadLocation": "https://www.gust.org.pl/projects/e-foundry/tex-gyre",
+      "licenseConcluded": "GFL-1.0",
+      "name": "TeX Gyre Pagella",
+      "supplier": "Organization: GUST",
+      "versionInfo": "from TeX Live tex-gyre"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-actions-checkout",
+      "copyrightText": "Copyright (c) GitHub",
+      "downloadLocation": "https://github.com/actions/checkout",
+      "licenseConcluded": "MIT",
+      "name": "actions/checkout",
+      "supplier": "Organization: GitHub",
+      "versionInfo": "11d5960a326750d5838078e36cf38b85af677262"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-configure-pages",
+      "copyrightText": "Copyright (c) GitHub",
+      "downloadLocation": "https://github.com/actions/configure-pages",
+      "licenseConcluded": "MIT",
+      "name": "actions/configure-pages",
+      "supplier": "Organization: GitHub",
+      "versionInfo": "983d7736d9b0ae728b81ab479565c72886d7745b"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-deploy-pages",
+      "copyrightText": "Copyright (c) GitHub",
+      "downloadLocation": "https://github.com/actions/deploy-pages",
+      "licenseConcluded": "MIT",
+      "name": "actions/deploy-pages",
+      "supplier": "Organization: GitHub",
+      "versionInfo": "d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-upload-pages-artifact",
+      "copyrightText": "Copyright (c) GitHub",
+      "downloadLocation": "https://github.com/actions/upload-pages-artifact",
+      "licenseConcluded": "MIT",
+      "name": "actions/upload-pages-artifact",
+      "supplier": "Organization: GitHub",
+      "versionInfo": "56afc609e74202658d3ffba0e8f6dda462b719fa"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-numeric-csl",
+      "copyrightText": "See NOTICE",
+      "downloadLocation": "https://www.zotero.org/styles/ieee",
+      "licenseConcluded": "CC-BY-SA-3.0",
+      "name": "numeric.csl",
+      "supplier": "Person: Michael Berkowitz",
+      "versionInfo": "IEEE Reference Guide version 11.29.2023"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-obsidian",
+      "copyrightText": "Copyright (c) 2026 Matthew Barker",
+      "downloadLocation": "https://github.com/Obsidian-Solutions/quarto-templates",
+      "licenseConcluded": "MIT",
+      "name": "obsidian-quarto-templates",
+      "supplier": "Organization: Obsidian Solutions",
+      "versionInfo": "3.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-reference-docx",
+      "copyrightText": "Derived from the Quarto default reference document; see NOTICE",
+      "downloadLocation": "https://github.com/quarto-dev/quarto-cli",
+      "licenseConcluded": "MIT",
+      "name": "obsidian-reference.docx",
+      "supplier": "Organization: Posit Software, PBC",
+      "versionInfo": "bundled"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-reference-pptx",
+      "copyrightText": "Derived from the Quarto default reference document; see NOTICE",
+      "downloadLocation": "https://github.com/quarto-dev/quarto-cli",
+      "licenseConcluded": "MIT",
+      "name": "obsidian-reference.pptx",
+      "supplier": "Organization: Posit Software, PBC",
+      "versionInfo": "bundled"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-quarto-actions",
+      "copyrightText": "Copyright (c) Quarto",
+      "downloadLocation": "https://github.com/quarto-dev/quarto-actions",
+      "licenseConcluded": "MIT",
+      "name": "quarto-dev/quarto-actions",
+      "supplier": "Organization: Quarto",
+      "versionInfo": "8a96df13519ee81fd526f2dfca5962811136661b"
+    }
+  ],
+  "relationships": [
+    {
+      "relatedSpdxElement": "SPDXRef-Package-obsidian",
+      "relationshipType": "DESCRIBES",
+      "spdxElementId": "SPDXRef-DOCUMENT"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-liberation-mono",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-montserrat",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-tex-gyre-pagella",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-actions-checkout",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-configure-pages",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-deploy-pages",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-upload-pages-artifact",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-numeric-csl",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-reference-docx",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-reference-pptx",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-quarto-actions",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    }
+  ],
+  "spdxVersion": "SPDX-2.3"
+}

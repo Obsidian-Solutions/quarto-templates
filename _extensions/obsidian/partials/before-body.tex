@@ -1,3 +1,4 @@
+% SPDX-License-Identifier: MIT
 % Cover page and document-control values.
 % This partial is template-processed, so $variables$ from the front
 % matter are interpolated here. include-in-header.tex is not processed
@@ -15,6 +16,11 @@ $if(version)$\newcommand{\obsidianversion}{V$version$}$else$\newcommand{\obsidia
 $if(supersedes)$\newcommand{\obsidiansupersedes}{$supersedes$}$else$\newcommand{\obsidiansupersedes}{}$endif$
 $if(watermark)$\newcommand{\obsidianwatermark}{$watermark$}$else$$if(draft)$\newcommand{\obsidianwatermark}{DRAFT}$else$\newcommand{\obsidianwatermark}{}$endif$$endif$
 $if(draft)$\newcommand{\obsidianstatus}{DRAFT}$else$\newcommand{\obsidianstatus}{}$endif$
+% Sole-trader trading-name disclosure (CA 2006 Part 41): a business
+% trading under a name other than the owner's true name must show the
+% owner's name and a service address on business documents. Set
+% `proprietor:` to "Name, Address".
+$if(proprietor)$\newcommand{\obsidianproprietor}{$proprietor$}$else$\newcommand{\obsidianproprietor}{}$endif$
 
 % ---- Watermark ----
 % Must be set before ANY page ships, or earlier pages inherit the

@@ -1,6 +1,7 @@
+# SPDX-License-Identifier: MIT
 # Dependabot version updates
 # This repository's dependencies: the GitHub Actions used by the CI
-# workflows. The validation script (check-ua.py) uses only the
+# workflows. The validation script (check-pdfua.py) uses only the
 # Python standard library, so there are no Python dependencies to
 # track.
 
