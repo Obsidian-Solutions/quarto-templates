@@ -18,6 +18,11 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    # The job runs in the protected "release" environment, which
+    # records the deployment. A required reviewer can be added there
+    # in Settings > Environments when a second person joins; for a
+    # single maintainer the draft is the human review point.
+    environment: release
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
