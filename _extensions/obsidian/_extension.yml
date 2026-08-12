@@ -86,6 +86,18 @@ contributes:
       filters:
         - filters/classification.lua
         - filters/review-overdue.lua
+    pptx:
+      # Editable deck, the presentation parallel to DOCX. The
+      # reference file carries the classification marking in the
+      # footer placeholders, which pandoc copies to every slide
+      # (the <p:hf> mechanism), so a deck never loses its marking.
+      # Montserrat headings on the near-black/grey palette via the
+      # theme fonts.
+      reference-doc: obsidian-reference.pptx
+      slide-level: 2
+      incremental: false
+      filters:
+        - filters/classification.lua
     html:
       # Accessible reading companion, per the HTML-first rule. The
       # theme carries the house palette, typography and focus states;
