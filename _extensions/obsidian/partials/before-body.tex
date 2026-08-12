@@ -16,6 +16,24 @@ $if(supersedes)$\newcommand{\obsidiansupersedes}{$supersedes$}$else$\newcommand{
 $if(watermark)$\newcommand{\obsidianwatermark}{$watermark$}$else$$if(draft)$\newcommand{\obsidianwatermark}{DRAFT}$else$\newcommand{\obsidianwatermark}{}$endif$$endif$
 $if(draft)$\newcommand{\obsidianstatus}{DRAFT}$else$\newcommand{\obsidianstatus}{}$endif$
 
+% ---- Watermark ----
+% Must be set before ANY page ships, or earlier pages inherit the
+% package default DRAFT. Sized as a percentage of the page width so
+% it always fits inside and never overflows: the text is resized to
+% 90% of the paper width, then rotated 45 degrees about the page
+% centre. \resizebox fits any text length — a short mark (DRAFT) or
+% a long phrase both span the same width — and the rotated bounding
+% box stays inside the page. Light grey, 45 degrees, behind the
+% text.
+\ifdefempty{\obsidianwatermark}%
+  {\DraftwatermarkOptions{stamp=false}}%
+  {\AddToShipoutPictureBG{%
+     \AtPageCenter{%
+       \makebox(0,0){%
+         \rotatebox{45}{%
+           \resizebox{0.9\paperwidth}{!}{%
+             \textcolor[gray]{0.85}{\obsidianwatermark}}}}}}}%
+
 % ---- Cover page: clean monochrome ----
 \begin{titlepage}
 \thispagestyle{empty}
@@ -134,11 +152,3 @@ $endfor$
 \end{center}
 \clearpage
 $endif$
-
-% ---- Watermark ----
-% Set at body time so \obsidianwatermark is defined. Light grey,
-% diagonal, behind the text. Disabled (stamp=false) when no watermark
-% is set: the package default text is DRAFT, which must not appear.
-\ifdefempty{\obsidianwatermark}%
-  {\DraftwatermarkOptions{stamp=false}}%
-  {\SetWatermarkText{\obsidianwatermark}\SetWatermarkColor[gray]{0.85}\SetWatermarkScale{3}}

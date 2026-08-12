@@ -17,9 +17,10 @@ doc-type: "Policy Document"
 edition: "First Edition"
 review-date: "February 2027"
 supersedes: "OS-DOC-000 v2.1"
-# Uncomment to show a diagonal watermark on every page
-# (accepts any text; the draft: true flag sets it to DRAFT):
-watermark: "Commercial in Confidence"
+# Uncomment to show a diagonal watermark on every page. With
+# draft: true the watermark is DRAFT; set watermark explicitly
+# to override (any text).
+# watermark: "Commercial in Confidence"
 # Uncomment to render a draft review copy: watermark DRAFT, status
 # marking prefixed in the classification line:
 draft: true

@@ -71,9 +71,11 @@ contributes:
       # Client-editable output. The reference document carries the
       # house style: Palatino Linotype body, Montserrat headings,
       # near-black and grey palette, booktabs tables, branded header
-      # and footer with page numbers. Palatino Linotype ships with
-      # Windows and macOS Office, so client machines render it without
-      # substitution.
+      # and footer with page numbers. The header classification is a
+      # Word DOCPROPERTY field fed from front-matter metadata, so
+      # every copy carries the same marking as the PDF. Palatino
+      # Linotype ships with Windows and macOS Office, so client
+      # machines render it without substitution.
       reference-doc: obsidian-reference.docx
       toc: true
       toc-depth: 2
@@ -81,6 +83,9 @@ contributes:
       citeproc: true
       link-citations: true
       csl: numeric.csl
+      filters:
+        - filters/classification.lua
+        - filters/review-overdue.lua
     html:
       # Accessible reading companion, per the HTML-first rule. The
       # theme carries the house palette, typography and focus states;
