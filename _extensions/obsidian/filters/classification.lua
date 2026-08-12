@@ -1,13 +1,17 @@
 -- classification.lua
--- Injects a classification banner into the HTML, revealjs and DOCX
--- companions so every delivered copy carries the same marking as
--- the PDF. Fires only for non-LaTeX output; the PDF carries the
+-- Injects a classification banner into the HTML, revealjs, DOCX and
+-- PPTX companions so every delivered copy carries the same marking
+-- as the PDF. Fires only for non-LaTeX output; the PDF carries the
 -- marking in its running header.
 --
 -- Banner text: "DRAFT – Commercial in Confidence" from the front
 -- matter fields `draft` and `confidentiality`.
+--
+-- Also records the watermark text into the metadata for formats
+-- that read it from a document property (DOCX header field).
 
-local plain_formats = { html = true, revealjs = true, docx = true }
+local banner_formats = { html = true, revealjs = true, docx = true }
+local plain_formats = { html = true, revealjs = true, docx = true, pptx = true }
 
 function Pandoc(doc)
   -- FORMAT is pandoc's writer-format global; PANDOC_WRITER_OPTIONS
@@ -29,6 +33,18 @@ function Pandoc(doc)
     table.insert(parts, pandoc.utils.stringify(meta['confidentiality']))
   end
   local text = table.concat(parts, ' \226\128\147 ')  -- en dash
+
+  -- Watermark text for the DOCX header field (read via DOCPROPERTY).
+  if FORMAT == 'docx' then
+    doc.meta['watermark-text'] = pandoc.MetaString(text)
+  end
+
+  if not banner_formats[FORMAT] then
+    -- PPTX: the reference-file footer already carries the marking on
+    -- every slide; nothing more to inject.
+    return doc
+  end
+
   local block
   if FORMAT == 'docx' then
     -- A Div with custom-style maps to a named paragraph style in
