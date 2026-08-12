@@ -195,3 +195,28 @@ jobs:
             ':::' > dash.qmd
           quarto render dash.qmd
           grep -q "obsidian-classification" dash.html
+
+      - name: Render pptx deck
+        run: |
+          printf '%s\n' \
+            '---' \
+            'title: "Obsidian Solutions"' \
+            'confidentiality: "Commercial in Confidence"' \
+            'format:' \
+            '  obsidian-pptx: default' \
+            '---' \
+            '' \
+            '## One' \
+            '' \
+            'Slide one.' > deck.qmd
+          quarto render deck.qmd
+          # The classification marking must be on every slide, via
+          # the reference-file footer mechanism.
+          python3 -c "
+          import zipfile
+          z = zipfile.ZipFile('deck.pptx')
+          slides = [n for n in z.namelist() if n.startswith('ppt/slides/slide') and n.endswith('.xml')]
+          assert len(slides) >= 2, 'deck has no slides'
+          for n in slides:
+              assert 'Commercial in Confidence' in z.read(n).decode(), f'marking missing in {n}'
+          print('classification on every slide: OK')"
