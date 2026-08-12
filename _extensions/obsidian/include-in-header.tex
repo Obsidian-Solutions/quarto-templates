@@ -11,6 +11,9 @@
 \usepackage{lastpage}
 \usepackage[user,totpages]{zref}
 \usepackage{draftwatermark}
+% eso-pic ships the background-picture machinery that the watermark
+% uses; loading it explicitly keeps the dependency visible.
+\usepackage{eso-pic}
 % tocloft must load BEFORE hyperref: tocloft redefines \contentsline,
 % and hyperref patches it last to make TOC entries clickable links.
 % (Quarto also loads tocloft later in its template; the second load
