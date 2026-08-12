@@ -1,0 +1,80 @@
+name: release
+
+# Creates a draft release when a version tag is pushed to main. The
+# tag IS the version: the release procedure in CONTRIBUTING.md makes
+# the tag from the extension version in _extension.yml, and this
+# workflow fails if they disagree. It renders the example formats
+# (running the render gates), regenerates the SBOM, and drafts the
+# release with the automatic release notes. A human reviews the
+# draft and publishes it; publishing triggers the attest workflow,
+# which signs the assets.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Assert the tag matches the extension version
+        run: |
+          TAG="${{ github.ref_name }}"
+          grep -q "^version: ${TAG#v}$" _extensions/obsidian/_extension.yml \
+            || { echo "tag $TAG does not match the extension version"; exit 1; }
+
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2
+        with:
+          version: 1.10.18
+
+      - name: Install TeX Live (TinyTeX, matches the 2026 dev toolchain)
+        run: |
+          quarto install tinytex --update-path
+          tlmgr install \
+            titlesec fancyhdr zref draftwatermark tocloft embedfile \
+            tcolorbox needspace caption microtype booktabs etoolbox float \
+            fontspec tex-gyre
+          which lualatex
+
+      - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
+        run: bash tools/install-fonts.sh
+
+      - name: Install verapdf and qpdf
+        run: |
+          quarto install verapdf
+          sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation poppler-utils
+
+      - name: Render the example formats (the render gates run)
+        run: |
+          ./render.sh examples/template.qmd
+          quarto render examples/template-slides.qmd
+          quarto render examples/template-dashboard.qmd
+
+      - name: Regenerate the SBOM and build the extension archive
+        run: |
+          python3 tools/make-sbom.py
+          TAG="${{ github.ref_name }}"
+          (cd _extensions && zip -qr "../obsidian-extension-${TAG}.zip" obsidian)
+
+      - name: Draft the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG" --draft --generate-notes \
+            --title "$TAG" \
+            _output/examples/template.pdf \
+            _output/examples/template.docx \
+            _output/examples/template.html \
+            _output/examples/template.epub \
+            _output/examples/template-slides.html \
+            _output/examples/template-slides.pdf \
+            _output/examples/template-slides.pptx \
+            _output/examples/template-dashboard.html \
+            "obsidian-extension-${TAG}.zip" \
+            sbom.spdx.json
