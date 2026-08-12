@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 name: render-and-validate
 # Renders the example document in all three formats and gates on the
 # validation the template guarantees. Applies the "verify every
@@ -13,10 +14,29 @@ jobs:
   render:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: SBOM freshness check
+        run: |
+          # The committed SBOM must match what the generator produces
+          # from this tree, or the supply-chain record is stale. The
+          # document namespace and created timestamp are commit-derived
+          # by design (they identify the exact baseline), so the
+          # comparison ignores them and checks the package content.
+          python3 scripts/make-sbom.py /tmp/sbom-check.json
+          python3 - <<'EOF'
+          import json
+          a = json.load(open('sbom.spdx.json'))
+          b = json.load(open('/tmp/sbom-check.json'))
+          for doc in (a, b):
+              doc.pop('documentNamespace', None)
+              doc['creationInfo'].pop('created', None)
+          assert a == b, 'sbom.spdx.json is stale - run scripts/make-sbom.py and commit the result'
+          print('SBOM fresh')
+          EOF
 
       - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2
         with:
           version: 1.10.18
 
@@ -27,6 +47,10 @@ jobs:
           # is a rolling distribution that matches the Arch TeX Live 2026
           # the template is developed against. --update-path puts tlmgr
           # and lualatex on PATH (the flag the Quarto docs name).
+          # Accepted supply-chain risk: TinyTeX and its packages are
+          # unpinned (rolling by design). The GitHub Actions and the
+          # Montserrat fonts ARE pinned and checksum-verified; revisit
+          # TinyTeX pinning if this CI must meet a stricter baseline.
           quarto install tinytex --update-path
           # TinyTeX base already carries Latin Modern, fontspec and the
           # kernel. Install the document-class packages the template
@@ -37,13 +61,8 @@ jobs:
             fontspec tex-gyre
           which tlmgr lualatex && lualatex --version | head -1
 
-      - name: Install Montserrat (Google font, not in TeX Live)
-        run: |
-          mkdir -p ~/.fonts
-          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-Regular.ttf" -o ~/.fonts/Montserrat-Regular.ttf
-          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-Bold.ttf" -o ~/.fonts/Montserrat-Bold.ttf
-          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-SemiBold.ttf" -o ~/.fonts/Montserrat-SemiBold.ttf
-          fc-cache -f ~/.fonts
+      - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
+        run: bash scripts/install-fonts.sh
 
       - name: Install verapdf and qpdf
         run: |
@@ -95,10 +114,10 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2
         with:
           version: 1.10.18
 
@@ -109,6 +128,10 @@ jobs:
           # is a rolling distribution that matches the Arch TeX Live 2026
           # the template is developed against. --update-path puts tlmgr
           # and lualatex on PATH (the flag the Quarto docs name).
+          # Accepted supply-chain risk: TinyTeX and its packages are
+          # unpinned (rolling by design). The GitHub Actions and the
+          # Montserrat fonts ARE pinned and checksum-verified; revisit
+          # TinyTeX pinning if this CI must meet a stricter baseline.
           quarto install tinytex --update-path
           # TinyTeX base already carries Latin Modern, fontspec and the
           # kernel. Install the document-class packages the template
@@ -146,10 +169,10 @@ jobs:
   presentations:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2
         with:
           version: 1.10.18
 

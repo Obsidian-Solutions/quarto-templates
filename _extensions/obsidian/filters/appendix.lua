@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: MIT
 -- appendix.lua
 -- Converts a heading with the class `appendix` into the LaTeX
 -- \appendix switch followed by the heading itself.

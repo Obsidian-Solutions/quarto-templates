@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
 """check-ua.py - validate the tagged structure of a PDF/UA-2 render.
 
 veraPDF passes PDF/UA-2 documents that carry no heading roles in the

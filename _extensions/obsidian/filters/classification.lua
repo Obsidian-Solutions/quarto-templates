@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: MIT
 -- classification.lua
 -- Injects a classification banner into the HTML, revealjs, DOCX and
 -- PPTX companions so every delivered copy carries the same marking
@@ -20,7 +21,7 @@ function Pandoc(doc)
     return doc
   end
   local meta = doc.meta
-  local confidentiality = pandoc.utils.stringify(meta['confidentiality'] or '')
+  local confidentiality = pandoc.utils.stringify(meta['confidentiality'] or meta['classification'] or '')
   local draft = pandoc.utils.stringify(meta['draft'] or '')
   if confidentiality == '' and draft == '' then
     return doc

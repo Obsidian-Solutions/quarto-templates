@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
 # Render a document with baseline stamping, then optimise and
 # optionally encrypt a distribution copy.
 #
@@ -27,12 +28,15 @@ BASE="${FILE%.qmd}"
 
 # Control manifest: embedded into the PDF so the archive is
 # self-contained provenance. The embed.lua filter attaches it (and
-# the source) via LaTeX's embedfile package.
+# the source) via LaTeX's embedfile package. The timestamp is full
+# ISO-8601 with the local UTC offset, so two builds of the same
+# baseline are distinguishable.
+RENDERED=$(date +%Y-%m-%dT%H:%M:%S%z)
 cat > manifest.json <<EOF
 {
   "document": "$BASE",
   "baseline": "$HASH",
-  "rendered": "$DATE"
+  "rendered": "$RENDERED"
 }
 EOF
 
@@ -51,6 +55,34 @@ if [ -f "$LOG" ] && grep -qE "Overfull \\\\(h|v)box" "$LOG"; then
   exit 1
 fi
 
+# Cross-reference gate. A broken \ref or \cite prints "??" and a
+# LaTeX warning; fail the render so no document ships with dead
+# links or missing bibliography entries.
+if [ -f "$LOG" ] && grep -qE "LaTeX Warning: .* undefined" "$LOG"; then
+  echo "UNDEFINED CROSS-REFERENCE in $FILE:"
+  grep -nE "LaTeX Warning: .* undefined" "$LOG"
+  exit 1
+fi
+
+# Font-embedding pre-flight. veraPDF is the definitive PDF/A gate but
+# is optional to install; pdffonts (poppler) is a fast check that
+# every font is embedded (emb) with a ToUnicode map (uni), which
+# PDF/A requires for text extraction. Fails on a missing or
+# incomplete embedding before the slower veraPDF run.
+if command -v pdffonts >/dev/null 2>&1; then
+  # Column offsets from the end: the type field can contain spaces
+  # ("CID Type 0C"), so emb/sub/uni are read relative to NF.
+  if pdffonts "${BASE}.pdf" | awk 'NR>2 {
+      if ($(NF-4) != "yes" || $(NF-2) != "yes") { print; bad = 1 }
+    } END { exit bad }'; then
+    :
+  else
+    echo "FONT EMBEDDING FAILURE in ${BASE}.pdf:"
+    pdffonts "${BASE}.pdf"
+    exit 1
+  fi
+fi
+
 # PDF/UA-2 structure gate. Quarto's tagging emits a flat tree without
 # heading roles (upstream gap: KOMA + \DocumentMetadata{tagging=on}
 # never promotes sections to H1-H6; veraPDF passes by design). This
@@ -62,6 +94,13 @@ if grep -q "ua-2" "$(dirname "$0")/_extensions/obsidian/_extension.yml"; then
   if [ -x "$(dirname "$0")/scripts/check-ua.py" ]; then
     python3 "$(dirname "$0")/scripts/check-ua.py" "${BASE}.pdf"
   fi
+fi
+
+# Controlled-language gate (JSP 101 / ASD-STE100). Fails on hard
+# violations (banned words, contractions, American spellings). A
+# document opts out with `ste: false` in its front matter.
+if [ -f "$(dirname "$0")/scripts/check-ste.py" ]; then
+  python3 "$(dirname "$0")/scripts/check-ste.py" "$FILE"
 fi
 
 if ! command -v qpdf >/dev/null 2>&1; then

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 name: publish-pages
 on:
   push:
@@ -20,10 +21,10 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2
         with:
           version: 1.10.18
 
@@ -33,6 +34,9 @@ jobs:
           # the full TeX toolchain is needed here too. TinyTeX is a
           # rolling distribution matching the Arch TeX Live 2026 the
           # template is developed against.
+          # Accepted supply-chain risk: TinyTeX and its packages are
+          # unpinned (rolling by design). The GitHub Actions and the
+          # Montserrat fonts ARE pinned and checksum-verified.
           quarto install tinytex --update-path
           tlmgr install \
             titlesec fancyhdr zref draftwatermark tocloft embedfile \
@@ -40,13 +44,8 @@ jobs:
             fontspec tex-gyre
           which tlmgr lualatex && lualatex --version | head -1
 
-      - name: Install Montserrat (Google font, not in TeX Live)
-        run: |
-          mkdir -p ~/.fonts
-          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-Regular.ttf" -o ~/.fonts/Montserrat-Regular.ttf
-          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-Bold.ttf" -o ~/.fonts/Montserrat-Bold.ttf
-          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-SemiBold.ttf" -o ~/.fonts/Montserrat-SemiBold.ttf
-          fc-cache -f ~/.fonts
+      - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
+        run: bash scripts/install-fonts.sh
 
       - name: Install qpdf, fonts and verapdf
         run: |
@@ -69,6 +68,7 @@ jobs:
           cp example.pdf site/example.pdf
           cp example.docx site/example.docx
           cp obsidian-logo.png site/obsidian-logo.png
+          cp accessibility-statement.md site/accessibility-statement.md
           cp -r example_files site/example_files
 
       - name: Add format download links to the page
@@ -85,7 +85,8 @@ jobs:
             'Download: '
             '<a href="example.pdf">PDF</a> &nbsp;|&nbsp; '
             '<a href="example.docx">DOCX</a> &nbsp;|&nbsp; '
-            '<a href="index.html">HTML</a>'
+            '<a href="index.html">HTML</a> &nbsp;|&nbsp; '
+            '<a href="accessibility-statement.md">Accessibility statement</a>'
             '</div>'
           )
           # Insert after the title block header.
@@ -98,13 +99,13 @@ jobs:
           PYEOF
 
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
 
       - name: Upload site
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
           path: site
 
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: MIT
 -- has-floats.lua
 -- Sets `has-figures` and `has-tables` metadata flags so the toc.tex
 -- partial can emit List of Figures / List of Tables only when the

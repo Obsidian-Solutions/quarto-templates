@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: MIT
 -- embed.lua
 -- Emits \embedfile commands for the PDF format from front-matter
 -- `attach:` entries, so the controlled PDF carries its own source

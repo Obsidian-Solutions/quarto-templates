@@ -1,3 +1,4 @@
+% SPDX-License-Identifier: MIT
 $--
 $-- PDF standard support (PDF/A, PDF/UA, PDF/X)
 $-- Replaces Quarto's document-metadata.latex.
