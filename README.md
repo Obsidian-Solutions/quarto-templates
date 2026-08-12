@@ -216,11 +216,13 @@ quarto render examples/template-slides.qmd    # revealjs deck
 quarto render examples/template-dashboard.qmd # dashboard
 ```
 
-The example document is published to GitHub Pages from `main`:
+The examples are published to GitHub Pages from `main` in every
+format the template produces (PDF, DOCX, HTML, revealjs slides, PPTX,
+dashboard):
 
 https://obsidian-solutions.github.io/quarto-templates/
 
-It is sanitised: the demo carries no personal or internal detail.
+They are sanitised: the demos carry no personal or internal detail.
 
 ### List of tables and figures
 

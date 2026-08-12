@@ -61,22 +61,36 @@ jobs:
           ./render.sh examples/template.qmd
           cp _extensions/obsidian/assets/obsidian-logo.png obsidian-logo.png
 
+      - name: Render the remaining formats (deck, dashboard, pptx)
+        run: |
+          # The example site ships every format the template produces:
+          # the revealjs deck and its editable PPTX, and the dashboard.
+          quarto render examples/template-slides.qmd
+          quarto render examples/template-slides.qmd --to obsidian-pptx
+          quarto render examples/template-dashboard.qmd
+
       - name: Assemble the site
         run: |
           mkdir -p site
           cp _output/examples/template.html site/index.html
           cp _output/examples/template.pdf site/template.pdf
           cp _output/examples/template.docx site/template.docx
+          cp _output/examples/template-slides.html site/template-slides.html
+          cp _output/examples/template-slides.pptx site/template-slides.pptx
+          cp _output/examples/template-dashboard.html site/template-dashboard.html
           cp obsidian-logo.png site/obsidian-logo.png
           cp accessibility-statement.md site/accessibility-statement.md
           cp -r _output/examples/template_files site/template_files
+          cp -r _output/examples/template-slides_files site/template-slides_files
+          cp -r _output/examples/template-dashboard_files site/template-dashboard_files
 
       - name: Add format download links to the page
         run: |
           python3 - <<'PYEOF'
           # Insert a small download bar under the title so visitors
-          # can fetch the PDF (controlled record) and DOCX (working
-          # copy) as well as read the HTML.
+          # can fetch every format the template produces: the PDF
+          # (controlled record), DOCX (working copy), the revealjs
+          # deck, its editable PPTX, and the dashboard.
           html = open('site/index.html').read()
           bar = (
             '<div style="font-family: Montserrat, sans-serif; font-size: 0.85rem; '
@@ -86,6 +100,9 @@ jobs:
             '<a href="template.pdf">PDF</a> &nbsp;|&nbsp; '
             '<a href="template.docx">DOCX</a> &nbsp;|&nbsp; '
             '<a href="index.html">HTML</a> &nbsp;|&nbsp; '
+            '<a href="template-slides.html">Slides</a> &nbsp;|&nbsp; '
+            '<a href="template-slides.pptx">PPTX</a> &nbsp;|&nbsp; '
+            '<a href="template-dashboard.html">Dashboard</a> &nbsp;|&nbsp; '
             '<a href="accessibility-statement.md">Accessibility statement</a>'
             '</div>'
           )
