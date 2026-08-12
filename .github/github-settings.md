@@ -45,17 +45,14 @@ In the repository settings under Code security and analysis:
   first place (NCSC Secure Development: separate secret credentials
   from the code base)
 
-## Repository secrets
+## Releases
 
-The release workflow signs its commit and tag with the sole trader's
-GPG key, so the private key must exist inside the runner. Store these
-two secrets:
-
-- `GPG_PRIVATE_KEY`: the ASCII-armoured private key, base64-encoded
-- `GPG_PASSPHRASE`: the key passphrase
-
-The workflow fails loudly when they are missing, so a release
-baseline is never unsigned (JSP 945).
+Releases are created with `gh release create vX.Y.Z` (see the release
+procedure in CONTRIBUTING.md). GitHub creates the tag and signs it
+with GitHub's key, so the release carries the verified badge. No
+GPG secrets are stored: the repository is the sole trader's own, so
+the account signature carries the owner's authority. The
+`GPG_PRIVATE_KEY` and `GPG_PASSPHRASE` secrets are not required.
 
 ## Dependabot
 

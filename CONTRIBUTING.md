@@ -70,21 +70,23 @@ A change is done when:
 ## Releases
 
 Releases are automated. Do not bump versions or write changelog
-entries by hand. The release workflow (`.github/workflows/release.yml`)
-does the whole job from the version number you give it:
+entries by hand. The generator does the whole job from the version
+number you give it:
 
 1. Merge the change to `main` with squash.
-2. Run the `release` workflow with the new version, for example
-   `3.4.0`. Semantic versioning is a judgement call: pick the major,
-   minor, or patch step that fits the change.
-3. The workflow regenerates `CHANGELOG.md` from the commit history,
-   keeps the version homes in step (`_extensions/obsidian/_extension.yml`
-   and `scripts/make-sbom.py`), regenerates the SBOM, and creates the
-   signed release commit and the signed tag `v3.4.0`.
+2. Generate the release content: `python3 scripts/make-changelog.py --version 3.4.0`.
+   This regenerates `CHANGELOG.md` from the commit history, keeps the
+   version homes in step (`_extensions/obsidian/_extension.yml` and
+   `scripts/make-sbom.py`), and regenerates the SBOM.
+3. Commit and push: `git add -A && git commit -S -m "chore: prepare release v3.4.0" && git push`.
+   Sign the commit with your key.
+4. Create the release: `gh release create v3.4.0 --generate-notes`.
+   GitHub creates the tag and signs it with GitHub's key, so the
+   release carries the verified badge. The account is the owner's,
+   so the signature carries the owner's authority.
 
-The workflow needs the signing key as the repository secrets
-`GPG_PRIVATE_KEY` and `GPG_PASSPHRASE`. Without them it stops, so a
-release baseline is never unsigned (JSP 945).
+Semantic versioning is a judgement call: pick the major, minor, or
+patch step that fits the change.
 
 The generator is `scripts/make-changelog.py`. It is deterministic and
 stdlib-only, so the changelog never drifts from the commits. Commit
