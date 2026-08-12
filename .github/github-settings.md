@@ -14,7 +14,7 @@ Use a branch protection rule or a ruleset on the `main` branch:
 - Require at least 1 approval
 - Require status checks to pass:
   - `render-and-validate` (the render and validation gates)
-  - `codeql` (static analysis)
+  - `CodeQL` (static analysis)
 - Require signed commits
 - Require linear history (squash merging)
 - Require the branch to be up to date before merging
@@ -23,6 +23,18 @@ Use a branch protection rule or a ruleset on the `main` branch:
 
 CODEOWNERS protects the sensitive paths: review requests go to the
 owner until a team exists.
+
+## Static analysis
+
+SAST is the GitHub default code scanning setup, configured in the
+repository settings under Code security and analysis. It analyses
+the Python tooling and the GitHub Actions, and it reports findings
+to the Security tab. There is no CodeQL workflow file in this
+repository: default setup runs the analysis, so there is nothing to
+maintain. The scanner also enforces the workflow hygiene rules:
+every action reference is pinned to a commit SHA, and every
+workflow declares an explicit least-privilege `permissions` block.
+A workflow that violates either rule fails the scan, not the build.
 
 ## Secret scanning
 

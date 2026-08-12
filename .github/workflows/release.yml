@@ -36,10 +36,13 @@ jobs:
           fetch-depth: 0
 
       - name: Guard the signing key
-        if: ${{ secrets.GPG_PRIVATE_KEY == '' }}
+        env:
+          HAS_KEY: ${{ secrets.GPG_PRIVATE_KEY != '' }}
         run: |
-          echo "Set the GPG_PRIVATE_KEY and GPG_PASSPHRASE secrets first." >&2
-          exit 1
+          if [ "$HAS_KEY" = "false" ]; then
+            echo "Set the GPG_PRIVATE_KEY and GPG_PASSPHRASE secrets first." >&2
+            exit 1
+          fi
 
       - name: Import the signing key
         uses: crazy-max/ghaction-import-gpg@2dc316deee8e90f13e1a351ab510b4d5bc0c82cd # v7.0.0
