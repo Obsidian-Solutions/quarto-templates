@@ -25,7 +25,7 @@ honest about the limits of the toolchain.
 - **PDF/UA-2 heading roles.** The PDF/UA-2 option cannot yet tag
   section headings as H1-H6 (an upstream Quarto/KOMA limitation,
   documented in the README). A render that opts into PDF/UA-2 is
-  gated by `scripts/check-ua.py`, which fails the render when heading
+  gated by `scripts/check-pdfua.py`, which fails the render when heading
   roles are missing, so no heading-less document ships as accessible.
   The default PDF/A-4f output is deliberately untagged to keep the
   table of contents clickable; the HTML companion carries the

@@ -220,7 +220,7 @@ jobs:
 
       - name: Show the structure-gate finding
         run: |
-          python3 scripts/check-ua.py _output/examples/template.pdf || \
+          python3 scripts/check-pdfua.py _output/examples/template.pdf || \
             echo "EXPECTED: heading-role gap documented in README (upstream KOMA/tagging limitation)"
           VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
           "$VERAPDF" --format text _output/examples/template.pdf | tail -3

@@ -102,8 +102,8 @@ fi
 # when the extension is configured for ua-2 (the default a-4f is
 # deliberately untagged to keep the TOC clickable).
 if grep -q "ua-2" "$(dirname "$0")/_extensions/obsidian/_extension.yml"; then
-  if [ -x "$(dirname "$0")/scripts/check-ua.py" ]; then
-    python3 "$(dirname "$0")/scripts/check-ua.py" "${OUT}/${BASE}.pdf"
+  if [ -x "$(dirname "$0")/scripts/check-pdfua.py" ]; then
+    python3 "$(dirname "$0")/scripts/check-pdfua.py" "${OUT}/${BASE}.pdf"
   fi
 fi
 
