@@ -6,7 +6,7 @@
 --
 -- Front matter:
 --   attach:
---     - source: example.qmd
+--     - source: template.qmd
 --       description: Source document
 --       mimetype: text/markdown
 --

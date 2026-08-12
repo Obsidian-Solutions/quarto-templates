@@ -70,38 +70,38 @@ jobs:
           sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation
 
       - name: Render default document (PDF/A-4f)
-        run: ./render.sh example.qmd
+        run: ./render.sh examples/template.qmd
 
       - name: Assert PDF/A-4f validation passed
         run: |
           # render.sh already ran verapdf and failed on violation.
           # Re-validate explicitly so the CI log shows the result.
           VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
-          "$VERAPDF" --format text _output/example.pdf | grep -q "PASS.*4f"
+          "$VERAPDF" --format text _output/examples/template.pdf | grep -q "PASS.*4f"
 
       - name: Assert self-contained provenance
         run: |
-          qpdf --qdf --object-streams=disable _output/example.pdf /tmp/tree.pdf
+          qpdf --qdf --object-streams=disable _output/examples/template.pdf /tmp/tree.pdf
           grep -q "AFRelationship" /tmp/tree.pdf
           grep -q "EmbeddedFiles" /tmp/tree.pdf
-          grep -q "OS-DOC-001" _output/example.pdf
+          grep -q "OS-DOC-001" _output/examples/template.pdf
 
       - name: Render HTML companion
-        run: quarto render example.qmd --to obsidian-html
+        run: quarto render examples/template.qmd --to obsidian-html
 
       - name: Assert HTML classification banner
         run: |
-          grep -q "obsidian-classification" _output/example.html
-          grep -q "Commercial in Confidence" _output/example.html
+          grep -q "obsidian-classification" _output/examples/template.html
+          grep -q "Commercial in Confidence" _output/examples/template.html
 
       - name: Render DOCX companion
-        run: quarto render example.qmd --to obsidian-docx
+        run: quarto render examples/template.qmd --to obsidian-docx
 
       - name: Assert DOCX is a valid archive
         run: |
           python3 - <<'EOF'
           import zipfile
-          z = zipfile.ZipFile('_output/example.docx')
+          z = zipfile.ZipFile('_output/examples/template.docx')
           assert z.testzip() is None
           assert 'word/document.xml' in z.namelist()
           EOF
@@ -156,14 +156,14 @@ jobs:
         run: |
           sed -i 's/pdf-standard: \[a-4f\]/pdf-standard: [a-4f, ua-2]/' _extensions/obsidian/_extension.yml
           sed -i '\|partials/document-metadata.latex|d' _extensions/obsidian/_extension.yml
-          ./render.sh example.qmd || true
+          ./render.sh examples/template.qmd || true
 
       - name: Show the structure-gate finding
         run: |
-          python3 scripts/check-ua.py _output/example.pdf || \
+          python3 scripts/check-ua.py _output/examples/template.pdf || \
             echo "EXPECTED: heading-role gap documented in README (upstream KOMA/tagging limitation)"
           VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
-          "$VERAPDF" --format text _output/example.pdf | tail -3
+          "$VERAPDF" --format text _output/examples/template.pdf | tail -3
 
   # HTML-family formats (revealjs, dashboard) need no TeX engine.
   presentations:
@@ -178,66 +178,23 @@ jobs:
 
       - name: Render revealjs deck
         run: |
-          printf '%s\n' \
-            '---' \
-            'title: "Obsidian Solutions"' \
-            'confidentiality: "Commercial in Confidence"' \
-            'format:' \
-            '  obsidian-revealjs: default' \
-            '---' \
-            '' \
-            '## One' \
-            '' \
-            'Slide one.' \
-            '' \
-            '## Two' \
-            '' \
-            'Slide two.' > slides.qmd
-          quarto render slides.qmd
-          grep -q "obsidian-classification" _output/slides.html
-          grep -q "Commercial in Confidence" _output/slides.html
+          quarto render examples/template-slides.qmd
+          grep -q "obsidian-classification" _output/examples/template-slides.html
+          grep -q "Commercial in Confidence" _output/examples/template-slides.html
 
       - name: Render dashboard
         run: |
-          printf '%s\n' \
-            '---' \
-            'title: "Service Health"' \
-            'confidentiality: "Commercial in Confidence"' \
-            'format:' \
-            '  obsidian-dashboard: default' \
-            '---' \
-            '' \
-            '::: {.row}' \
-            '::: {.col-lg-6}' \
-            '## Uptime' \
-            '' \
-            '| Service | Status |' \
-            '|---|---|' \
-            '| Website | Operational |' \
-            ':::' \
-            ':::' > dash.qmd
-          quarto render dash.qmd
-          grep -q "obsidian-classification" _output/dash.html
+          quarto render examples/template-dashboard.qmd
+          grep -q "obsidian-classification" _output/examples/template-dashboard.html
 
       - name: Render pptx deck
         run: |
-          printf '%s\n' \
-            '---' \
-            'title: "Obsidian Solutions"' \
-            'confidentiality: "Commercial in Confidence"' \
-            'format:' \
-            '  obsidian-pptx: default' \
-            '---' \
-            '' \
-            '## One' \
-            '' \
-            'Slide one.' > deck.qmd
-          quarto render deck.qmd
+          quarto render examples/template-slides.qmd --to obsidian-pptx
           # The classification marking must be on every slide, via
           # the reference-file footer mechanism.
           python3 -c "
           import zipfile
-          z = zipfile.ZipFile('_output/deck.pptx')
+          z = zipfile.ZipFile('_output/examples/template-slides.pptx')
           slides = [n for n in z.namelist() if n.startswith('ppt/slides/slide') and n.endswith('.xml')]
           assert len(slides) >= 2, 'deck has no slides'
           for n in slides:

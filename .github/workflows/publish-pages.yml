@@ -58,18 +58,18 @@ jobs:
           # (the embed filter attaches it to the PDF/A archive), then
           # validates with verapdf. It renders the formats declared in
           # the front matter: PDF, HTML and DOCX.
-          ./render.sh example.qmd
+          ./render.sh examples/template.qmd
           cp _extensions/obsidian/assets/obsidian-logo.png obsidian-logo.png
 
       - name: Assemble the site
         run: |
           mkdir -p site
-          cp _output/example.html site/index.html
-          cp _output/example.pdf site/example.pdf
-          cp _output/example.docx site/example.docx
+          cp _output/examples/template.html site/index.html
+          cp _output/examples/template.pdf site/template.pdf
+          cp _output/examples/template.docx site/template.docx
           cp obsidian-logo.png site/obsidian-logo.png
           cp accessibility-statement.md site/accessibility-statement.md
-          cp -r _output/example_files site/example_files
+          cp -r _output/examples/template_files site/template_files
 
       - name: Add format download links to the page
         run: |
@@ -83,8 +83,8 @@ jobs:
             'border: 1px solid #cecece; border-left: 3px solid #121212; '
             'padding: 0.6rem 1rem; margin: 1rem 0; color: #484949;">'
             'Download: '
-            '<a href="example.pdf">PDF</a> &nbsp;|&nbsp; '
-            '<a href="example.docx">DOCX</a> &nbsp;|&nbsp; '
+            '<a href="template.pdf">PDF</a> &nbsp;|&nbsp; '
+            '<a href="template.docx">DOCX</a> &nbsp;|&nbsp; '
             '<a href="index.html">HTML</a> &nbsp;|&nbsp; '
             '<a href="accessibility-statement.md">Accessibility statement</a>'
             '</div>'

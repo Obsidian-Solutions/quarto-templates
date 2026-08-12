@@ -43,7 +43,7 @@ changes:
 # and a control manifest, so the archive is traceable without the
 # repository. render.sh generates manifest.json before rendering.
 attach:
-  - source: example.qmd
+  - source: template.qmd
     description: Source document
     mimetype: text/markdown
   - source: manifest.json

@@ -42,9 +42,9 @@ with the GSCP validation available under `gscp: true`.
 
 ## Use as a template
 
-1. Copy this repository, or clone it and remove the example.
-2. Edit `example.qmd`: front matter first, then content.
-3. Render with `./render.sh example.qmd`.
+1. Copy this repository, or clone it and remove the examples.
+2. Edit `examples/template.qmd`: front matter first, then content.
+3. Render with `./render.sh examples/template.qmd`.
 
 The script stamps the baseline (commit and date) into the cover and
 footer automatically. Rendered output goes to `_output/` (the project
@@ -204,16 +204,16 @@ matter block:
 
 | File | Format | Shows |
 |---|---|---|
-| `example.qmd` | `obsidian-pdf`, `obsidian-html`, `obsidian-docx` | The full document surface: cover, approval, revision history, citations, appendices, list of tables and figures |
-| `slides.qmd` | `obsidian-revealjs` | A client deck with the classification banner |
-| `dashboard.qmd` | `obsidian-dashboard` | A service-health dashboard with cards and a status table |
+| `examples/template.qmd` | `obsidian-pdf`, `obsidian-html`, `obsidian-docx` | The full document surface: cover, approval, revision history, citations, appendices, list of tables and figures |
+| `examples/template-slides.qmd` | `obsidian-revealjs` | A client deck with the classification banner |
+| `examples/template-dashboard.qmd` | `obsidian-dashboard` | A service-health dashboard with cards and a status table |
 
 Render one file per format:
 
 ```bash
-quarto render example.qmd   # PDF + HTML + DOCX
-quarto render slides.qmd    # revealjs deck
-quarto render dashboard.qmd # dashboard
+quarto render examples/template.qmd   # PDF + HTML + DOCX
+quarto render examples/template-slides.qmd    # revealjs deck
+quarto render examples/template-dashboard.qmd # dashboard
 ```
 
 The example document is published to GitHub Pages from `main`:

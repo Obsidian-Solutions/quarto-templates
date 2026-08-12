@@ -21,10 +21,14 @@
 #                         (defaults to the user password if unset)
 set -euo pipefail
 
-FILE="${1:-example.qmd}"
+FILE="${1:-examples/template.qmd}"
 HASH=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 DATE=$(date +%Y-%m-%d)
 BASE="${FILE%.qmd}"
+SRC_DIR="$(dirname "$FILE")"
+# Quarto runs the PDF engine in the source file's directory, so the
+# embed filter resolves its attach paths relative to that directory.
+# The manifest must sit next to the source.
 # Quarto routes project renders to the project output-dir (_quarto.yml
 # sets _output). Override with OUTPUT_DIR=... if a project differs.
 OUT="${OUTPUT_DIR:-_output}"
@@ -35,7 +39,7 @@ OUT="${OUTPUT_DIR:-_output}"
 # ISO-8601 with the local UTC offset, so two builds of the same
 # baseline are distinguishable.
 RENDERED=$(date +%Y-%m-%dT%H:%M:%S%z)
-cat > manifest.json <<EOF
+cat > "${SRC_DIR}/manifest.json" <<EOF
 {
   "document": "$BASE",
   "baseline": "$HASH",
