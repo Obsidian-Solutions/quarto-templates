@@ -52,10 +52,13 @@ header, the footer, and the PDF metadata.
 ## Verification gates
 
 `render.sh` in the source repository runs the gates. The installed
-extension enforces the optional modes: `gscp: true` fails the render
-on obsolete or invalid classifications, and the controlled-language
-gate (`ste`) fails on banned words, contractions, and American
-spellings.
+extension enforces the optional mode that ships inside the
+extension: `gscp: true` fails the render on obsolete or invalid
+classifications. The controlled-language gate (`ste`) is the example
+project's build tooling (`scripts/check-ste.py` in the source
+repository), not part of the installed extension. `quarto add`
+copies only this directory, so a user who wants the gate copies the
+script with the example project.
 
 ## Licence
 

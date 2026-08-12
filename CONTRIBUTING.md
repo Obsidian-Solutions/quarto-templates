@@ -66,3 +66,28 @@ A change is done when:
 - Code review is complete
 - Documentation is updated
 - No secrets are committed
+
+## Releases
+
+Releases are automated. Do not bump versions or write changelog
+entries by hand. The release workflow (`.github/workflows/release.yml`)
+does the whole job from the version number you give it:
+
+1. Merge the change to `main` with squash.
+2. Run the `release` workflow with the new version, for example
+   `3.4.0`. Semantic versioning is a judgement call: pick the major,
+   minor, or patch step that fits the change.
+3. The workflow regenerates `CHANGELOG.md` from the commit history,
+   keeps the version homes in step (`_extensions/obsidian/_extension.yml`
+   and `scripts/make-sbom.py`), regenerates the SBOM, and creates the
+   signed release commit and the signed tag `v3.4.0`.
+
+The workflow needs the signing key as the repository secrets
+`GPG_PRIVATE_KEY` and `GPG_PASSPHRASE`. Without them it stops, so a
+release baseline is never unsigned (JSP 945).
+
+The generator is `scripts/make-changelog.py`. It is deterministic and
+stdlib-only, so the changelog never drifts from the commits. Commit
+subjects become changelog entries, so write the subject for the
+reader of the release notes: `feat: add the obsidian-beamer format`,
+not `feat: updates`.
