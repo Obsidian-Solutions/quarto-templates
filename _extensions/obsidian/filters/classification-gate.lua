@@ -5,9 +5,8 @@
 --
 -- OFF by default. Documents without `gscp: true` in the front
 -- matter are untouched, so every existing document keeps working
--- unchanged. This is the "possibility, not personality" mode: the
--- validation is available for MOD-facing work without making it the
--- template's identity.
+-- unchanged. The validation is available for anyone who needs the
+-- GSCP, without making it the template's identity.
 --
 -- When gscp mode is on:
 --   - accepts `confidentiality` or `classification` (the MOD field

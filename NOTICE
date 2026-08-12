@@ -1,15 +1,15 @@
 # NOTICE
 
-This repository is distributed under the MIT licence (see LICENSE).
-This file records the third-party components it bundles or depends
-on, and the licence terms that apply to each. Keep this file in step
-with any dependency change.
+The MIT licence (see the LICENSE file) covers this repository. This
+file records the third-party components it bundles or depends on, and
+the licence terms that apply to each. Keep this file in step with any
+dependency change.
 
 ## Bundled components (inside _extensions/obsidian/)
 
 | Component | Origin | Licence | Obligation |
 |---|---|---|---|
-| `numeric.csl` | IEEE Reference Guide CSL style, author Michael Berkowitz, https://www.zotero.org/styles/ieee | CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/) | Retain this attribution. The CSL file is distributed under CC BY-SA 3.0, not the MIT licence; the rest of the repository remains MIT |
+| `numeric.csl` | IEEE Reference Guide CSL style, author Michael Berkowitz, https://www.zotero.org/styles/ieee | CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/) | Retain this attribution. The CSL file stays under CC BY-SA 3.0, not the MIT licence. The rest of the repository remains MIT |
 | `obsidian-reference.docx`, `obsidian-reference.pptx` | Derived from the Quarto default reference documents (Copyright Posit Software, PBC) | MIT (as part of Quarto) | Retain the upstream copyright notice |
 | `assets/obsidian-logo.png`, `assets/obsidian-favicon.png` | Obsidian Solutions | MIT (this repository) | - |
 
@@ -22,9 +22,9 @@ with any dependency change.
 | Liberation Mono | SIL Open Font License 1.1 | Distro package `fonts-liberation` (Linux) or LibreOffice distribution |
 
 The SIL OFL requires the font name and licence to accompany the font
-when it is redistributed. This repository does not redistribute the
-fonts; it downloads them at render time from their pinned upstream
-sources.
+when someone redistributes it. This repository does not redistribute
+the fonts. It downloads them at render time from their pinned
+upstream sources.
 
 ## Reason for this file
 
@@ -32,3 +32,8 @@ The MIT licence (LICENSE) requires retaining copyright notices on
 substantial portions. The CC BY-SA 3.0 licence of the CSL style
 requires attribution and share-alike on that file. This NOTICE
 satisfies both.
+
+Note on spelling: the SPDX identifier `SPDX-License-Identifier` and
+the `LICENSE` filename use the American spelling. These are fixed
+strings from their standards and file conventions. The prose in this
+file uses British spelling.

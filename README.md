@@ -25,10 +25,12 @@ documents, and we comply with the civilian law that actually binds us
 (trading-name disclosure, copyright, accessibility, data protection)
 in the same codebase. Where a standard is for government use only,
 for example the Government Security Classifications (GSCP), it is an
-optional mode in this template, not the default. The default posture
-is commercial: a free-text confidentiality marking such as
-"Commercial in Confidence", with the GSCP validation available under
-`gscp: true` for MOD-facing work.
+optional mode in this template, not the default. UK law is vast and
+complex; the option exists so that we, or anyone using the template,
+can meet a standard when they wish or need to, without the template
+imposing it on everyone. The default posture is commercial: a
+free-text confidentiality marking such as "Commercial in Confidence",
+with the GSCP validation available under `gscp: true`.
 
 ## Requirements
 
@@ -45,7 +47,10 @@ is commercial: a free-text confidentiality marking such as
 3. Render with `./render.sh example.qmd`.
 
 The script stamps the baseline (commit and date) into the cover and
-footer automatically.
+footer automatically. Rendered output goes to `_output/` (the project
+`output-dir`), keeping the working directory free of generated files;
+the LaTeX build log is moved there too after the render gates read
+it.
 
 ## Use as a Quarto extension
 
@@ -313,8 +318,9 @@ gate (`filters/classification-gate.lua`):
 - warns when SECRET or TOP SECRET is used, because their handling
   requirements are outside what a template can enforce
 
-This mode is for MOD-facing work. The default posture is commercial
-(free-text marking), per the standards posture above.
+This mode is for documents that must meet the Government Security
+Classifications. The default posture is commercial (free-text
+marking), per the standards posture above.
 
 ## Air-gapped use
 

@@ -77,22 +77,22 @@ jobs:
           # render.sh already ran verapdf and failed on violation.
           # Re-validate explicitly so the CI log shows the result.
           VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
-          "$VERAPDF" --format text example.pdf | grep -q "PASS.*4f"
+          "$VERAPDF" --format text _output/example.pdf | grep -q "PASS.*4f"
 
       - name: Assert self-contained provenance
         run: |
-          qpdf --qdf --object-streams=disable example.pdf /tmp/tree.pdf
+          qpdf --qdf --object-streams=disable _output/example.pdf /tmp/tree.pdf
           grep -q "AFRelationship" /tmp/tree.pdf
           grep -q "EmbeddedFiles" /tmp/tree.pdf
-          grep -q "OS-DOC-001" example.pdf
+          grep -q "OS-DOC-001" _output/example.pdf
 
       - name: Render HTML companion
         run: quarto render example.qmd --to obsidian-html
 
       - name: Assert HTML classification banner
         run: |
-          grep -q "obsidian-classification" example.html
-          grep -q "Commercial in Confidence" example.html
+          grep -q "obsidian-classification" _output/example.html
+          grep -q "Commercial in Confidence" _output/example.html
 
       - name: Render DOCX companion
         run: quarto render example.qmd --to obsidian-docx
@@ -101,7 +101,7 @@ jobs:
         run: |
           python3 - <<'EOF'
           import zipfile
-          z = zipfile.ZipFile('example.docx')
+          z = zipfile.ZipFile('_output/example.docx')
           assert z.testzip() is None
           assert 'word/document.xml' in z.namelist()
           EOF
@@ -160,10 +160,10 @@ jobs:
 
       - name: Show the structure-gate finding
         run: |
-          python3 scripts/check-ua.py example.pdf || \
+          python3 scripts/check-ua.py _output/example.pdf || \
             echo "EXPECTED: heading-role gap documented in README (upstream KOMA/tagging limitation)"
           VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
-          "$VERAPDF" --format text example.pdf | tail -3
+          "$VERAPDF" --format text _output/example.pdf | tail -3
 
   # HTML-family formats (revealjs, dashboard) need no TeX engine.
   presentations:
@@ -194,8 +194,8 @@ jobs:
             '' \
             'Slide two.' > slides.qmd
           quarto render slides.qmd
-          grep -q "obsidian-classification" slides.html
-          grep -q "Commercial in Confidence" slides.html
+          grep -q "obsidian-classification" _output/slides.html
+          grep -q "Commercial in Confidence" _output/slides.html
 
       - name: Render dashboard
         run: |
@@ -217,7 +217,7 @@ jobs:
             ':::' \
             ':::' > dash.qmd
           quarto render dash.qmd
-          grep -q "obsidian-classification" dash.html
+          grep -q "obsidian-classification" _output/dash.html
 
       - name: Render pptx deck
         run: |
@@ -237,7 +237,7 @@ jobs:
           # the reference-file footer mechanism.
           python3 -c "
           import zipfile
-          z = zipfile.ZipFile('deck.pptx')
+          z = zipfile.ZipFile('_output/deck.pptx')
           slides = [n for n in z.namelist() if n.startswith('ppt/slides/slide') and n.endswith('.xml')]
           assert len(slides) >= 2, 'deck has no slides'
           for n in slides:

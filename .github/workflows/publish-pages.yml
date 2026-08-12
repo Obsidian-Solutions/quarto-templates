@@ -64,12 +64,12 @@ jobs:
       - name: Assemble the site
         run: |
           mkdir -p site
-          cp example.html site/index.html
-          cp example.pdf site/example.pdf
-          cp example.docx site/example.docx
+          cp _output/example.html site/index.html
+          cp _output/example.pdf site/example.pdf
+          cp _output/example.docx site/example.docx
           cp obsidian-logo.png site/obsidian-logo.png
           cp accessibility-statement.md site/accessibility-statement.md
-          cp -r example_files site/example_files
+          cp -r _output/example_files site/example_files
 
       - name: Add format download links to the page
         run: |

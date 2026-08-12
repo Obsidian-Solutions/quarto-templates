@@ -25,6 +25,9 @@ FILE="${1:-example.qmd}"
 HASH=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 DATE=$(date +%Y-%m-%d)
 BASE="${FILE%.qmd}"
+# Quarto routes project renders to the project output-dir (_quarto.yml
+# sets _output). Override with OUTPUT_DIR=... if a project differs.
+OUT="${OUTPUT_DIR:-_output}"
 
 # Control manifest: embedded into the PDF so the archive is
 # self-contained provenance. The embed.lua filter attaches it (and
@@ -48,7 +51,11 @@ quarto render "$FILE" -M baseline="$HASH, $DATE"
 # when any overfull box is present, so no document ships with content
 # clipped at a margin. Underfull is cosmetic (loose spacing), not
 # clipping, so it is not a failure.
+# The LaTeX log. Quarto runs the engine with the project root as the
+# working directory, so the log lands next to the intermediate .tex
+# at the root even when the output-dir is set; check both places.
 LOG="${BASE}.log"
+[ -f "$LOG" ] || LOG="${OUT}/${BASE}.log"
 if [ -f "$LOG" ] && grep -qE "Overfull \\\\(h|v)box" "$LOG"; then
   echo "PAGE OVERFLOW DETECTED in $FILE:"
   grep -nE "Overfull" "$LOG"
@@ -72,13 +79,13 @@ fi
 if command -v pdffonts >/dev/null 2>&1; then
   # Column offsets from the end: the type field can contain spaces
   # ("CID Type 0C"), so emb/sub/uni are read relative to NF.
-  if pdffonts "${BASE}.pdf" | awk 'NR>2 {
+  if pdffonts "${OUT}/${BASE}.pdf" | awk 'NR>2 {
       if ($(NF-4) != "yes" || $(NF-2) != "yes") { print; bad = 1 }
     } END { exit bad }'; then
     :
   else
-    echo "FONT EMBEDDING FAILURE in ${BASE}.pdf:"
-    pdffonts "${BASE}.pdf"
+    echo "FONT EMBEDDING FAILURE in ${OUT}/${BASE}.pdf:"
+    pdffonts "${OUT}/${BASE}.pdf"
     exit 1
   fi
 fi
@@ -92,7 +99,7 @@ fi
 # deliberately untagged to keep the TOC clickable).
 if grep -q "ua-2" "$(dirname "$0")/_extensions/obsidian/_extension.yml"; then
   if [ -x "$(dirname "$0")/scripts/check-ua.py" ]; then
-    python3 "$(dirname "$0")/scripts/check-ua.py" "${BASE}.pdf"
+    python3 "$(dirname "$0")/scripts/check-ua.py" "${OUT}/${BASE}.pdf"
   fi
 fi
 
@@ -102,6 +109,14 @@ fi
 if [ -f "$(dirname "$0")/scripts/check-ste.py" ]; then
   python3 "$(dirname "$0")/scripts/check-ste.py" "$FILE"
 fi
+
+# Tidy the working directory: the gates above have read the LaTeX
+# log, so move it into the output dir (it is the build record) and
+# drop the other intermediates Quarto leaves at the root.
+if [ -f "$LOG" ] && [ "$LOG" != "${OUT}/${BASE}.log" ]; then
+  mv "$LOG" "${OUT}/${BASE}.log"
+fi
+rm -f "${BASE}.aux" "${BASE}.toc" "${BASE}.lot" "${BASE}.lof" "${BASE}.out"
 
 if ! command -v qpdf >/dev/null 2>&1; then
   echo "qpdf not found: skipping optimisation and encryption" >&2
@@ -113,7 +128,7 @@ fi
 qpdf --object-streams=generate \
      --recompress-flate \
      --compression-level=9 \
-     "${BASE}.pdf" "${BASE}-dist.pdf"
+     "${OUT}/${BASE}.pdf" "${OUT}/${BASE}-dist.pdf"
 
 # Encrypt the distribution copy when passwords are supplied.
 # AES-256 with separate user/owner passwords. Permissions are
@@ -129,7 +144,7 @@ if [[ -n "${OS_DOC_USER_PASSWORD:-}" ]]; then
        --extract=n \
        --annotate=n \
        -- \
-       "${BASE}-dist.pdf" "${BASE}-enc.pdf"
-  echo "Encrypted copy: ${BASE}-enc.pdf"
-  qpdf --check --password="$OS_DOC_USER_PASSWORD" "${BASE}-enc.pdf"
+       "${OUT}/${BASE}-dist.pdf" "${OUT}/${BASE}-enc.pdf"
+  echo "Encrypted copy: ${OUT}/${BASE}-enc.pdf"
+  qpdf --check --password="$OS_DOC_USER_PASSWORD" "${OUT}/${BASE}-enc.pdf"
 fi
