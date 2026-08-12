@@ -37,7 +37,7 @@ with the GSCP validation available under `gscp: true`.
 - Quarto 1.9 or later
 - A LaTeX engine (lualatex) on TeX Live 2023 or later
 - TeX Gyre Pagella, Montserrat and Liberation Mono fonts
-- Python 3 (for the validation gates in `scripts/`)
+- Python 3 (for the validation gates in `tools/`)
 - Optionally `quarto install verapdf` for PDF/A validation
 
 ## Documentation
@@ -48,7 +48,7 @@ with the GSCP validation available under `gscp: true`.
 - [docs/decisions.md](docs/decisions.md): the architecture decisions
   and their rationale
 - [CHANGELOG.md](CHANGELOG.md): the release history, generated from
-  the commit history by `scripts/make-changelog.py`
+  the commit history by `tools/make-changelog.py`
 - [.github/github-settings.md](.github/github-settings.md): the
   GitHub settings that protect `main` and enable the release
   pipeline
@@ -149,7 +149,7 @@ document, not just this template. LaTeX-side patches (hooks,
 `\@sect` redefinitions, tagging sockets) each fail on this toolchain:
 compile errors, Hn-contains-P nesting violations, or tree corruption.
 
-`scripts/check-pdfua.py` is the honest gate. It fails when a UA-2 render
+`tools/check-pdfua.py` is the honest gate. It fails when a UA-2 render
 lacks heading roles, so no heading-less document is ever shipped as
 accessible. `render.sh` runs it automatically for UA-2 renders. The
 upstream fix would be Quarto wiring section-to-heading tagging on
@@ -241,7 +241,7 @@ TeX Gyre Pagella (body), Montserrat (headings) and Liberation Mono.
 GDS Transport is proprietary and limited to gov.uk domains, and no
 public MOD typeface exists, so these are the professional free
 fallbacks. Montserrat is downloaded from a pinned upstream commit
-with a SHA-256 check on every download (`scripts/install-fonts.sh`),
+with a SHA-256 check on every download (`tools/install-fonts.sh`),
 so a changed or tampered font file fails the render loudly. The
 licences of every component are recorded in [NOTICE](NOTICE).
 
@@ -252,10 +252,10 @@ the example document:
 
 1. **Page-overflow gate.** Any `Overfull \hbox` or `\vbox` fails the
    render, so no document ships with content clipped at a margin.
-2. **Controlled-language gate** (`scripts/check-ste.py`). Fails on
+2. **Controlled-language gate** (`tools/check-ste.py`). Fails on
    the JSP 101 / ASD-STE100 hard violations. A document opts out with
    `ste: false`.
-3. **PDF/UA-2 structure gate** (`scripts/check-pdfua.py`). Fires only
+3. **PDF/UA-2 structure gate** (`tools/check-pdfua.py`). Fires only
    for UA-2 renders and fails when the tagged structure tree lacks
    heading roles.
 
@@ -282,7 +282,7 @@ no diagram tool (Mermaid, PlantUML or similar) spins up a headless
 browser or calls a web service at build time, and no compute engine
 runs at render. The only network access in the whole pipeline is a
 one-time toolchain install (Quarto, a TeX distribution, the fonts in
-`scripts/install-fonts.sh`, and optionally veraPDF). Install those
+`tools/install-fonts.sh`, and optionally veraPDF). Install those
 once on an online machine and the same tree renders identically on
 an air-gapped one; the font and action pins make the offline build
 reproducible.

@@ -26,7 +26,7 @@ jobs:
           # document namespace and created timestamp are commit-derived
           # by design (they identify the exact baseline), so the
           # comparison ignores them and checks the package content.
-          python3 scripts/make-sbom.py /tmp/sbom-check.json
+          python3 tools/make-sbom.py /tmp/sbom-check.json
           python3 - <<'EOF'
           import json
           a = json.load(open('sbom.spdx.json'))
@@ -34,7 +34,7 @@ jobs:
           for doc in (a, b):
               doc.pop('documentNamespace', None)
               doc['creationInfo'].pop('created', None)
-          assert a == b, 'sbom.spdx.json is stale - run scripts/make-sbom.py and commit the result'
+          assert a == b, 'sbom.spdx.json is stale - run tools/make-sbom.py and commit the result'
           print('SBOM fresh')
           EOF
 
@@ -65,7 +65,7 @@ jobs:
           which tlmgr lualatex && lualatex --version | head -1
 
       - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
-        run: bash scripts/install-fonts.sh
+        run: bash tools/install-fonts.sh
 
       - name: Install verapdf and qpdf
         run: |
@@ -223,7 +223,7 @@ jobs:
 
       - name: Show the structure-gate finding
         run: |
-          python3 scripts/check-pdfua.py _output/examples/template.pdf || \
+          python3 tools/check-pdfua.py _output/examples/template.pdf || \
             echo "EXPECTED: heading-role gap documented in README (upstream KOMA/tagging limitation)"
           VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
           "$VERAPDF" --format text _output/examples/template.pdf | tail -3

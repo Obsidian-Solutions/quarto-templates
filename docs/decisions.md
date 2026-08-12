@@ -31,7 +31,7 @@ clickable table of contents.
 
 **Decision.** The default PDF/A-4f render is deliberately untagged.
 PDF/UA-2 is an opt-in extra (`pdf-standard: [a-4f, ua-2]`), checked
-by `scripts/check-pdfua.py`, which fails honestly on the missing
+by `tools/check-pdfua.py`, which fails honestly on the missing
 heading roles. The known limitation is documented in the README.
 
 **Consequence.** The accessible HTML companion carries the screen
@@ -74,10 +74,10 @@ split is deliberate.
 
 **Context.** The `ste` front-matter option promises a
 controlled-language gate. `quarto add` installs only the
-`_extensions/` directory, so a script in the repo's `scripts/`
+`_extensions/` directory, so a script in the repo's `tools/`
 folder never reaches an installed user.
 
-**Decision.** The gate (`scripts/check-ste.py`) belongs to the
+**Decision.** The gate (`tools/check-ste.py`) belongs to the
 example project's build tooling. An installed extension enforces
 only `gscp: true`. The extension README states this boundary.
 
@@ -89,7 +89,7 @@ the script with the example project.
 **Context.** The headings font is a supply-chain input. A changed or
 tampered font file would alter every rendered document.
 
-**Decision.** `scripts/install-fonts.sh` downloads Montserrat from a
+**Decision.** `tools/install-fonts.sh` downloads Montserrat from a
 pinned upstream commit and verifies each TTF by SHA-256. A mismatch
 fails the render.
 

@@ -102,16 +102,16 @@ fi
 # when the extension is configured for ua-2 (the default a-4f is
 # deliberately untagged to keep the TOC clickable).
 if grep -q "ua-2" "$(dirname "$0")/_extensions/obsidian/_extension.yml"; then
-  if [ -x "$(dirname "$0")/scripts/check-pdfua.py" ]; then
-    python3 "$(dirname "$0")/scripts/check-pdfua.py" "${OUT}/${BASE}.pdf"
+  if [ -x "$(dirname "$0")/tools/check-pdfua.py" ]; then
+    python3 "$(dirname "$0")/tools/check-pdfua.py" "${OUT}/${BASE}.pdf"
   fi
 fi
 
 # Controlled-language gate (JSP 101 / ASD-STE100). Fails on hard
 # violations (banned words, contractions, American spellings). A
 # document opts out with `ste: false` in its front matter.
-if [ -f "$(dirname "$0")/scripts/check-ste.py" ]; then
-  python3 "$(dirname "$0")/scripts/check-ste.py" "$FILE"
+if [ -f "$(dirname "$0")/tools/check-ste.py" ]; then
+  python3 "$(dirname "$0")/tools/check-ste.py" "$FILE"
 fi
 
 # Tidy the working directory: the gates above have read the LaTeX

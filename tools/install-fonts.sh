@@ -22,7 +22,7 @@ install_font() {
   got=$(sha256sum "${HOME}/.fonts/${name}.ttf" | cut -d' ' -f1)
   if [ "$got" != "$want" ]; then
     echo "FONT CHECKSUM MISMATCH for ${name}: got ${got}, want ${want}" >&2
-    echo "Update the pin in scripts/install-fonts.sh (and NOTICE) only after verifying the upstream change." >&2
+    echo "Update the pin in tools/install-fonts.sh (and NOTICE) only after verifying the upstream change." >&2
     exit 1
   fi
   echo "verified ${name} (${got})"

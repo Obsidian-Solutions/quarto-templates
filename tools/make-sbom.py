@@ -12,7 +12,7 @@ Stdlib only (Python 3). Deterministic: package order is sorted and
 the document creation date comes from the last commit, so the CI
 freshness check (regenerate, then `git diff --exit-code`) is stable.
 
-Usage: python3 scripts/make-sbom.py [output.json]
+Usage: python3 tools/make-sbom.py [output.json]
 """
 
 import json
@@ -183,7 +183,7 @@ def build_document(commit: str, created: str) -> dict:
         "creationInfo": {
             "created": created,
             "creators": [
-                "Tool: scripts/make-sbom.py",
+                "Tool: tools/make-sbom.py",
                 "Organization: Obsidian Solutions",
             ],
         },

@@ -18,7 +18,7 @@ verbs, nominalisation, long paragraphs).
 A document can opt out with `ste: false` in its front matter (for
 example to quote external material verbatim).
 
-Usage: python3 scripts/check-ste.py document.qmd
+Usage: python3 tools/check-ste.py document.qmd
 Exit codes: 0 = clean, 1 = hard violations, 2 = usage error.
 """
 

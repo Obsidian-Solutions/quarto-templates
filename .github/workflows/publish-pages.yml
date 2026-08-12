@@ -45,7 +45,7 @@ jobs:
           which tlmgr lualatex && lualatex --version | head -1
 
       - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
-        run: bash scripts/install-fonts.sh
+        run: bash tools/install-fonts.sh
 
       - name: Install qpdf, fonts and verapdf
         run: |

@@ -74,10 +74,10 @@ entries by hand. The generator does the whole job from the version
 number you give it:
 
 1. Merge the change to `main` with squash.
-2. Generate the release content: `python3 scripts/make-changelog.py --version 3.4.0`.
+2. Generate the release content: `python3 tools/make-changelog.py --version 3.4.0`.
    This regenerates `CHANGELOG.md` from the commit history, keeps the
    version homes in step (`_extensions/obsidian/_extension.yml` and
-   `scripts/make-sbom.py`), and regenerates the SBOM.
+   `tools/make-sbom.py`), and regenerates the SBOM.
 3. Commit and push: `git add -A && git commit -S -m "chore: prepare release v3.4.0" && git push`.
    Sign the commit with your key.
 4. Create the release: `gh release create v3.4.0 --generate-notes`.
@@ -88,7 +88,7 @@ number you give it:
 Semantic versioning is a judgement call: pick the major, minor, or
 patch step that fits the change.
 
-The generator is `scripts/make-changelog.py`. It is deterministic and
+The generator is `tools/make-changelog.py`. It is deterministic and
 stdlib-only, so the changelog never drifts from the commits. Commit
 subjects become changelog entries, so write the subject for the
 reader of the release notes: `feat: add the obsidian-beamer format`,
