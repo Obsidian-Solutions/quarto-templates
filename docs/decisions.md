@@ -6,6 +6,25 @@ that a repository documents its own architecture decisions. Each
 entry states the context, the decision, and the consequence. New
 entries go at the top.
 
+## Single maintainer and the two-person rule
+
+**Context.** The NSA and CISA guidance "Defending CI/CD
+Environments" (June 2023) and the NCSC secure development guidance
+require a two-person rule for code updates and protected release
+environments. The business has one maintainer, so two approvals are
+impossible.
+
+**Decision.** The controls that a single person can meet stand:
+pull-request-only merges, signed commits, required status checks,
+and branch protection on `main`. The release job runs in the
+protected `release` environment, and the draft release is the human
+review point before publish. A required reviewer for the release
+environment is a settings click away when a second person joins.
+
+**Consequence.** The two-person rule is documented as a deliberate
+divergence, not a silent gap. Every other control in the guidance
+applies.
+
 ## PDF/A-4f as the archival format
 
 **Context.** The PDF output must survive long enough to be a
