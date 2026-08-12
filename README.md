@@ -49,6 +49,9 @@ with the GSCP validation available under `gscp: true`.
   and their rationale
 - [CHANGELOG.md](CHANGELOG.md): the release history, generated from
   the commit history by `scripts/make-changelog.py`
+- [.github/github-settings.md](.github/github-settings.md): the
+  GitHub settings that protect `main` and enable the release
+  pipeline
 
 ## Use as a template
 
