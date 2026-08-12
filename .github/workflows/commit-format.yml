@@ -1,0 +1,47 @@
+# Commit format check
+# Enforces the commit format in CONTRIBUTING.md on pull requests:
+#   <component>: <imperative summary, under 50 characters>
+# Merge commits and revert commits are exempt.
+
+name: Commit format
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check commit subjects
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Validate subjects
+        run: |
+          BASE="${{ github.event.pull_request.base.sha }}"
+          HEAD="${{ github.event.pull_request.head.sha }}"
+          FAIL=0
+          while IFS= read -r subject; do
+            case "$subject" in
+              Revert*) continue ;;
+              [a-z]*": "*) ;;
+              *)
+                echo "Invalid subject (expected 'component: imperative summary'):"
+                echo "  $subject"
+                FAIL=1
+                continue
+                ;;
+            esac
+            if [ "${#subject}" -gt 50 ]; then
+              echo "Subject over 50 characters:"
+              echo "  $subject"
+              FAIL=1
+            fi
+          done < <(git log --no-merges --format=%s "$BASE".."$HEAD")
+          exit "$FAIL"
