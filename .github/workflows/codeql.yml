@@ -1,0 +1,55 @@
+# CodeQL analysis
+
+# Static analysis (SAST) per the NCSC secure-development standard.
+# This is the org's custom setup (the org codeql workflow template),
+# deliberately chosen over GitHub default code scanning: the custom
+# workflow runs on a schedule and pins its actions by SHA. Keep
+# default setup OFF — it conflicts with this workflow and the
+# analysis upload is rejected.
+# The analysable surface is the Python build tooling in tools/ and
+# the GitHub Actions. The Lua filters have no CodeQL query pack, so
+# they stay covered by the render-time validation gates.
+
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "21 3 * * 1"
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    if: ${{ !github.event.repository.private }}
+    name: Analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [python, actions]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@5595ccaf912efad79be6eef63a5619ff05969be3 # v4
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@5595ccaf912efad79be6eef63a5619ff05969be3 # v4
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@5595ccaf912efad79be6eef63a5619ff05969be3 # v4
+        with:
+          category: "/language:${{matrix.language}}"
