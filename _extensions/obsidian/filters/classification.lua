@@ -11,8 +11,8 @@
 -- Also records the watermark text into the metadata for formats
 -- that read it from a document property (DOCX header field).
 
-local banner_formats = { html = true, revealjs = true, docx = true }
-local plain_formats = { html = true, revealjs = true, docx = true, pptx = true }
+local banner_formats = { html = true, revealjs = true, docx = true, epub = true }
+local plain_formats = { html = true, revealjs = true, docx = true, pptx = true, epub = true }
 
 function Pandoc(doc)
   -- FORMAT is pandoc's writer-format global; PANDOC_WRITER_OPTIONS

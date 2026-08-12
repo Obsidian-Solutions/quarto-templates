@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 title: Obsidian Solutions Templates
 author: Obsidian Solutions
-version: 3.2.0
+version: 3.3.0
 description: >-
   Controlled business documents in the Obsidian Solutions brand: PDF/A-4f
   with provenance, accessible HTML, client-editable DOCX, revealjs decks,
@@ -135,6 +135,21 @@ contributes:
         - filters/classification-gate.lua
         - filters/classification.lua
         - filters/review-overdue.lua
+    beamer:
+      # PDF presentations via LaTeX beamer. The article-style partials
+      # (cover, fancyhdr) do not apply; a beamer-specific header carries
+      # the monochrome palette, the classification footline, and the
+      # near-black rule. The title partial defines the classification
+      # command in the preamble, before the document starts. `##`
+      # headings become slides, matching the revealjs examples.
+      include-in-header: include-in-header-beamer.tex
+      template-partials:
+        - partials/beamer/title.tex
+        - partials/beamer/before-body.tex
+      filters:
+        - filters/classification-gate.lua
+      aspectratio: 169
+      slide-level: 2
     dashboard:
       # Client-facing dashboards. The html theme carries the house
       # palette and typography; dashboards are live-data products,
@@ -142,6 +157,15 @@ contributes:
       # are for documents).
       theme: theme.scss
       toc: true
+      filters:
+        - filters/classification-gate.lua
+        - filters/classification.lua
+    epub:
+      # E-reader distribution. The classification banner and the
+      # controlled-language gate apply; the palette comes from
+      # epub.css, and the brand mark becomes the cover image.
+      css: epub.css
+      cover-image: assets/obsidian-logo.png
       filters:
         - filters/classification-gate.lua
         - filters/classification.lua

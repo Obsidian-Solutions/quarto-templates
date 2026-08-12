@@ -7,7 +7,8 @@ DOCX, revealjs decks, and dashboards.
 `quarto add Obsidian-Solutions/quarto-templates` installs this
 directory into `_extensions/Obsidian-Solutions/obsidian/`. The
 formats are `obsidian-pdf`, `obsidian-html`, `obsidian-docx`,
-`obsidian-pptx`, `obsidian-revealjs`, and `obsidian-dashboard`.
+`obsidian-pptx`, `obsidian-revealjs`, `obsidian-beamer`,
+`obsidian-dashboard`, and `obsidian-epub`.
 
 ## Front matter
 
@@ -42,7 +43,11 @@ header, the footer, and the PDF metadata.
   contrast, classification banner.
 - **DOCX / PPTX**: editable companions carrying the classification
   marking.
-- **Revealjs / dashboard**: presentations and live-data products.
+- **Revealjs / beamer / dashboard**: presentations and live-data
+  products. The revealjs and beamer decks share the 16:9 format and
+  the classification footline; the dashboard is a live-data product.
+- **Epub**: e-reader distribution, with the classification banner and
+  the brand mark as the cover image.
 
 ## Verification gates
 

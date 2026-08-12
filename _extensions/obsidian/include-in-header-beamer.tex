@@ -1,0 +1,41 @@
+% SPDX-License-Identifier: MIT
+% Obsidian Solutions house style for beamer PDF presentations.
+% The article-style header (fancyhdr, geometry, titlesec) does not
+% apply to beamer; this header carries the monochrome palette and the
+% classification footline. The \classification command is defined in
+% partials/before-body-beamer.tex, which is template-processed.
+\usepackage{xcolor}
+
+% ---- Palette (matches the document formats) ----
+\definecolor{obsidian}{RGB}{18,18,18}    % primary text (16.8:1 on white)
+\definecolor{obsidianl}{RGB}{72,73,73}   % secondary text (9.0:1, AAA)
+\definecolor{ruled}{RGB}{206,206,206}   % hairlines (decorative)
+
+% ---- Links: colour is never the only cue ----
+\hypersetup{colorlinks=true, linkcolor=obsidianl, urlcolor=obsidianl, citecolor=obsidianl}
+
+% ---- Structure colours ----
+\setbeamercolor{structure}{fg=obsidian}
+\setbeamercolor{normal text}{fg=obsidian}
+\setbeamercolor{frametitle}{fg=obsidian}
+\setbeamercolor{title}{fg=obsidian}
+\setbeamercolor{subtitle}{fg=obsidianl}
+\setbeamercolor{author}{fg=obsidianl}
+
+% ---- Classification footline on every slide ----
+% The marking sits right, with the frame number, on a near-black rule;
+% navigation symbols are removed for a clean professional deck.
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.6ex,dp=1.2ex,left]{author in head/foot}%
+      \usebeamerfont{author in head/foot}\insertshortauthor
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.6ex,dp=1.2ex,right]{author in head/foot}%
+      \usebeamerfont{author in head/foot}%
+      \classification\hspace{1.5em}\insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}%
+  }%
+  \vskip0pt%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=0.6pt]{}\color{obsidian}\rule{\paperwidth}{0.6pt}\end{beamercolorbox}%
+}

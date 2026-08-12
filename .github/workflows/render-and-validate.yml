@@ -67,7 +67,7 @@ jobs:
       - name: Install verapdf and qpdf
         run: |
           quarto install verapdf
-          sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation
+          sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation poppler-utils
 
       - name: Render default document (PDF/A-4f)
         run: ./render.sh examples/template.qmd
@@ -104,6 +104,34 @@ jobs:
           z = zipfile.ZipFile('_output/examples/template.docx')
           assert z.testzip() is None
           assert 'word/document.xml' in z.namelist()
+          EOF
+
+      - name: Render beamer deck (PDF slides)
+        run: |
+          quarto render examples/template-slides.qmd --to obsidian-beamer
+          # The classification marking and the frame number must sit on
+          # every slide, including the title slide.
+          pages=$(pdfinfo _output/examples/template-slides.pdf | awk '/^Pages/{print $2}')
+          [ "$pages" -eq 6 ] || { echo "expected 6 slides, got $pages"; exit 1; }
+          for p in $(seq 1 "$pages"); do
+            pdftotext -f "$p" -l "$p" _output/examples/template-slides.pdf - | \
+              grep -q "Commercial in Confidence" || { echo "marking missing on slide $p"; exit 1; }
+          done
+
+      - name: Render epub
+        run: |
+          quarto render examples/template.qmd --to obsidian-epub
+          # The classification banner must be in the book, and the
+          # brand mark must be the cover image.
+          python3 - <<'EOF'
+          import zipfile
+          z = zipfile.ZipFile('_output/examples/template.epub')
+          names = z.namelist()
+          assert z.testzip() is None
+          content = [z.read(n).decode() for n in names if n.endswith(('.xhtml', '.html'))]
+          assert any('obsidian-classification' in c and 'Commercial in Confidence' in c for c in content), \
+              'classification banner missing from epub content'
+          assert any('cover' in n.lower() for n in names), 'no cover image in epub'
           EOF
 
   # The UA-2 path is informational: the structure gate fails on the

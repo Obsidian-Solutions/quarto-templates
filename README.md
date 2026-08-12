@@ -193,9 +193,25 @@ KOMA; revisit this after a Quarto or LaTeX release addresses it.
 - **Revealjs** (`obsidian-revealjs`): client presentations. The
   revealjs theme carries the house palette and typography; the
   classification filter marks the deck. Use `##` for slides.
+- **Beamer** (`obsidian-beamer`): PDF presentations, for clients or
+  channels that need slides as a PDF. Same 16:9 format and
+  classification footline as the revealjs deck: the marking and the
+  frame number sit on every slide, including the title slide. Use the
+  same `##` slide structure.
+- **PPTX** (`obsidian-pptx`): the client-editable deck, carrying the
+  classification marking on every slide via the reference-file footer.
+- **Epub** (`obsidian-epub`): e-reader distribution of the document.
+  The classification banner and the controlled-language gate apply.
+  The brand mark becomes the cover image.
 - **Dashboard** (`obsidian-dashboard`): client-facing dashboards for
   live data. Uses the html theme. Only the classification filter
   applies, since review warnings are for documents.
+
+Quarto can also emit plain formats (markdown, LaTeX, ODT, Typst,
+ipynb) with `quarto render ... --to <format>`. Those carry no
+Obsidian Solutions branding: the filters, partials, and themes above
+are format-specific, and a format with no `obsidian-*` equivalent
+renders with Quarto's defaults.
 
 ## Examples
 

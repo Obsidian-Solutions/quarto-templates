@@ -1,0 +1,38 @@
+/* SPDX-License-Identifier: MIT */
+/* Obsidian Solutions house style for the epub companion: monochrome
+   palette matching the document formats. */
+
+body {
+  color: #121212;
+  font-family: "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #121212;
+  font-family: Montserrat, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600;
+}
+
+a {
+  color: #484949;
+  text-decoration: underline;
+}
+
+code {
+  background-color: #f3f3f3;
+  color: #121212;
+}
+
+/* Classification banner, injected by filters/classification.lua */
+.obsidian-classification {
+  color: #484949;
+  font-family: Montserrat, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: 1px solid #cecece;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}

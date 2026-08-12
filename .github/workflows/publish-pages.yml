@@ -64,10 +64,13 @@ jobs:
       - name: Render the remaining formats (deck, dashboard, pptx)
         run: |
           # The example site ships every format the template produces:
-          # the revealjs deck and its editable PPTX, and the dashboard.
+          # the revealjs deck, its beamer PDF and editable PPTX, the
+          # dashboard, and the epub of the document.
           quarto render examples/template-slides.qmd
+          quarto render examples/template-slides.qmd --to obsidian-beamer
           quarto render examples/template-slides.qmd --to obsidian-pptx
           quarto render examples/template-dashboard.qmd
+          quarto render examples/template.qmd --to obsidian-epub
 
       - name: Assemble the site
         run: |
@@ -75,7 +78,9 @@ jobs:
           cp _output/examples/template.html site/index.html
           cp _output/examples/template.pdf site/template.pdf
           cp _output/examples/template.docx site/template.docx
+          cp _output/examples/template.epub site/template.epub
           cp _output/examples/template-slides.html site/template-slides.html
+          cp _output/examples/template-slides.pdf site/template-slides.pdf
           cp _output/examples/template-slides.pptx site/template-slides.pptx
           cp _output/examples/template-dashboard.html site/template-dashboard.html
           cp obsidian-logo.png site/obsidian-logo.png
@@ -99,8 +104,10 @@ jobs:
             'Download: '
             '<a href="template.pdf">PDF</a> &nbsp;|&nbsp; '
             '<a href="template.docx">DOCX</a> &nbsp;|&nbsp; '
+            '<a href="template.epub">EPUB</a> &nbsp;|&nbsp; '
             '<a href="index.html">HTML</a> &nbsp;|&nbsp; '
             '<a href="template-slides.html">Slides</a> &nbsp;|&nbsp; '
+            '<a href="template-slides.pdf">Slides PDF</a> &nbsp;|&nbsp; '
             '<a href="template-slides.pptx">PPTX</a> &nbsp;|&nbsp; '
             '<a href="template-dashboard.html">Dashboard</a> &nbsp;|&nbsp; '
             '<a href="accessibility-statement.md">Accessibility statement</a>'
