@@ -19,6 +19,10 @@
 #   OS_DOC_USER_PASSWORD   user password (opens the PDF)
 #   OS_DOC_OWNER_PASSWORD  owner password (lifts permissions)
 #                         (defaults to the user password if unset)
+#
+# Verification gates fail loudly when their tool is missing, so a
+# clean render is never a false green. GATE_SKIP names gates to
+# disable deliberately (comma-separated: pdffonts,pdfua,ste).
 set -euo pipefail
 
 FILE="${1:-examples/template.qmd}"
@@ -79,8 +83,15 @@ fi
 # is optional to install; pdffonts (poppler) is a fast check that
 # every font is embedded (emb) with a ToUnicode map (uni), which
 # PDF/A requires for text extraction. Fails on a missing or
-# incomplete embedding before the slower veraPDF run.
-if command -v pdffonts >/dev/null 2>&1; then
+# incomplete embedding before the slower veraPDF run. A render with
+# the tool absent fails too: a "clean" PDF without the check is a
+# false green. GATE_SKIP=pdffonts disables the gate deliberately.
+if ! command -v pdffonts >/dev/null 2>&1; then
+  if [[ ",${GATE_SKIP:-}," != *",pdffonts,"* ]]; then
+    echo "GATE pdffonts: poppler-utils not found; install it or set GATE_SKIP=pdffonts" >&2
+    exit 1
+  fi
+else
   # Column offsets from the end: the type field can contain spaces
   # ("CID Type 0C"), so emb/sub/uni are read relative to NF.
   if pdffonts "${OUT}/${BASE}.pdf" | awk 'NR>2 {
@@ -101,19 +112,31 @@ fi
 # It fires only when the extension's pdf-standard value lists ua-2
 # (the default a-4f is deliberately untagged to keep the TOC
 # clickable). The match is keyed to the config value, so a comment
-# mentioning PDF/UA-2 cannot trip the gate.
+# mentioning PDF/UA-2 cannot trip the gate. A missing checker fails
+# the render: a UA-2 claim with no verification is a false green.
+# GATE_SKIP=pdfua disables the gate deliberately.
 if grep -qE "^[[:space:]]*pdf-standard:[[:space:]]*\[[^]]*ua-2" "$(dirname "$0")/_extensions/obsidian/_extension.yml"; then
-  if [ -x "$(dirname "$0")/tools/check-pdfua.py" ]; then
-    python3 "$(dirname "$0")/tools/check-pdfua.py" "${OUT}/${BASE}.pdf"
+  if [ ! -x "$(dirname "$0")/tools/check-pdfua.py" ]; then
+    if [[ ",${GATE_SKIP:-}," != *",pdfua,"* ]]; then
+      echo "GATE pdfua: tools/check-pdfua.py missing or not executable; fix it or set GATE_SKIP=pdfua" >&2
+      exit 1
+    fi
   fi
+  python3 "$(dirname "$0")/tools/check-pdfua.py" "${OUT}/${BASE}.pdf"
 fi
 
 # Controlled-language gate (JSP 101 / ASD-STE100). Fails on hard
 # violations (banned words, contractions, American spellings). A
-# document opts out with `ste: false` in its front matter.
-if [ -f "$(dirname "$0")/tools/check-ste.py" ]; then
-  python3 "$(dirname "$0")/tools/check-ste.py" "$FILE"
+# document opts out with `ste: false` in its front matter. A missing
+# checker fails the render for the same false-green reason.
+# GATE_SKIP=ste disables the gate deliberately.
+if [ ! -f "$(dirname "$0")/tools/check-ste.py" ]; then
+  if [[ ",${GATE_SKIP:-}," != *",ste,"* ]]; then
+    echo "GATE ste: tools/check-ste.py missing; restore it or set GATE_SKIP=ste" >&2
+    exit 1
+  fi
 fi
+python3 "$(dirname "$0")/tools/check-ste.py" "$FILE"
 
 # Tidy the working directory: the gates above have read the LaTeX
 # log, so move it into the output dir (it is the build record) and

@@ -22,6 +22,18 @@
 \setbeamercolor{subtitle}{fg=obsidianl}
 \setbeamercolor{author}{fg=obsidianl}
 
+% ---- Fonts: house pairing (Palatino body, Montserrat titles) ----
+% fontspec maps mainfont to the roman family and sansfont to the sans
+% family. Beamer's default structure fonts inherit the roman family,
+% so the titles must be pinned to the sans family explicitly to pick
+% up Montserrat, matching the article formats' heading style.
+\setbeamerfont{frametitle}{family=\sffamily}
+\setbeamerfont{title}{family=\sffamily}
+\setbeamerfont{subtitle}{family=\sffamily}
+\setbeamerfont{author}{family=\sffamily}
+\setbeamerfont{date}{family=\sffamily}
+\setbeamerfont{framesubtitle}{family=\sffamily}
+
 % ---- Classification footline on every slide ----
 % The marking sits right, with the frame number, on a near-black rule;
 % navigation symbols are removed for a clean professional deck.

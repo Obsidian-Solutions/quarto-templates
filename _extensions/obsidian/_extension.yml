@@ -141,7 +141,12 @@ contributes:
       # the monochrome palette, the classification footline, and the
       # near-black rule. The title partial defines the classification
       # command in the preamble, before the document starts. `##`
-      # headings become slides, matching the revealjs examples.
+      # headings become slides, matching the revealjs examples. The
+      # font pairing matches the article formats: Palatino body,
+      # Montserrat headings.
+      mainfont: "TeX Gyre Pagella"
+      sansfont: "Montserrat"
+      monofont: "Liberation Mono"
       include-in-header: include-in-header-beamer.tex
       template-partials:
         - partials/beamer/title.tex

@@ -101,6 +101,11 @@ the example document:
    for UA-2 renders and fails when the tagged structure tree lacks
    heading roles.
 
+Each gate fails the render if its tool is missing, so a clean run is
+never a false green. `GATE_SKIP` names gates to disable deliberately
+(comma-separated: `pdffonts,pdfua,ste`), for environments that render
+without the full toolchain.
+
 Exempt-by-design from the language gate, so the gate measures
 documents and not machinery:
 
