@@ -47,9 +47,9 @@ jobs:
       - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
         run: bash tools/install-fonts.sh
 
-      - name: Install qpdf, fonts and verapdf
+      - name: Install qpdf, fonts, poppler and verapdf
         run: |
-          sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation
+          sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation poppler-utils
           quarto install verapdf
 
       - name: Render the example (HTML, PDF, DOCX)
