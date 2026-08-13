@@ -98,10 +98,11 @@ fi
 # heading roles (upstream gap: KOMA + \DocumentMetadata{tagging=on}
 # never promotes sections to H1-H6; veraPDF passes by design). This
 # checker fails honestly when a UA-2 document lacks heading roles, so
-# we never ship a heading-less document as accessible. It fires only
-# when the extension is configured for ua-2 (the default a-4f is
-# deliberately untagged to keep the TOC clickable).
-if grep -q "ua-2" "$(dirname "$0")/_extensions/obsidian/_extension.yml"; then
+# It fires only when the extension's pdf-standard value lists ua-2
+# (the default a-4f is deliberately untagged to keep the TOC
+# clickable). The match is keyed to the config value, so a comment
+# mentioning PDF/UA-2 cannot trip the gate.
+if grep -qE "^[[:space:]]*pdf-standard:[[:space:]]*\[[^]]*ua-2" "$(dirname "$0")/_extensions/obsidian/_extension.yml"; then
   if [ -x "$(dirname "$0")/tools/check-pdfua.py" ]; then
     python3 "$(dirname "$0")/tools/check-pdfua.py" "${OUT}/${BASE}.pdf"
   fi
