@@ -167,7 +167,7 @@ The per-format capabilities are in [docs/reference.md](docs/reference.md).
 
 ## Examples
 
-Each example file demonstrates one format from a single front
+Each example file shows one format from a single front
 matter block:
 
 | File | Format family | Shows |
