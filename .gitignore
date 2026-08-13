@@ -36,4 +36,6 @@ wm-hard.*
 manifest.json
 site/
 _output/
+.opencode/
+.omo/
 __pycache__/
