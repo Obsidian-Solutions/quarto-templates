@@ -198,7 +198,10 @@
   // ---- Typography ----
   set text(font: body-font, size: fontsize, lang: lang, region: region)
   set par(justify: true, leading: 0.65em)
-  set heading(numbering: none)
+  // Numbered sections, matching the LaTeX format's number-sections.
+  // References (@sec-x / @fig-x) resolve only when the target carries
+  // numbering, so a document that cites sections or figures needs this.
+  set heading(numbering: "1")
   // Heading style: house sans display face, primary colour. Typst
   // 0.13 styles headings through a show rule, not set heading args.
   show heading: set text(font: heading-font, fill: obsidian-colors.primary, weight: 600)
