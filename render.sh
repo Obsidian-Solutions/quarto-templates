@@ -75,12 +75,20 @@ if [ "$ENGINE" = "typst" ]; then
   # render. The render above already surfaced it; fail loudly here if
   # the output claims success but Typst warned.
   # Provenance: attach the source (and the manifest) with the
-  # AFRelationship + MIME keys PDF/A-4f requires. The tool needs the
-  # pdf2quarto venv's pikepdf; absent, the gate fails (a Typst
-  # PDF/A-4f claim without embedded provenance is a false green).
-  PIKEPDF_PY="${PIKEPDF_PY:-/home/matt/Documents/Writing/pdf2quarto/.venv/bin/python}"
-  if [ -x "$(dirname "$0")/tools/attach-provenance.py" ] && \
-     [ -x "$PIKEPDF_PY" ]; then
+  # AFRelationship + MIME keys PDF/A-4f requires. The tool needs
+  # pikepdf; absent, the gate fails (a Typst PDF/A-4f claim without
+  # embedded provenance is a false green). The interpreter is found
+  # in order: an explicit PIKEPDF_PY, a python3 with pikepdf
+  # importable, or the pdf2quarto venv (a known pikepdf host).
+  PIKEPDF_PY="${PIKEPDF_PY:-}"
+  if [ -z "$PIKEPDF_PY" ]; then
+    if python3 -c "import pikepdf" 2>/dev/null; then
+      PIKEPDF_PY=python3
+    elif [ -x /home/matt/Documents/Writing/pdf2quarto/.venv/bin/python ]; then
+      PIKEPDF_PY=/home/matt/Documents/Writing/pdf2quarto/.venv/bin/python
+    fi
+  fi
+  if [ -x "$(dirname "$0")/tools/attach-provenance.py" ] && [ -n "$PIKEPDF_PY" ]; then
     "$PIKEPDF_PY" "$(dirname "$0")/tools/attach-provenance.py" \
       "${OUT}/${BASE}.pdf" "$FILE" "${SRC_DIR}/manifest.json"
   elif [[ ",${GATE_SKIP:-}," != *",provenance,"* ]]; then
