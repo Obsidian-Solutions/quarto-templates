@@ -27,7 +27,7 @@ COMPONENTS = [
     {
         "name": "obsidian-quarto-templates",
         "SPDXID": "SPDXRef-Package-obsidian",
-        "versionInfo": "3.3.0",
+        "versionInfo": "3.4.0",
         "supplier": "Organization: Obsidian Solutions",
         "downloadLocation": "https://github.com/Obsidian-Solutions/quarto-templates",
         "licenseConcluded": "MIT",

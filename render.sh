@@ -67,13 +67,27 @@ else
   ENGINE=latex
 fi
 
-quarto render "$FILE" -M baseline="$HASH, $DATE"
+# The Typst engine reports layout overflows as "content does not fit"
+# warnings on stderr (the LaTeX analog of an Overfull box). Capture
+# stderr so the gate can check it; the render output still reaches
+# the terminal via tee.
+if [ "$ENGINE" = "typst" ]; then
+  TYPST_STDERR="${OUT}/${BASE}-typst-render.log"
+  quarto render "$FILE" -M baseline="$HASH, $DATE" 2> >(tee "$TYPST_STDERR" >&2)
+else
+  quarto render "$FILE" -M baseline="$HASH, $DATE"
+fi
 
 if [ "$ENGINE" = "typst" ]; then
-  # Typst overflow gate. Typst warns "content does not fit" when a
-  # block overflows its frame; the warning lands on stderr during the
-  # render. The render above already surfaced it; fail loudly here if
-  # the output claims success but Typst warned.
+  # Typst overflow gate. A block wider or taller than its frame warns
+  # "content does not fit" (or "does not fit into"); fail the render
+  # so no Typst document ships with content clipped at a margin,
+  # matching the LaTeX path's Overfull gate.
+  if [ -f "$TYPST_STDERR" ] && grep -qE "does not fit" "$TYPST_STDERR"; then
+    echo "PAGE OVERFLOW DETECTED in $FILE (Typst):"
+    grep -E "does not fit" "$TYPST_STDERR"
+    exit 1
+  fi
   # Provenance: attach the source (and the manifest) with the
   # AFRelationship + MIME keys PDF/A-4f requires. The tool needs
   # pikepdf; absent, the gate fails (a Typst PDF/A-4f claim without

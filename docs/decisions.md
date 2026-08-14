@@ -6,6 +6,110 @@ that a repository documents its own architecture decisions. Each
 entry states the context, the decision, and the consequence. New
 entries go at the top.
 
+## Themed title page as an opt-in system
+
+**Context.** The fixed monochrome cover could not be restyled per
+document without hand-editing the partial. The quarto_titlepages
+extension proved the architecture (YAML keys drive a Lua filter,
+which fills defaults and records style codes; TeX partials turn them
+into a layout), but its defaults were journal-grade: Latin Modern
+fonts, no colour control, placeholder logos, an unstyled table of
+contents.
+
+**Decision.** Port the quarto_titlepages architecture into the
+extension as an opt-in `titlepage:` key with six themes (plain,
+formal, classic-lined, colorbox, academic, bg-image) plus custom TeX
+cover files and `titlepage: false`. Fix the port: house fonts,
+house palette via per-element colour keys, a single configurable
+logo, a date block, and the classification marking kept top-right on
+every themed page. The key absent renders the standard cover, so
+existing documents are unchanged.
+
+**Consequence.** A document chooses its cover from YAML without
+touching TeX. The themed page stays traceable (classification and
+identity line) because those are emitted by the partial, not the
+theme. The upstream flaws are fixed in the port, not inherited.
+
+## Canonical design tokens
+
+**Context.** The palette was repeated in three places: the LaTeX
+`\definecolor` block, the HTML light theme, and the HTML dark theme.
+A rebrand meant finding every hex value by hand, and the three
+copies could drift.
+
+**Decision.** `brand.yml` is the single source of truth for colour,
+type, and spacing. `tools/tokens.py` (stdlib, no YAML dependency)
+generates `tokens.tex` for LaTeX and `tokens.scss` for the HTML
+themes. The HTML light theme keeps literal values because Quarto
+evaluates the defaults section before file imports, so a `--check`
+mode fails CI when the theme drifts from the source. The neutral
+accent swatches use plain colour names with no provenance.
+
+**Consequence.** A rebrand is one file plus a generator run. The
+drift guard makes the split (LaTeX generated, SCSS literal) safe:
+the check, not import resolution, keeps them honest. No external
+design-system provenance appears anywhere in the design layer.
+
+## HTML components as a neutral layer
+
+**Context.** The quarto-govuk component set proved the pattern for
+document-page furniture (masthead, metadata box, inset text, status
+strip, organisation bar), but it was tied to another organisation's
+identity and class names.
+
+**Decision.** Port the component set onto the house tokens as one
+shared `_components.scss` serving both light and dark themes, with
+neutral `obsidian-*` class names and no external identity. The
+summary list is the only automatic component (a Lua filter maps
+definition lists to the key/value table); the rest are opt-in via
+container classes.
+
+**Consequence.** Documents get business-document furniture from the
+house design system. The class names are the brand's own, so no
+dependency on or attribution to any external identity layer.
+
+## Per-document PDF standard, not a template lock
+
+**Context.** The PDF format defaulted to PDF/A-4f with no documented
+way to choose another standard. Quarto 1.10 supports the full
+LuaLaTeX matrix: PDF versions 1.4-2.0, PDF/A a-1b through a-4f,
+PDF/UA ua-2, and PDF/X x-4 through x-6p.
+
+**Decision.** Keep a-4f as the default but make it a per-document
+choice: every document overrides `pdf-standard` in its own front
+matter. `render.sh`'s PDF/UA gate reads the document's front matter,
+not the extension default, so a document opting into ua-2 is checked
+even when the default is a-4f. The two known limits are documented:
+a-1b forbids embedded files and soft masks (drop `attach:`, flatten
+the logo), and ua-2 has upstream LaTeX tagging gaps.
+
+**Consequence.** The template limits nothing. All six LuaLaTeX
+standard categories render through the branded machinery and are
+verified against the requested standard by veraPDF.
+
+## Typst engine with PDF/A-4f provenance
+
+**Context.** The Typst format could not emit PDF/A-4f or carry
+provenance attachments (no embed primitive), so it was documented as
+a fast draft with weaker guarantees than the LaTeX archive.
+
+**Decision.** Three findings removed the limits. Quarto passes
+`pdf-standard` through to Typst, so its render validates as PDF/A-4f.
+`tools/attach-provenance.py` (pikepdf) embeds the source and
+manifest after the render, writing the AFRelationship key and MIME
+Subtype that PDF/A-4f clause 6.9 requires (qpdf's
+`--add-attachment` writes neither). `render.sh` detects the engine
+and runs the shared gates (STE, fonts, PDF/UA) plus the Typst
+provenance gate, skipping only the LaTeX-log gates.
+
+**Consequence.** The Typst format matches the LaTeX archive's
+guarantees: PDF/A-4f validated, source and manifest embedded, fonts
+with ToUnicode. One source file produces two archival renders from
+two engines. The Typst engine also surfaced a real bug in the
+committed format (the import alias broke the show rule) that the
+render-verification at commit time had masked with a stale test
+copy; the fresh-tree CI test now catches this class of error.
+
 ## Single maintainer and the two-person rule
 
 **Context.** The NSA and CISA guidance "Defending CI/CD

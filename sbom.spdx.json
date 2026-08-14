@@ -1,14 +1,14 @@
 {
   "SPDXID": "SPDXRef-DOCUMENT",
   "creationInfo": {
-    "created": "2026-08-12T09:50:26+01:00",
+    "created": "2026-08-14T14:32:29+01:00",
     "creators": [
       "Tool: tools/make-sbom.py",
       "Organization: Obsidian Solutions"
     ]
   },
   "dataLicense": "CC0-1.0",
-  "documentNamespace": "https://github.com/Obsidian-Solutions/quarto-templates/sbom/spdx/d0033f8a4a365073cca1826f4acef45b9af93688",
+  "documentNamespace": "https://github.com/Obsidian-Solutions/quarto-templates/sbom/spdx/1bcf7add3bc02e46718dd711d4380d1020606d17",
   "name": "obsidian-quarto-templates",
   "packages": [
     {
@@ -90,7 +90,7 @@
       "licenseConcluded": "MIT",
       "name": "obsidian-quarto-templates",
       "supplier": "Organization: Obsidian Solutions",
-      "versionInfo": "3.3.0"
+      "versionInfo": "3.4.0"
     },
     {
       "SPDXID": "SPDXRef-Package-reference-docx",
