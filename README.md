@@ -6,14 +6,13 @@ use, an HTML version for reading, a DOCX for client editing, a
 revealjs deck for presenting, and a dashboard for live figures.
 
 The template follows the document standards in the standards library
-(UK PDF document standards, LaTeX/Pandoc/Quarto production,
-GOV.UK and MOD design-review floors) and the professional conventions
-those systems establish: full metadata surface, pagination control,
-a classification marking on every page, WCAG-checked contrast, and a
-traceable baseline. The identity is our own monochrome brand: a
+(UK PDF document standards, LaTeX/Pandoc/Quarto production, and the
+professional design-review floors those systems establish) and the
+professional conventions they share: full metadata surface, pagination
+control, a classification marking on every page, WCAG-checked contrast,
+and a traceable baseline. The identity is our own monochrome brand: a
 near-black primary drawn from the website brand colour, with greys
-for secondary text and rules. It does not mimic any government
-identity.
+for secondary text and rules.
 
 ## Standards posture
 
@@ -235,9 +234,9 @@ The palette table and the rebranding instructions are in
 ## Fonts
 
 TeX Gyre Pagella (body), Montserrat (headings) and Liberation Mono.
-GDS Transport is proprietary and limited to gov.uk domains, and no
-public MOD typeface exists, so these are the professional free
-fallbacks. Montserrat is downloaded from a pinned upstream commit
+The public system typefaces used by national bodies are restricted to
+their own domains and services, so these professional free fonts are
+the fallbacks. Montserrat is downloaded from a pinned upstream commit
 with a SHA-256 check on every download (`tools/install-fonts.sh`),
 so a changed or tampered font file fails the render loudly. The
 licences of every component are recorded in [NOTICE](NOTICE).

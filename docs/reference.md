@@ -186,7 +186,7 @@ Set `gscp: true` in the front matter to validate the marking against
 the UK Government Security Classifications Policy (GSCP v2.0). The
 gate (`filters/classification-gate.lua`):
 
-- accepts `confidentiality` or `classification` (the MOD field name)
+- accepts `confidentiality` or `classification` (an accepted alias)
 - defaults to OFFICIAL when no marking is set
 - fails the render on obsolete levels (RESTRICTED, CONFIDENTIAL) or
   values outside the GSCP set

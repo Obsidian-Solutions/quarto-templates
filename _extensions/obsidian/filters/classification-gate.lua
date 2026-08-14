@@ -9,8 +9,8 @@
 -- GSCP, without making it the template's identity.
 --
 -- When gscp mode is on:
---   - accepts `confidentiality` or `classification` (the MOD field
---     name, so mod-govuk-style templates drop in unchanged)
+--   - accepts `confidentiality` or `classification` (the field name
+--     used by GSCP-style templates, so they drop in unchanged)
 --   - resolves the default marking to OFFICIAL when none is set
 --     (GSCP: OFFICIAL is the default level)
 --   - fails the render on obsolete levels (RESTRICTED, CONFIDENTIAL)
