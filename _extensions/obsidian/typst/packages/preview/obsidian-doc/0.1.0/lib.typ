@@ -120,15 +120,16 @@
 // accepted for signature uniformity and unused, like the LaTeX
 // banded themes.
 #let banded-cover(
-  title, subtitle, author, date, confidentiality, reference, edition, review-date, cover, doc-type, heading-font, logo,
+  title, subtitle, author, date, confidentiality, reference, edition, review-date, cover, doc-type, heading-font, logo, margin,
 ) = {
   let band = if cover == "banded-slate" { band-colors.slate } else { band-colors.maroon }
   let rule-color = if cover == "banded-slate" { band-colors.yellow } else { band-colors.gold }
 
-  // Full-page band. place(top-left, float: true) fills the page box.
+  // Full-page band. place() without an alignment anchors the box at
+  // the top-left of the page frame; the negative dx/dy stretch it
+  // over the margins so the band reaches the paper edge.
   set page(background: none)
   place(
-    top-left,
     dx: -margin.left,
     dy: -margin.top,
     box(width: 100% + margin.left + margin.right, height: 100% + margin.top + margin.bottom, fill: band),
@@ -265,7 +266,7 @@
 
   // ---- Cover page ----
   if cover == "banded" or cover == "banded-slate" {
-    banded-cover(title, subtitle, author, date, confidentiality, reference, edition, review-date, cover, doc-type, heading-font, logo)
+    banded-cover(title, subtitle, author, date, confidentiality, reference, edition, review-date, cover, doc-type, heading-font, logo, margin)
   } else {
     plain-cover(title, subtitle, author, date, confidentiality, reference, edition, review-date, doc-type, version, heading-font, logo)
   }
