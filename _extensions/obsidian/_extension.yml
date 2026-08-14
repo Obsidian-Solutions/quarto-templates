@@ -130,10 +130,14 @@ contributes:
       # theme carries the house palette, typography and focus states;
       # the classification filter adds the marking banner. The dark
       # variant (theme-dark.scss) follows the reader's system
-      # preference.
+      # preference. The title-block banner gives the document a
+      # branded band; the brand mark renders at its left via the
+      # theme (theme.scss styles .quarto-title-banner::before with
+      # the logo).
       theme:
         light: theme.scss
         dark: theme-dark.scss
+      title-block-banner: true
       toc: true
       toc-depth: 2
       number-sections: true
@@ -150,8 +154,9 @@ contributes:
     revealjs:
       # Client presentations. The revealjs theme carries the house
       # palette and typography; the classification filter marks each
-      # slide deck.
+      # slide deck. The brand mark sits bottom-right on every slide.
       theme: theme-reveal.scss
+      logo: assets/obsidian-logo.png
       toc: true
       toc-depth: 2
       citeproc: true
@@ -169,10 +174,12 @@ contributes:
       # command in the preamble, before the document starts. `##`
       # headings become slides, matching the revealjs examples. The
       # font pairing matches the article formats: Palatino body,
-      # Montserrat headings.
+      # Montserrat headings. The brand mark sits top-right on the
+      # title slide (beamer's native logo placement).
       mainfont: "TeX Gyre Pagella"
       sansfont: "Montserrat"
       monofont: "Liberation Mono"
+      logo: assets/obsidian-logo.png
       include-in-header: include-in-header-beamer.tex
       template-partials:
         - partials/beamer/title.tex
@@ -185,8 +192,10 @@ contributes:
       # Client-facing dashboards. The html theme carries the house
       # palette and typography; dashboards are live-data products,
       # so only the classification filter applies (review warnings
-      # are for documents).
+      # are for documents). The brand mark sits left in the
+      # navigation bar.
       theme: theme.scss
+      logo: assets/obsidian-logo.png
       toc: true
       filters:
         - filters/classification-gate.lua

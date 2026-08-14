@@ -30,6 +30,13 @@ $headings-color: $theme-obsidian;
 
 /*-- scss:rules --*/
 
+/* The brand mark is dark-on-transparent and would vanish on the
+   dark raised surface; hide it (the favicon still brands the tab). */
+.quarto-title-banner::before {
+  display: none;
+}
+
+
 /* Components (_components.scss): same set as the light theme, using
    the dark theme's inverted $theme-* tokens. */
 @import "_components.scss";
