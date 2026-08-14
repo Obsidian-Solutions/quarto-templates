@@ -13,18 +13,35 @@ dependency change.
 | `obsidian-reference.docx`, `obsidian-reference.pptx` | Derived from the Quarto default reference documents (Copyright Posit Software, PBC) | MIT (as part of Quarto) | Retain the upstream copyright notice |
 | `assets/obsidian-logo.png`, `assets/obsidian-favicon.png` | Obsidian Solutions | MIT (this repository) | - |
 
+## Bundled fonts (inside _extensions/obsidian/typst/fonts/)
+
+| Font | Licence | Notes |
+|---|---|---|
+| TeX Gyre Pagella (regular, bold, italic, bold italic) | GUST Font License (https://www.gust.org.pl/projects/e-foundry/licenses) | Bundled for the Typst format (`font-paths: typst/fonts`), because Typst's font database does not scan the TeX Live font directory. The licence text ships alongside the fonts in `GUST-FONT-LICENSE.txt`. The LaTeX formats load the same family from the `tex-gyre` TeX Live package |
+
 ## Fonts (installed at render time, not bundled)
 
 | Font | Licence | Source |
 |---|---|---|
-| TeX Gyre Pagella | GUST Font License (https://www.gust.org.pl/projects/e-foundry/licenses) | TeX Live package `tex-gyre` |
 | Montserrat | SIL Open Font License 1.1 (https://scripts.sil.org/OFL), Copyright Julieta Ulanovsky | github.com/JulietaUla/Montserrat, pinned to commit 555facfb2a18c72c3c0380f0d9c0f060453a9058. The CI verifies a SHA-256 checksum of each downloaded TTF |
 | Liberation Mono | SIL Open Font License 1.1 | Distro package `fonts-liberation` (Linux) or LibreOffice distribution |
 
 The SIL OFL requires the font name and licence to accompany the font
 when someone redistributes it. This repository does not redistribute
-the fonts. It downloads them at render time from their pinned
-upstream sources.
+the OFL fonts. It downloads them at render time from their pinned
+upstream sources. The GUST licence of the bundled Pagella fonts is
+satisfied by the licence file shipped alongside them.
+
+## Build-time tool dependencies (installed, not bundled)
+
+| Tool | Licence | Source | Used by |
+|---|---|---|---|
+| pikepdf | BSD-3-Clause (https://opensource.org/license/bsd-3-clause) | PyPI `pikepdf` | `tools/attach-provenance.py` (embeds the source and manifest with the AFRelationship and MIME keys PDF/A-4f requires) |
+
+pikepdf is a Python dependency of the Typst provenance gate only. It
+is not imported by the LaTeX path, which embeds provenance during the
+LaTeX run. `render.sh` resolves it from an explicit `PIKEPDF_PY`, a
+`python3` with pikepdf importable, or the pdf2quarto virtualenv.
 
 ## Reason for this file
 

@@ -3,17 +3,17 @@
 A distributable set of Quarto templates for Obsidian Solutions. One
 source file produces a clean, professional PDF for print and offline
 use, an HTML version for reading, a DOCX for client editing, a
-revealjs deck for presenting, and a dashboard for live figures.
+revealjs deck for presenting, a dashboard for live figures, and a
+fast-draft Typst PDF for quick turns.
 
 The template follows the document standards in the standards library
-(UK PDF document standards, LaTeX/Pandoc/Quarto production,
-GOV.UK and MOD design-review floors) and the professional conventions
-those systems establish: full metadata surface, pagination control,
-a classification marking on every page, WCAG-checked contrast, and a
-traceable baseline. The identity is our own monochrome brand: a
+(UK PDF document standards, LaTeX/Pandoc/Quarto production, and the
+professional design-review floors those systems establish) and the
+professional conventions they share: full metadata surface, pagination
+control, a classification marking on every page, WCAG-checked contrast,
+and a traceable baseline. The identity is our own monochrome brand: a
 near-black primary drawn from the website brand colour, with greys
-for secondary text and rules. It does not mimic any government
-identity.
+for secondary text and rules.
 
 ## Standards posture
 
@@ -38,6 +38,7 @@ with the GSCP validation available under `gscp: true`.
 - A LaTeX engine (lualatex) on TeX Live 2023 or later
 - TeX Gyre Pagella, Montserrat and Liberation Mono fonts
 - Python 3 (for the validation gates in `tools/`)
+- pikepdf (for the Typst provenance gate, `tools/attach-provenance.py`)
 - Optionally `quarto install verapdf` for PDF/A validation
 
 ## Documentation
@@ -116,41 +117,68 @@ to its section.
 ### PDF/UA-2 (screen readers)
 
 PDF/UA-2 produces a tagged structure tree for assistive technology.
-The current LaTeX toolchain cannot produce PDF/UA-2 and clickable TOC
-links at the same time: `\DocumentMetadata` disables hyperref's TOC
-link annotations (latex3/tagging-project issue 1157).
+The default is PDF/A-4f with a clickable TOC and no tagging: the
+accessible HTML companion carries the screen-reader burden
+(HTML-first rule). Use the tagged PDF only when a client requests
+it, as it is rarely needed.
 
-The default is the non-accessible version: PDF/A-4f with clickable
-TOC links. Use the accessible version only when a client requests it,
-as it is rarely needed. To render a document with PDF/UA-2 instead:
+To render a document with PDF/UA-2 instead, set the standard in the
+document front matter:
 
-1. In `_extension.yml`, change the default to
-   `pdf-standard: [a-4f, ua-2]`.
-2. Remove `partials/document-metadata.latex` from the
-   `template-partials` list, so Quarto's `\DocumentMetadata` is used.
-3. Accept that the TOC page will not contain clickable links.
+```yaml
+format:
+  obsidian-pdf:
+    pdf-standard: [a-4f, ua-2]
+```
 
-Body cross-references keep working in both modes. Revisit after the
-upstream fix: the escape-hatch partial exists so the template can
-re-enable PDF/UA-2 without losing links.
+The template's metadata partial now branches on the requested
+standard: when a document asks for UA-2 tagging, it defers to
+Quarto's `\DocumentMetadata{... tagging=on ...}` code path (the
+tagged TOC is both accessible and clickable); when untagged, it
+keeps the classic hyperref link patch. Both paths are verified with
+veraPDF: `[a-4f, ua-2]` validates against PDF/4F and PDF/UA2
+simultaneously, and the default `[a-4f]` validates against PDF/4F.
+An earlier template version always used the untagged patch, which
+made a UA-2 render fail veraPDF on link-structure and artifact
+checks; that was self-inflicted and is fixed.
 
-#### Known limitation: flat heading structure
+#### Known limitation: flat heading structure (LaTeX)
 
-Quarto's PDF/UA-2 tagging does not assign heading roles (H1-H6) to
-section headings. The KOMA class and the kernel sectioning never
-promote sections to headings; tagpdf's namespace mapping is data-only
-and nothing reads it. The result is a structure tree of plain
-paragraph tags, and veraPDF passes it because it runs only
-machine-verifiable checks. This affects every Quarto PDF/UA-2
-document, not just this template. LaTeX-side patches (hooks,
-`\@sect` redefinitions, tagging sockets) each fail on this toolchain:
-compile errors, Hn-contains-P nesting violations, or tree corruption.
+The LaTeX PDF/UA-2 structure tree does not assign heading roles
+(H1-H6) to section headings. The kernel sectioning never promotes
+sections to headings: headings collapse to plain paragraph tags, and
+veraPDF passes the render because it runs only machine-verifiable
+checks. This affects every Quarto LaTeX PDF/UA-2 document, not just
+this template; LaTeX-side patches (hooks, `\@sect` redefinitions,
+tagging sockets) each fail on this toolchain.
 
-`tools/check-pdfua.py` is the honest gate. It fails when a UA-2 render
-lacks heading roles, so no heading-less document is ever shipped as
-accessible. `render.sh` runs it automatically for UA-2 renders. The
-upstream fix would be Quarto wiring section-to-heading tagging on
-KOMA; revisit this after a Quarto or LaTeX release addresses it.
+`tools/check-pdfua.py` is the honest gate. It is role-map aware (a
+heading expressed as a custom role resolves through the document's
+RoleMap) and fails when a UA-2 render has no heading roles, so no
+heading-less document is ever shipped as accessible. `render.sh` runs
+it automatically for UA-2 renders. A LaTeX UA-2 render currently
+fails this gate, which is the correct outcome: the tagging is not yet
+usable for screen readers.
+
+#### Accessible Typst output: real heading roles
+
+The Typst format is the accessible path. Typst 0.14+ produces tagged
+PDFs with real heading roles (H1, H2 in the structure tree), and
+Quarto 1.10.18 bundles Typst 0.15.1. An accessible Typst document
+sets the archival level that shares PDF/UA-1's PDF version (UA-1 is
+PDF 1.7, so PDF/A-4f cannot combine with it):
+
+```yaml
+format:
+  obsidian-typst:
+    pdf-standard: [a-2b, ua-1]
+```
+
+Verified: `[a-2b, ua-1]` validates against PDF/2B and PDF/UA1
+simultaneously, the structure tree contains H1 and H2 heading roles,
+and `tools/check-pdfua.py` passes. This is the only format in the
+template whose tagged PDF carries heading roles; it is the screen
+reader's alternative to the HTML companion.
 
 ## Output
 
@@ -158,10 +186,13 @@ One source file per artefact type, each declaring its full format
 family in the front matter. One render command per file produces the
 whole family with no content loss between formats: the document
 renders to PDF, HTML, DOCX, and EPUB from the same prose; the deck
-renders to revealjs, beamer PDF, and PPTX from the same slides. The
-three source files exist because a document, a deck, and a dashboard
-are different artefacts: a slide is a summary, not a paragraph, and
-merging the families would guarantee loss, not avoid it.
+renders to revealjs, beamer PDF, and PPTX from the same slides; and
+`obsidian-typst` renders a fast-draft PDF from the same source with
+the house identity (cover, classification, identity line) and PDF/A-4f
+provenance attached by `render.sh`. The three source files exist
+because a document, a deck, and a dashboard are different artefacts: a
+slide is a summary, not a paragraph, and merging the families would
+guarantee loss, not avoid it.
 
 The per-format capabilities are in [docs/reference.md](docs/reference.md).
 
@@ -173,6 +204,7 @@ matter block:
 | File | Format family | Shows |
 |---|---|---|
 | `examples/template.qmd` | PDF, HTML, DOCX, EPUB | The full document surface: cover, approval, revision history, citations, appendices, list of tables and figures |
+| `examples/template-typst.qmd` | Typst PDF | The fast-draft format: cover, numbered sections, running header, PDF/A-4f provenance |
 | `examples/template-slides.qmd` | revealjs, beamer PDF, PPTX | A client deck with the classification banner |
 | `examples/template-dashboard.qmd` | dashboard | A service-health dashboard with cards and a status table |
 
@@ -180,6 +212,7 @@ Render one file per family:
 
 ```bash
 quarto render examples/template.qmd        # PDF + HTML + DOCX + EPUB
+quarto render examples/template-typst.qmd  # Typst PDF
 quarto render examples/template-slides.qmd # revealjs + beamer PDF + PPTX
 quarto render examples/template-dashboard.qmd # dashboard
 ```
@@ -229,30 +262,49 @@ section heading in the document.
 
 The identity is monochrome: a near-black primary (`#121212`, 16.8:1
 on white), a grey secondary (`#484949`, AAA), and grey hairlines.
-The palette table and the rebranding instructions are in
-[docs/reference.md](docs/reference.md).
+The palette is a token system: `brand.yml` is the single source,
+`tools/tokens.py` generates the LaTeX and SCSS token files, and a
+`--check` mode fails CI when the theme drifts from the source. A
+neutral accent palette (plum, maroon, slate, gold, ...) is available
+for documents that want colour. The palette table, the rebranding
+instructions, and the cover-theme catalogue (plain, formal,
+classic-lined, colorbox, academic, bg-image, banded, banded-slate)
+are in [docs/reference.md](docs/reference.md).
 
 ## Fonts
 
 TeX Gyre Pagella (body), Montserrat (headings) and Liberation Mono.
-GDS Transport is proprietary and limited to gov.uk domains, and no
-public MOD typeface exists, so these are the professional free
-fallbacks. Montserrat is downloaded from a pinned upstream commit
+The public system typefaces used by national bodies are restricted to
+their own domains and services, so these professional free fonts are
+the fallbacks. Montserrat is downloaded from a pinned upstream commit
 with a SHA-256 check on every download (`tools/install-fonts.sh`),
 so a changed or tampered font file fails the render loudly. The
 licences of every component are recorded in [NOTICE](NOTICE).
 
 ## Verification gates
 
-`render.sh` runs three gates on every render, and the CI runs them on
-the example document:
+`render.sh` runs the gates on every render, and the CI runs them on
+the example documents. The gates are engine-aware: the LaTeX engine
+runs the page-overflow and cross-reference gates from its log, the
+Typst engine attaches provenance instead, and the shared gates run
+for both.
 
-1. **Page-overflow gate.** Any `Overfull \hbox` or `\vbox` fails the
-   render, so no document ships with content clipped at a margin.
-2. **Controlled-language gate** (`tools/check-ste.py`). Fails on
-   the JSP 101 / ASD-STE100 hard violations. A document opts out with
-   `ste: false`.
-3. **PDF/UA-2 structure gate** (`tools/check-pdfua.py`). Fires only
+1. **Page-overflow gate** (LaTeX). Any `Overfull \hbox` or `\vbox`
+   fails the render, so no document ships with content clipped at a
+   margin.
+2. **Cross-reference gate** (LaTeX). A broken `\ref` or `\cite`
+   prints "??" and fails the render.
+3. **Provenance gate** (Typst). `tools/attach-provenance.py` embeds
+   the source and manifest with the `AFRelationship` and MIME keys
+   PDF/A-4f requires; a Typst archive without embedded provenance is
+   a false green.
+4. **Font-embedding gate.** Every font must be embedded with a
+   ToUnicode map (`pdffonts`), which PDF/A requires for text
+   extraction.
+5. **Controlled-language gate** (`tools/check-ste.py`). Fails on
+   the JSP 101 / ASD-STE100 hard violations. A document opts out
+   with `ste: false`.
+6. **PDF/UA-2 structure gate** (`tools/check-pdfua.py`). Fires only
    for UA-2 renders and fails when the tagged structure tree lacks
    heading roles.
 

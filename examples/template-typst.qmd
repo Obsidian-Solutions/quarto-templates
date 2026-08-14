@@ -1,0 +1,29 @@
+---
+title: "Typst format test"
+subtitle: "Proves the fast-draft format renders with provenance"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+reference: "OS-DOC-TST"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+doc-type: "Test Document"
+number-sections: true
+format:
+  obsidian-typst:
+    pdf-standard: a-4f
+---
+
+# Introduction
+
+This document exercises the Typst format: the cover, the numbered
+sections, the running header, and the identity line.
+
+## Purpose
+
+A section reference proves numbering: see @sec-conclusion.
+
+# Conclusion {#sec-conclusion}
+
+The conclusion confirms the Typst fast-draft renders to PDF/A-4f
+with the source and manifest attached.

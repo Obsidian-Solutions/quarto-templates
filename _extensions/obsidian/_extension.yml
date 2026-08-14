@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 title: Obsidian Solutions Templates
 author: Obsidian Solutions
-version: 3.3.0
+version: 3.4.0
 description: >-
   Controlled business documents in the Obsidian Solutions brand: PDF/A-4f
   with provenance, accessible HTML, client-editable DOCX, revealjs decks,
@@ -36,8 +36,19 @@ contributes:
       citeproc: true
       link-citations: true
       csl: numeric.csl
-      # Archival PDF/A-4f output. Requires LuaLaTeX and LaTeX 2023+,
-      # which the template pins via pdf-engine and TeX Live 2026.
+      # PDF standard: the archival default is PDF/A-4f (ISO 19005-4,
+      # current for new work; embeds the source and manifest for
+      # self-contained provenance). This is a default, not a limit:
+      # every document overrides it in its own front matter with
+      # `format: obsidian-pdf: pdf-standard: <value>`. Quarto 1.10
+      # supports the full matrix for LuaLaTeX: PDF versions 1.4-2.0,
+      # PDF/A a-1b/a-2a/a-2b/a-2u/a-3a/a-3b/a-3u/a-4/a-4f, PDF/UA
+      # ua-2, and PDF/X x-4/x-4p/x-5g/x-5n/x-5pg/x-6/x-6n/x-6p.
+      # Quarto validates each render against the requested standard.
+      # Known limits of specific standards: a-1b forbids embedded
+      # files (drop `attach:`) and transparency (the brand logo PNG
+      # carries alpha, so use a flattened asset); ua-2 has upstream
+      # LaTeX tagging gaps (see accessibility-statement.md).
       # Validate with: quarto install verapdf
       pdf-standard: [a-4f]
       # Keep the LaTeX log so render.sh can check it for overfull
@@ -50,6 +61,9 @@ contributes:
       format-resources:
         - assets/obsidian-logo.png
         - assets/obsidian-favicon.png
+        # Generated from brand.yml by tools/tokens.py; the preamble
+        # inputs it so the palette lives in one place.
+        - tokens.tex
       include-in-header: include-in-header.tex
       template-partials:
         - partials/title.tex
@@ -57,7 +71,16 @@ contributes:
         - partials/hypersetup.latex
         - partials/document-metadata.latex
         - partials/toc.tex
+        # Themed title page (opt-in via the `titlepage:` front-matter
+        # key; see filters/titlepage.lua). When the key is absent the
+        # standard cover in before-body.tex renders, so existing
+        # documents are unaffected.
+        - partials/titlepage.tex
+        - partials/titlepage-title-themes.tex
+        - partials/titlepage-author-affiliation.tex
+        - partials/titlepage-header-footer-date.tex
       filters:
+        - filters/titlepage.lua
         - filters/classification-gate.lua
         - filters/appendix.lua
         - filters/embed.lua
@@ -107,10 +130,14 @@ contributes:
       # theme carries the house palette, typography and focus states;
       # the classification filter adds the marking banner. The dark
       # variant (theme-dark.scss) follows the reader's system
-      # preference.
+      # preference. The title-block banner gives the document a
+      # branded band; the brand mark renders at its left via the
+      # theme (theme.scss styles .quarto-title-banner::before with
+      # the logo).
       theme:
         light: theme.scss
         dark: theme-dark.scss
+      title-block-banner: true
       toc: true
       toc-depth: 2
       number-sections: true
@@ -121,11 +148,15 @@ contributes:
         - filters/classification-gate.lua
         - filters/classification.lua
         - filters/review-overdue.lua
+        # Maps definition lists to the summary-list component (an
+        # opt-in key/value table for the HTML companion).
+        - filters/summary-list.lua
     revealjs:
       # Client presentations. The revealjs theme carries the house
       # palette and typography; the classification filter marks each
-      # slide deck.
+      # slide deck. The brand mark sits bottom-right on every slide.
       theme: theme-reveal.scss
+      logo: assets/obsidian-logo.png
       toc: true
       toc-depth: 2
       citeproc: true
@@ -143,10 +174,12 @@ contributes:
       # command in the preamble, before the document starts. `##`
       # headings become slides, matching the revealjs examples. The
       # font pairing matches the article formats: Palatino body,
-      # Montserrat headings.
+      # Montserrat headings. The brand mark sits top-right on the
+      # title slide (beamer's native logo placement).
       mainfont: "TeX Gyre Pagella"
       sansfont: "Montserrat"
       monofont: "Liberation Mono"
+      logo: assets/obsidian-logo.png
       include-in-header: include-in-header-beamer.tex
       template-partials:
         - partials/beamer/title.tex
@@ -159,8 +192,10 @@ contributes:
       # Client-facing dashboards. The html theme carries the house
       # palette and typography; dashboards are live-data products,
       # so only the classification filter applies (review warnings
-      # are for documents).
+      # are for documents). The brand mark sits left in the
+      # navigation bar.
       theme: theme.scss
+      logo: assets/obsidian-logo.png
       toc: true
       filters:
         - filters/classification-gate.lua
@@ -174,3 +209,28 @@ contributes:
       filters:
         - filters/classification-gate.lua
         - filters/classification.lua
+    typst:
+      # Fast-render Typst companion to the archival PDF. Carries the
+      # same identity (classification, cover, house fonts and
+      # palette); render.sh attaches the PDF/A-4f provenance after
+      # the render (attach-provenance.py), so the Typst archive is
+      # as self-contained as the LaTeX one. The LaTeX log gates do
+      # not apply; the STE, font and PDF/UA gates do.
+      # The bundled obsidian-doc package lives under
+      # typst/packages/preview/ and is imported by typst-template.typ.
+      # The house body font (TeX Gyre Pagella) ships under
+      # typst/fonts/ with its GUST licence: fontdb does not scan the
+      # TeX Live font directory, so the font is bundled and the path
+      # declared here. Montserrat and Liberation Mono come from the
+      # system font dirs, which fontdb does scan.
+      font-paths:
+        - typst/fonts
+      # typst-meta.lua forwards number-sections into pandoc metadata:
+      # pandoc's typst writer never sets the numbersections template
+      # variable (unlike its LaTeX writer), so the show file needs
+      # the filter to see the document's flag.
+      filters:
+        - filters/typst-meta.lua
+      template-partials:
+        - typst-template.typ
+        - typst-show.typ

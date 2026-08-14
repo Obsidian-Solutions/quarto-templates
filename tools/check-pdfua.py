@@ -17,6 +17,13 @@ Checks (each is a hard fail when violated):
   4. Heading levels do not skip (H1 then H3 without H2 is a fail).
   5. First heading is H1, so the hierarchy starts at the top.
 
+Heading roles are resolved through the RoleMap: LaTeX tagging emits
+custom roles (a section is /S /section) and maps them to standard
+roles (/section -> /H1) in the RoleMap dictionary, so counting
+literal /S /H1..H6 would miss a correctly tagged tree. The gate
+counts every struct element whose role resolves to a heading through
+the RoleMap (or directly names one).
+
 Usage: python3 check-pdfua.py document.pdf
 Exit code 0 = pass, 1 = fail. Output is plain text for CI logs.
 """
@@ -36,6 +43,43 @@ def decompress(pdf_path: str) -> bytes:
         check=True,
     )
     return out.stdout
+
+
+def rolemap_headings(data: bytes) -> dict:
+    """Return {role_name: level} for the RoleMap's heading entries.
+
+    The RoleMap dictionary maps custom struct roles to standard
+    roles, for example:
+      /RoleMap << /section /H1 /subsection /H2 ... >>
+    """
+    m = re.search(rb"/RoleMap\s*<<(.*?)>>", data, re.S)
+    if not m:
+        return {}
+    body = m.group(1)
+    headings = {}
+    for name, level in re.findall(rb"/(\w+)\s*/H([1-6])\b", body):
+        headings[name.decode()] = int(level)
+    return headings
+
+
+def heading_counts(data: bytes, rolemap: dict) -> dict:
+    """Count struct elements per heading level, RoleMap-resolved.
+
+    A heading element is one whose /S role is a heading name (H1-H6)
+    directly, or a custom role the RoleMap maps to a heading. The
+    role sits in the structure element dictionary, e.g. /S /section
+    or /S /H1.
+    """
+    counts = {level: 0 for level in range(1, 7)}
+    # Direct heading roles (/S /H1 .. /S /H6).
+    for level in range(1, 7):
+        counts[level] += len(re.findall(rb"/S\s*/H%d\b" % level, data))
+    # RoleMap-resolved roles: /S /<custom> where custom is a heading.
+    # Match the role name but exclude the direct H%d already counted.
+    for role, level in rolemap.items():
+        pattern = rb"/S\s*/%s\b" % re.escape(role.encode())
+        counts[level] += len(re.findall(pattern, data))
+    return counts
 
 
 def main() -> int:
@@ -59,10 +103,9 @@ def main() -> int:
     if b"/Marked true" not in data:
         failures.append("no /Marked true: the PDF is not marked as tagged")
 
-    # 3. Heading roles, as structure element roles (/S /H1).
-    headings = {
-        level: len(re.findall(rb"/S\s*/H%d\b" % level, data)) for level in range(1, 7)
-    }
+    # 3. Heading roles, resolved through the RoleMap.
+    rolemap = rolemap_headings(data)
+    headings = heading_counts(data, rolemap)
     if sum(headings.values()) == 0:
         failures.append(
             "no heading roles (H1-H6) in the structure tree: headings "

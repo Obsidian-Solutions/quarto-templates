@@ -5,6 +5,9 @@
    9.4:1 (both pass AAA). The rules section mirrors theme.scss; keep
    the two files in step when you change shared styles. */
 
+/* Dark theme inverts the house roles: light text on dark ground.
+   The inverted values are deliberate dark-mode choices, not token
+   roles; the light theme's roles come from brand.yml. */
 /*-- scss:defaults --*/
 $theme-obsidian: #f2f2f2;   /* primary text, 16.6:1 on #121212 */
 $theme-obsidianl: #b8b8b8;  /* secondary text, 9.4:1 (AAA)      */
@@ -26,6 +29,17 @@ $headings-font-weight: 600;
 $headings-color: $theme-obsidian;
 
 /*-- scss:rules --*/
+
+/* The brand mark is dark-on-transparent and would vanish on the
+   dark raised surface; hide it (the favicon still brands the tab). */
+.quarto-title-banner::before {
+  display: none;
+}
+
+
+/* Components (_components.scss): same set as the light theme, using
+   the dark theme's inverted $theme-* tokens. */
+@import "_components.scss";
 
 /* Focus: visible 3px light ring, WCAG 2.4.7 */
 :focus-visible {

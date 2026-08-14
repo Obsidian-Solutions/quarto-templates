@@ -1,6 +1,5 @@
 ---
 title: "Service Health"
-subtitle: "Obsidian Solutions"
 author: "Obsidian Solutions"
 date: "2026-08-11"
 lang: en-GB

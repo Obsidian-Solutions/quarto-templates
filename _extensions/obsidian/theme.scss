@@ -1,15 +1,18 @@
 // SPDX-License-Identifier: MIT
 /*-- Obsidian Solutions house theme for the HTML companion --*/
-/* Monochrome palette, mirroring the PDF format. The greys are the  */
-/* functional scale proven by GOV.UK and NHS design systems; the    */
-/* primary is the website brand colour.                             */
+/* Monochrome palette, mirroring the PDF format. Tokens come from
+   brand.yml via tools/tokens.py; the semantic roles below map them
+   onto the theme. */
 
+/* House palette. The values are the semantic roles from brand.yml;
+   tools/tokens.py --check verifies they stay in step, and the
+   generated tokens.scss holds the full token set for documents that
+   want to reference accents directly. */
 /*-- scss:defaults --*/
 $theme-obsidian: #121212;   /* primary text, 16.8:1 on white */
 $theme-obsidianl: #484949;  /* secondary text, 9.0:1 (AAA)     */
 $theme-ruled: #cecece;      /* hairlines, decorative           */
 $theme-cream: #f3f3f3;      /* off-white surface               */
-
 $body-bg: #ffffff;
 $body-color: $theme-obsidian;
 $primary: $theme-obsidian;
@@ -25,6 +28,12 @@ $headings-font-weight: 600;
 $headings-color: $theme-obsidian;
 
 /*-- scss:rules --*/
+
+/* Components (_components.scss): masthead, summary list, inset
+   text, phase banner, organisation logo. Imported here (after the
+   defaults section) so the $theme-* tokens are in scope; the same
+   partial serves the dark theme. */
+@import "_components.scss";
 
 /* Focus: visible 2.4px near-black ring, WCAG 2.4.7 */
 :focus-visible {

@@ -27,5 +27,8 @@ $for(titlegraphic)$
 $endfor$}
 $endif$
 $if(logo)$
-\logo{\includegraphics$if(logooptions)$[$for(logooptions)$$logooptions$$sep$, $endfor$]$endif${$logo$}}
+% The logo image is 953x467 px; without a width option beamer
+% renders it at natural size, which dwarfs the slide. Constrain to
+% a corner mark unless the document sets logooptions.
+\logo{\includegraphics$if(logooptions)$[$for(logooptions)$$logooptions$$sep$, $endfor$]$else$[width=0.1\paperwidth]$endif${$logo$}}
 $endif$

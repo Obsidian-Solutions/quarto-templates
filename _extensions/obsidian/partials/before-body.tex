@@ -7,7 +7,11 @@
 % ---- Document control values (used by the running header and footer) ----
 $if(reference)$\newcommand{\docref}{$reference$}$else$\newcommand{\docref}{Obsidian Solutions}$endif$
 $if(short-title)$\newcommand{\doctitle}{$short-title$}$else$\newcommand{\doctitle}{$title$}$endif$
-$if(confidentiality)$\newcommand{\classification}{{\scriptsize\bfseries\textsc{\color{obsidianl}\ifdefempty{\obsidianstatus}{}{\obsidianstatus{} -- }$confidentiality$}}}$else$\newcommand{\classification}{}$endif$
+% Classification marking colour: the house grey by default; banded
+% titlepage themes recolor it to white so the marking stays legible
+% on a dark band.
+\newcommand{\obsidianclasscolour}{obsidianl}
+$if(confidentiality)$\newcommand{\classification}{{\scriptsize\bfseries\textsc{\color{\obsidianclasscolour}\ifdefempty{\obsidianstatus}{}{\obsidianstatus{} -- }$confidentiality$}}}$else$\newcommand{\classification}{}$endif$
 $if(date)$\newcommand{\obsidianpubdate}{$date$}$else$\newcommand{\obsidianpubdate}{\today}$endif$
 $if(doc-type)$\newcommand{\obsidiandoclabel}{\textcolor{obsidianl}{\small\bfseries $doc-type$}}$else$\newcommand{\obsidiandoclabel}{}$endif$
 $if(edition)$\newcommand{\obsidianedition}{$edition$}$else$\newcommand{\obsidianedition}{}$endif$
@@ -40,7 +44,21 @@ $if(proprietor)$\newcommand{\obsidianproprietor}{$proprietor$}$else$\newcommand{
            \resizebox{0.9\paperwidth}{!}{%
              \textcolor[gray]{0.85}{\obsidianwatermark}}}}}}}%
 
-% ---- Cover page: clean monochrome ----
+% ---- Cover page ----
+% Three states:
+%   titlepage: false | none   -> no cover page at all
+%   titlepage: <theme|file>   -> themed title page (filters/titlepage.lua)
+%   (key absent)              -> the clean monochrome cover below
+$if(titlepage-none)$
+$else$
+$if(titlepage-true)$
+$if(titlepage-file)$
+% Custom cover file.
+\input{$titlepage-filename$}
+$else$
+$titlepage.tex()$
+$endif$
+$else$
 \begin{titlepage}
 \thispagestyle{empty}
 
@@ -95,6 +113,8 @@ $if(proprietor)$\newcommand{\obsidianproprietor}{$proprietor$}$else$\newcommand{
   \ifdefempty{\obsidianreview}{}{\textbar{} \obsidianreview{}}}}
 \end{center}
 \end{titlepage}
+$endif$
+$endif$
 
 % ---- Front matter page numbering: roman, body arabic ----
 % The cover is unnumbered. Front matter (abstract, approval,
