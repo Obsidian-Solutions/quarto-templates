@@ -119,7 +119,7 @@ command per file produces the whole family with no content loss.
 | `obsidian-beamer` | PDF deck | 16:9, classification footline on every slide including the title |
 | `obsidian-pptx` | PPTX | editable deck, classification marking on every slide |
 | `obsidian-dashboard` | HTML | live-data dashboard, html theme, classification filter only |
-| `obsidian-typst` | PDF via Typst | fast-draft format, house palette and fonts, classification in running header, identity line, plain and banded covers. No PDF/A, provenance, or LaTeX machinery (Typst cannot emit PDF/A-4f) |
+| `obsidian-typst` | PDF/A-4f via Typst | fast-draft format, house palette and fonts, classification in running header, identity line, plain and banded covers. `pdf-standard` passes through to Typst (PDF/A-4f and PDF/UA verified); `render.sh` attaches the source and manifest with the AFRelationship + MIME keys PDF/A-4f requires, so the Typst archive carries the same provenance as the LaTeX PDF |
 
 Quarto can also emit plain formats (markdown, LaTeX, ODT, Typst,
 ipynb) with `quarto render ... --to <format>`. Those carry no

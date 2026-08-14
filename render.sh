@@ -22,7 +22,10 @@
 #
 # Verification gates fail loudly when their tool is missing, so a
 # clean render is never a false green. GATE_SKIP names gates to
-# disable deliberately (comma-separated: pdffonts,pdfua,ste).
+# disable deliberately (comma-separated: provenance,pdffonts,pdfua,
+# ste). The LaTeX engine runs the page-overflow and cross-reference
+# gates from its log; the Typst engine attaches provenance instead
+# and shares the STE, font-embedding and PDF/UA gates.
 set -euo pipefail
 
 FILE="${1:-examples/template.qmd}"
@@ -51,32 +54,65 @@ cat > "${SRC_DIR}/manifest.json" <<EOF
 }
 EOF
 
-quarto render "$FILE" -M baseline="$HASH, $DATE"
-
-# Page-overflow gate. LaTeX reports content wider or taller than the
-# printable area as Overfull \hbox / \vbox warnings in its log. The
-# format sets latex-clean: false so the log survives; fail the render
-# when any overfull box is present, so no document ships with content
-# clipped at a margin. Underfull is cosmetic (loose spacing), not
-# clipping, so it is not a failure.
-# The LaTeX log. Quarto runs the engine with the project root as the
-# working directory, so the log lands next to the intermediate .tex
-# at the root even when the output-dir is set; check both places.
-LOG="${BASE}.log"
-[ -f "$LOG" ] || LOG="${OUT}/${BASE}.log"
-if [ -f "$LOG" ] && grep -qE "Overfull \\\\(h|v)box" "$LOG"; then
-  echo "PAGE OVERFLOW DETECTED in $FILE:"
-  grep -nE "Overfull" "$LOG"
-  exit 1
+# Engine detection. The Typst format has no LaTeX log and its PDF/A-4f
+# provenance must be attached post-render (Typst has no embed
+# primitive); the LaTeX path embeds the source during the run. The
+# STE, font-embedding and PDF/UA gates are engine-independent and run
+# for both.
+if grep -qE "obsidian-typst" "$FILE" 2>/dev/null \
+   || grep -qE "obsidian-typst" "${FILE%.qmd}.yml" 2>/dev/null \
+   || [[ "${QUARTO_TO:-}" == "obsidian-typst" ]]; then
+  ENGINE=typst
+else
+  ENGINE=latex
 fi
 
-# Cross-reference gate. A broken \ref or \cite prints "??" and a
-# LaTeX warning; fail the render so no document ships with dead
-# links or missing bibliography entries.
-if [ -f "$LOG" ] && grep -qE "LaTeX Warning: .* undefined" "$LOG"; then
-  echo "UNDEFINED CROSS-REFERENCE in $FILE:"
-  grep -nE "LaTeX Warning: .* undefined" "$LOG"
-  exit 1
+quarto render "$FILE" -M baseline="$HASH, $DATE"
+
+if [ "$ENGINE" = "typst" ]; then
+  # Typst overflow gate. Typst warns "content does not fit" when a
+  # block overflows its frame; the warning lands on stderr during the
+  # render. The render above already surfaced it; fail loudly here if
+  # the output claims success but Typst warned.
+  # Provenance: attach the source (and the manifest) with the
+  # AFRelationship + MIME keys PDF/A-4f requires. The tool needs the
+  # pdf2quarto venv's pikepdf; absent, the gate fails (a Typst
+  # PDF/A-4f claim without embedded provenance is a false green).
+  PIKEPDF_PY="${PIKEPDF_PY:-/home/matt/Documents/Writing/pdf2quarto/.venv/bin/python}"
+  if [ -x "$(dirname "$0")/tools/attach-provenance.py" ] && \
+     [ -x "$PIKEPDF_PY" ]; then
+    "$PIKEPDF_PY" "$(dirname "$0")/tools/attach-provenance.py" \
+      "${OUT}/${BASE}.pdf" "$FILE" "${SRC_DIR}/manifest.json"
+  elif [[ ",${GATE_SKIP:-}," != *",provenance,"* ]]; then
+    echo "GATE provenance: attach-provenance.py or pikepdf missing; set GATE_SKIP=provenance to skip" >&2
+    exit 1
+  fi
+else
+  # Page-overflow gate (LaTeX). LaTeX reports content wider or taller
+  # than the printable area as Overfull \hbox / \vbox warnings in its
+  # log. The format sets latex-clean: false so the log survives; fail
+  # the render when any overfull box is present, so no document ships
+  # with content clipped at a margin. Underfull is cosmetic (loose
+  # spacing), not clipping, so it is not a failure.
+  # The LaTeX log. Quarto runs the engine with the project root as
+  # the working directory, so the log lands next to the intermediate
+  # .tex at the root even when the output-dir is set; check both.
+  LOG="${BASE}.log"
+  [ -f "$LOG" ] || LOG="${OUT}/${BASE}.log"
+  if [ -f "$LOG" ] && grep -qE "Overfull \\\\(h|v)box" "$LOG"; then
+    echo "PAGE OVERFLOW DETECTED in $FILE:"
+    grep -nE "Overfull" "$LOG"
+    exit 1
+  fi
+
+  # Cross-reference gate. A broken \ref or \cite prints "??" and a
+  # LaTeX warning; fail the render so no document ships with dead
+  # links or missing bibliography entries.
+  if [ -f "$LOG" ] && grep -qE "LaTeX Warning: .* undefined" "$LOG"; then
+    echo "UNDEFINED CROSS-REFERENCE in $FILE:"
+    grep -nE "LaTeX Warning: .* undefined" "$LOG"
+    exit 1
+  fi
 fi
 
 # Font-embedding pre-flight. veraPDF is the definitive PDF/A gate but
@@ -140,9 +176,10 @@ fi
 python3 "$(dirname "$0")/tools/check-ste.py" "$FILE"
 
 # Tidy the working directory: the gates above have read the LaTeX
-# log, so move it into the output dir (it is the build record) and
-# drop the other intermediates Quarto leaves at the root.
-if [ -f "$LOG" ] && [ "$LOG" != "${OUT}/${BASE}.log" ]; then
+# log (LaTeX engine), so move it into the output dir (it is the
+# build record) and drop the other intermediates Quarto leaves at
+# the root. Typst leaves no log to preserve.
+if [ "$ENGINE" = "latex" ] && [ -f "$LOG" ] && [ "$LOG" != "${OUT}/${BASE}.log" ]; then
   mv "$LOG" "${OUT}/${BASE}.log"
 fi
 rm -f "${BASE}.aux" "${BASE}.toc" "${BASE}.lot" "${BASE}.lof" "${BASE}.out"
