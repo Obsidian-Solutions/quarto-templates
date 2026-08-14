@@ -20,7 +20,7 @@ header, the footer, and the PDF metadata.
 | title, subtitle, author, date | Document identity |
 | reference, version | Document control (JSP 945 style) |
 | confidentiality | Marking, shown top and bottom of every page |
-| classification | MOD field name, accepted as an alias for `confidentiality` |
+| classification | accepted as an alias for `confidentiality` (the field name used by GSCP-style templates) |
 | doc-type, edition, supersedes, review-date | Cover lines; an overdue review date warns on render |
 | short-title | Running header title |
 | keywords, abstract, lang | Search and summary; lang defaults to en-GB |
