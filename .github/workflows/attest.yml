@@ -16,6 +16,10 @@ on:
 permissions:
   id-token: write
   contents: read
+  # attest-build-provenance persists the attestation to the
+  # repository's attestation API; that requires this permission
+  # (the caller's permissions are the ceiling for the reusable gate).
+  attestations: write
 
 jobs:
   attest:
