@@ -26,7 +26,10 @@ r[0-9]*-*.png
 /.quarto/
 **/*.quarto_ipynb
 # Quarto format-resources copies these into the working directory
-obsidian-*.png
+# (render root, and examples/ when rendering the example sources).
+# The extension's own assets/ and typst package copies are tracked.
+/obsidian-*.png
+examples/obsidian-*.png
 # LibreOffice lock files
 .~lock.*#
 # Debug leftovers from watermark sizing experiments
