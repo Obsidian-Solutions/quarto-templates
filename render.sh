@@ -85,13 +85,16 @@ fi
 # pattern as attach-provenance.py for the PDF. Applies whenever the
 # render produced a pptx, regardless of engine.
 if [ -f "${OUT}/${BASE}.pptx" ]; then
-  if [ -x "$(dirname "$0")/tools/attach-pptx-logo.py" ]; then
-    python3 "$(dirname "$0")/tools/attach-pptx-logo.py" \
-      "${OUT}/${BASE}.pptx" \
-      "$(dirname "$0")/_extensions/obsidian/assets/obsidian-logo.png"
-  elif [[ ",${GATE_SKIP:-}," != *",pptxlogo,"* ]]; then
-    echo "GATE pptxlogo: attach-pptx-logo.py missing; set GATE_SKIP=pptxlogo to skip" >&2
-    exit 1
+  # GATE_SKIP=pptxlogo disables the injection deliberately.
+  if [[ ",${GATE_SKIP:-}," != *",pptxlogo,"* ]]; then
+    if [ -x "$(dirname "$0")/tools/attach-pptx-logo.py" ]; then
+      python3 "$(dirname "$0")/tools/attach-pptx-logo.py" \
+        "${OUT}/${BASE}.pptx" \
+        "$(dirname "$0")/_extensions/obsidian/assets/obsidian-logo.png"
+    else
+      echo "GATE pptxlogo: attach-pptx-logo.py missing; set GATE_SKIP=pptxlogo to skip" >&2
+      exit 1
+    fi
   fi
 fi
 
@@ -111,20 +114,24 @@ if [ "$ENGINE" = "typst" ]; then
   # embedded provenance is a false green). The interpreter is found
   # in order: an explicit PIKEPDF_PY, a python3 with pikepdf
   # importable, or the pdf2quarto venv (a known pikepdf host).
-  PIKEPDF_PY="${PIKEPDF_PY:-}"
-  if [ -z "$PIKEPDF_PY" ]; then
-    if python3 -c "import pikepdf" 2>/dev/null; then
-      PIKEPDF_PY=python3
-    elif [ -x /home/matt/Documents/Writing/pdf2quarto/.venv/bin/python ]; then
-      PIKEPDF_PY=/home/matt/Documents/Writing/pdf2quarto/.venv/bin/python
+  # GATE_SKIP=provenance disables the gate (and the attachment)
+  # deliberately.
+  if [[ ",${GATE_SKIP:-}," != *",provenance,"* ]]; then
+    PIKEPDF_PY="${PIKEPDF_PY:-}"
+    if [ -z "$PIKEPDF_PY" ]; then
+      if python3 -c "import pikepdf" 2>/dev/null; then
+        PIKEPDF_PY=python3
+      elif [ -x /home/matt/Documents/Writing/pdf2quarto/.venv/bin/python ]; then
+        PIKEPDF_PY=/home/matt/Documents/Writing/pdf2quarto/.venv/bin/python
+      fi
     fi
-  fi
-  if [ -x "$(dirname "$0")/tools/attach-provenance.py" ] && [ -n "$PIKEPDF_PY" ]; then
-    "$PIKEPDF_PY" "$(dirname "$0")/tools/attach-provenance.py" \
-      "${OUT}/${BASE}.pdf" "$FILE" "${SRC_DIR}/manifest.json"
-  elif [[ ",${GATE_SKIP:-}," != *",provenance,"* ]]; then
-    echo "GATE provenance: attach-provenance.py or pikepdf missing; set GATE_SKIP=provenance to skip" >&2
-    exit 1
+    if [ -x "$(dirname "$0")/tools/attach-provenance.py" ] && [ -n "$PIKEPDF_PY" ]; then
+      "$PIKEPDF_PY" "$(dirname "$0")/tools/attach-provenance.py" \
+        "${OUT}/${BASE}.pdf" "$FILE" "${SRC_DIR}/manifest.json"
+    else
+      echo "GATE provenance: attach-provenance.py or pikepdf missing; set GATE_SKIP=provenance to skip" >&2
+      exit 1
+    fi
   fi
 else
   # Page-overflow gate (LaTeX). LaTeX reports content wider or taller
@@ -198,7 +205,9 @@ if grep -qE "pdf-standard.*ua-2" "$FILE" 2>/dev/null \
       exit 1
     fi
   fi
-  python3 "$(dirname "$0")/tools/check-pdfua.py" "${OUT}/${BASE}.pdf"
+  if [[ ",${GATE_SKIP:-}," != *",pdfua,"* ]]; then
+    python3 "$(dirname "$0")/tools/check-pdfua.py" "${OUT}/${BASE}.pdf"
+  fi
 fi
 
 # Controlled-language gate (JSP 101 / ASD-STE100). Fails on hard
@@ -206,19 +215,19 @@ fi
 # document opts out with `ste: false` in its front matter. A missing
 # checker fails the render for the same false-green reason.
 # GATE_SKIP=ste disables the gate deliberately.
-if [ ! -f "$(dirname "$0")/tools/check-ste.py" ]; then
-  if [[ ",${GATE_SKIP:-}," != *",ste,"* ]]; then
+if [[ ",${GATE_SKIP:-}," != *",ste,"* ]]; then
+  if [ ! -f "$(dirname "$0")/tools/check-ste.py" ]; then
     echo "GATE ste: tools/check-ste.py missing; restore it or set GATE_SKIP=ste" >&2
     exit 1
   fi
+  python3 "$(dirname "$0")/tools/check-ste.py" "$FILE"
 fi
-python3 "$(dirname "$0")/tools/check-ste.py" "$FILE"
 
 # Tidy the working directory: the gates above have read the LaTeX
 # log (LaTeX engine), so move it into the output dir (it is the
 # build record) and drop the other intermediates Quarto leaves at
 # the root. Typst leaves no log to preserve.
-if [ "$ENGINE" = "latex" ] && [ -f "$LOG" ] && [ "$LOG" != "${OUT}/${BASE}.log" ]; then
+if [ "$ENGINE" = "latex" ] && [ -f "$LOG" ] && [ ! -f "${OUT}/${BASE}.log" ]; then
   mv "$LOG" "${OUT}/${BASE}.log"
 fi
 rm -f "${BASE}.aux" "${BASE}.toc" "${BASE}.lot" "${BASE}.lof" "${BASE}.out"
