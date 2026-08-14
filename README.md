@@ -117,41 +117,68 @@ to its section.
 ### PDF/UA-2 (screen readers)
 
 PDF/UA-2 produces a tagged structure tree for assistive technology.
-The current LaTeX toolchain cannot produce PDF/UA-2 and clickable TOC
-links at the same time: `\DocumentMetadata` disables hyperref's TOC
-link annotations (latex3/tagging-project issue 1157).
+The default is PDF/A-4f with a clickable TOC and no tagging: the
+accessible HTML companion carries the screen-reader burden
+(HTML-first rule). Use the tagged PDF only when a client requests
+it, as it is rarely needed.
 
-The default is the non-accessible version: PDF/A-4f with clickable
-TOC links. Use the accessible version only when a client requests it,
-as it is rarely needed. To render a document with PDF/UA-2 instead:
+To render a document with PDF/UA-2 instead, set the standard in the
+document front matter:
 
-1. In `_extension.yml`, change the default to
-   `pdf-standard: [a-4f, ua-2]`.
-2. Remove `partials/document-metadata.latex` from the
-   `template-partials` list, so Quarto's `\DocumentMetadata` is used.
-3. Accept that the TOC page will not contain clickable links.
+```yaml
+format:
+  obsidian-pdf:
+    pdf-standard: [a-4f, ua-2]
+```
 
-Body cross-references keep working in both modes. Revisit after the
-upstream fix: the escape-hatch partial exists so the template can
-re-enable PDF/UA-2 without losing links.
+The template's metadata partial now branches on the requested
+standard: when a document asks for UA-2 tagging, it defers to
+Quarto's `\DocumentMetadata{... tagging=on ...}` code path (the
+tagged TOC is both accessible and clickable); when untagged, it
+keeps the classic hyperref link patch. Both paths are verified with
+veraPDF: `[a-4f, ua-2]` validates against PDF/4F and PDF/UA2
+simultaneously, and the default `[a-4f]` validates against PDF/4F.
+An earlier template version always used the untagged patch, which
+made a UA-2 render fail veraPDF on link-structure and artifact
+checks; that was self-inflicted and is fixed.
 
-#### Known limitation: flat heading structure
+#### Known limitation: flat heading structure (LaTeX)
 
-Quarto's PDF/UA-2 tagging does not assign heading roles (H1-H6) to
-section headings. The KOMA class and the kernel sectioning never
-promote sections to headings; tagpdf's namespace mapping is data-only
-and nothing reads it. The result is a structure tree of plain
-paragraph tags, and veraPDF passes it because it runs only
-machine-verifiable checks. This affects every Quarto PDF/UA-2
-document, not just this template. LaTeX-side patches (hooks,
-`\@sect` redefinitions, tagging sockets) each fail on this toolchain:
-compile errors, Hn-contains-P nesting violations, or tree corruption.
+The LaTeX PDF/UA-2 structure tree does not assign heading roles
+(H1-H6) to section headings. The kernel sectioning never promotes
+sections to headings: headings collapse to plain paragraph tags, and
+veraPDF passes the render because it runs only machine-verifiable
+checks. This affects every Quarto LaTeX PDF/UA-2 document, not just
+this template; LaTeX-side patches (hooks, `\@sect` redefinitions,
+tagging sockets) each fail on this toolchain.
 
-`tools/check-pdfua.py` is the honest gate. It fails when a UA-2 render
-lacks heading roles, so no heading-less document is ever shipped as
-accessible. `render.sh` runs it automatically for UA-2 renders. The
-upstream fix would be Quarto wiring section-to-heading tagging on
-KOMA; revisit this after a Quarto or LaTeX release addresses it.
+`tools/check-pdfua.py` is the honest gate. It is role-map aware (a
+heading expressed as a custom role resolves through the document's
+RoleMap) and fails when a UA-2 render has no heading roles, so no
+heading-less document is ever shipped as accessible. `render.sh` runs
+it automatically for UA-2 renders. A LaTeX UA-2 render currently
+fails this gate, which is the correct outcome: the tagging is not yet
+usable for screen readers.
+
+#### Accessible Typst output: real heading roles
+
+The Typst format is the accessible path. Typst 0.14+ produces tagged
+PDFs with real heading roles (H1, H2 in the structure tree), and
+Quarto 1.10.18 bundles Typst 0.15.1. An accessible Typst document
+sets the archival level that shares PDF/UA-1's PDF version (UA-1 is
+PDF 1.7, so PDF/A-4f cannot combine with it):
+
+```yaml
+format:
+  obsidian-typst:
+    pdf-standard: [a-2b, ua-1]
+```
+
+Verified: `[a-2b, ua-1]` validates against PDF/2B and PDF/UA1
+simultaneously, the structure tree contains H1 and H2 heading roles,
+and `tools/check-pdfua.py` passes. This is the only format in the
+template whose tagged PDF carries heading roles; it is the screen
+reader's alternative to the HTML companion.
 
 ## Output
 

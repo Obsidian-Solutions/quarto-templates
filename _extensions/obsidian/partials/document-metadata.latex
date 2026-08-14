@@ -1,15 +1,38 @@
 % SPDX-License-Identifier: MIT
 $--
-$-- PDF standard support (PDF/A, PDF/UA, PDF/X)
-$-- Replaces Quarto's document-metadata.latex.
-$-- Uses the LaTeX-team escape hatch (ltnews42 s2.1):
-$-- \RequirePackage{pdfmanagement} + \SetKeys instead of \DocumentMetadata,
-$-- so hyperref keeps its classic \contentsline TOC-link patch.
-$-- PDF/A conformance is still enforced by l3pdfmeta and verapdf.
-$-- NOTE: ua-2 requires the tagging code that \DocumentMetadata loads.
-$-- With the escape hatch, the template does not produce PDF/UA-2.
+$-- PDF standard support (PDF/A, PDF/UA, PDF/X).
+$-- Two paths, chosen by whether the document asks for tagging:
 $--
+$-- Tagged (pdf-standard lists ua-2): emit Quarto's stock
+$-- \DocumentMetadata{tagging=on} verbatim. Tagging is the code path
+$-- that makes PDF/UA-2 work - veraPDF 1.28+ fails the escape hatch
+$-- below on link-structure and artifact checks (ISO 14289-2 8.2.5.20
+$-- and 8.2.2). The tagged TOC remains clickable (verified: /S /TOC
+$-- with /S /GoTo children) and the PDF passes veraPDF for both the
+$-- archival and accessibility standards.
+$--
+$-- Untagged (the default a-4f): use the LaTeX-team escape hatch
+$-- (ltnews42 s2.1) - \RequirePackage{pdfmanagement} + \SetKeys
+$-- instead of \DocumentMetadata - so hyperref keeps its classic
+$-- \contentsline TOC-link patch. PDF/A conformance is still
+$-- enforced by l3pdfmeta and verapdf.
+$--
+$if(pdfstandard.tagging)$
+\DocumentMetadata{
+$if(pdfstandard.version)$
+  pdfversion=$pdfstandard.version$,
+$endif$
+$if(pdfstandard.standards)$
+  pdfstandard={$for(pdfstandard.standards)$$it$$sep$,$endfor$},
+$endif$
+  tagging=on,
+$if(lang)$
+  lang=$lang$,
+$endif$
+  xmp=true}
+$else$
 $if(pdfstandard)$
 \RequirePackage{pdfmanagement}
 \SetKeys[document/metadata]{$if(pdfstandard.version)$pdfversion=$pdfstandard.version$,$endif$$if(pdfstandard.standards)$pdfstandard={$for(pdfstandard.standards)$$it$$sep$,$endfor$}$endif$$if(lang)$, lang=$lang$$endif$, xmp=true}
+$endif$
 $endif$

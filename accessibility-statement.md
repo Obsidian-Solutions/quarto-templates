@@ -28,18 +28,20 @@ honest about the limits of the toolchain.
 
 ## Known limitations
 
-- **PDF/UA-2 heading roles.** The PDF/UA-2 option cannot yet tag
-  section headings as H1-H6 (an upstream Quarto/KOMA limitation,
-  documented in the README). A render that opts into PDF/UA-2 is
-  gated by `tools/check-pdfua.py`, which fails the render when heading
-  roles are missing, so no heading-less document ships as accessible.
-  The default PDF/A-4f output is deliberately untagged to keep the
-  table of contents clickable; the HTML companion carries the
-  accessible structure.
-- **Typst structure tree.** The Typst fast-draft PDF has no tagged
-  structure tree and no alt-text hook for figures in this template's
-  current configuration. Use the HTML companion for screen-reader
-  access to the document content.
+- **PDF/UA-2 heading roles (LaTeX).** The LaTeX PDF/UA-2 option tags
+  the document but does not promote section headings to H1-H6 (an
+  upstream Quarto/kernel limitation, documented in the README). A
+  LaTeX render that opts into PDF/UA-2 is gated by
+  `tools/check-pdfua.py`, which fails the render when heading roles
+  are missing, so no heading-less document ships as accessible. The
+  default PDF/A-4f output is deliberately untagged; the HTML
+  companion carries the accessible structure.
+- **Typst accessible output.** The Typst fast-draft PDF is the
+  accessible alternative: with `pdf-standard: [a-2b, ua-1]` it
+  validates against PDF/UA1 and carries real H1/H2 heading roles in
+  the structure tree (verified with veraPDF and the structure gate).
+  The Typst format is tagged by default since Typst 0.14; Quarto
+  1.10.18 bundles 0.15.1.
 - **DOCX companion.** The client-editable DOCX carries the house
   style but is not accessibility-validated. Treat the DOCX as a
   working copy, not the accessible record.
