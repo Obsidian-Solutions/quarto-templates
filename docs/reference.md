@@ -58,6 +58,8 @@ existing documents are unaffected. Set the key to switch:
 | `titlepage: colorbox` | title in a filled box |
 | `titlepage: academic` | journal-style author and affiliation machinery |
 | `titlepage: bg-image` | background image behind the content |
+| `titlepage: banded` | full-page maroon band, gold rule, white title block |
+| `titlepage: banded-slate` | full-page slate band, yellow rule, white title block |
 | `titlepage: true` | same as `plain` |
 | `titlepage: false` | no cover page at all |
 | `titlepage: <file.tex>` | include a custom LaTeX cover file |
@@ -83,6 +85,8 @@ Tune the chosen theme with a `titlepage-theme:` block:
 | `titlepage-theme.header-*` / `footer-*` / `date-*` | those blocks' size, style, colour, spacing |
 | `titlepage-theme.logo-size` | logo width |
 | `titlepage-theme.page-color` / `page-html-color` | whole-page background colour |
+| `titlepage-theme.classification-color` | classification marking colour (the banded themes set white) |
+| `titlepage-theme.band-rule-color` / `band-rule-width` / `band-rule-space` | the banded themes' contrast rule |
 | `titlepage-theme.bg-image-size` / `bg-image-location` | background image size and corner (`ULCorner`, `URCorner`, `LLCorner`, `LRCorner`, `Center`) |
 
 Direct keys sit alongside `titlepage`:

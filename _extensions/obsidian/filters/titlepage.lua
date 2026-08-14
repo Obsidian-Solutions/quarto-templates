@@ -262,6 +262,82 @@ function Meta(m)
       })
       return m
     end,
+
+    -- Full-page colour band behind a white title block, with a
+    -- contrast rule. The banded look is a neutral interpretation of
+    -- the classic cover: a solid colour field, a rule, and a title
+    -- that reads on it. Classification is recolored to white; the
+    -- dark house logo is omitted (it would vanish on the band).
+    ["banded"] = function(m)
+      assign_value({
+        ["elements"] = {
+          latex("\\titleblock"),
+          latex("\\bandrule"),
+          latex("\\authorblock"),
+          latex("\\dateblock"),
+          latex("\\vfill"),
+        },
+        ["page-align"] = "left",
+        ["title-style"] = "plain",
+        ["title-fontsize"] = 34,
+        ["title-fontstyle"] = {"bfseries"},
+        ["title-color"] = "white",
+        ["title-space-after"] = latex("2\\baselineskip"),
+        ["subtitle-fontsize"] = 18,
+        ["subtitle-color"] = "white",
+        ["title-subtitle-space-between"] = latex("\\baselineskip"),
+        ["author-style"] = "plain-with-and",
+        ["author-fontsize"] = 14,
+        ["author-color"] = "white",
+        ["author-space-after"] = latex("\\baselineskip"),
+        ["date-fontsize"] = 12,
+        ["date-color"] = "white",
+        ["date-space-after"] = "1cm",
+        ["band-rule-color"] = "gold",
+        ["band-rule-width"] = latex("3pt"),
+        ["band-rule-space"] = latex("\\baselineskip"),
+        ["page-html-color"] = "522b45",
+        ["classification-color"] = "white",
+        ["logo-size"] = latex("0.2\\textwidth"),
+      })
+      return m
+    end,
+
+    -- Slate variant of the banded theme.
+    ["banded-slate"] = function(m)
+      assign_value({
+        ["elements"] = {
+          latex("\\titleblock"),
+          latex("\\bandrule"),
+          latex("\\authorblock"),
+          latex("\\dateblock"),
+          latex("\\vfill"),
+        },
+        ["page-align"] = "left",
+        ["title-style"] = "plain",
+        ["title-fontsize"] = 34,
+        ["title-fontstyle"] = {"bfseries"},
+        ["title-color"] = "white",
+        ["title-space-after"] = latex("2\\baselineskip"),
+        ["subtitle-fontsize"] = 18,
+        ["subtitle-color"] = "white",
+        ["title-subtitle-space-between"] = latex("\\baselineskip"),
+        ["author-style"] = "plain-with-and",
+        ["author-fontsize"] = 14,
+        ["author-color"] = "white",
+        ["author-space-after"] = latex("\\baselineskip"),
+        ["date-fontsize"] = 12,
+        ["date-color"] = "white",
+        ["date-space-after"] = "1cm",
+        ["band-rule-color"] = "yellow",
+        ["band-rule-width"] = latex("3pt"),
+        ["band-rule-space"] = latex("\\baselineskip"),
+        ["page-html-color"] = "313d47",
+        ["classification-color"] = "white",
+        ["logo-size"] = latex("0.2\\textwidth"),
+      })
+      return m
+    end,
   }
 
   m["titlepage-file"] = false
@@ -273,7 +349,8 @@ function Meta(m)
   end
   if choice == "true" then choice = "plain" end
 
-  local okvals = {"plain", "formal", "classic-lined", "colorbox", "academic", "bg-image"}
+  local okvals = {"plain", "formal", "classic-lined", "colorbox", "academic",
+                  "bg-image", "banded", "banded-slate"}
   local isatheme = has_value(okvals, choice)
   if not isatheme then
     if not file_exists(choice) then
