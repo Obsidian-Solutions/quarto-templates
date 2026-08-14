@@ -23,4 +23,4 @@ permissions:
 
 jobs:
   attest:
-    uses: Obsidian-Solutions/.github/.github/workflows/attest.yml@58e7b55b05eb406c880fc4b272cd9b8b36b0d459
+    uses: Obsidian-Solutions/.github/.github/workflows/attest.yml@121780f0d587ca5516e5d29ae8dafcdc8348a5ad
