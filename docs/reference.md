@@ -44,6 +44,61 @@ render date; the example attaches it alongside the source.
 
 Set `baseline` manually only if you render without `render.sh`.
 
+## Themed title page
+
+The `obsidian-pdf` format offers an opt-in themed cover page. When the
+`titlepage` key is absent, the standard monochrome cover renders and
+existing documents are unaffected. Set the key to switch:
+
+| Value | Effect |
+|---|---|
+| `titlepage: plain` | default business cover: classification, logo, title, author, date, identity line |
+| `titlepage: formal` | centred, heavier title; report cover |
+| `titlepage: classic-lined` | rules above and below the title |
+| `titlepage: colorbox` | title in a filled box |
+| `titlepage: academic` | journal-style author and affiliation machinery |
+| `titlepage: bg-image` | background image behind the content |
+| `titlepage: true` | same as `plain` |
+| `titlepage: false` | no cover page at all |
+| `titlepage: <file.tex>` | include a custom LaTeX cover file |
+
+The mechanism is a port of the `quarto_titlepages` architecture: the
+Lua filter (`filters/titlepage.lua`) validates the keys, fills theme
+defaults, and records which style variant is active; the TeX partials
+(`partials/titlepage*.tex`) turn the values into a layout.
+
+Tune the chosen theme with a `titlepage-theme:` block:
+
+| Key | Purpose |
+|---|---|
+| `titlepage-theme.elements` | ordered list of blocks: `headerblock`, `logoblock`, `titleblock`, `authorblock`, `affiliationblock`, `dateblock`, `footerblock`, `vfill` |
+| `titlepage-theme.page-align` | `left`, `center`, `right` |
+| `titlepage-theme.title-style` | `plain`, `colorbox`, `doublelinewide`, `doublelinetight` |
+| `titlepage-theme.title-fontsize` / `title-fontstyle` | title size and style list (for example `[huge, bfseries]`) |
+| `titlepage-theme.title-color` | title colour (defaults to the brand near-black) |
+| `titlepage-theme.subtitle-*` | subtitle size, style, colour, spacing |
+| `titlepage-theme.author-style` | `plain`, `plain-with-and`, `superscript`, `superscript-with-and`, `two-column`, `author-address` |
+| `titlepage-theme.author-fontsize` / `author-fontstyle` / `author-color` | author rendering |
+| `titlepage-theme.affiliation-style` | `numbered-list`, `numbered-list-with-correspondence` |
+| `titlepage-theme.header-*` / `footer-*` / `date-*` | those blocks' size, style, colour, spacing |
+| `titlepage-theme.logo-size` | logo width |
+| `titlepage-theme.page-color` / `page-html-color` | whole-page background colour |
+| `titlepage-theme.bg-image-size` / `bg-image-location` | background image size and corner (`ULCorner`, `URCorner`, `LLCorner`, `LRCorner`, `Center`) |
+
+Direct keys sit alongside `titlepage`:
+
+| Key | Purpose |
+|---|---|
+| `titlepage-logo` | logo image; defaults to `obsidian-logo.png`, `false` omits it |
+| `titlepage-header` | text above the title block |
+| `titlepage-footer` | text below the content |
+| `titlepage-bg-image` | background image file |
+| `titlepage-geometry` | page geometry for the cover only (for example `[top=5cm, bottom=2.6cm]`) |
+
+Every themed page keeps the classification marking top-right and the
+identity line (reference, edition, review) at the bottom, so the cover
+stays traceable and marked like every other page.
+
 ## Formats
 
 The template contributes eight formats. Each example source file
