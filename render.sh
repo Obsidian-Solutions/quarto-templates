@@ -109,13 +109,14 @@ fi
 # heading roles (upstream gap: KOMA + \DocumentMetadata{tagging=on}
 # never promotes sections to H1-H6; veraPDF passes by design). This
 # checker fails honestly when a UA-2 document lacks heading roles, so
-# It fires only when the extension's pdf-standard value lists ua-2
-# (the default a-4f is deliberately untagged to keep the TOC
-# clickable). The match is keyed to the config value, so a comment
-# mentioning PDF/UA-2 cannot trip the gate. A missing checker fails
-# the render: a UA-2 claim with no verification is a false green.
-# GATE_SKIP=pdfua disables the gate deliberately.
-if grep -qE "^[[:space:]]*pdf-standard:[[:space:]]*\[[^]]*ua-2" "$(dirname "$0")/_extensions/obsidian/_extension.yml"; then
+# It fires when the DOCUMENT asks for ua-2 (front matter or metadata
+# file override), not when the extension default merely permits it.
+# A missing checker fails the render: a UA-2 claim with no
+# verification is a false green. GATE_SKIP=pdfua disables the gate
+# deliberately.
+if grep -qE "pdf-standard.*ua-2" "$FILE" 2>/dev/null \
+   || grep -qE "pdf-standard.*ua-2" "${FILE%.qmd}.yml" 2>/dev/null \
+   || grep -qE "pdf-standard.*ua-2" "${FILE%.qmd}.yaml" 2>/dev/null; then
   if [ ! -x "$(dirname "$0")/tools/check-pdfua.py" ]; then
     if [[ ",${GATE_SKIP:-}," != *",pdfua,"* ]]; then
       echo "GATE pdfua: tools/check-pdfua.py missing or not executable; fix it or set GATE_SKIP=pdfua" >&2

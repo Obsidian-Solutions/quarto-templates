@@ -52,7 +52,7 @@ command per file produces the whole family with no content loss.
 
 | Format | Output | Notes |
 |---|---|---|
-| `obsidian-pdf` | PDF/A-4f | branded cover, approval page, abstract, revision history, contents each on their own page, roman front matter, arabic body, numbered sections, classification in header and footer, baseline and page numbers, widow and orphan control, optional watermark |
+| `obsidian-pdf` | PDF/A-4f default, any standard selectable | branded cover, approval page, abstract, revision history, contents each on their own page, roman front matter, arabic body, numbered sections, classification in header and footer, baseline and page numbers, widow and orphan control, optional watermark, per-document PDF standard |
 | `obsidian-html` | HTML | accessible companion, light and dark themes, WCAG AAA contrast |
 | `obsidian-docx` | DOCX | client-editable companion, house style, no LaTeX-only front matter |
 | `obsidian-epub` | EPUB | e-reader distribution, classification banner, brand cover image |
@@ -67,11 +67,52 @@ Obsidian Solutions branding: the filters, partials, and themes are
 format-specific, and a format with no `obsidian-*` equivalent renders
 with Quarto's defaults.
 
+## PDF standards
+
+The PDF format defaults to PDF/A-4f, but that is a default, not a
+limit. Every document selects its own standard in the front matter:
+
+```yaml
+format:
+  obsidian-pdf:
+    pdf-standard: [a-2u]     # or any value from the matrix below
+```
+
+Quarto 1.10 validates each render against the requested standard with
+veraPDF (`quarto install verapdf`). The full matrix available to the
+LuaLaTeX engine:
+
+| Category | Values | Notes |
+|---|---|---|
+| PDF versions | `1.4`, `1.5`, `1.6`, `1.7`, `2.0` | plain PDF, no archival guarantees |
+| PDF/A (archival) | `a-1b`, `a-2a`, `a-2b`, `a-2u`, `a-3a`, `a-3b`, `a-3u`, `a-4`, `a-4f` | a-4f is the default and the current ISO 19005 part |
+| PDF/UA (accessibility) | `ua-2` | accessible tagging on top of an archival level, for example `[a-2b, ua-2]` |
+| PDF/X (print exchange) | `x-4`, `x-4p`, `x-5g`, `x-5n`, `x-5pg`, `x-6`, `x-6n`, `x-6p` | ISO 15930, for commercial print handoff |
+
+Every standard runs the same branded machinery: cover, title page,
+classification marking, baseline, and gates. Two standards have known
+limits that apply to this template's assets, verified against a real
+render:
+
+- **a-1b** (PDF/A-1, ISO 19005-1): forbids embedded files and soft
+  masks. Drop the `attach:` provenance field, and use a flattened
+  brand logo without alpha transparency. PDF/A-2 and later allow both,
+  so `a-2u` is the lowest archival level that keeps provenance.
+- **ua-2** (PDF/UA, ISO 14289-2): the upstream LaTeX tagging still
+  leaves gaps (DisplayDocTitle, Tabs, structure destinations). The
+  accessibility statement documents the current state; the
+  `tools/check-pdfua.py` gate fails honestly when a ua-2 render lacks
+  heading roles. The default a-4f stays untagged so the table of
+  contents remains clickable.
+
+The PDF/UA structure gate in `render.sh` reads the document's own
+front matter, so a document that opts into ua-2 is checked even
+though the extension default is a-4f.
+
 ## Brand
 
-The palette is monochrome, drawn from the website brand colour and
-the functional grey scale proven by the GOV.UK and NHS design
-systems:
+The palette is monochrome, drawn from the website brand colour with a
+functional grey scale for text, secondary and hairline tones:
 
 | Role | Hex | Contrast on white |
 |---|---|---|
