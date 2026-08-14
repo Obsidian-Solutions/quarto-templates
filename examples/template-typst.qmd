@@ -8,6 +8,7 @@ reference: "OS-DOC-TST"
 version: "1.0.0"
 confidentiality: "Commercial in Confidence"
 doc-type: "Test Document"
+number-sections: true
 format:
   obsidian-typst:
     pdf-standard: a-4f
