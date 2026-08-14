@@ -120,6 +120,25 @@ jobs:
           qpdf --list-attachments _output/examples/template-typst.pdf | grep -q "template-typst.qmd"
           qpdf --list-attachments _output/examples/template-typst.pdf | grep -q "manifest.json"
 
+      - name: Render Typst accessible path (PDF/A-2b + PDF/UA-1)
+        run: |
+          # The Typst engine tags headings with real roles (H1, H2),
+          # which the LaTeX path cannot do. ua-1 is a PDF 1.7
+          # standard and cannot combine with a-4f (PDF 2.0), so the
+          # accessible path is a-2b + ua-1. Copy the example with the
+          # standard overridden and run the structure gate: it must
+          # PASS, proving the accessible claim stays true.
+          cp examples/template-typst.qmd /tmp/typst-ua.qmd
+          python3 - <<'PYEOF'
+          import re
+          p = '/tmp/typst-ua.qmd'
+          s = open(p).read()
+          s = re.sub(r'pdf-standard: a-4f', 'pdf-standard: [a-2b, ua-1]', s, count=1)
+          open(p, 'w').write(s)
+          PYEOF
+          quarto render /tmp/typst-ua.qmd --to obsidian-typst
+          python3 tools/check-pdfua.py /tmp/typst-ua.pdf
+
       - name: Render HTML companion
         run: quarto render examples/template.qmd --to obsidian-html
 

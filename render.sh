@@ -78,6 +78,23 @@ else
   quarto render "$FILE" -M baseline="$HASH, $DATE"
 fi
 
+# Deck branding (pptx). Quarto's pptx rebuild drops media referenced
+# only from the slide master, so the reference-doc logo never
+# survives a render. The post-process step injects the brand mark
+# into the FINAL deck (nothing rebuilds it after this), the same
+# pattern as attach-provenance.py for the PDF. Applies whenever the
+# render produced a pptx, regardless of engine.
+if [ -f "${OUT}/${BASE}.pptx" ]; then
+  if [ -x "$(dirname "$0")/tools/attach-pptx-logo.py" ]; then
+    python3 "$(dirname "$0")/tools/attach-pptx-logo.py" \
+      "${OUT}/${BASE}.pptx" \
+      "$(dirname "$0")/_extensions/obsidian/assets/obsidian-logo.png"
+  elif [[ ",${GATE_SKIP:-}," != *",pptxlogo,"* ]]; then
+    echo "GATE pptxlogo: attach-pptx-logo.py missing; set GATE_SKIP=pptxlogo to skip" >&2
+    exit 1
+  fi
+fi
+
 if [ "$ENGINE" = "typst" ]; then
   # Typst overflow gate. A block wider or taller than its frame warns
   # "content does not fit" (or "does not fit into"); fail the render
