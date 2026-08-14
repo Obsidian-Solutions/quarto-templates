@@ -38,22 +38,22 @@ format:
 
 # Agenda
 
-## Item 1 — Purpose (14:00, 10 minutes)
+## Item 1  –  Purpose (14:00, 10 minutes)
 
 - presenter:
 - outcome:
 
-## Item 2 — Detail (14:10, 25 minutes)
+## Item 2  –  Detail (14:10, 25 minutes)
 
 - presenter:
 - outcome:
 
-## Item 3 — Decisions (14:35, 20 minutes)
+## Item 3  –  Decisions (14:35, 20 minutes)
 
 - presenter:
 - outcome:
 
-## Item 4 — Actions (14:55, 5 minutes)
+## Item 4  –  Actions (14:55, 5 minutes)
 
 - agree owners and dates
 - agree the next meeting
