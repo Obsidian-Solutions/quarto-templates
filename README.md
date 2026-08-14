@@ -3,7 +3,8 @@
 A distributable set of Quarto templates for Obsidian Solutions. One
 source file produces a clean, professional PDF for print and offline
 use, an HTML version for reading, a DOCX for client editing, a
-revealjs deck for presenting, and a dashboard for live figures.
+revealjs deck for presenting, a dashboard for live figures, and a
+fast-draft Typst PDF for quick turns.
 
 The template follows the document standards in the standards library
 (UK PDF document standards, LaTeX/Pandoc/Quarto production, and the
@@ -37,6 +38,7 @@ with the GSCP validation available under `gscp: true`.
 - A LaTeX engine (lualatex) on TeX Live 2023 or later
 - TeX Gyre Pagella, Montserrat and Liberation Mono fonts
 - Python 3 (for the validation gates in `tools/`)
+- pikepdf (for the Typst provenance gate, `tools/attach-provenance.py`)
 - Optionally `quarto install verapdf` for PDF/A validation
 
 ## Documentation
@@ -157,10 +159,13 @@ One source file per artefact type, each declaring its full format
 family in the front matter. One render command per file produces the
 whole family with no content loss between formats: the document
 renders to PDF, HTML, DOCX, and EPUB from the same prose; the deck
-renders to revealjs, beamer PDF, and PPTX from the same slides. The
-three source files exist because a document, a deck, and a dashboard
-are different artefacts: a slide is a summary, not a paragraph, and
-merging the families would guarantee loss, not avoid it.
+renders to revealjs, beamer PDF, and PPTX from the same slides; and
+`obsidian-typst` renders a fast-draft PDF from the same source with
+the house identity (cover, classification, identity line) and PDF/A-4f
+provenance attached by `render.sh`. The three source files exist
+because a document, a deck, and a dashboard are different artefacts: a
+slide is a summary, not a paragraph, and merging the families would
+guarantee loss, not avoid it.
 
 The per-format capabilities are in [docs/reference.md](docs/reference.md).
 
@@ -172,6 +177,7 @@ matter block:
 | File | Format family | Shows |
 |---|---|---|
 | `examples/template.qmd` | PDF, HTML, DOCX, EPUB | The full document surface: cover, approval, revision history, citations, appendices, list of tables and figures |
+| `examples/template-typst.qmd` | Typst PDF | The fast-draft format: cover, numbered sections, running header, PDF/A-4f provenance |
 | `examples/template-slides.qmd` | revealjs, beamer PDF, PPTX | A client deck with the classification banner |
 | `examples/template-dashboard.qmd` | dashboard | A service-health dashboard with cards and a status table |
 
@@ -179,6 +185,7 @@ Render one file per family:
 
 ```bash
 quarto render examples/template.qmd        # PDF + HTML + DOCX + EPUB
+quarto render examples/template-typst.qmd  # Typst PDF
 quarto render examples/template-slides.qmd # revealjs + beamer PDF + PPTX
 quarto render examples/template-dashboard.qmd # dashboard
 ```
@@ -228,8 +235,14 @@ section heading in the document.
 
 The identity is monochrome: a near-black primary (`#121212`, 16.8:1
 on white), a grey secondary (`#484949`, AAA), and grey hairlines.
-The palette table and the rebranding instructions are in
-[docs/reference.md](docs/reference.md).
+The palette is a token system: `brand.yml` is the single source,
+`tools/tokens.py` generates the LaTeX and SCSS token files, and a
+`--check` mode fails CI when the theme drifts from the source. A
+neutral accent palette (plum, maroon, slate, gold, ...) is available
+for documents that want colour. The palette table, the rebranding
+instructions, and the cover-theme catalogue (plain, formal,
+classic-lined, colorbox, academic, bg-image, banded, banded-slate)
+are in [docs/reference.md](docs/reference.md).
 
 ## Fonts
 
@@ -243,15 +256,28 @@ licences of every component are recorded in [NOTICE](NOTICE).
 
 ## Verification gates
 
-`render.sh` runs three gates on every render, and the CI runs them on
-the example document:
+`render.sh` runs the gates on every render, and the CI runs them on
+the example documents. The gates are engine-aware: the LaTeX engine
+runs the page-overflow and cross-reference gates from its log, the
+Typst engine attaches provenance instead, and the shared gates run
+for both.
 
-1. **Page-overflow gate.** Any `Overfull \hbox` or `\vbox` fails the
-   render, so no document ships with content clipped at a margin.
-2. **Controlled-language gate** (`tools/check-ste.py`). Fails on
-   the JSP 101 / ASD-STE100 hard violations. A document opts out with
-   `ste: false`.
-3. **PDF/UA-2 structure gate** (`tools/check-pdfua.py`). Fires only
+1. **Page-overflow gate** (LaTeX). Any `Overfull \hbox` or `\vbox`
+   fails the render, so no document ships with content clipped at a
+   margin.
+2. **Cross-reference gate** (LaTeX). A broken `\ref` or `\cite`
+   prints "??" and fails the render.
+3. **Provenance gate** (Typst). `tools/attach-provenance.py` embeds
+   the source and manifest with the `AFRelationship` and MIME keys
+   PDF/A-4f requires; a Typst archive without embedded provenance is
+   a false green.
+4. **Font-embedding gate.** Every font must be embedded with a
+   ToUnicode map (`pdffonts`), which PDF/A requires for text
+   extraction.
+5. **Controlled-language gate** (`tools/check-ste.py`). Fails on
+   the JSP 101 / ASD-STE100 hard violations. A document opts out
+   with `ste: false`.
+6. **PDF/UA-2 structure gate** (`tools/check-pdfua.py`). Fires only
    for UA-2 renders and fails when the tagged structure tree lacks
    heading roles.
 
