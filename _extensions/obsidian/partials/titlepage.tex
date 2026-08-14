@@ -125,6 +125,15 @@ $if(titlepage-theme.date-color)$\textcolor{$titlepage-theme.date-color$}$endif${
 \vspace{$if(titlepage-theme.date-space-after)$$titlepage-theme.date-space-after$$else$0pt$endif$}
 $else$$endif$}
 
+% Full-width contrast rule, used by the banded themes between the
+% title and the author block. Colour, width and spacing are theme
+% keys; omitted when the theme has no band-rule keys.
+\newcommand{\bandrule}{%
+\vspace{$if(titlepage-theme.band-rule-space)$$titlepage-theme.band-rule-space$$else$0pt$endif$}
+{\color{$if(titlepage-theme.band-rule-color)$$titlepage-theme.band-rule-color$$else$gold$endif$}%
+\rule{\textwidth}{$if(titlepage-theme.band-rule-width)$$titlepage-theme.band-rule-width$$else$3pt$endif$}}
+\vspace{$if(titlepage-theme.band-rule-space)$$titlepage-theme.band-rule-space$$else$0pt$endif$}}
+
 \newcommand{\headerblock}{$if(titlepage-header)$
 $if(titlepage-theme.header-color)$\textcolor{$titlepage-theme.header-color$}$endif${$if(titlepage-theme.header-align)$\titlepageheaderalign$endif$\titlepageheaderblock}
 \vspace{$if(titlepage-theme.header-space-after)$$titlepage-theme.header-space-after$$else$0pt$endif$}
@@ -141,6 +150,11 @@ $else$$if(titlepage-theme.page-color)$
 \colorlet{pgcolor}{$titlepage-theme.page-color$}
 \pagecolor{pgcolor}\afterpage{\nopagecolor}
 $endif$$endif$
+$if(titlepage-theme.classification-color)$
+% Banded themes sit on a dark band; the classification marking
+% recolors to stay legible (defined in before-body.tex).
+\renewcommand{\obsidianclasscolour}{$titlepage-theme.classification-color$}
+$endif$
 $if(titlepage-bg-image)$
 \newlength{\bgimagesize}
 \setlength{\bgimagesize}{$if(titlepage-theme.bg-image-size)$$titlepage-theme.bg-image-size$$else$\paperwidth$endif$}
@@ -167,9 +181,11 @@ $titlepage-theme.elements$
 $endfor$
 \par
 
-% House identity line: keeps the themed page traceable.
+% House identity line: keeps the themed page traceable. On a dark
+% band (banded themes) the line recolors to white; otherwise it uses
+% the house secondary grey.
 \vfill
-{\centering\small\textcolor{obsidianl}{\docref{}
+{\centering\small\textcolor{$if(titlepage-theme.classification-color)$$titlepage-theme.classification-color$$else$obsidianl$endif$}{\docref{}
   \ifdefempty{\obsidianedition}{}{\textbar{} \obsidianedition{}}
   \ifdefempty{\obsidianreview}{}{\textbar{} \obsidianreview{}}}\par}
 \end{minipage}
