@@ -33,4 +33,7 @@ $endif$
 $if(review-date)$
   review-date: [$review-date$],
 $endif$
+$if(numbersections)$
+  number-sections: true,
+$endif$
 )

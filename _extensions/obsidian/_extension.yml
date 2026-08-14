@@ -203,9 +203,25 @@ contributes:
     typst:
       # Fast-render Typst companion to the archival PDF. Carries the
       # same identity (classification, cover, house fonts and
-      # palette) but not the PDF/A-4f provenance or the LaTeX gates.
+      # palette); render.sh attaches the PDF/A-4f provenance after
+      # the render (attach-provenance.py), so the Typst archive is
+      # as self-contained as the LaTeX one. The LaTeX log gates do
+      # not apply; the STE, font and PDF/UA gates do.
       # The bundled obsidian-doc package lives under
       # typst/packages/preview/ and is imported by typst-template.typ.
+      # The house body font (TeX Gyre Pagella) ships under
+      # typst/fonts/ with its GUST licence: fontdb does not scan the
+      # TeX Live font directory, so the font is bundled and the path
+      # declared here. Montserrat and Liberation Mono come from the
+      # system font dirs, which fontdb does scan.
+      font-paths:
+        - typst/fonts
+      # typst-meta.lua forwards number-sections into pandoc metadata:
+      # pandoc's typst writer never sets the numbersections template
+      # variable (unlike its LaTeX writer), so the show file needs
+      # the filter to see the document's flag.
+      filters:
+        - filters/typst-meta.lua
       template-partials:
         - typst-template.typ
         - typst-show.typ

@@ -6,9 +6,11 @@
 // carries the same front-matter surface and the same identity:
 // classification marking on the cover and every page, a cover page
 // with title block and identity line, house typography (Montserrat
-// headings, serif body) and the house palette. It cannot carry the
-// PDF/A-4f provenance or the LaTeX verification gates; it is for
-// fast renders where the archival PDF is the primary output.
+// headings, TeX Gyre Pagella body) and the house palette. render.sh
+// attaches the PDF/A-4f provenance (source and manifest) after the
+// render with attach-provenance.py, so the Typst archive is as
+// self-contained as the LaTeX one. The LaTeX log gates do not
+// apply; the STE, font and PDF/UA gates do.
 //
 // The palette mirrors brand.yml:
 //   primary #121212 (text), secondary #484949 (muted),
@@ -171,10 +173,15 @@
   cover: "plain",
   // Font stack: Montserrat headings, serif body.
   heading-font: "Montserrat",
-  body-font: ("TeX Gyre Pagella", "Palatino Linotype", "Georgia", "Liberation Serif"),
+  body-font: ("TeX Gyre Pagella", "Georgia", "Liberation Serif"),
   fontsize: 11pt,
   // Margins, A4 portrait.
   margin: (top: 2.4cm, bottom: 2.4cm, left: 2.2cm, right: 2.2cm),
+  // Honor the document's number-sections flag, matching the LaTeX
+  // formats. References (@sec-x) still need numbering on the target,
+  // exactly as in LaTeX: a document that cites sections must keep
+  // numbering on.
+  number-sections: false,
   body,
 ) = {
 
@@ -198,10 +205,13 @@
   // ---- Typography ----
   set text(font: body-font, size: fontsize, lang: lang, region: region)
   set par(justify: true, leading: 0.65em)
-  // Numbered sections, matching the LaTeX format's number-sections.
+  // Numbered sections only when the document asks (number-sections).
+  // The pattern "1.1" gives the full hierarchy (1, 1.1, 1.1.1): a
+  // bare "1" would render a subsection as "11" with no separator.
   // References (@sec-x / @fig-x) resolve only when the target carries
-  // numbering, so a document that cites sections or figures needs this.
-  set heading(numbering: "1")
+  // numbering, so a document that cites sections or figures must keep
+  // numbering on (same rule as LaTeX).
+  set heading(numbering: if number-sections { "1.1" } else { none })
   // Heading style: house sans display face, primary colour. Typst
   // 0.13 styles headings through a show rule, not set heading args.
   show heading: set text(font: heading-font, fill: obsidian-colors.primary, weight: 600)
