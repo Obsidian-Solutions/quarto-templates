@@ -1,0 +1,93 @@
+# SPDX-License-Identifier: MIT
+# Canonical design tokens for the Obsidian Solutions template.
+#
+# This file is the single source of truth for the palette, the type
+# scale, and the spacing scale. tools/tokens.py generates the
+# per-engine token files from it:
+#
+#   tools/tokens.py                 # regenerate both files
+#     -> _extensions/obsidian/tokens.tex    (\definecolor for LaTeX)
+#     -> _extensions/obsidian/tokens.scss   ($token-* variables)
+#
+# The house palette (obsidian / obsidianl / ruled / cream) is the
+# default look and must not change. The neutral palette below it
+# adds named swatches for documents that want an accent colour, so
+# a document can switch accent without hand-editing every file.
+# The names describe the colour, not any source.
+
+color:
+  # ---- Semantic roles (the house look) ----
+  primary: "#121212"     # text, headings, focus ring (16.8:1 on white)
+  secondary: "#484949"   # muted text, links (9.0:1, AAA)
+  border: "#cecece"      # hairlines, rules, table lines
+  surface: "#f3f3f3"     # raised panels, callout background
+  link: "#484949"        # underlined links (same as secondary)
+
+  # ---- Neutral palette ----
+  # Accent swatches for documents that want a colour. Each name
+  # describes the colour; contrast floors are on white.
+  # Deep purple accent (4.6:1 on white)
+  plum: "#532a45"
+  # Maroon accent
+  maroon: "#522b45"
+  # Slate accent
+  slate: "#313d47"
+  # Olive accent
+  olive: "#6a7a4a"
+  # Crimson accent
+  crimson: "#8e1537"
+  # Forest green accent
+  forest: "#4a5032"
+  # Ink, near-black body text
+  ink: "#1a1a1a"
+  # Blue accent
+  blue: "#1d70b8"
+  # Turquoise accent
+  turquoise: "#158187"
+  # Purple accent
+  purple: "#54319f"
+  # Pink accent
+  pink: "#ca357c"
+  # Red, error text
+  red: "#ca3535"
+  # Orange, warning accent
+  orange: "#f47738"
+  # Yellow, focus rings
+  yellow: "#ffdd00"
+  # Brown accent
+  brown: "#99704a"
+  # Black
+  black: "#0b0c0c"
+  # White
+  white: "#ffffff"
+  # Gold accent
+  gold: "#ffdb00"
+  # Ivory surface
+  ivory: "#f9f6ed"
+  # Silver grey
+  silver: "#cdccd0"
+
+type:
+  # Type scale, large screens: size / line height.
+  display: [80, 80]
+  heading-xl: [48, 50]
+  heading-l: [36, 40]
+  heading-m: [27, 30]
+  heading-s: [24, 30]
+  body-l: [24, 30]
+  body: [19, 25]
+  body-s: [16, 20]
+  caption: [14, 20]
+
+spacing:
+  # Spacing scale, 5px base.
+  0: 0
+  1: 5px
+  2: 10px
+  3: 15px
+  4: 20px
+  5: 25px
+  6: 30px
+  7: 40px
+  8: 50px
+  9: 60px

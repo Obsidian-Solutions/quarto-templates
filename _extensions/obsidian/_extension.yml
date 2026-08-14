@@ -50,6 +50,9 @@ contributes:
       format-resources:
         - assets/obsidian-logo.png
         - assets/obsidian-favicon.png
+        # Generated from brand.yml by tools/tokens.py; the preamble
+        # inputs it so the palette lives in one place.
+        - tokens.tex
       include-in-header: include-in-header.tex
       template-partials:
         - partials/title.tex

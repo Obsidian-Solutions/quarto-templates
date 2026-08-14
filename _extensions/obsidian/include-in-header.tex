@@ -46,14 +46,13 @@
 
 % ---- Palette ----
 % Monochrome brand identity: near-black primary, drawn from the
-% website brand colour (#121212). The greys are the functional
-% monochrome scale proven by GOV.UK and NHS design systems (text,
-% secondary, hairline); the primary is our own brand value.
-\definecolor{obsidian}{RGB}{18,18,18}    % primary text (16.8:1 on white)
-\definecolor{obsidianl}{RGB}{72,73,73}   % secondary text (9.0:1, passes AAA)
-\definecolor{obsidianlink}{RGB}{72,73,73} % links, shown by underline (9.0:1)
-\definecolor{ruled}{RGB}{206,206,206}   % hairlines and rules (decorative)
-\definecolor{cream}{RGB}{243,243,243}   % off-white surface
+% website brand colour (#121212), with functional grey text,
+% secondary and hairline tones. The colours come from brand.yml via
+% tools/tokens.py; the legacy names (obsidian, obsidianl,
+% obsidianlink, ruled, cream) are aliased there so every existing
+% reference keeps working. The neutral swatches (plum, slate,
+% maroon, ...) are opt-in accents for documents that want a colour.
+\input{tokens.tex}
 
 % ---- Link colours ----
 % Quarto emits its own \hypersetup after this header, so a bare

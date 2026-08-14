@@ -79,8 +79,25 @@ systems:
 | Secondary text | `#484949` | 9.0:1 (passes AAA) |
 | Rules and hairlines | `#cecece` | decorative |
 
-The greys are functional tokens, not a copied identity. Change the
-`\definecolor` block in `include-in-header.tex` to rebrand.
+The palette lives in one place: `_extensions/obsidian/brand.yml` holds
+every colour, the type scale and the spacing scale. `tools/tokens.py`
+generates the per-engine token files from it:
+
+| Generated file | Consumer | Contents |
+|---|---|---|
+| `tokens.tex` | PDF preamble (`\input{tokens.tex}`) | `\definecolor` for every token plus legacy aliases |
+| `tokens.scss` | HTML themes and documents | `$token-*`, `$type-*`, `$space-*` variables |
+
+Regenerate after any palette change with `python3 tools/tokens.py`,
+and verify the theme still agrees with `tools/tokens.py --check` (a
+drift guard: the HTML light theme keeps literal values because Quarto
+evaluates the defaults section before file imports, so the check mode
+fails CI when the two disagree).
+
+The neutral palette in `brand.yml` adds named accent swatches (plum,
+maroon, slate, blue, gold, ...). They are opt-in: a document sets one
+as a `titlepage-theme` colour or an HTML accent, and the house look is
+unchanged when none is used.
 
 ## Verification gates
 
