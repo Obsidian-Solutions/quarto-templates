@@ -204,6 +204,10 @@ matter block:
 | File | Format family | Shows |
 |---|---|---|
 | `examples/template.qmd` | PDF, HTML, DOCX, EPUB | The full document surface: cover, approval, revision history, citations, appendices, list of tables and figures |
+| `examples/template-letter.qmd` | PDF, HTML, DOCX | A business letter: recipient block, subject, sign-off |
+| `examples/template-memo.qmd` | PDF, HTML, DOCX | An internal memo: heading block, purpose, action |
+| `examples/template-agenda.qmd` | PDF, HTML, DOCX | A meeting agenda: details, attendees, timed items |
+| `examples/template-brief.qmd` | PDF, HTML, DOCX, EPUB | A policy brief: summary, findings, options, recommendations |
 | `examples/template-typst.qmd` | Typst PDF | The fast-draft format: cover, numbered sections, running header, PDF/A-4f provenance |
 | `examples/template-slides.qmd` | revealjs, beamer PDF, PPTX | A client deck with the classification banner |
 | `examples/template-dashboard.qmd` | dashboard | A service-health dashboard with cards and a status table |
@@ -212,6 +216,10 @@ Render one file per family:
 
 ```bash
 quarto render examples/template.qmd        # PDF + HTML + DOCX + EPUB
+quarto render examples/template-letter.qmd # PDF + HTML + DOCX
+quarto render examples/template-memo.qmd   # PDF + HTML + DOCX
+quarto render examples/template-agenda.qmd # PDF + HTML + DOCX
+quarto render examples/template-brief.qmd  # PDF + HTML + DOCX + EPUB
 quarto render examples/template-typst.qmd  # Typst PDF
 quarto render examples/template-slides.qmd # revealjs + beamer PDF + PPTX
 quarto render examples/template-dashboard.qmd # dashboard
@@ -307,6 +315,13 @@ for both.
 6. **PDF/UA-2 structure gate** (`tools/check-pdfua.py`). Fires only
    for UA-2 renders and fails when the tagged structure tree lacks
    heading roles.
+
+Each gate fails the render if its tool is missing, so a clean run is
+never a false green. `GATE_SKIP` disables a gate deliberately
+(comma-separated: `provenance,pdffonts,pdfua,ste,pptxlogo`), for
+environments without the full toolchain. The deck branding step
+(`tools/attach-pptx-logo.py`) is guarded the same way under the
+`pptxlogo` name.
 
 The full gate detail and the exempt-by-design list are in
 [docs/reference.md](docs/reference.md).
