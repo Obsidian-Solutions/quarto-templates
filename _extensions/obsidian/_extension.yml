@@ -200,3 +200,12 @@ contributes:
       filters:
         - filters/classification-gate.lua
         - filters/classification.lua
+    typst:
+      # Fast-render Typst companion to the archival PDF. Carries the
+      # same identity (classification, cover, house fonts and
+      # palette) but not the PDF/A-4f provenance or the LaTeX gates.
+      # The bundled obsidian-doc package lives under
+      # typst/packages/preview/ and is imported by typst-template.typ.
+      template-partials:
+        - typst-template.typ
+        - typst-show.typ

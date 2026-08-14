@@ -1,0 +1,11 @@
+[package]
+name = "obsidian-doc"
+version = "0.1.0"
+compiler = "0.6.0"
+entrypoint = "lib.typ"
+repository = "https://github.com/Obsidian-Solutions/quarto-templates"
+authors = ["Obsidian Solutions <https://obsidiansolutions.co.uk>"]
+license = "MIT"
+description = "Obsidian Solutions controlled business document template"
+keywords = ["document", "report", "policy", "business"]
+categories = ["office"]

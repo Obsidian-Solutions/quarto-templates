@@ -105,7 +105,7 @@ stays traceable and marked like every other page.
 
 ## Formats
 
-The template contributes eight formats. Each example source file
+The template contributes nine formats. Each example source file
 declares its full format family in the front matter, so one render
 command per file produces the whole family with no content loss.
 
@@ -119,6 +119,7 @@ command per file produces the whole family with no content loss.
 | `obsidian-beamer` | PDF deck | 16:9, classification footline on every slide including the title |
 | `obsidian-pptx` | PPTX | editable deck, classification marking on every slide |
 | `obsidian-dashboard` | HTML | live-data dashboard, html theme, classification filter only |
+| `obsidian-typst` | PDF via Typst | fast-draft format, house palette and fonts, classification in running header, identity line, plain and banded covers. No PDF/A, provenance, or LaTeX machinery (Typst cannot emit PDF/A-4f) |
 
 Quarto can also emit plain formats (markdown, LaTeX, ODT, Typst,
 ipynb) with `quarto render ... --to <format>`. Those carry no
