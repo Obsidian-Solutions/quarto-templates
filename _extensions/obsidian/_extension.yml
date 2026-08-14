@@ -57,7 +57,16 @@ contributes:
         - partials/hypersetup.latex
         - partials/document-metadata.latex
         - partials/toc.tex
+        # Themed title page (opt-in via the `titlepage:` front-matter
+        # key; see filters/titlepage.lua). When the key is absent the
+        # standard cover in before-body.tex renders, so existing
+        # documents are unaffected.
+        - partials/titlepage.tex
+        - partials/titlepage-title-themes.tex
+        - partials/titlepage-author-affiliation.tex
+        - partials/titlepage-header-footer-date.tex
       filters:
+        - filters/titlepage.lua
         - filters/classification-gate.lua
         - filters/appendix.lua
         - filters/embed.lua

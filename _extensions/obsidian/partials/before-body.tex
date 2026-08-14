@@ -40,7 +40,21 @@ $if(proprietor)$\newcommand{\obsidianproprietor}{$proprietor$}$else$\newcommand{
            \resizebox{0.9\paperwidth}{!}{%
              \textcolor[gray]{0.85}{\obsidianwatermark}}}}}}}%
 
-% ---- Cover page: clean monochrome ----
+% ---- Cover page ----
+% Three states:
+%   titlepage: false | none   -> no cover page at all
+%   titlepage: <theme|file>   -> themed title page (filters/titlepage.lua)
+%   (key absent)              -> the clean monochrome cover below
+$if(titlepage-none)$
+$else$
+$if(titlepage-true)$
+$if(titlepage-file)$
+% Custom cover file.
+\input{$titlepage-filename$}
+$else$
+$titlepage.tex()$
+$endif$
+$else$
 \begin{titlepage}
 \thispagestyle{empty}
 
@@ -95,6 +109,8 @@ $if(proprietor)$\newcommand{\obsidianproprietor}{$proprietor$}$else$\newcommand{
   \ifdefempty{\obsidianreview}{}{\textbar{} \obsidianreview{}}}}
 \end{center}
 \end{titlepage}
+$endif$
+$endif$
 
 % ---- Front matter page numbering: roman, body arabic ----
 % The cover is unnumbered. Front matter (abstract, approval,

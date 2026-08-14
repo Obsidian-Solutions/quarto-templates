@@ -15,6 +15,17 @@
 % eso-pic ships the background-picture machinery that the watermark
 % uses; loading it explicitly keeps the dependency visible.
 \usepackage{eso-pic}
+% Themed title page machinery (partials/titlepage*.tex): ifthen for
+% the alignment switches, calculator for the background-image ratio,
+% wallpaper for corner images, afterpage to clear the page colour,
+% hyphenat for \nohyphens (titles never hyphenate). Loaded
+% unconditionally; inert unless the `titlepage:` front-matter key is
+% set.
+\usepackage{ifthen}
+\usepackage{calculator}
+\usepackage{wallpaper}
+\usepackage{afterpage}
+\usepackage{hyphenat}
 % tocloft must load BEFORE hyperref: tocloft redefines \contentsline,
 % and hyperref patches it last to make TOC entries clickable links.
 % (Quarto also loads tocloft later in its template; the second load
