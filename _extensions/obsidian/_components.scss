@@ -1,0 +1,125 @@
+// SPDX-License-Identifier: MIT
+// Obsidian Solutions HTML components.
+//
+// Ported from the quarto-govuk component set and reworked onto the
+// house tokens ($theme-*), so one file serves the light and dark
+// themes. Class names are neutral; no component carries any external
+// identity. Every component is opt-in except the summary list, which
+// the Lua filter applies to definition lists (see
+// filters/summary-list.lua).
+//
+// Components:
+//   .obsidian-masthead          tinted title band (also styles
+//                               Quarto's native title-block-banner)
+//   .obsidian-summary-list      key/value table from a definition list
+//   .obsidian-inset-text        guidance box (any block element)
+//   .obsidian-phase-banner      status strip (draft, review, live)
+//   .obsidian-org-logo          organisation name with brand bar
+
+/* ---- Masthead: tinted band behind the title ---- */
+/* Quarto's native title-block-banner paints the banner blue and the
+   text white. The house masthead uses the off-white surface, so the
+   text must return to the near-black primary. */
+.obsidian-masthead,
+.quarto-title-banner {
+  background-color: $theme-cream;
+  border-bottom: 1px solid $theme-ruled;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  color: $theme-obsidian;
+}
+
+.quarto-title-banner .title,
+.quarto-title-banner h1,
+.quarto-title-banner h2,
+.quarto-title-banner .subtitle,
+.quarto-title-banner a {
+  color: $theme-obsidian;
+}
+
+.quarto-title-banner .quarto-title-block {
+  margin-bottom: 0;
+}
+
+/* ---- Summary list: key/value table from a definition list ---- */
+/* Pandoc emits bare dt/dd pairs (no per-row wrappers), so the rows
+   are styled with the shared top border: the dt owns the left cell
+   and the following dd owns the right cell of the same grid row, and
+   the two border-tops join into one full-width hairline. */
+.obsidian-summary-list > dl {
+  margin: 1.5rem 0;
+  border-top: 1px solid $theme-ruled;
+}
+
+.obsidian-summary-list > dl > dt {
+  font-weight: 700;
+  padding-top: 0.75rem;
+  overflow-wrap: break-word;
+}
+
+.obsidian-summary-list > dl > dt:not(:first-child) {
+  border-top: 1px solid $theme-ruled;
+}
+
+.obsidian-summary-list > dl > dd {
+  margin: 0;
+  padding: 0.25rem 0 0.75rem 0;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 640px) {
+  .obsidian-summary-list > dl {
+    display: grid;
+    grid-template-columns: 30% 1fr;
+  }
+  .obsidian-summary-list > dl > dt,
+  .obsidian-summary-list > dl > dd {
+    border-top: 1px solid $theme-ruled;
+    padding: 0.75rem 1.25rem 0.75rem 0;
+  }
+  .obsidian-summary-list > dl > dt:first-child,
+  .obsidian-summary-list > dl > dt:first-child + dd {
+    border-top: none;
+  }
+  .obsidian-summary-list > dl > dd {
+    padding-left: 0;
+  }
+}
+
+/* ---- Inset text: guidance box ---- */
+/* Applies to any block element carrying the class (pandoc renders a
+   fenced div as a plain div, so no element-type selector). */
+.obsidian-inset-text {
+  border-left: 4px solid $theme-obsidian;
+  margin: 1.5rem 0;
+  padding: 0.75rem 1rem;
+}
+
+/* ---- Phase banner: status strip ---- */
+.obsidian-phase-banner {
+  border-bottom: 1px solid $theme-ruled;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+}
+
+.obsidian-phase-banner__label {
+  color: $theme-obsidianl;
+  font-family: $font-family-sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-right: 0.5rem;
+  text-transform: uppercase;
+}
+
+/* ---- Organisation logo: name with a brand bar ---- */
+.obsidian-org-logo {
+  font-family: $font-family-sans-serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 0;
+  padding-left: 0.5rem;
+  border-left: 2px solid $theme-obsidian;
+}

@@ -30,6 +30,10 @@ $headings-color: $theme-obsidian;
 
 /*-- scss:rules --*/
 
+/* Components (_components.scss): same set as the light theme, using
+   the dark theme's inverted $theme-* tokens. */
+@import "_components.scss";
+
 /* Focus: visible 3px light ring, WCAG 2.4.7 */
 :focus-visible {
   outline: 3px solid $theme-obsidian;

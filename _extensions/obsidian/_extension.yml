@@ -133,6 +133,9 @@ contributes:
         - filters/classification-gate.lua
         - filters/classification.lua
         - filters/review-overdue.lua
+        # Maps definition lists to the summary-list component (an
+        # opt-in key/value table for the HTML companion).
+        - filters/summary-list.lua
     revealjs:
       # Client presentations. The revealjs theme carries the house
       # palette and typography; the classification filter marks each

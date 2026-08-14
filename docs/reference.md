@@ -99,6 +99,43 @@ maroon, slate, blue, gold, ...). They are opt-in: a document sets one
 as a `titlepage-theme` colour or an HTML accent, and the house look is
 unchanged when none is used.
 
+## HTML components
+
+The HTML companion carries five opt-in components (`_components.scss`,
+imported by both the light and dark themes). They use the house
+tokens, so they adapt to the active theme automatically.
+
+| Component | Use | Markup |
+|---|---|---|
+| Masthead | tinted band behind the title | Quarto's native `title-block-banner: true`, or a `{.obsidian-masthead}` block |
+| Summary list | key/value table from a definition list | automatic: `filters/summary-list.lua` wraps every definition list |
+| Inset text | guidance box with a thick left rule | `::: {.obsidian-inset-text}` |
+| Phase banner | status strip (draft, review, live) | `::: {.obsidian-phase-banner}` with a `{.obsidian-phase-banner__label}` span |
+| Organisation logo | name with a brand bar | `::: {.obsidian-org-logo}` |
+
+Example usage:
+
+```markdown
+::: {.obsidian-phase-banner}
+**STATUS** Draft for internal review
+:::
+
+Reference
+: OS-DOC-003
+
+Version
+: 2.0.0
+
+::: {.obsidian-inset-text}
+Do not distribute without the owner's consent.
+:::
+```
+
+The summary list is the only automatic component: a definition list
+becomes a key/value table with the keys in a bold left column. A
+definition list used for another purpose opts out with
+`::: {.obsidian-summary-list false="true"}`.
+
 ## Verification gates
 
 `render.sh` runs three gates on every render, and the CI runs them on

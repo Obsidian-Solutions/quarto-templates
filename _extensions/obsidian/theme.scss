@@ -29,6 +29,12 @@ $headings-color: $theme-obsidian;
 
 /*-- scss:rules --*/
 
+/* Components (_components.scss): masthead, summary list, inset
+   text, phase banner, organisation logo. Imported here (after the
+   defaults section) so the $theme-* tokens are in scope; the same
+   partial serves the dark theme. */
+@import "_components.scss";
+
 /* Focus: visible 2.4px near-black ring, WCAG 2.4.7 */
 :focus-visible {
   outline: 3px solid $theme-obsidian;
