@@ -56,15 +56,28 @@
 }
 // ---- Cover, plain: white with the house identity line ----
 #let plain-cover(
-  title, subtitle, author, date, confidentiality, reference, edition, review-date, doc-type, version, heading-font,
+  title, subtitle, author, date, confidentiality, reference, edition, review-date, doc-type, version, heading-font, logo,
 ) = {
-  // Classification, top right.
-  if confidentiality != none {
-    align(right)[
-      #text(size: 9pt, weight: "bold", fill: obsidian-colors.secondary, upper(confidentiality))
-    ]
+  // Brand mark top-left, classification top-right on the same row,
+  // mirroring the LaTeX cover layout.
+  if logo != none or confidentiality != none {
+    grid(
+      columns: (1fr, auto),
+      align(left)[
+        #if logo != none [
+          #image(logo, width: 4cm)
+        ]
+      ],
+      align(right)[
+        #if confidentiality != none [
+          #text(size: 9pt, weight: "bold", fill: obsidian-colors.secondary, upper(confidentiality))
+        ]
+      ],
+    )
+    v(3cm)
+  } else {
+    v(3cm)
   }
-  v(3cm)
 
   // Label and title block.
   if doc-type != none {
@@ -102,8 +115,12 @@
 }
 
 // ---- Cover, banded: full-page colour band ----
+// The dark brand mark would vanish on the dark band, so the banded
+// cover omits it (the plain cover shows it). The logo parameter is
+// accepted for signature uniformity and unused, like the LaTeX
+// banded themes.
 #let banded-cover(
-  title, subtitle, author, date, confidentiality, reference, edition, review-date, cover, doc-type, heading-font,
+  title, subtitle, author, date, confidentiality, reference, edition, review-date, cover, doc-type, heading-font, logo,
 ) = {
   let band = if cover == "banded-slate" { band-colors.slate } else { band-colors.maroon }
   let rule-color = if cover == "banded-slate" { band-colors.yellow } else { band-colors.gold }
@@ -171,6 +188,10 @@
   keywords: (),
   // Cover variant: "plain" (white) or "banded" / "banded-slate".
   cover: "plain",
+  // Brand mark on the cover, top-left. The default is bundled in the
+  // package directory, which is the Typst compile root for Quarto
+  // renders. Pass `logo: none` to omit it.
+  logo: "obsidian-logo.png",
   // Font stack: Montserrat headings, serif body.
   heading-font: "Montserrat",
   body-font: ("TeX Gyre Pagella", "Georgia", "Liberation Serif"),
@@ -244,9 +265,9 @@
 
   // ---- Cover page ----
   if cover == "banded" or cover == "banded-slate" {
-    banded-cover(title, subtitle, author, date, confidentiality, reference, edition, review-date, cover, doc-type, heading-font)
+    banded-cover(title, subtitle, author, date, confidentiality, reference, edition, review-date, cover, doc-type, heading-font, logo)
   } else {
-    plain-cover(title, subtitle, author, date, confidentiality, reference, edition, review-date, doc-type, version, heading-font)
+    plain-cover(title, subtitle, author, date, confidentiality, reference, edition, review-date, doc-type, version, heading-font, logo)
   }
 
   // ---- Body ----
