@@ -36,4 +36,10 @@ $endif$
 $if(numbersections)$
   number-sections: true,
 $endif$
+$if(cover)$
+  cover: "$cover$",
+$endif$
+$if(heading-font)$
+  heading-font: "$heading-font$",
+$endif$
 )
