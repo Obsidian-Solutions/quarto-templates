@@ -1,0 +1,59 @@
+---
+title: "Meeting Agenda"
+subtitle: "Template: structured meeting agenda"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["agenda", "meeting", "template"]
+reference: "OS-AGT-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Meeting Agenda"
+doc-type: "Agenda"
+edition: "First Edition"
+draft: true
+toc: false
+number-sections: false
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+---
+
+# Meeting details
+
+| Field | Value |
+|---|---|
+| Meeting | Name of the meeting |
+| Date | 14 August 2026 |
+| Time | 14:00 to 15:00 |
+| Location | Room or video link |
+| Chair | Your name |
+
+# Attendees
+
+- [ ] Name one
+- [ ] Name two
+- [ ] Name three
+
+# Agenda
+
+## Item 1  –  Purpose (14:00, 10 minutes)
+
+- presenter:
+- outcome:
+
+## Item 2  –  Detail (14:10, 25 minutes)
+
+- presenter:
+- outcome:
+
+## Item 3  –  Decisions (14:35, 20 minutes)
+
+- presenter:
+- outcome:
+
+## Item 4  –  Actions (14:55, 5 minutes)
+
+- agree owners and dates
+- agree the next meeting

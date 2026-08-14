@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/Obsidian-Solutions/quarto-templates/blob/main/docs/reference.md
+    about: Read the field catalogue, the standards matrix, and the component guide before opening an issue.
+  - name: Security
+    url: https://github.com/Obsidian-Solutions/quarto-templates/security
+    about: Report a vulnerability in private, per the organisation's security policy. Do not open a public issue.

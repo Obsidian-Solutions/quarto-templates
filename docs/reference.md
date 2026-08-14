@@ -239,27 +239,42 @@ definition list used for another purpose opts out with
 
 ## Verification gates
 
-`render.sh` runs three gates on every render, and the CI runs them on
-the example document:
+`render.sh` runs the gates on every render, and the CI runs them on
+the example documents. The gates are engine-aware: the LaTeX engine
+runs the page-overflow and cross-reference gates from its log, the
+Typst engine attaches provenance instead, and the shared gates run
+for both.
 
-1. **Page-overflow gate.** Any `Overfull \hbox` or `\vbox` in the
-   LaTeX log fails the render, so no document ships with content
-   clipped at a margin.
-2. **Controlled-language gate** (`tools/check-ste.py`). Fails on
+1. **Page-overflow gate** (LaTeX). Any `Overfull \hbox` or `\vbox`
+   in the LaTeX log fails the render, so no document ships with
+   content clipped at a margin.
+2. **Cross-reference gate** (LaTeX). A broken `\ref` or `\cite`
+   prints `??` and fails the render, so no document ships with dead
+   links or missing bibliography entries.
+3. **Provenance gate** (Typst). `tools/attach-provenance.py` embeds
+   the source and manifest with the `AFRelationship` and MIME keys
+   PDF/A-4f requires; a Typst archive without embedded provenance is
+   a false green.
+4. **Font-embedding gate** (`tools/check-pdfua.py`'s sibling in the
+   pipeline; runs `pdffonts`). Every font must be embedded with a
+   ToUnicode map, which PDF/A requires for text extraction.
+5. **Controlled-language gate** (`tools/check-ste.py`). Fails on
    hard violations of the JSP 101 / ASD-STE100 word lists: banned
    words, marketing adjectives, phrasal verbs, modal hedges,
    contractions, American spellings, and em dashes. Long sentences,
    passive voice and semicolons are warnings. Blockquotes are exempt
    (verbatim quoted material), and a document opts out with
    `ste: false` in its front matter.
-3. **PDF/UA-2 structure gate** (`tools/check-pdfua.py`). Fires only
+6. **PDF/UA-2 structure gate** (`tools/check-pdfua.py`). Fires only
    for UA-2 renders and fails when the tagged structure tree lacks
    heading roles.
 
 Each gate fails the render if its tool is missing, so a clean run is
 never a false green. `GATE_SKIP` names gates to disable deliberately
-(comma-separated: `pdffonts,pdfua,ste`), for environments that render
-without the full toolchain.
+(comma-separated: `provenance,pdffonts,pdfua,ste,pptxlogo`), for
+environments that render without the full toolchain. The deck
+branding step (`tools/attach-pptx-logo.py`) is guarded the same way
+under the `pptxlogo` name.
 
 Exempt-by-design from the language gate, so the gate measures
 documents and not machinery:
@@ -271,9 +286,9 @@ documents and not machinery:
 - Fixed identifiers: `SPDX-License-Identifier`, the `LICENSE`
   filename, `SIL Open Font License`, and the licence URLs in the
   NOTICE files. They are standard strings from their licences.
-- `CODE_OF_CONDUCT.md`: the canonical Contributor Covenant text.
-  Rewriting it in controlled language would deviate from the
-  recognised community standard.
+- `CODE_OF_CONDUCT.md` and `SECURITY.md`: supplied by the
+  organisation's repository defaults, not maintained in this
+  repository.
 - `_extensions/obsidian/NOTICE`: the remaining hits are the fixed
   identifiers above and table cells that carry licence URLs.
 

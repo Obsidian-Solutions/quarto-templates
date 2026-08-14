@@ -1,0 +1,57 @@
+name: Bug report
+description: Report a defect in the templates or tools
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Complete the
+        form so the defect is reproducible.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: State the observed behaviour and the expected behaviour.
+    validations:
+      required: true
+  - type: input
+    id: format
+    attributes:
+      label: Format
+      description: Which format? For example obsidian-pdf, obsidian-typst.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: Paste the front matter and the minimum content that shows the defect.
+      render: markdown
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: The extension version (from _extension.yml or the release tag).
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - cosmetic
+        - minor
+        - major
+        - critical
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked the documentation and existing issues first
+          required: true

@@ -1,0 +1,49 @@
+---
+title: "Internal Memo"
+subtitle: "Template: short internal communication"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["memo", "template"]
+reference: "OS-MEM-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Internal Memo"
+doc-type: "Memo"
+edition: "First Edition"
+draft: true
+toc: false
+number-sections: false
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+---
+
+# Heading block
+
+| Field | Value |
+|---|---|
+| To | Team name |
+| From | Your name |
+| Date | 14 August 2026 |
+| Subject | State the subject here |
+| Reference | OS-MEM-001 |
+
+# Purpose
+
+State in one paragraph why this memo exists and who should read it.
+
+# Discussion
+
+Give the detail. Use short paragraphs, one idea each. Use a list
+for three or more items:
+
+- first point
+- second point
+- third point
+
+# Action
+
+State what you need from the reader and by when. Name the owner of
+each action.
