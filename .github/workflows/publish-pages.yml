@@ -47,10 +47,12 @@ jobs:
       - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
         run: bash tools/install-fonts.sh
 
-      - name: Install qpdf, fonts, poppler and verapdf
+      - name: Install qpdf, fonts, poppler, verapdf and pikepdf
         run: |
           sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation poppler-utils
           quarto install verapdf
+          # pikepdf backs the Typst provenance gate (tools/attach-provenance.py).
+          pip install --quiet pikepdf
 
       - name: Render the example (HTML, PDF, DOCX)
         run: |
@@ -61,7 +63,7 @@ jobs:
           ./render.sh examples/template.qmd
           cp _extensions/obsidian/assets/obsidian-logo.png obsidian-logo.png
 
-      - name: Render the remaining formats (deck, dashboard)
+      - name: Render the remaining formats (deck, dashboard, typst)
         run: |
           # The example site ships every format the template produces.
           # Each example declares its full format family, so one
@@ -71,6 +73,9 @@ jobs:
           # document's four formats (PDF, HTML, DOCX, EPUB) above.
           quarto render examples/template-slides.qmd
           quarto render examples/template-dashboard.qmd
+          # The Typst fast-draft renders from its own example source
+          # with PDF/A-4f provenance attached by render.sh.
+          ./render.sh examples/template-typst.qmd
 
       - name: Assemble the site
         run: |
@@ -83,6 +88,7 @@ jobs:
           cp _output/examples/template-slides.pdf site/template-slides.pdf
           cp _output/examples/template-slides.pptx site/template-slides.pptx
           cp _output/examples/template-dashboard.html site/template-dashboard.html
+          cp _output/examples/template-typst.pdf site/template-typst.pdf
           cp obsidian-logo.png site/obsidian-logo.png
           cp accessibility-statement.md site/accessibility-statement.md
           cp -r _output/examples/template_files site/template_files
@@ -110,6 +116,7 @@ jobs:
             '<a href="template-slides.pdf">Slides PDF</a> &nbsp;|&nbsp; '
             '<a href="template-slides.pptx">PPTX</a> &nbsp;|&nbsp; '
             '<a href="template-dashboard.html">Dashboard</a> &nbsp;|&nbsp; '
+            '<a href="template-typst.pdf">Typst PDF</a> &nbsp;|&nbsp; '
             '<a href="accessibility-statement.md">Accessibility statement</a>'
             '</div>'
           )

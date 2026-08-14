@@ -19,6 +19,19 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      - name: Token drift check
+        run: |
+          # The design tokens must stay in step: brand.yml is the
+          # single source, the generated tokens.tex/tokens.scss must
+          # match it, and the HTML light theme's literal values must
+          # agree with the semantic roles. A drift fails the check so
+          # a rebrand never half-applies.
+          python3 tools/tokens.py --check
+          git diff --exit-code _extensions/obsidian/tokens.tex _extensions/obsidian/tokens.scss || {
+            echo "tokens.tex or tokens.scss is stale - run tools/tokens.py and commit the result"
+            exit 1
+          }
+
       - name: SBOM freshness check
         run: |
           # The committed SBOM must match what the generator produces
@@ -67,10 +80,12 @@ jobs:
       - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
         run: bash tools/install-fonts.sh
 
-      - name: Install verapdf and qpdf
+      - name: Install verapdf, qpdf, and pikepdf
         run: |
           quarto install verapdf
           sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation poppler-utils
+          # pikepdf backs the Typst provenance gate (tools/attach-provenance.py).
+          pip install --quiet pikepdf
 
       - name: Render default document (PDF/A-4f)
         run: ./render.sh examples/template.qmd
@@ -88,6 +103,22 @@ jobs:
           grep -q "AFRelationship" /tmp/tree.pdf
           grep -q "EmbeddedFiles" /tmp/tree.pdf
           grep -q "OS-DOC-001" _output/examples/template.pdf
+
+      - name: Render Typst fast-draft (PDF/A-4f)
+        run: |
+          # The Typst engine produces the same provenance model as the
+          # LaTeX PDF: render.sh attaches the source and manifest with
+          # the AFRelationship + MIME keys PDF/A-4f requires, and
+          # veraPDF validates the result. Run it through the full
+          # pipeline so the provenance gate fires.
+          ./render.sh examples/template-typst.qmd
+
+      - name: Assert Typst PDF/A-4f with provenance
+        run: |
+          VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
+          "$VERAPDF" --format text _output/examples/template-typst.pdf | grep -q "PASS.*4f"
+          qpdf --list-attachments _output/examples/template-typst.pdf | grep -q "template-typst.qmd"
+          qpdf --list-attachments _output/examples/template-typst.pdf | grep -q "manifest.json"
 
       - name: Render HTML companion
         run: quarto render examples/template.qmd --to obsidian-html
