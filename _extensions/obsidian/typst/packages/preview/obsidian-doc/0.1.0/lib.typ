@@ -65,7 +65,7 @@
       columns: (1fr, auto),
       align(left)[
         #if logo != none [
-          #image(logo, width: 4cm)
+          #image(logo, width: 4cm, alt: "Obsidian Solutions logo")
         ]
       ],
       align(right)[
