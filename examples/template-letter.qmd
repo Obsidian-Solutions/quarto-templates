@@ -1,0 +1,56 @@
+---
+title: "Business Letter"
+subtitle: "Template: formal letter to an external recipient"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["letter", "template"]
+reference: "OS-LET-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Business Letter"
+doc-type: "Letter"
+edition: "First Edition"
+draft: true
+toc: false
+number-sections: false
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+---
+
+# Recipient
+
+**Recipient name**\
+Job title\
+Organisation\
+Street address\
+Town, Postcode
+
+**Our reference:** OS-LET-001
+
+**Subject:** State the subject of the letter here
+
+# Body
+
+Dear Recipient name,
+
+Open the letter with the purpose. Keep sentences under 25 words and
+use the active voice, per the house writing standard.
+
+Use the second paragraph for the detail. State what you are asking
+for, when you need it, and why. A short letter reads better than a
+long one.
+
+Close with the action you expect and a date. Offer to answer any
+questions.
+
+# Sign-off
+
+Yours sincerely,
+
+**Your name**\
+Your job title\
+Obsidian Solutions\
+obsidiansolutions.co.uk

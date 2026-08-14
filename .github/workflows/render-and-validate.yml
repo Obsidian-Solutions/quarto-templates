@@ -90,6 +90,14 @@ jobs:
       - name: Render default document (PDF/A-4f)
         run: ./render.sh examples/template.qmd
 
+      - name: Render the thin document templates
+        run: |
+          # The letter, memo, agenda and brief are thin documents on
+          # the house identity; each must render through the gates.
+          for t in letter memo agenda brief; do
+            ./render.sh examples/template-$t.qmd
+          done
+
       - name: Assert PDF/A-4f validation passed
         run: |
           # render.sh already ran verapdf and failed on violation.

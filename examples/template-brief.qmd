@@ -1,0 +1,79 @@
+---
+title: "Policy Brief"
+subtitle: "Template: executive summary with findings and recommendations"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["brief", "policy", "template"]
+abstract: |
+  A policy brief states a position on one issue. It opens with the
+  recommendation, gives the evidence, and closes with the actions.
+  Use this template when a decision maker needs the essentials in
+  two to four pages.
+reference: "OS-BRF-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Policy Brief"
+doc-type: "Policy Brief"
+edition: "First Edition"
+draft: true
+toc: true
+number-sections: true
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+# Summary
+
+State the recommendation in the first sentence. Add the two or
+three key points that support it. A decision maker should be able
+to read this section alone and know what to do.
+
+**Recommendation:** adopt the recommended option by the target
+date.
+
+# The issue
+
+Describe the problem in one paragraph. State why it matters now
+and who it affects. Do not argue yet; set the context.
+
+# Findings
+
+## Finding 1
+
+State the first fact with its source. Keep it short and
+specific.
+
+## Finding 2
+
+State the second fact. If the evidence conflicts, say so.
+
+## Finding 3
+
+State the third fact. This section should carry the weight of the
+argument.
+
+# Options
+
+| Option | Cost | Effort | Risk | Verdict |
+|---|---|---|---|---|
+| Do nothing | none | none | high | rejected |
+| Partial change | low | low | medium | considered |
+| Recommended change | medium | medium | low | recommended |
+
+# Recommendations
+
+1. Adopt the recommended option.
+2. Fund the first phase of work.
+3. Report progress at the next review point.
+
+# Next steps
+
+| Action | Owner | Date |
+|---|---|---|
+| Decision | Chair | 15 September 2026 |
+| Plan the work | Project lead | 30 September 2026 |
+| First review | All | 31 October 2026 |
