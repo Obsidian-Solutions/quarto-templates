@@ -30,6 +30,7 @@ r[0-9]*-*.png
 # The extension's own assets/ and typst package copies are tracked.
 /obsidian-*.png
 examples/obsidian-*.png
+examples/corner-bg.png
 # LibreOffice lock files
 .~lock.*#
 # Debug leftovers from watermark sizing experiments

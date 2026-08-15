@@ -428,7 +428,14 @@ function Meta(m)
     end
   end
 
-  -- Background image defaults.
+  -- Background image: the bg-image theme is meaningless without one,
+  -- so fail loudly instead of rendering a blank cover. The bundled
+  -- corner motif (assets/corner-bg.png) is the natural choice, but
+  -- any image works via titlepage-bg-image.
+  if choice == "bg-image" and isEmpty(m["titlepage-bg-image"]) then
+    error("titlepage extension error: the bg-image theme needs " ..
+          "titlepage-bg-image: <file> (try assets/corner-bg.png)")
+  end
   if not isEmpty(m["titlepage-bg-image"]) then
     if isEmpty(m["titlepage-theme"]["bg-image-size"]) then
       m["titlepage-theme"]["bg-image-size"] = latex("\\paperwidth")

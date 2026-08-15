@@ -29,7 +29,14 @@ printf '{\n  "document": "%s",\n  "baseline": "covers",\n  "rendered": "covers"\
 mkdir -p "$OUT"
 for theme in $THEMES; do
   meta="$OUT/theme-$theme.yml"
-  printf 'format:\n  obsidian-pdf:\n    titlepage: %s\n' "$theme" > "$meta"
+  if [ "$theme" = "bg-image" ]; then
+    # The theme errors without an image; the bundled corner motif is
+    # the showcase's background (format-resources flatten to the
+    # render root, so the bare filename resolves).
+    printf 'format:\n  obsidian-pdf:\n    titlepage: %s\n    titlepage-bg-image: corner-bg.png\n' "$theme" > "$meta"
+  else
+    printf 'format:\n  obsidian-pdf:\n    titlepage: %s\n' "$theme" > "$meta"
+  fi
   echo "==> $theme"
   quarto render "$SRC" --metadata-file "$meta" -o "covers-$theme.pdf"
   mv "$QUARTO_OUT/covers-$theme.pdf" "$OUT/"
