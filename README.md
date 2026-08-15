@@ -206,6 +206,7 @@ matter block:
 | `examples/template.qmd` | PDF, HTML, DOCX, EPUB | The full document surface: cover, approval, revision history, citations, appendices, list of tables and figures |
 | `examples/template-letter.qmd` | PDF, HTML, DOCX | A business letter: recipient block, subject, sign-off |
 | `examples/template-memo.qmd` | PDF, HTML, DOCX | An internal memo: heading block, purpose, action |
+| `examples/template-invoice.qmd` | PDF | A client invoice: client block, line items, totals, provider-agnostic payment block |
 | `examples/template-agenda.qmd` | PDF, HTML, DOCX | A meeting agenda: details, attendees, timed items |
 | `examples/template-brief.qmd` | PDF, HTML, DOCX, EPUB | A policy brief: summary, findings, options, recommendations |
 | `examples/template-typst.qmd` | Typst PDF | The fast-draft format: cover, numbered sections, running header, PDF/A-4f provenance |
@@ -220,6 +221,7 @@ Render one file per family:
 quarto render examples/template.qmd        # PDF + HTML + DOCX + EPUB
 quarto render examples/template-letter.qmd # PDF + HTML + DOCX
 quarto render examples/template-memo.qmd   # PDF + HTML + DOCX
+quarto render examples/template-invoice.qmd # Invoice PDF (obsidian-pdf + invoice filter)
 quarto render examples/template-agenda.qmd # PDF + HTML + DOCX
 quarto render examples/template-brief.qmd  # PDF + HTML + DOCX + EPUB
 quarto render examples/template-typst.qmd  # Typst PDF

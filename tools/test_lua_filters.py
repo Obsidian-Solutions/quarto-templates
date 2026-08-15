@@ -131,6 +131,104 @@ class TestTypstMeta(unittest.TestCase):
 
 
 @unittest.skipUnless(shutil.which("pandoc"), "pandoc not on PATH")
+class TestInvoice(unittest.TestCase):
+    """The invoice filter expands the invoice metadata at the marker."""
+
+    META = """
+invoice:
+  number: "2026-008"
+  date: "2026-08-15"
+  client:
+    name: "Acme Ltd"
+    address: |
+      1 High Street
+      Exeter EX1 1AA
+  items:
+    - description: "Server care retainer"
+      quantity: 1
+      unit-price: "300.00"
+    - description: "Security patch run"
+      quantity: 2
+      unit-price: "75.00"
+  payment:
+    terms: "Due within 14 days"
+    provider: "stripe"
+    link: "https://buy.stripe.com/test_0000"
+"""
+
+    def _texts(self, ast):
+        out = []
+        walk(ast, lambda n: n.get("t") == "Str" and out.append(n["c"]), None)
+        return out
+
+    def test_absent_invoice_metadata_unmodified(self):
+        """No invoice metadata -> the marker Div stays empty."""
+        md = "::: {.obsidian-invoice}\n:::\n\nBody.\n"
+        ast = pandoc_ast(md, ["invoice.lua"])
+        texts = self._texts(ast)
+        self.assertNotIn("Invoice number", texts)
+
+    def test_client_and_number_expanded(self):
+        """Client name, address, and invoice number appear in the body."""
+        md = "::: {.obsidian-invoice}\n:::\n"
+        ast = pandoc_ast(md, ["invoice.lua"], self.META)
+        texts = " ".join(self._texts(ast))
+        self.assertIn("Acme Ltd", texts)
+        self.assertIn("High Street", texts)
+        self.assertIn("Invoice number", texts)
+        self.assertIn("2026-008", texts)
+
+    def test_totals_computed(self):
+        """300 + (2 x 75) = 450.00, with a GBP total line."""
+        md = "::: {.obsidian-invoice}\n:::\n"
+        ast = pandoc_ast(md, ["invoice.lua"], self.META)
+        texts = " ".join(self._texts(ast))
+        self.assertIn("Subtotal", texts)
+        self.assertIn("450.00", texts)
+        self.assertIn("Total due", texts)
+
+    def test_payment_link_provider(self):
+        """stripe/paypal/generic render a pay-now link."""
+        md = "::: {.obsidian-invoice}\n:::\n"
+        ast = pandoc_ast(md, ["invoice.lua"], self.META)
+        links = []
+        # Link AST: c = [attr, inlines, target] where target = [url, title].
+        walk(ast, lambda n: n.get("t") == "Link" and links.append(n["c"][2][0]), None)
+        self.assertTrue(any("buy.stripe.com" in l for l in links), "no stripe link")
+
+    def test_bank_transfer_details(self):
+        """bank-transfer renders bank details, not a link."""
+        meta = self.META.replace(
+            'provider: "stripe"\n    link: "https://buy.stripe.com/test_0000"',
+            'provider: "bank-transfer"\n    details:\n      bank: "Example Bank"\n      sort-code: "00-00-00"\n      account: "00000000"\n      name: "Obsidian Solutions"\n      reference: "INV-2026-008"',
+        )
+        md = "::: {.obsidian-invoice}\n:::\n"
+        ast = pandoc_ast(md, ["invoice.lua"], meta)
+        texts = " ".join(self._texts(ast))
+        self.assertIn("Example Bank", texts)
+        self.assertIn("Sort code", texts)
+        self.assertIn("INV-2026-008", texts)
+        links = []
+        walk(ast, lambda n: n.get("t") == "Link" and links.append(n["c"][2][0]), None)
+        self.assertEqual(links, [], "bank-transfer must not render a link")
+
+    def test_author_body_preserved(self):
+        """Hand-written body content survives next to the generated block."""
+        md = "::: {.obsidian-invoice}\n:::\n\n# Notes\n\nThanks for your business.\n"
+        ast = pandoc_ast(md, ["invoice.lua"], self.META)
+        texts = " ".join(self._texts(ast))
+        self.assertIn("Thanks for your business", texts)
+
+    def test_discount_adjusts_total(self):
+        """A discount subtracts from the subtotal."""
+        meta = self.META + '  discount: "25.00"\n'
+        md = "::: {.obsidian-invoice}\n:::\n"
+        ast = pandoc_ast(md, ["invoice.lua"], meta)
+        texts = " ".join(self._texts(ast))
+        self.assertIn("425.00", texts)
+
+
+@unittest.skipUnless(shutil.which("pandoc"), "pandoc not on PATH")
 class TestTitlepage(unittest.TestCase):
     def test_absent_key_unmodified(self):
         """No titlepage key -> metadata untouched (standard cover)."""

@@ -1,0 +1,69 @@
+---
+title: "Invoice"
+subtitle: "Template: invoice to a client"
+author: "Obsidian Solutions"
+date: "2026-08-15"
+lang: en-GB
+keywords: ["invoice", "template", "payment"]
+reference: "OS-INV-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Invoice"
+doc-type: "Invoice"
+edition: "First Edition"
+# Sole-trader disclosure under the Companies Act 2006, Part 41. A
+# business trading under a name other than the owner's true name must
+# show the owner's name and a service address on invoices.
+proprietor: "John Smith, [service address]"
+toc: false
+number-sections: false
+titlepage: false
+lof: false
+lot: false
+format:
+  obsidian-pdf: default
+invoice:
+  sender:
+    name: "Obsidian Solutions"
+    address: |
+      [business address]
+    contact: "obsidiansolutions.co.uk | [email address] | [phone number]"
+  number: "2026-008"
+  date: "2026-08-15"
+  due-date: "2026-08-29"
+  client:
+    name: "Acme Ltd"
+    address: |
+      1 High Street
+      Exeter EX1 1AA
+  items:
+    - description: "Server care retainer, August 2026"
+      quantity: 1
+      unit-price: "300.00"
+    - description: "Security patch run, August 2026"
+      quantity: 1
+      unit-price: "75.00"
+  payment:
+    terms: "Due within 14 days of the invoice date. Interest at 8% plus the Bank of England base rate under the Late Payment of Commercial Debts (Interest) Act 1998 applies to late payment."
+    provider: "stripe"
+    link: "https://buy.stripe.com/test_0000"
+---
+
+# Invoice
+
+::: {.obsidian-invoice}
+:::
+
+# Notes
+
+Thank you for your business. Payment is due within 14 days of the
+invoice date. The amount can be paid online with the link above.
+
+<!--
+This is a template example. Replace the invoice: block in the front
+matter with the real client data and the real payment provider.
+Replace the proprietor: value with the real name and service address.
+Supported payment providers: stripe, paypal, generic (a "Pay now"
+link), and bank-transfer (bank details). See docs/reference.md for the
+full field reference.
+-->
