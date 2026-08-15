@@ -28,7 +28,13 @@ for FILE in "$@"; do
       echo "  ok $FMT"
     else
       echo "  FAIL $FMT"
-      tail -5 /tmp/smoke-$$.log
+      # Surface the real failure: error-pattern lines first (the
+      # LaTeX engine prints the meaningful diagnostics), then the
+      # tail so a missing-package or missing-file cause is visible
+      # in CI instead of only the generic 'see the log' hint.
+      grep -nE "! [A-Z]|LaTeX Error|Package [^ ]* Error|Undefined control|Fatal error|error:|not found|No such file|cannot|Error running filter" /tmp/smoke-$$.log | head -8
+      echo "  --- tail ---"
+      tail -20 /tmp/smoke-$$.log
       FAIL=1
     fi
     rm -rf "$OUT"
