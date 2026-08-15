@@ -194,7 +194,9 @@ invoice:
         links = []
         # Link AST: c = [attr, inlines, target] where target = [url, title].
         walk(ast, lambda n: n.get("t") == "Link" and links.append(n["c"][2][0]), None)
-        self.assertTrue(any("buy.stripe.com" in l for l in links), "no stripe link")
+        # The metadata supplies exactly this link; assert equality, not a
+        # substring match, so the test pins the rendered URL precisely.
+        self.assertIn("https://buy.stripe.com/test_0000", links, "stripe link missing")
 
     def test_bank_transfer_details(self):
         """bank-transfer renders bank details, not a link."""
