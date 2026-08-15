@@ -392,5 +392,192 @@ invoice:
         self.assertIn("provider", err)
 
 
+class TestStructuredFields(unittest.TestCase):
+    """The structured doc-type blocks render from front-matter fields."""
+
+    def render_ast(self, md: str, meta: str):
+        """Run structured-fields.lua with the body and metadata."""
+        tmp = tempfile.mkdtemp()
+        try:
+            src = Path(tmp) / "in.md"
+            src.write_text(md)
+            meta_file = Path(tmp) / "meta.yml"
+            meta_file.write_text(meta)
+            cmd = [
+                "pandoc",
+                "--from",
+                "markdown",
+                "--to",
+                "json",
+                "--lua-filter",
+                str(FILTERS / "structured-fields.lua"),
+                "--metadata-file",
+                str(meta_file),
+                str(src),
+            ]
+            r = subprocess.run(cmd, capture_output=True, text=True)
+            if r.returncode != 0:
+                raise AssertionError("pandoc failed: %s" % r.stderr[-500:])
+            return json.loads(r.stdout), r.stderr
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_letter_renders_address_block(self):
+        """A letter with an address renders the recipient block."""
+        md = "::: {.obsidian-letter}\n:::\n\nBody.\n"
+        meta = """
+title: Test letter
+author: A. Author
+date: 2026-08-15
+reference: OS-LET-001
+letter:
+  address:
+    - Acme Ltd
+    - 1 High Street
+  subject: Quarterly report
+  opening: Dear Sirs
+  closing: Yours faithfully
+  signature: A. Author
+"""
+        ast, _ = self.render_ast(md, meta)
+        text = json.dumps(ast)
+        self.assertIn("Recipient", text)
+        self.assertIn("Acme Ltd", text)
+        self.assertIn("1 High Street", text)
+        self.assertIn("Quarterly report", text)
+
+    def test_letter_requires_address(self):
+        """A letter without an address errors with the field name."""
+        md = "::: {.obsidian-letter}\n:::\n"
+        meta = """
+title: Test letter
+author: A. Author
+date: 2026-08-15
+reference: OS-LET-001
+letter:
+  subject: Quarterly report
+"""
+        try:
+            self.render_ast(md, meta)
+            self.fail("expected a missing-field error")
+        except AssertionError:
+            pass
+
+    def test_memo_renders_heading_block(self):
+        """A memo with to/from/subject renders the heading block."""
+        md = "::: {.obsidian-memo}\n:::\n\nBody.\n"
+        meta = """
+title: Test memo
+author: A. Author
+date: 2026-08-15
+reference: OS-MEM-001
+memo:
+  to:
+    - B. Recipient
+  from: A. Author
+  subject: Decision needed
+"""
+        ast, _ = self.render_ast(md, meta)
+        text = json.dumps(ast)
+        self.assertIn("B. Recipient", text)
+        self.assertIn("Decision needed", text)
+
+    def test_memo_requires_subject(self):
+        """A memo without a subject errors with the field name."""
+        md = "::: {.obsidian-memo}\n:::\n"
+        meta = """
+title: Test memo
+author: A. Author
+date: 2026-08-15
+reference: OS-MEM-001
+memo:
+  to:
+    - B. Recipient
+  from: A. Author
+"""
+        try:
+            self.render_ast(md, meta)
+            self.fail("expected a missing-field error")
+        except AssertionError:
+            pass
+
+    def test_agenda_renders_details(self):
+        """An agenda with meeting details renders the details block."""
+        md = "::: {.obsidian-agenda}\n:::\n\nItems.\n"
+        meta = """
+title: Test agenda
+author: A. Author
+date: 2026-08-15
+reference: OS-AGT-001
+agenda:
+  meeting: Weekly review
+  date: 2026-08-20
+  time: 10:00
+  location: Room 1
+  chair: A. Author
+  members:
+    - B. Recipient
+"""
+        ast, _ = self.render_ast(md, meta)
+        text = json.dumps(ast)
+        self.assertIn("Weekly review", text)
+        self.assertIn("Room 1", text)
+        self.assertIn("B. Recipient", text)
+
+    def test_agenda_requires_meeting(self):
+        """An agenda without a meeting name errors with the field name."""
+        md = "::: {.obsidian-agenda}\n:::\n"
+        meta = """
+title: Test agenda
+author: A. Author
+date: 2026-08-15
+reference: OS-AGT-001
+agenda:
+  date: 2026-08-20
+  time: 10:00
+  location: Room 1
+"""
+        try:
+            self.render_ast(md, meta)
+            self.fail("expected a missing-field error")
+        except AssertionError:
+            pass
+
+    def test_brief_renders_key_findings(self):
+        """A brief renders the key findings list when present."""
+        md = "::: {.obsidian-brief}\n:::\n\nSummary.\n"
+        meta = """
+title: Test brief
+author: A. Author
+date: 2026-08-15
+reference: OS-BRF-001
+brief:
+  series: Policy series
+  issue: 2
+  key-findings:
+    - Finding one
+    - Finding two
+  cite-as: Author, Test brief
+"""
+        ast, _ = self.render_ast(md, meta)
+        text = json.dumps(ast)
+        self.assertIn("Key findings", text)
+        self.assertIn("Finding one", text)
+        self.assertIn("How to cite", text)
+
+    def test_brief_renders_without_required_fields(self):
+        """A brief has no required fields and renders empty."""
+        md = "::: {.obsidian-brief}\n:::\n\nSummary.\n"
+        meta = """
+title: Test brief
+author: A. Author
+date: 2026-08-15
+reference: OS-BRF-001
+"""
+        ast, _ = self.render_ast(md, meta)
+        text = json.dumps(ast)
+        self.assertIn("Summary", text)
+
+
 if __name__ == "__main__":
     unittest.main()

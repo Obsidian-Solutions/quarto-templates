@@ -14,27 +14,29 @@ edition: "First Edition"
 draft: true
 toc: false
 number-sections: false
+letter:
+  address:
+    - "Recipient Name"
+    - "Job Title"
+    - "Organisation"
+    - "Street Address"
+    - "Town, Postcode"
+  subject: "State the subject of the letter here"
+  opening: "Dear Recipient name,"
+  closing: "Yours sincerely,"
+  signature: |
+    Your name
+    Your job title
+    Obsidian Solutions
+    obsidiansolutions.co.uk
 format:
   obsidian-pdf: default
   obsidian-html: default
   obsidian-docx: default
 ---
 
-# Recipient
-
-**Recipient name**\
-Job title\
-Organisation\
-Street address\
-Town, Postcode
-
-**Our reference:** OS-LET-001
-
-**Subject:** State the subject of the letter here
-
-# Body
-
-Dear Recipient name,
+::: {.obsidian-letter}
+:::
 
 Open the letter with the purpose. Keep sentences under 25 words and
 use the active voice, per the house writing standard.
@@ -46,11 +48,5 @@ long one.
 Close with the action you expect and a date. Offer to answer any
 questions.
 
-# Sign-off
-
-Yours sincerely,
-
-**Your name**\
-Your job title\
-Obsidian Solutions\
-obsidiansolutions.co.uk
+::: {.obsidian-letter-closing}
+:::

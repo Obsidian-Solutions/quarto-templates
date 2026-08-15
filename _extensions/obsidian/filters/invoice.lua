@@ -434,12 +434,45 @@ local function payment_block(inv)
   return blocks
 end
 
+-- Fail loudly when the invoice is unusable. A missing number, date,
+-- client name, or empty items list must stop the render with a clear
+-- error instead of silently rendering an empty block or a zero
+-- total. An unparseable unit price is the same class of error: the
+-- amount column would show GBP 0.00 for a real charge.
+local function validate_invoice(inv)
+  local function fail(field)
+    error("invoice: missing or invalid field '" .. field .. "'")
+  end
+  if inv["number"] == nil or tostring_meta(inv["number"]) == "" then
+    fail("number")
+  end
+  if inv["date"] == nil or tostring_meta(inv["date"]) == "" then
+    fail("date")
+  end
+  local client = inv["client"]
+  if client == nil or tostring_meta(client["name"]) == "" then
+    fail("client.name")
+  end
+  local items = inv["items"]
+  if not is_list(items) or #items == 0 then
+    fail("items")
+  end
+  for _, item in ipairs(items) do
+    local price = parse_pence(item["unit-price"])
+    if price == nil then
+      error("invoice: item '" .. tostring_meta(item["description"]) ..
+            "' has an unparseable unit price")
+    end
+  end
+end
+
 function Pandoc(doc)
   local meta = doc.meta
   local inv = meta["invoice"]
   if inv == nil then
     return doc
   end
+  validate_invoice(inv)
   local generated = {}
   local sender = sender_block(inv, meta)
   for _, b in ipairs(sender) do

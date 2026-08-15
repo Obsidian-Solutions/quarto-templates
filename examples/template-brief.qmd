@@ -19,12 +19,27 @@ edition: "First Edition"
 draft: true
 toc: true
 number-sections: true
+brief:
+  series: "Policy Brief Series"
+  issue: "01"
+  key-findings:
+    - "The recommended option meets the stated outcome at medium cost."
+    - "The alternatives fail on risk or on effort."
+    - "The evidence supports starting the first phase now."
+  cite-as: "Obsidian Solutions (2026). Policy Brief 01. The recommended option."
+  contact:
+    name: "Your name"
+    email: "you@obsidiansolutions.co.uk"
+    phone: "01234 567890"
 format:
   obsidian-pdf: default
   obsidian-html: default
   obsidian-docx: default
   obsidian-epub: default
 ---
+
+::: {.obsidian-brief}
+:::
 
 # Summary
 

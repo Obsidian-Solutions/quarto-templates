@@ -202,6 +202,50 @@ The checks are deliberately conservative. A UK postcode shape check
 does not prove the postcode exists; it catches the typing errors and
 placeholder values that a template user is most likely to leave behind.
 
+## Structured document blocks
+
+The letter, memo, agenda, and brief templates carry their front-matter
+metadata as structured blocks, and `filters/structured-fields.lua`
+renders each block at a marker in the body. The marker is a Div with
+the block's class; the filter replaces it with the rendered content.
+A missing required field stops the render with a clear error, so a
+document never ships with an empty recipient block or a heading table
+that says nothing.
+
+The letter uses two markers so the body prose sits between them:
+
+```markdown
+::: {.obsidian-letter}
+:::
+
+Body text of the letter.
+
+::: {.obsidian-letter-closing}
+:::
+```
+
+The memo, agenda, and brief use a single marker:
+
+```markdown
+::: {.obsidian-memo}
+:::
+```
+
+The structured fields per block:
+
+| Block | Required | Optional |
+|---|---|---|
+| `letter` | `address` (list) | `subject`, `opening`, `closing`, `cc` (list), `encl` (list), `ps`, `signature` |
+| `memo` | `to` (list), `from`, `subject` | `cosig`, `cosig-title` |
+| `agenda` | `meeting`, `date`, `time`, `location` | `chair`, `members` (list), `apologies` (list), `guests` (list) |
+| `brief` | none | `series`, `issue`, `key-findings` (list), `cite-as`, `contact` (`name`, `email`, `phone`) |
+
+The examples (`template-letter.qmd`, `template-memo.qmd`,
+`template-agenda.qmd`, `template-brief.qmd`) show each block filled
+in. The schema for IDE completion lives in
+`_extensions/obsidian/_schema.yml`, and front-matter snippets for
+each document type live in `_extensions/obsidian/_snippets.json`.
+
 ## Invoice fields
 
 The `invoice:` block carries the structured data. Example:

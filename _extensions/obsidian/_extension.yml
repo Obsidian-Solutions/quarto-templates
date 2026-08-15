@@ -85,6 +85,9 @@ contributes:
       filters:
         - filters/invoice.lua
         - filters/verify.lua
+        # Renders the structured letter/memo/agenda/brief fields at
+        # their marker Divs and errors on missing required fields.
+        - filters/structured-fields.lua
         - filters/titlepage.lua
         - filters/classification-gate.lua
         - filters/appendix.lua

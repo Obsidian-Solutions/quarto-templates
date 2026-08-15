@@ -14,27 +14,28 @@ edition: "First Edition"
 draft: true
 toc: false
 number-sections: false
+agenda:
+  meeting: "Name of the meeting"
+  date: "2026-08-14"
+  time: "14:00 to 15:00"
+  location: "Room or video link"
+  chair: "Your name"
+  members:
+    - "Name one"
+    - "Name two"
+    - "Name three"
+  apologies:
+    - "Name if absent"
+  guests:
+    - "Guest name if invited"
 format:
   obsidian-pdf: default
   obsidian-html: default
   obsidian-docx: default
 ---
 
-# Meeting details
-
-| Field | Value |
-|---|---|
-| Meeting | Name of the meeting |
-| Date | 14 August 2026 |
-| Time | 14:00 to 15:00 |
-| Location | Room or video link |
-| Chair | Your name |
-
-# Attendees
-
-- [ ] Name one
-- [ ] Name two
-- [ ] Name three
+::: {.obsidian-agenda}
+:::
 
 # Agenda
 
