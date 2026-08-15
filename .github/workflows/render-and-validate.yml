@@ -81,12 +81,18 @@ jobs:
       - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
         run: bash tools/install-fonts.sh
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
       - name: Install verapdf, qpdf, and pikepdf
         run: |
           quarto install verapdf
           sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation poppler-utils
           # pikepdf backs the Typst provenance gate (tools/attach-provenance.py).
-          pip install --quiet pikepdf
+          # uv matches the local tooling (pdf2quarto is uv-managed) and
+          # installs the pinned requirements into the runner's python so
+          # the gates can import it.
+          sudo env "PATH=$PATH" uv pip install --system --break-system-packages -r requirements.txt
           # The Lua filter unit tests drive pandoc directly; Quarto
           # bundles its own pandoc but does not export it to PATH.
           # pandoc is a lightweight apt package, so install it for the

@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: MIT
+# Python tooling dependencies. These are build-time tools, not part
+# of the rendered extension: pikepdf backs the Typst provenance gate
+# (tools/attach-provenance.py), which embeds the source and manifest
+# with the AFRelationship and MIME keys PDF/A-4f requires. Dependabot
+# tracks this file (the pip ecosystem) and proposes upgrades.
+pikepdf>=10

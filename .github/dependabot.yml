@@ -1,9 +1,11 @@
 # SPDX-License-Identifier: MIT
 # Dependabot version updates
 # This repository's dependencies: the GitHub Actions used by the CI
-# workflows. The validation script (check-pdfua.py) uses only the
-# Python standard library, so there are no Python dependencies to
-# track.
+# workflows, and the Python tooling pinned in requirements.txt
+# (pikepdf, which backs the Typst provenance gate in
+# tools/attach-provenance.py). The render-time gates
+# (check-pdfua.py, check-ste.py, tokens.py) use only the Python
+# standard library and are not tracked here.
 
 version: 2
 updates:
@@ -13,4 +15,11 @@ updates:
       interval: "daily"
     groups:
       actions:
+        patterns: ["*"]
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      python-tooling:
         patterns: ["*"]
