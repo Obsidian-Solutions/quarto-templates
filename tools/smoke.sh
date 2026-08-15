@@ -49,5 +49,9 @@ for FILE in "$@"; do
   done
   rm -f "$MANIFEST"
 done
+# Drop the LaTeX intermediates a direct render leaves next to the
+# source; the .log for a passing render is regenerable noise in the
+# smoke context (render.sh preserves it for real documents).
+rm -f "$(dirname "$FILE")/$(basename "$FILE" .qmd)".{aux,lot,toc,lof,out,log}
 rm -f /tmp/smoke-$$.log
 exit "$FAIL"
