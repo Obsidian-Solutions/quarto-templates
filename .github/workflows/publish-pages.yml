@@ -95,6 +95,12 @@ jobs:
           cp -r _output/examples/template_files site/template_files
           cp -r _output/examples/template-slides_files site/template-slides_files
           cp -r _output/examples/template-dashboard_files site/template-dashboard_files
+          # The cover-themes showcase: render the covers document once
+          # per titlepage theme and ship the family so visitors can
+          # browse every cover from the site.
+          ./tools/render-covers.sh examples/template-covers.qmd
+          mkdir -p site/covers
+          cp examples/covers/covers-*.pdf site/covers/
 
       - name: Add format download links to the page
         run: |
@@ -118,7 +124,20 @@ jobs:
             '<a href="template-slides.pptx">PPTX</a> &nbsp;|&nbsp; '
             '<a href="template-dashboard.html">Dashboard</a> &nbsp;|&nbsp; '
             '<a href="template-typst.pdf">Typst PDF</a> &nbsp;|&nbsp; '
+            '<a href="covers/covers-plain.pdf">Covers</a> &nbsp;|&nbsp; '
             '<a href="accessibility-statement.md">Accessibility statement</a>'
+            '</div>'
+            '<div style="font-family: Montserrat, sans-serif; font-size: 0.8rem; '
+            'color: #484949; margin: 0.4rem 0 1.5rem 0;">'
+            'Cover themes: '
+            '<a href="covers/covers-plain.pdf">plain</a> &nbsp;|&nbsp; '
+            '<a href="covers/covers-formal.pdf">formal</a> &nbsp;|&nbsp; '
+            '<a href="covers/covers-classic-lined.pdf">classic-lined</a> &nbsp;|&nbsp; '
+            '<a href="covers/covers-colorbox.pdf">colorbox</a> &nbsp;|&nbsp; '
+            '<a href="covers/covers-academic.pdf">academic</a> &nbsp;|&nbsp; '
+            '<a href="covers/covers-bg-image.pdf">bg-image</a> &nbsp;|&nbsp; '
+            '<a href="covers/covers-banded.pdf">banded</a> &nbsp;|&nbsp; '
+            '<a href="covers/covers-banded-slate.pdf">banded-slate</a>'
             '</div>'
           )
           # Insert after the title block header.
