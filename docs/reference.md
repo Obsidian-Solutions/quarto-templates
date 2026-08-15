@@ -175,8 +175,11 @@ invoice:
       [business address]
     contact: "[email address] | [phone number]"
   number: "2026-008"
+  po-number: "PO-2026-0142"   # optional, shown in the header row
   date: "2026-08-15"
-  due-date: "2026-08-29"   # optional, shown in the client block
+  supply-date: "2026-08-15"   # optional, shown in the header row
+  due-date: "2026-08-29"   # optional, shown in the header row
+  vat-status: "Not registered for VAT"   # optional, shown in the payment block
   client:
     name: "Acme Ltd"
     address: |
@@ -200,8 +203,11 @@ invoice:
 | `sender.address` | Business address in the letterhead, one line per line break |
 | `sender.contact` | Contact line in the letterhead, for example email and phone |
 | `number` | Invoice number, shown right-aligned in the header row |
+| `po-number` | Purchase order reference from the client, shown right-aligned in the header row; optional |
 | `date` | Invoice date, shown right-aligned in the header row |
+| `supply-date` | Date the goods or service were provided, shown right-aligned in the header row; optional. UK invoices must separate the supply date from the invoice date |
 | `due-date` | Payment due date, shown right-aligned in the header row; optional |
+| `vat-status` | VAT status line, shown in the payment block; optional. A below-threshold sole trader has no VAT number and should state that no VAT is charged, which removes the standard finance-team query |
 | `client.name` | Client organisation, shown in the Bill to block |
 | `client.address` | Client address, one line per line break |
 | `items[].description` | Line item description |

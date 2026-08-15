@@ -172,12 +172,15 @@ local function client_block(inv)
   return blocks
 end
 
--- The invoice reference block: number, date, and optional due date as
--- separate right-aligned lines, so each value sits on its own line in
--- the narrow right column of the header table.
+-- The invoice reference block: number, purchase order, invoice date,
+-- supply date, and optional due date as separate right-aligned lines,
+-- so each value sits on its own line in the narrow right column of the
+-- header table.
 local function reference_block(inv)
   local number = inv["number"]
+  local po = inv["po-number"]
   local date = inv["date"]
+  local supply_date = inv["supply-date"]
   local due_date = inv["due-date"]
   local blocks = {}
   if number ~= nil then
@@ -186,10 +189,22 @@ local function reference_block(inv)
       pandoc.Str(": " .. tostring_meta(number)),
     })
   end
+  if po ~= nil then
+    blocks[#blocks + 1] = pandoc.Para({
+      pandoc.Strong({ pandoc.Str("Purchase order") }),
+      pandoc.Str(": " .. tostring_meta(po)),
+    })
+  end
   if date ~= nil then
     blocks[#blocks + 1] = pandoc.Para({
       pandoc.Strong({ pandoc.Str("Invoice date") }),
       pandoc.Str(": " .. format_date(date)),
+    })
+  end
+  if supply_date ~= nil then
+    blocks[#blocks + 1] = pandoc.Para({
+      pandoc.Strong({ pandoc.Str("Supply date") }),
+      pandoc.Str(": " .. format_date(supply_date)),
     })
   end
   if due_date ~= nil then
@@ -374,6 +389,14 @@ local function payment_block(inv)
   local terms = payment["terms"]
   if terms ~= nil then
     blocks[#blocks + 1] = kv_para("Terms", tostring_meta(terms))
+  end
+  -- A VAT status line removes the standard finance-team query. A
+  -- below-threshold sole trader has no VAT number and should not print
+  -- one. The author sets the exact wording so the line stays accurate
+  -- when the business registers for VAT.
+  local vat_status = inv["vat-status"]
+  if vat_status ~= nil then
+    blocks[#blocks + 1] = kv_para("VAT", tostring_meta(vat_status))
   end
   local provider = payment["provider"] ~= nil and tostring_meta(payment["provider"]):lower() or ""
   local link = payment["link"]
