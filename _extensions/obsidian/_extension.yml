@@ -84,6 +84,7 @@ contributes:
         - partials/titlepage-header-footer-date.tex
       filters:
         - filters/invoice.lua
+        - filters/verify.lua
         - filters/titlepage.lua
         - filters/classification-gate.lua
         - filters/appendix.lua

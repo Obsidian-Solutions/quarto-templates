@@ -280,5 +280,117 @@ class TestTitlepage(unittest.TestCase):
         self.assertEqual(meta_out["titlepage-none"], {"t": "MetaBool", "c": True})
 
 
+@unittest.skipUnless(shutil.which("pandoc"), "pandoc not on PATH")
+class TestVerify(unittest.TestCase):
+    """The soft verification filter warns on stderr but never fails."""
+
+    def verify_warnings(self, meta: str) -> str:
+        """Run verify.lua with the metadata, return the stderr."""
+        tmp = tempfile.mkdtemp()
+        try:
+            src = Path(tmp) / "in.md"
+            src.write_text("# Heading\n\nBody.\n")
+            meta_file = Path(tmp) / "meta.yml"
+            meta_file.write_text(meta)
+            cmd = [
+                "pandoc",
+                "--from",
+                "markdown",
+                "--to",
+                "json",
+                "--lua-filter",
+                str(FILTERS / "verify.lua"),
+                "--metadata-file",
+                str(meta_file),
+                str(src),
+            ]
+            r = subprocess.run(cmd, capture_output=True, text=True)
+            return r.stderr
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_off_by_default(self):
+        """No verify: true -> no warnings at all."""
+        err = self.verify_warnings("title: T\n")
+        self.assertNotIn("VERIFY", err)
+
+    def test_valid_invoice_minimal_warnings(self):
+        """A valid invoice warns only about genuine placeholders."""
+        meta = """
+verify: true
+title: Test invoice
+author: Obsidian Solutions
+date: 2026-08-15
+reference: OS-INV-001
+version: 1.0.0
+confidentiality: Commercial in Confidence
+invoice:
+  sender:
+    name: Obsidian Solutions
+    address: |
+      1 High Street
+      Exeter EX1 1AA
+  number: 2026-001
+  date: 2026-08-15
+  supply-date: 2026-08-15
+  due-date: 2026-08-29
+  client:
+    name: Acme Ltd
+    address: |
+      1 High Street
+      London SW1A 1AA
+  items:
+    - description: Consulting
+      quantity: 2
+      unit-price: 100.00
+  payment:
+    provider: stripe
+    link: https://buy.stripe.com/test
+"""
+        err = self.verify_warnings(meta)
+        # A fully-filled invoice is clean: no warnings at all.
+        self.assertIn("metadata surface clean", err)
+        self.assertNotIn("date is missing", err)
+        self.assertNotIn("unit-price must", err)
+        self.assertNotIn("postcode", err)
+
+    def test_malformed_invoice_warns(self):
+        """Bad reference, postcode, date order, quantity, provider."""
+        meta = """
+verify: true
+title: Test invoice
+author: Obsidian Solutions
+date: 2026-08-15
+reference: not-a-reference
+version: x.y.z
+confidentiality: Secret Squirrel
+invoice:
+  sender:
+    name: Obsidian Solutions
+    address: 1 High Street, Exeter EX1 1AA
+  number: 123
+  date: 2026-08-20
+  due-date: 2026-08-15
+  client:
+    name: Acme Ltd
+    address: 1 Nowhere Street, London
+  items:
+    - description: Consulting
+      quantity: 0
+      unit-price: abc
+  payment:
+    provider: crypto
+"""
+        err = self.verify_warnings(meta)
+        self.assertIn("reference", err)
+        self.assertIn("version", err)
+        self.assertIn("confidentiality", err)
+        self.assertIn("postcode", err)
+        self.assertIn("due-date", err)
+        self.assertIn("quantity", err)
+        self.assertIn("unit-price", err)
+        self.assertIn("provider", err)
+
+
 if __name__ == "__main__":
     unittest.main()
