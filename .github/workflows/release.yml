@@ -67,6 +67,17 @@ jobs:
           TAG="${{ github.ref_name }}"
           (cd _extensions && zip -qr "../obsidian-extension-${TAG}.zip" obsidian)
 
+      - name: Drop any existing release for the tag
+        # A re-run (e.g. after moving the tag) otherwise stacks a second
+        # release object for the same version. Delete first so the fresh
+        # draft replaces it; the tag itself is left in place.
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release delete "$TAG" --yes --cleanup-tag=false 2>/dev/null || \
+            echo "no existing release for $TAG to drop"
+
       - name: Draft the release
         env:
           GH_TOKEN: ${{ github.token }}
