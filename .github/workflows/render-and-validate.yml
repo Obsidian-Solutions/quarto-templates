@@ -82,7 +82,7 @@ jobs:
         run: bash tools/install-fonts.sh
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
 
       - name: Install verapdf, qpdf, and pikepdf
         run: |
