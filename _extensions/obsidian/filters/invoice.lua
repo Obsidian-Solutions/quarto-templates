@@ -68,6 +68,16 @@ local function is_list(v)
   return #v > 0
 end
 
+-- An empty table caption. pandoc.Caption exists in pandoc 3.1.2+
+-- (the CI apt pandoc is older and lacks it), so fall back to an empty
+-- plain caption object. Tables here never show a caption.
+local function empty_caption()
+  if pandoc.Caption ~= nil then
+    return pandoc.Caption()
+  end
+  return { pandoc.Str("") }
+end
+
 -- Parse a money string to integer pence. Strips anything that is not
 -- a digit or a decimal point, so "300.00", "£300.00", and "300" all
 -- parse to 30000.
@@ -218,7 +228,7 @@ local function header_table(inv)
     },
   }
   return {
-    pandoc.Table(pandoc.Caption(), colspecs, head, bodies, pandoc.TableFoot()),
+    pandoc.Table(empty_caption(), colspecs, head, bodies, pandoc.TableFoot()),
   }
 end
 
@@ -252,7 +262,7 @@ local function items_table(inv)
   -- The items table carries no caption. A numbered caption
   -- ("Table 1: Line items") reads as template output on a client
   -- invoice. The table is the only one on the page and needs no label.
-  local caption = pandoc.Caption()
+  local caption = empty_caption()
   local colspecs = {
     { pandoc.AlignLeft, 0.52 },
     { pandoc.AlignCenter, 0.08 },
@@ -335,7 +345,7 @@ local function totals_block(inv)
     pandoc.Cell(pandoc.Plain({ pandoc.Strong({ pandoc.Str("Total due") }) })),
     pandoc.Cell(pandoc.Plain({ pandoc.Strong({ pandoc.Str("GBP " .. format_pence(total_pence)) }) })),
   }
-  local caption = pandoc.Caption()
+  local caption = empty_caption()
   local colspecs = {
     { pandoc.AlignLeft, 0.62 },
     { pandoc.AlignRight, 0.38 },
