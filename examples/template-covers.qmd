@@ -1,0 +1,58 @@
+---
+title: "Cover Theme Showcase"
+subtitle: "Eight cover themes from one source"
+author: "Obsidian Solutions"
+date: "2026-08-15"
+lang: en-GB
+reference: "OS-CVR-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+doc-type: "Showcase"
+edition: "First Edition"
+format:
+  obsidian-pdf: default
+---
+
+# About this document
+
+This source renders once for each of the eight cover themes. The
+theme is set in the format block of a per-theme metadata file:
+
+```yaml
+format:
+  obsidian-pdf:
+    titlepage: banded-slate
+```
+
+`tools/render-covers.sh` produces all eight PDFs into
+`examples/covers/`.
+
+| Theme | Cover |
+|---|---|
+| `plain` | classification, logo, title, author, date, identity line |
+| `formal` | centred, heavier title; report cover |
+| `classic-lined` | rules above and below the title |
+| `colorbox` | title in a filled box |
+| `academic` | journal-style author and affiliation machinery |
+| `bg-image` | background image behind the content |
+| `banded` | full-page maroon band, gold rule, white title block |
+| `banded-slate` | full-page slate band, yellow rule, white title block |
+
+## The house cover
+
+The default (no `titlepage:` key) is the clean monochrome cover:
+near-black title on white, classification top-right, identity line
+at the bottom.
+
+## Custom covers
+
+Any theme value can be tuned through `titlepage-theme:` (alignment,
+font sizes, colours, spacing), and `titlepage: <file.tex>` includes
+a custom LaTeX cover file. See docs/reference.md for the full field
+catalogue.
+
+## Body content
+
+This section exists so the rendered documents have a body page
+after the cover. The classification marking, running header, page
+numbers, and identity footer are the same across every theme.

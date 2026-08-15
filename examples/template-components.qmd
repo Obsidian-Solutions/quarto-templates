@@ -1,0 +1,60 @@
+---
+title: "Component Showcase"
+subtitle: "The HTML document furniture"
+author: "Obsidian Solutions"
+date: "2026-08-15"
+lang: en-GB
+reference: "OS-CMP-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+doc-type: "Showcase"
+title-block-banner: true
+format:
+  obsidian-html: default
+---
+
+::: {.obsidian-phase-banner}
+**STATUS** Showcase
+:::
+
+# Introduction
+
+This document shows the five HTML components. They are
+opt-in except the summary list, which the Lua filter applies to
+every definition list. All components use the house tokens, so they
+adapt to the light and dark themes automatically.
+
+## Summary list
+
+A definition list becomes a key/value table: bold keys in a left
+column, values on the right, hairline separators.
+
+Reference
+: OS-CMP-001
+
+Version
+: 1.0.0
+
+Review date
+: February 2027
+
+Owner
+: Example Author
+
+## Inset text
+
+::: {.obsidian-inset-text}
+This guidance box carries a thick left rule. Use it for material a
+reader must not miss.
+:::
+
+## Organisation logo
+
+::: {.obsidian-org-logo}
+Obsidian Solutions
+:::
+
+## Masthead
+
+The banner across the top is Quarto's native title-block-banner,
+styled by the house theme with the brand mark at its top-left.

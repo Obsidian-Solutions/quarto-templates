@@ -211,6 +211,8 @@ matter block:
 | `examples/template-typst.qmd` | Typst PDF | The fast-draft format: cover, numbered sections, running header, PDF/A-4f provenance |
 | `examples/template-slides.qmd` | revealjs, beamer PDF, PPTX | A client deck with the classification banner |
 | `examples/template-dashboard.qmd` | dashboard | A service-health dashboard with cards and a status table |
+| `examples/template-covers.qmd` | PDF (all 8 cover themes) | The cover family: plain, formal, classic-lined, colorbox, academic, bg-image, banded, banded-slate |
+| `examples/template-components.qmd` | HTML | The document furniture: masthead, phase banner, summary list, inset text, organisation logo |
 
 Render one file per family:
 
@@ -222,6 +224,8 @@ quarto render examples/template-agenda.qmd # PDF + HTML + DOCX
 quarto render examples/template-brief.qmd  # PDF + HTML + DOCX + EPUB
 quarto render examples/template-typst.qmd  # Typst PDF
 quarto render examples/template-slides.qmd # revealjs + beamer PDF + PPTX
+quarto render examples/template-covers.qmd # PDF (default cover theme)
+tools/render-covers.sh examples/template-covers.qmd  # PDF, every cover theme
 quarto render examples/template-dashboard.qmd # dashboard
 ```
 
