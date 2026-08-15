@@ -26,6 +26,10 @@ $font-family-sans-serif: Montserrat, "Segoe UI", "Helvetica Neue", Arial, sans-s
 $headings-font-family: $font-family-sans-serif;
 $headings-font-weight: 600;
 $headings-color: $theme-obsidian;
+/* Body 19px per the brand.yml scale (Bootstrap's 1rem default is
+   16px, two steps below the body token). */
+$font-size-root: 19px;
+$font-size-base: 1rem;
 
 /*-- scss:rules --*/
 
@@ -39,6 +43,14 @@ $headings-color: $theme-obsidian;
 :focus-visible {
   outline: 3px solid $theme-obsidian;
   outline-offset: 2px;
+}
+
+/* Body 19px per the brand.yml scale. Quarto's bundle carries two
+   body{font-size:.9rem} rules that would otherwise win the cascade
+   (they appear after the theme rules); !important is the only
+   deterministic override against an unknown rule order. */
+body {
+  font-size: 19px !important;
 }
 
 /* Links: permanent underline so colour is never the only cue */
@@ -100,4 +112,49 @@ figcaption,
   .obsidian-classification {
     border-bottom: 1px solid $theme-obsidian;
   }
+}
+
+/* ---- Dashboard ---- */
+/* Quarto's dashboard navbar inherits a default steel-blue
+   --bg-gradient; the house system is monochrome, so flatten it to
+   the off-white surface with dark text (the brand mark stays
+   dark-on-transparent). */
+.navbar {
+  --bg-gradient: none;
+  background-color: $theme-cream;
+  color: $theme-obsidian;
+  border-bottom: 1px solid $theme-ruled;
+}
+/* Quarto sets data-bs-theme="dark" on the navbar, which makes
+   Bootstrap default the text near-white; the house navbar is the
+   off-white surface, so every text element returns to dark. */
+.navbar .navbar-title,
+.navbar .navbar-title-text,
+.navbar .nav-link,
+.navbar .navbar-text,
+.navbar a {
+  color: $theme-obsidian;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+  color: $theme-obsidianl;
+}
+
+/* Cards: borders-only depth means sharp corners, no radius, no
+   shadow (Bootstrap's defaults are rounded). */
+.card,
+.card-holder {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* The dashboard cell gap is Bootstrap's generous default; tighten it
+   so stat cards and the table read as one flow, not two pages. */
+.cell {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.dashboard-spread .cell {
+  margin-top: 0;
+  margin-bottom: 0;
 }
