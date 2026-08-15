@@ -11,4 +11,4 @@ permissions:
 
 jobs:
   check:
-    uses: Obsidian-Solutions/.github/.github/workflows/commit-format.yml@58e7b55b05eb406c880fc4b272cd9b8b36b0d459
+    uses: Obsidian-Solutions/.github/.github/workflows/commit-format.yml@f8db4ab90072c80a0e9abb3a8ac3e288823070fc
