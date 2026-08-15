@@ -243,6 +243,7 @@ function Meta(m)
         ["elements"] = {
           latex("\\titleblock"),
           latex("\\authorblock"),
+          latex("\\dateblock"),
           latex("\\vfill"),
           latex("\\logoblock"),
           latex("\\footerblock"),
