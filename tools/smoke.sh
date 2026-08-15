@@ -18,13 +18,13 @@ for FILE in "$@"; do
   BASE="${FILE%.qmd}"
   echo "smoke: $FILE"
   # The PDF format embeds manifest.json (provenance) via embed.lua;
-  # render.sh writes it before rendering, so smoke.sh must too or the
-  # embedfile step fails with 'File manifest.json not found'.
-  MANIFEST="${FILE%.qmd}-manifest.json"
-  if [ -f "$FILE" ]; then
-    printf '{\n  "document": "%s",\n  "baseline": "smoke",\n  "rendered": "smoke"\n}\n' \
-      "$(basename "$FILE")" > "$MANIFEST"
-  fi
+  # render.sh writes SRC_DIR/manifest.json before rendering, so
+  # smoke.sh must too or the embedfile step fails with 'File
+  # manifest.json not found'. The name is exactly manifest.json (no
+  # prefix) so the embed filter resolves it from the source dir.
+  MANIFEST="$(dirname "$FILE")/manifest.json"
+  printf '{\n  "document": "%s",\n  "baseline": "smoke",\n  "rendered": "smoke"\n}\n' \
+    "$(basename "$FILE")" > "$MANIFEST"
   for FMT in obsidian-pdf obsidian-html obsidian-docx obsidian-epub \
              obsidian-revealjs obsidian-beamer obsidian-pptx \
              obsidian-dashboard obsidian-typst; do
