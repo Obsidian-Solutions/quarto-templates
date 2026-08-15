@@ -38,10 +38,16 @@ for theme in $THEMES; do
     printf 'format:\n  obsidian-pdf:\n    titlepage: %s\n' "$theme" > "$meta"
   fi
   echo "==> $theme"
-  quarto render "$SRC" --metadata-file "$meta" -o "covers-$theme.pdf"
-  mv "$QUARTO_OUT/covers-$theme.pdf" "$OUT/"
-  rm -f "$meta"
+    quarto render "$SRC" --metadata-file "$meta" -o "covers-$theme.pdf"
+    mv "$QUARTO_OUT/covers-$theme.pdf" "$OUT/"
+    rm -f "$meta"
 done
+# Drop the LaTeX intermediates a direct render leaves next to the
+# source, and keep the build record: move the .log into the covers
+# output like render.sh does (the rest are regenerable).
+SRC_LOG="$(dirname "$SRC")/$(basename "$SRC" .qmd).log"
+[ -f "$SRC_LOG" ] && mv "$SRC_LOG" "$OUT/$(basename "$SRC" .qmd).log"
+rm -f "$(dirname "$SRC")/$(basename "$SRC" .qmd)".{aux,lot,toc,lof,out}
 rm -f "$MANIFEST"
 
 echo "Rendered ${THEMES} -> ${OUT}/covers-<theme>.pdf"
