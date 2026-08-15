@@ -163,6 +163,45 @@ The invoice example uses a placeholder value. Replace it with the real
 name and service address. Limited companies do not use this field; they
 show a registered office and company number instead.
 
+## Local field verification
+
+Set `verify: true` in the front matter to run a soft local check of the
+document fields during the render (`filters/verify.lua`). The check
+prints warnings to the render log and never fails the build, so a
+document still renders when a field is wrong; the warning is the signal
+to fix it before sending.
+
+```yaml
+---
+title: "Invoice"
+verify: true
+---
+```
+
+The check covers the common fields and the invoice block:
+
+- Required fields: title, author, date, and a reference in the house
+  shape `OS-<TYPE>-<NNN>`
+- Version in semantic versioning form, and a known confidentiality
+  level (Open, Internal, Commercial in Confidence, Restricted,
+  Confidential, Secret, Top Secret)
+- Placeholder text anywhere: `[...]`, `<...>`, `TBD`, `xxx`, `lorem`,
+  and blank values
+- Addresses: UK postcode shape and placeholder markers
+- Phone numbers: UK `+44` and `0` forms
+- Emails: the address shape
+- Dates: ISO form, real calendar dates, and invoice ordering
+  (supply date before invoice date before due date)
+- The invoice block: sender and client present, items with positive
+  quantity and numeric unit price, subtotal recomputed within one
+  penny, a known payment provider (stripe, paypal, bank-transfer,
+  none) with a payment link for stripe and paypal, and a coherent
+  VAT status
+
+The checks are deliberately conservative. A UK postcode shape check
+does not prove the postcode exists; it catches the typing errors and
+placeholder values that a template user is most likely to leave behind.
+
 ## Invoice fields
 
 The `invoice:` block carries the structured data. Example:

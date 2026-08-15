@@ -16,6 +16,7 @@ edition: "First Edition"
 # show the owner's name and a service address on invoices.
 proprietor: "John Smith, [service address]"
 toc: false
+verify: true
 number-sections: false
 titlepage: false
 lof: false
