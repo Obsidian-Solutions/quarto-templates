@@ -1,0 +1,312 @@
+# _schema.yml for the obsidian extension.
+# Describes the house front matter for IDE tooling and runtime validation.
+#
+# The house template uses TOP-LEVEL front matter (title, author, date,
+# reference, invoice:), not format-block options. The fields below are
+# the metadata surface every obsidian-* format accepts. The
+# structured-fields.lua filter enforces the required fields at render;
+# this schema powers editor completion and static checks.
+
+$schema: https://m.canouil.dev/quarto-wizard/assets/schema/v2/extension-schema.json
+
+options:
+  title:
+    type: string
+    required: true
+    description: "Document title."
+  subtitle:
+    type: string
+    description: "Document subtitle."
+  author:
+    type: [string, array]
+    required: true
+    description: "Author name or list of names."
+  date:
+    type: string
+    format: date
+    required: true
+    description: "Document date (ISO form, for example 2026-08-14)."
+  lang:
+    type: string
+    default: en-GB
+    description: "Language tag. The template default is en-GB."
+  reference:
+    type: string
+    pattern: "^OS-[A-Z]+-[0-9]{3}$"
+    description: "House reference in the form OS-TYPE-NNN (verified by verify.lua)."
+  version:
+    type: string
+    pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    description: "Version in semantic versioning form (verified by verify.lua)."
+  confidentiality:
+    type: string
+    enum:
+      - Open
+      - Internal
+      - "Commercial in Confidence"
+      - Restricted
+      - Confidential
+      - Secret
+      - "Top Secret"
+    description: "Classification marking. Shown on every page."
+  doc-type:
+    type: string
+    description: "Document type label, for example Letter, Memo, Agenda."
+  edition:
+    type: string
+    description: "Edition label, for example First Edition."
+  review-date:
+    type: string
+    format: date
+    description: "Next review date."
+  supersedes:
+    type: string
+    description: "Reference of the document this one replaces."
+  draft:
+    type: boolean
+    default: false
+    description: "Renders a DRAFT watermark when true."
+  watermark:
+    type: string
+    description: "Watermark text; overrides draft when set."
+  toc:
+    type: boolean
+    default: true
+    description: "Shows the table of contents."
+  number-sections:
+    type: boolean
+    default: true
+    description: "Numbers the section headings."
+  verify:
+    type: boolean
+    default: false
+    description: "Runs the soft local field verification (filters/verify.lua)."
+  gscp:
+    type: boolean
+    default: false
+    description: "Enables the GSCP classification mode."
+
+  # ---- Letter ----
+  letter:
+    type: object
+    description: "Structured letter fields."
+    properties:
+      address:
+        type: array
+        required: true
+        minItems: 1
+        description: "Recipient address lines (required)."
+        items:
+          type: string
+      subject:
+        type: string
+        description: "Letter subject line."
+      opening:
+        type: string
+        description: "Opening salutation, for example Dear Sir or Madam,"
+      closing:
+        type: string
+        description: "Closing salutation, for example Yours faithfully,"
+      cc:
+        type: array
+        description: "Carbon copy recipients."
+        items:
+          type: string
+      encl:
+        type: array
+        description: "Enclosures."
+        items:
+          type: string
+      ps:
+        type: string
+        description: "Postscript text."
+      signature:
+        type: string
+        description: "Signature block under the closing, usually the author's name and title."
+
+  # ---- Memo ----
+  memo:
+    type: object
+    description: "Structured memo fields."
+    properties:
+      to:
+        type: array
+        required: true
+        minItems: 1
+        description: "Recipients (required)."
+        items:
+          type: string
+      from:
+        type: string
+        required: true
+        description: "Sender (required)."
+      subject:
+        type: string
+        required: true
+        description: "Memo subject (required)."
+      cosig:
+        type: string
+        description: "Co-signature name."
+      cosig-title:
+        type: string
+        description: "Co-signature title."
+
+  # ---- Agenda ----
+  agenda:
+    type: object
+    description: "Structured agenda fields."
+    properties:
+      meeting:
+        type: string
+        required: true
+        description: "Meeting name (required)."
+      date:
+        type: string
+        format: date
+        required: true
+        description: "Meeting date (required)."
+      time:
+        type: string
+        required: true
+        description: "Meeting time (required)."
+      location:
+        type: string
+        required: true
+        description: "Meeting location (required)."
+      chair:
+        type: string
+        description: "Meeting chair."
+      members:
+        type: array
+        description: "Attendees."
+        items:
+          type: string
+      apologies:
+        type: array
+        description: "Those sending apologies."
+        items:
+          type: string
+      guests:
+        type: array
+        description: "Guests."
+        items:
+          type: string
+
+  # ---- Brief ----
+  brief:
+    type: object
+    description: "Structured policy brief fields."
+    properties:
+      series:
+        type: string
+        description: "Brief series name."
+      issue:
+        type: string
+        description: "Issue number within the series."
+      key-findings:
+        type: array
+        description: "Key findings shown in the summary box."
+        items:
+          type: string
+      cite-as:
+        type: string
+        description: "Suggested citation for the brief."
+      contact:
+        type: object
+        description: "Contact for follow-up."
+        properties:
+          name:
+            type: string
+            description: "Contact name."
+          email:
+            type: string
+            format: email
+            description: "Contact email."
+          phone:
+            type: string
+            description: "Contact phone."
+
+  # ---- Invoice ----
+  invoice:
+    type: object
+    description: "Structured invoice fields."
+    properties:
+      number:
+        type: string
+        required: true
+        description: "Invoice number (required)."
+      date:
+        type: string
+        format: date
+        required: true
+        description: "Invoice date (required)."
+      supply-date:
+        type: string
+        format: date
+        description: "Supply date. UK law separates this from the invoice date."
+      due-date:
+        type: string
+        format: date
+        description: "Payment due date."
+      po-number:
+        type: string
+        description: "Purchase order number."
+      client:
+        type: object
+        required: true
+        description: "Client block (required)."
+        properties:
+          name:
+            type: string
+            required: true
+            description: "Client name (required)."
+          address:
+            type: array
+            description: "Client address lines."
+            items:
+              type: string
+      items:
+        type: array
+        required: true
+        minItems: 1
+        description: "Line items (required, at least one)."
+        items:
+          type: object
+          properties:
+            description:
+              type: string
+              required: true
+              description: "Item description (required)."
+            quantity:
+              type: number
+              minimum: 0
+              description: "Item quantity."
+            unit-price:
+              type: number
+              minimum: 0
+              description: "Unit price in GBP."
+      payment:
+        type: object
+        description: "Payment block."
+        properties:
+          provider:
+            type: string
+            enum:
+              - stripe
+              - paypal
+              - bank-transfer
+              - none
+            description: "Payment provider. stripe and paypal need a link."
+          link:
+            type: string
+            format: uri
+            description: "Payment link for stripe or paypal."
+      vat-status:
+        type: string
+        description: "VAT statement, for example 'Not registered for VAT'."
+      discount:
+        type: number
+        description: "Discount in GBP."
+      tax:
+        type: number
+        description: "Tax amount in GBP."

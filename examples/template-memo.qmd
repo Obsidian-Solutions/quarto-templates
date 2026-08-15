@@ -14,21 +14,21 @@ edition: "First Edition"
 draft: true
 toc: false
 number-sections: false
+memo:
+  to:
+    - "Team name"
+  from: "Your name"
+  subject: "State the subject here"
+  cosig: "Co-signer name"
+  cosig-title: "Co-signer role"
 format:
   obsidian-pdf: default
   obsidian-html: default
   obsidian-docx: default
 ---
 
-# Heading block
-
-| Field | Value |
-|---|---|
-| To | Team name |
-| From | Your name |
-| Date | 14 August 2026 |
-| Subject | State the subject here |
-| Reference | OS-MEM-001 |
+::: {.obsidian-memo}
+:::
 
 # Purpose
 
