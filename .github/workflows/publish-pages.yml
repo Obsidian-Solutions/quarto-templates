@@ -56,7 +56,7 @@ jobs:
           sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation poppler-utils
           quarto install verapdf
           # pikepdf backs the Typst provenance gate (tools/attach-provenance.py).
-          uv pip install --system --break-system-packages -r requirements.txt
+          sudo uv pip install --system --break-system-packages -r requirements.txt
 
       - name: Render the example (HTML, PDF, DOCX)
         run: |
