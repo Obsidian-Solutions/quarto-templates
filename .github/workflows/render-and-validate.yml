@@ -92,7 +92,7 @@ jobs:
           # uv matches the local tooling (pdf2quarto is uv-managed) and
           # installs the pinned requirements into the runner's python so
           # the gates can import it.
-          uv pip install --system -r requirements.txt
+          uv pip install --system --break-system-packages -r requirements.txt
           # The Lua filter unit tests drive pandoc directly; Quarto
           # bundles its own pandoc but does not export it to PATH.
           # pandoc is a lightweight apt package, so install it for the
