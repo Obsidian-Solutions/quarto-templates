@@ -17,6 +17,14 @@ for FILE in "$@"; do
   [ -f "$FILE" ] || { echo "smoke: not found: $FILE"; FAIL=1; continue; }
   BASE="${FILE%.qmd}"
   echo "smoke: $FILE"
+  # The PDF format embeds manifest.json (provenance) via embed.lua;
+  # render.sh writes it before rendering, so smoke.sh must too or the
+  # embedfile step fails with 'File manifest.json not found'.
+  MANIFEST="${FILE%.qmd}-manifest.json"
+  if [ -f "$FILE" ]; then
+    printf '{\n  "document": "%s",\n  "baseline": "smoke",\n  "rendered": "smoke"\n}\n' \
+      "$(basename "$FILE")" > "$MANIFEST"
+  fi
   for FMT in obsidian-pdf obsidian-html obsidian-docx obsidian-epub \
              obsidian-revealjs obsidian-beamer obsidian-pptx \
              obsidian-dashboard obsidian-typst; do
@@ -39,6 +47,7 @@ for FILE in "$@"; do
     fi
     rm -rf "$OUT"
   done
+  rm -f "$MANIFEST"
 done
 rm -f /tmp/smoke-$$.log
 exit "$FAIL"
