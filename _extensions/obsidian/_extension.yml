@@ -61,6 +61,9 @@ contributes:
       format-resources:
         - assets/obsidian-logo.png
         - assets/obsidian-favicon.png
+        # Neutral corner motif for the bg-image titlepage theme; a
+        # document can set titlepage-bg-image to any image instead.
+        - assets/corner-bg.png
         # Generated from brand.yml by tools/tokens.py; the preamble
         # inputs it so the palette lives in one place.
         - tokens.tex

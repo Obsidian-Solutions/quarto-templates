@@ -57,7 +57,7 @@ existing documents are unaffected. Set the key to switch:
 | `titlepage: classic-lined` | rules above and below the title |
 | `titlepage: colorbox` | title in a filled box |
 | `titlepage: academic` | journal-style author and affiliation machinery |
-| `titlepage: bg-image` | background image behind the content |
+| `titlepage: bg-image` | background image behind the content (requires `titlepage-bg-image`; the theme errors without one) |
 | `titlepage: banded` | full-page maroon band, gold rule, white title block |
 | `titlepage: banded-slate` | full-page slate band, yellow rule, white title block |
 | `titlepage: true` | same as `plain` |
@@ -96,7 +96,7 @@ Direct keys sit alongside `titlepage`:
 | `titlepage-logo` | logo image; defaults to `obsidian-logo.png`, `false` omits it |
 | `titlepage-header` | text above the title block |
 | `titlepage-footer` | text below the content |
-| `titlepage-bg-image` | background image file |
+| `titlepage-bg-image` | background image file; the `bg-image` theme errors without it. The extension bundles a neutral corner motif (`assets/corner-bg.png`); set `titlepage-bg-image: corner-bg.png` (format-resources flatten to the render root) |
 | `titlepage-geometry` | page geometry for the cover only (for example `[top=5cm, bottom=2.6cm]`) |
 
 Every themed page keeps the classification marking top-right and the

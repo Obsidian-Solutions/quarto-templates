@@ -34,7 +34,7 @@ format:
 | `classic-lined` | rules above and below the title |
 | `colorbox` | title in a filled box |
 | `academic` | journal-style author and affiliation machinery |
-| `bg-image` | background image behind the content |
+| `bg-image` | background image behind the content (the showcase uses the bundled corner motif, `corner-bg.png`) |
 | `banded` | full-page maroon band, gold rule, white title block |
 | `banded-slate` | full-page slate band, yellow rule, white title block |
 
