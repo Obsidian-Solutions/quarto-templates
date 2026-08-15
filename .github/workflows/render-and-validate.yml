@@ -32,18 +32,6 @@ jobs:
             exit 1
           }
 
-      - name: Unit tests, docs check, and format smoke
-        run: |
-          # Unit tests for the tools and Lua filters (tokens drift,
-          # provenance/pptx attachment fixtures, filter behaviour),
-          # the docs-consistency check (formats, gates, examples all
-          # agree), and a full smoke render of one document through
-          # every format. A failure here means a tool or the docs
-          # catalogue regressed.
-          python3 -m unittest tools.test_tools tools.test_lua_filters -v
-          python3 tools/check-docs.py
-          ./tools/smoke.sh examples/template.qmd
-
       - name: SBOM freshness check
         run: |
           # The committed SBOM must match what the generator produces
@@ -98,6 +86,25 @@ jobs:
           sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation poppler-utils
           # pikepdf backs the Typst provenance gate (tools/attach-provenance.py).
           pip install --quiet pikepdf
+          # The Lua filter unit tests drive pandoc directly; Quarto
+          # bundles its own pandoc but does not export it to PATH.
+          # pandoc is a lightweight apt package, so install it for the
+          # tests (the tests skip cleanly when it is absent).
+          sudo apt-get install -y pandoc
+
+      - name: Unit tests, docs check, and format smoke
+        run: |
+          # Unit tests for the tools and Lua filters (tokens drift,
+          # provenance/pptx attachment fixtures, filter behaviour),
+          # the docs-consistency check (formats, gates, examples all
+          # agree), and a full smoke render of one document through
+          # every format. Runs after the toolchain installs because
+          # the smoke renders with lualatex and the Lua tests need
+          # pandoc. A failure here means a tool or the docs
+          # catalogue regressed.
+          python3 -m unittest tools.test_tools tools.test_lua_filters -v
+          python3 tools/check-docs.py
+          ./tools/smoke.sh examples/template.qmd
 
       - name: Render default document (PDF/A-4f)
         run: ./render.sh examples/template.qmd
