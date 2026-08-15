@@ -106,6 +106,10 @@ jobs:
           python3 -m unittest tools.test_tools tools.test_lua_filters -v
           python3 tools/check-docs.py
           ./tools/smoke.sh examples/template.qmd
+          # The showcase examples: the components page (HTML) and the
+          # cover-themes showcase (one PDF per theme).
+          ./tools/smoke.sh examples/template-components.qmd
+          ./tools/render-covers.sh examples/template-covers.qmd
 
       - name: Render default document (PDF/A-4f)
         run: ./render.sh examples/template.qmd

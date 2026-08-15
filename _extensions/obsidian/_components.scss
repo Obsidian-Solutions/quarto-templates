@@ -30,6 +30,18 @@
   color: $theme-obsidian;
 }
 
+/* Quarto's own banner rule paints the title near-white (it assumes a
+   coloured band). The house band is the off-white surface, so the
+   title must return to the near-black primary — an explicit rule,
+   because the inherited color above cannot beat the explicit h1
+   color Quarto emits. */
+.quarto-title-banner h1,
+.quarto-title-banner .title,
+.quarto-title-banner h2,
+.quarto-title-banner .subtitle {
+  color: $theme-obsidian;
+}
+
 /* The brand mark sits at the top-left of the banner. The banner is
    a CSS grid (Quarto's page-columns), so a static ::before becomes
    an auto-placed grid item and can be dropped to zero width; the
