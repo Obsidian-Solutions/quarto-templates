@@ -29,8 +29,11 @@ invoice:
       [business address]
     contact: "obsidiansolutions.co.uk | [email address] | [phone number]"
   number: "2026-008"
+  po-number: "PO-2026-0142"
   date: "2026-08-15"
+  supply-date: "2026-08-15"
   due-date: "2026-08-29"
+  vat-status: "Not registered for VAT. No VAT is charged on this invoice."
   client:
     name: "Acme Ltd"
     address: |

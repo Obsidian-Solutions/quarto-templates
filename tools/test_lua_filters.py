@@ -229,6 +229,29 @@ invoice:
         texts = " ".join(self._texts(ast))
         self.assertIn("425.00", texts)
 
+    def test_supply_and_po_number(self):
+        """Supply date, due date, and PO number appear in the header."""
+        meta = (
+            self.META
+            + '  po-number: "PO-2026-0142"\n'
+            + '  supply-date: "2026-08-15"\n'
+        )
+        md = "::: {.obsidian-invoice}\n:::\n"
+        ast = pandoc_ast(md, ["invoice.lua"], meta)
+        texts = " ".join(self._texts(ast))
+        self.assertIn("Purchase order", texts)
+        self.assertIn("PO-2026-0142", texts)
+        self.assertIn("Supply date", texts)
+
+    def test_vat_status_line(self):
+        """vat-status renders a line in the payment block."""
+        meta = self.META + '  vat-status: "Not registered for VAT"\n'
+        md = "::: {.obsidian-invoice}\n:::\n"
+        ast = pandoc_ast(md, ["invoice.lua"], meta)
+        texts = " ".join(self._texts(ast))
+        self.assertIn("VAT", texts)
+        self.assertIn("Not registered for VAT", texts)
+
 
 @unittest.skipUnless(shutil.which("pandoc"), "pandoc not on PATH")
 class TestTitlepage(unittest.TestCase):
