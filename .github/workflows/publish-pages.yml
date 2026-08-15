@@ -91,7 +91,10 @@ jobs:
           cp _output/examples/template-dashboard.html site/template-dashboard.html
           cp _output/examples/template-typst.pdf site/template-typst.pdf
           cp obsidian-logo.png site/obsidian-logo.png
-          cp accessibility-statement.md site/accessibility-statement.md
+          # The accessibility statement ships as a rendered HTML page,
+          # not a raw markdown file (a bare .md would serve as text).
+          quarto render accessibility-statement.md --to html --output-dir site
+          rm -f site/accessibility-statement.md
           cp -r _output/examples/template_files site/template_files
           cp -r _output/examples/template-slides_files site/template-slides_files
           cp -r _output/examples/template-dashboard_files site/template-dashboard_files
@@ -105,10 +108,9 @@ jobs:
       - name: Add format download links to the page
         run: |
           python3 - <<'PYEOF'
-          # Insert a small download bar under the title so visitors
-          # can fetch every format the template produces: the PDF
-          # (controlled record), DOCX (working copy), the revealjs
-          # deck, its editable PPTX, and the dashboard.
+          # Insert a small download bar and the cover-themes row inside
+          # the constrained content column (main.content), so they
+          # match the body width instead of spanning the viewport.
           html = open('site/index.html').read()
           bar = (
             '<div style="font-family: Montserrat, sans-serif; font-size: 0.85rem; '
@@ -124,8 +126,7 @@ jobs:
             '<a href="template-slides.pptx">PPTX</a> &nbsp;|&nbsp; '
             '<a href="template-dashboard.html">Dashboard</a> &nbsp;|&nbsp; '
             '<a href="template-typst.pdf">Typst PDF</a> &nbsp;|&nbsp; '
-            '<a href="covers/covers-plain.pdf">Covers</a> &nbsp;|&nbsp; '
-            '<a href="accessibility-statement.md">Accessibility statement</a>'
+            '<a href="accessibility-statement.html">Accessibility statement</a>'
             '</div>'
             '<div style="font-family: Montserrat, sans-serif; font-size: 0.8rem; '
             'color: #484949; margin: 0.4rem 0 1.5rem 0;">'
@@ -140,10 +141,15 @@ jobs:
             '<a href="covers/covers-banded-slate.pdf">banded-slate</a>'
             '</div>'
           )
-          # Insert after the title block header.
-          marker = '</header>'
-          if marker in html:
-            html = html.replace(marker, marker + bar, 1)
+          # Insert inside the content column: right after the <main>
+          # opening tag (main.content is the constrained body column;
+          # before it sits the full-width grid), so the bars match the
+          # body width instead of spanning the viewport.
+          anchor = '<main class="content'
+          if anchor in html:
+            i = html.index(anchor)
+            j = html.index('>', i) + 1
+            html = html[:j] + '\n' + bar + '\n' + html[j:]
           else:
             html = html.replace('</body>', bar + '</body>', 1)
           open('site/index.html', 'w').write(html)
