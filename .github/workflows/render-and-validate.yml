@@ -74,7 +74,8 @@ jobs:
           tlmgr install \
             titlesec fancyhdr zref draftwatermark tocloft embedfile \
             tcolorbox needspace caption microtype booktabs etoolbox float \
-            fontspec tex-gyre
+            fontspec tex-gyre \
+            ifthen calculator wallpaper afterpage hyphenat
           which tlmgr lualatex && lualatex --version | head -1
 
       - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
@@ -281,7 +282,8 @@ jobs:
           tlmgr install \
             titlesec fancyhdr zref draftwatermark tocloft embedfile \
             tcolorbox needspace caption microtype booktabs etoolbox float \
-            fontspec tex-gyre
+            fontspec tex-gyre \
+            ifthen calculator wallpaper afterpage hyphenat
           which tlmgr lualatex && lualatex --version | head -1
 
       - name: Install Montserrat
