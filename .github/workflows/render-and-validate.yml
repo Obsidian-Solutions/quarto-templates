@@ -32,6 +32,18 @@ jobs:
             exit 1
           }
 
+      - name: Unit tests, docs check, and format smoke
+        run: |
+          # Unit tests for the tools and Lua filters (tokens drift,
+          # provenance/pptx attachment fixtures, filter behaviour),
+          # the docs-consistency check (formats, gates, examples all
+          # agree), and a full smoke render of one document through
+          # every format. A failure here means a tool or the docs
+          # catalogue regressed.
+          python3 -m unittest tools.test_tools tools.test_lua_filters -v
+          python3 tools/check-docs.py
+          ./tools/smoke.sh examples/template.qmd
+
       - name: SBOM freshness check
         run: |
           # The committed SBOM must match what the generator produces
