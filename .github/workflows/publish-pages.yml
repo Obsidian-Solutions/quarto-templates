@@ -48,12 +48,15 @@ jobs:
       - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
         run: bash tools/install-fonts.sh
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
       - name: Install qpdf, fonts, poppler, verapdf and pikepdf
         run: |
           sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation poppler-utils
           quarto install verapdf
           # pikepdf backs the Typst provenance gate (tools/attach-provenance.py).
-          pip install --quiet pikepdf
+          uv pip install --system -r requirements.txt
 
       - name: Render the example (HTML, PDF, DOCX)
         run: |

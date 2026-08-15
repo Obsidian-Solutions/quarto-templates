@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: MIT
+# Pre-commit hooks. These mirror the CI gates so a violation is
+# caught before the push, not after: commit subject length, token
+# drift, and the controlled-language lint. Install with:
+#   pip install pre-commit && pre-commit install
+repos:
+  - repo: local
+    hooks:
+      # Matches the CI commit-format gate (subject under 50 chars,
+      # <component>: <imperative summary>). Runs on the commit
+      # message, not on files.
+      - id: commit-subject
+        name: commit subject format
+        entry: python3 tools/check-commit-subject.py
+        language: system
+        stages: [commit-msg]
+
+      # The design tokens stay in step: brand.yml is the single
+      # source, the generated tokens and the theme literals must
+      # agree.
+      - id: token-drift
+        name: design token drift
+        entry: python3 tools/tokens.py --check
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      # Controlled-language lint on staged documents.
+      - id: ste-lint
+        name: controlled language
+        entry: python3 tools/check-ste.py
+        language: system
+        files: \.(qmd|md|tex)$
