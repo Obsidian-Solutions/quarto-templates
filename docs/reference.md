@@ -121,6 +121,126 @@ command per file produces the whole family with no content loss.
 | `obsidian-dashboard` | HTML | live-data dashboard, html theme, classification filter only |
 | `obsidian-typst` | PDF/A-4f via Typst | fast-draft format, house palette and fonts, classification in running header, identity line, plain and banded covers. `pdf-standard` passes through to Typst (PDF/A-4f and PDF/UA verified); `render.sh` attaches the source and manifest with the AFRelationship + MIME keys PDF/A-4f requires, so the Typst archive carries the same provenance as the LaTeX PDF |
 
+## Invoice documents
+
+An invoice is not a separate format. It is an `obsidian-pdf` document
+with the `invoice.lua` filter, which the pdf format contributes. Any
+`obsidian-pdf` document that carries an `invoice:` metadata block
+renders the invoice furniture at a marker Div:
+
+```markdown
+::: {.obsidian-invoice}
+:::
+```
+
+The filter expands the structured `invoice:` metadata into the body at
+the marker: a client block, a line-item table, totals, and a
+provider-agnostic payment block. Everything else the author writes
+stays untouched, so notes and sign-off sit around the invoice data.
+
+The payment block renders from the `payment:` section. Supported
+providers:
+
+- `stripe`, `paypal`, `generic`: one "Pay now" line with the link
+- `bank-transfer`: a bank details block (bank, sort code, account,
+  account name, payment reference)
+- absent: payment terms only
+
+`discount` and `tax` metadata adjust the total. Totals are computed in
+pence to avoid float drift. All amounts are pounds sterling (GBP).
+
+The `proprietor:` front-matter field is the sole-trader trading-name
+disclosure required by the Companies Act 2006, Part 41. A business
+trading under a name other than the owner's true name must show the
+owner's name and a service address on invoices and other business
+documents. Set it to "Name, Address":
+
+```yaml
+proprietor: "John Smith, 1 Example Road, Exeter EX1 1AA"
+```
+
+The invoice example uses a placeholder value. Replace it with the real
+name and service address. Limited companies do not use this field; they
+show a registered office and company number instead.
+
+## Invoice fields
+
+The `invoice:` block carries the structured data. Example:
+
+```yaml
+invoice:
+  sender:
+    name: "Obsidian Solutions"
+    address: |
+      [business address]
+    contact: "[email address] | [phone number]"
+  number: "2026-008"
+  date: "2026-08-15"
+  due-date: "2026-08-29"   # optional, shown in the client block
+  client:
+    name: "Acme Ltd"
+    address: |
+      1 High Street
+      Exeter EX1 1AA
+  items:
+    - description: "Server care retainer, August 2026"
+      quantity: 1
+      unit-price: "300.00"
+  discount: "25.00"     # optional, subtracts from the subtotal
+  tax: "0.00"           # optional adjustment (a negative value adds)
+  payment:
+    terms: "Due within 14 days"
+    provider: "stripe"
+    link: "https://buy.stripe.com/..."
+```
+
+| Field | Purpose |
+|---|---|
+| `sender.name` | Business name in the letterhead, defaults to the document `author` |
+| `sender.address` | Business address in the letterhead, one line per line break |
+| `sender.contact` | Contact line in the letterhead, for example email and phone |
+| `number` | Invoice number, shown right-aligned in the header row |
+| `date` | Invoice date, shown right-aligned in the header row |
+| `due-date` | Payment due date, shown right-aligned in the header row; optional |
+| `client.name` | Client organisation, shown in the Bill to block |
+| `client.address` | Client address, one line per line break |
+| `items[].description` | Line item description |
+| `items[].quantity` | Quantity, default 1 |
+| `items[].unit-price` | Unit price as a money string (for example `"300.00"` or `"£300.00"`) |
+| `discount` | Money string subtracted from the subtotal |
+| `tax` | Money string subtracted from the subtotal (a negative value adds) |
+| `payment.terms` | Payment terms line, for example "Due within 14 days" |
+| `payment.provider` | `stripe`, `paypal`, `generic`, or `bank-transfer` |
+| `payment.link` | Payment link, rendered as a "Pay now" line for the link-based providers |
+| `payment.details` | Bank details block, used only by `bank-transfer` |
+
+The bank-transfer provider renders these details fields, then a
+standing anti-fraud note: the invoice states that bank details are
+never changed by email, and that the client should verify such a
+request by phone on a known number. This follows NCA and Stop! Think
+Fraud guidance on invoice fraud.
+
+The bank-transfer provider renders these details fields:
+
+```yaml
+payment:
+  terms: "Due within 14 days of the invoice date"
+  provider: "bank-transfer"
+  details:
+    bank: "Example Bank"
+    sort-code: "00-00-00"
+    account: "00000000"
+    name: "Obsidian Solutions"
+    reference: "INV-2026-008"
+```
+
+An invoice is a commercial document. Set `titlepage: false`, `toc:
+false`, `lof: false`, and `lot: false` in the front matter so the
+document stays one page with no cover or front-matter lists.
+
+See [examples/template-invoice.qmd](../examples/template-invoice.qmd)
+for the full field surface.
+
 Quarto can also emit plain formats (markdown, LaTeX, ODT, Typst,
 ipynb) with `quarto render ... --to <format>`. Those carry no
 Obsidian Solutions branding: the filters, partials, and themes are

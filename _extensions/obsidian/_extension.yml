@@ -83,6 +83,7 @@ contributes:
         - partials/titlepage-author-affiliation.tex
         - partials/titlepage-header-footer-date.tex
       filters:
+        - filters/invoice.lua
         - filters/titlepage.lua
         - filters/classification-gate.lua
         - filters/appendix.lua
