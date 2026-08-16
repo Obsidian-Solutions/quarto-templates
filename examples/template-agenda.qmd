@@ -12,6 +12,7 @@ short-title: "Meeting Agenda"
 doc-type: "Agenda"
 edition: "First Edition"
 draft: true
+titlepage: none
 toc: false
 number-sections: false
 agenda:
