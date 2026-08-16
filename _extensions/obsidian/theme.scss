@@ -113,7 +113,8 @@ figcaption,
 .obsidian-doc-letter,
 .obsidian-doc-memo,
 .obsidian-doc-agenda,
-.obsidian-doc-brief {
+.obsidian-doc-brief,
+.obsidian-invoice {
   border-left: 4px solid $theme-obsidian;
   padding-left: 1rem;
   margin-bottom: 1.5rem;
@@ -131,11 +132,15 @@ figcaption,
 .obsidian-doc-brief {
   border-left-color: #8e1537; /* crimson, 8.1:1 on white */
 }
+.obsidian-invoice {
+  border-left-color: #8d6a12; /* gold, 6.4:1 on white */
+}
 
 .obsidian-doc-letter h2,
 .obsidian-doc-memo h2,
 .obsidian-doc-agenda h2,
-.obsidian-doc-brief h2 {
+.obsidian-doc-brief h2,
+.obsidian-invoice h2 {
   margin-top: 0;
 }
 
@@ -144,7 +149,8 @@ figcaption,
 .obsidian-doc-letter table,
 .obsidian-doc-memo table,
 .obsidian-doc-agenda table,
-.obsidian-doc-brief table {
+.obsidian-doc-brief table,
+.obsidian-invoice table {
   max-width: 100%;
   margin-bottom: 1rem;
 }

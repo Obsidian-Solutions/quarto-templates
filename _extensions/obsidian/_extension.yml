@@ -120,6 +120,10 @@ contributes:
         - filters/classification-gate.lua
         - filters/classification.lua
         - filters/review-overdue.lua
+        # Renders the invoice fields at the marker Div, so the
+        # editable companion carries the same bill-to block and
+        # line items as the PDF.
+        - filters/invoice.lua
         # Renders the structured letter, memo, agenda and brief
         # fields at their marker Divs, so the editable companion
         # carries the same recipient block and header as the PDF.
@@ -163,6 +167,10 @@ contributes:
         # Maps definition lists to the summary-list component (an
         # opt-in key/value table for the HTML companion).
         - filters/summary-list.lua
+        # Renders the invoice fields at the marker Div, so the
+        # accessible companion carries the same bill-to block and
+        # line items as the PDF.
+        - filters/invoice.lua
         # Renders the structured letter, memo, agenda and brief
         # fields at their marker Divs, so the accessible companion
         # carries the same recipient block and header as the PDF.
@@ -225,6 +233,10 @@ contributes:
       filters:
         - filters/classification-gate.lua
         - filters/classification.lua
+        # Renders the invoice fields at the marker Div, so the
+        # e-reader copy carries the same bill-to block and line
+        # items as the PDF.
+        - filters/invoice.lua
         # Renders the structured letter, memo, agenda and brief
         # fields at their marker Divs, so the e-reader copy carries
         # the same recipient block and header as the PDF.
