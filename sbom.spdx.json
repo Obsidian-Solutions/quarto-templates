@@ -1,14 +1,14 @@
 {
   "SPDXID": "SPDXRef-DOCUMENT",
   "creationInfo": {
-    "created": "2026-08-15T18:46:43Z",
+    "created": "2026-08-15T19:44:40Z",
     "creators": [
       "Tool: tools/make-sbom.py",
       "Organization: Obsidian Solutions"
     ]
   },
   "dataLicense": "CC0-1.0",
-  "documentNamespace": "https://github.com/Obsidian-Solutions/quarto-templates/sbom/spdx/26cdbdfd859e6c840aea312dd1de0e5696dec4ef",
+  "documentNamespace": "https://github.com/Obsidian-Solutions/quarto-templates/sbom/spdx/02aef4160b59cc0f6d491a8d03649c65923eb1bd",
   "name": "obsidian-quarto-templates",
   "packages": [
     {
@@ -30,6 +30,24 @@
       "versionInfo": "commit 555facfb2a18c72c3c0380f0d9c0f060453a9058"
     },
     {
+      "SPDXID": "SPDXRef-Package-obsidian-github-attest",
+      "copyrightText": "Copyright (c) Obsidian Solutions",
+      "downloadLocation": "https://github.com/Obsidian-Solutions/.github",
+      "licenseConcluded": "MIT",
+      "name": "Obsidian-Solutions/.github (attest workflow)",
+      "supplier": "Organization: Obsidian Solutions",
+      "versionInfo": "121780f0d587ca5516e5d29ae8dafcdc8348a5ad"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-obsidian-github-commit-format",
+      "copyrightText": "Copyright (c) Obsidian Solutions",
+      "downloadLocation": "https://github.com/Obsidian-Solutions/.github",
+      "licenseConcluded": "MIT",
+      "name": "Obsidian-Solutions/.github (commit-format workflow)",
+      "supplier": "Organization: Obsidian Solutions",
+      "versionInfo": "f8db4ab90072c80a0e9abb3a8ac3e288823070fc"
+    },
+    {
       "SPDXID": "SPDXRef-Package-tex-gyre-pagella",
       "copyrightText": "See NOTICE",
       "downloadLocation": "https://www.gust.org.pl/projects/e-foundry/tex-gyre",
@@ -45,7 +63,7 @@
       "licenseConcluded": "MIT",
       "name": "actions/checkout",
       "supplier": "Organization: GitHub",
-      "versionInfo": "11d5960a326750d5838078e36cf38b85af677262"
+      "versionInfo": "3d3c42e5aac5ba805825da76410c181273ba90b1"
     },
     {
       "SPDXID": "SPDXRef-Package-configure-pages",
@@ -54,7 +72,7 @@
       "licenseConcluded": "MIT",
       "name": "actions/configure-pages",
       "supplier": "Organization: GitHub",
-      "versionInfo": "983d7736d9b0ae728b81ab479565c72886d7745b"
+      "versionInfo": "45bfe0192ca1faeb007ade9deae92b16b8254a0d"
     },
     {
       "SPDXID": "SPDXRef-Package-deploy-pages",
@@ -63,7 +81,7 @@
       "licenseConcluded": "MIT",
       "name": "actions/deploy-pages",
       "supplier": "Organization: GitHub",
-      "versionInfo": "d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e"
+      "versionInfo": "cd2ce8fcbc39b97be8ca5fce6e763baed58fa128"
     },
     {
       "SPDXID": "SPDXRef-Package-upload-pages-artifact",
@@ -72,7 +90,25 @@
       "licenseConcluded": "MIT",
       "name": "actions/upload-pages-artifact",
       "supplier": "Organization: GitHub",
-      "versionInfo": "56afc609e74202658d3ffba0e8f6dda462b719fa"
+      "versionInfo": "fc324d3547104276b827a68afc52ff2a11cc49c9"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-setup-uv",
+      "copyrightText": "Copyright (c) Astral",
+      "downloadLocation": "https://github.com/astral-sh/setup-uv",
+      "licenseConcluded": "MIT",
+      "name": "astral-sh/setup-uv",
+      "supplier": "Organization: Astral",
+      "versionInfo": "20cfd1bf945f4377ade1205e4dbc17946fc9a30d (v10.0.1)"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-codeql-action",
+      "copyrightText": "Copyright (c) GitHub",
+      "downloadLocation": "https://github.com/github/codeql-action",
+      "licenseConcluded": "MIT",
+      "name": "github/codeql-action",
+      "supplier": "Organization: GitHub",
+      "versionInfo": "5595ccaf912efad79be6eef63a5619ff05969be3"
     },
     {
       "SPDXID": "SPDXRef-Package-numeric-csl",
@@ -111,6 +147,15 @@
       "versionInfo": "bundled"
     },
     {
+      "SPDXID": "SPDXRef-Package-pikepdf",
+      "copyrightText": "See NOTICE",
+      "downloadLocation": "https://pypi.org/project/pikepdf/",
+      "licenseConcluded": "MPL-2.0",
+      "name": "pikepdf",
+      "supplier": "Organization: PyPI",
+      "versionInfo": ">=10.11.0 (requirements.txt)"
+    },
+    {
       "SPDXID": "SPDXRef-Package-quarto-actions",
       "copyrightText": "Copyright (c) Quarto",
       "downloadLocation": "https://github.com/quarto-dev/quarto-actions",
@@ -133,6 +178,16 @@
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-montserrat",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-obsidian-github-attest",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-obsidian-github-commit-format",
       "relationshipType": "CONTAINS",
       "spdxElementId": "SPDXRef-Package-obsidian"
     },
@@ -162,6 +217,16 @@
       "spdxElementId": "SPDXRef-Package-obsidian"
     },
     {
+      "relatedSpdxElement": "SPDXRef-Package-setup-uv",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-codeql-action",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    },
+    {
       "relatedSpdxElement": "SPDXRef-Package-numeric-csl",
       "relationshipType": "CONTAINS",
       "spdxElementId": "SPDXRef-Package-obsidian"
@@ -173,6 +238,11 @@
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-reference-pptx",
+      "relationshipType": "CONTAINS",
+      "spdxElementId": "SPDXRef-Package-obsidian"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-pikepdf",
       "relationshipType": "CONTAINS",
       "spdxElementId": "SPDXRef-Package-obsidian"
     },
