@@ -27,11 +27,11 @@
 --   dates: valid calendar date; invoice date ordering
 --     supply-date <= date <= due-date
 --   invoice: sender/client present; number not a placeholder;
---     items non-empty; quantities positive; unit prices numeric;
---     subtotal recomputes from the items; payment provider in
---     {stripe, paypal, bank-transfer, none}; link present when the
---     provider needs one; vat-status either the no-VAT statement or
---     a GB VAT number shape
+--     items non-empty; quantities positive; unit prices parse as
+--     money; subtotal recomputes from the items; payment provider in
+--     {stripe, paypal, generic, bank-transfer, none}; link present
+--     when the provider needs one; vat-status either the no-VAT
+--     statement or a UK VAT number shape
 --
 -- The checks are conservative: a warning is a prompt to look, not a
 -- verdict. False positives are acceptable when they push a human to
@@ -105,8 +105,13 @@ local POSTCODE_AT_START = "^%a%a?%d%w?%s*%d%a%a$"
 local POSTCODE_INLINE = "%s%a%a?%d%w?%s*%d%a%a$"
 
 -- UK phone: +44 or 0, then 10 digits, allowing separators.
-local PHONE = "^%+?44[0-9 %-]{9,12}$"
-local PHONE_ALT = "^0[0-9 %-]{9,12}$"
+-- Lua patterns have no {n,m} repetition, so strip the separators
+-- and match the digit shape explicitly instead.
+local function is_uk_phone(t)
+  local digits = t:gsub("[^%d+]", "")
+  return digits:match("^%+?44%d%d%d%d%d%d%d%d%d%d$") ~= nil
+      or digits:match("^0%d%d%d%d%d%d%d%d%d%d$") ~= nil
+end
 
 -- ISO date YYYY-MM-DD, then check it is a real calendar date.
 local function parse_iso(s)
@@ -167,25 +172,10 @@ local function check_phone(field, value)
   -- A contact line may carry more than a phone (email | phone).
   -- Check the whole line loosely: it must contain a plausible
   -- phone fragment.
-  if not (t:match(PHONE) or t:match(PHONE_ALT) or t:find("%d")) then
+  if not (is_uk_phone(t) or t:find("%d")) then
     warn(field, "does not look like a phone number: '" .. t .. "'")
   elseif #t:gsub("%D", "") < 7 then
     warn(field, "phone number looks too short to be real")
-  end
-end
-
-local function check_email(field, value)
-  if is_empty(value) then
-    warn(field, "email is missing")
-    return
-  end
-  if is_placeholder(value) then
-    warn(field, "email contains a placeholder")
-    return
-  end
-  local t = strip(value)
-  if not (t:match("^[%w%.%%%+%-]+@[%w%-]+%.[%w%-.]+$")) then
-    warn(field, "does not look like an email: '" .. t .. "'")
   end
 end
 
@@ -227,16 +217,29 @@ local function check_reference(field, value)
   end
 end
 
+-- The canonical confidentiality level set: the commercial posture
+-- levels (Open, Internal, Commercial in Confidence) plus the GSCP
+-- v2.0 levels (Official, Official-Sensitive, Secret, Top Secret).
+-- Restricted and Confidential are obsolete under GSCP v2.0, and
+-- Unclassified is not a GSCP level. Keys are the normalised
+-- (uppercase, colon-suffix stripped) form so verify.lua never warns
+-- on a value classification-gate.lua accepts, including
+-- 'OFFICIAL-SENSITIVE: <reason>'.
 local KNOWN_LEVELS = {
-  ["Internal"] = true,
-  ["Commercial in Confidence"] = true,
-  ["Secret"] = true,
-  ["Top Secret"] = true,
-  ["Official"] = true,
-  ["Official-Sensitive"] = true,
-  ["Unclassified"] = true,
-  ["Restricted"] = true,
+  ["OPEN"] = true,
+  ["INTERNAL"] = true,
+  ["COMMERCIAL IN CONFIDENCE"] = true,
+  ["OFFICIAL"] = true,
+  ["OFFICIAL-SENSITIVE"] = true,
+  ["SECRET"] = true,
+  ["TOP SECRET"] = true,
 }
+
+-- Normalise a marking the way classification-gate.lua does: uppercase,
+-- drop a ': reason' suffix, collapse whitespace.
+local function normalise_level(s)
+  return (s:upper():gsub("%s*:.*$", ""):gsub("%s+", " "))
+end
 
 local function check_common(m)
   local title = tostring_meta(m["title"])
@@ -252,7 +255,7 @@ local function check_common(m)
   check_reference("reference", tostring_meta(m["reference"]))
   check_semver("version", tostring_meta(m["version"]))
   local conf = tostring_meta(m["confidentiality"])
-  if not is_empty(conf) and not KNOWN_LEVELS[strip(conf)] then
+  if not is_empty(conf) and not KNOWN_LEVELS[normalise_level(conf)] then
     warn("confidentiality", "unrecognised level: '" .. strip(conf) .. "'")
   end
 end
@@ -264,7 +267,42 @@ local function num(v)
   return n
 end
 
-local function check_invoice(inv)
+-- Parse a money value to integer pence, matching invoice.lua's
+-- parse_pence: strip currency symbols, commas and spaces, keep an
+-- optional leading minus. Returns nil when no digits remain, so a
+-- genuinely unparseable amount still warns.
+-- ponytail: the minus is detected before stripping, so a minus after
+-- a symbol ('£-300.00') parses as positive; strip first, then detect
+-- the minus, if that form ever appears in real invoices.
+local function money_pence(v)
+  local s = tostring_meta(v)
+  local neg = s:match("^%s*%-") ~= nil
+  local digits = s:gsub("[^%d.]", "")
+  local n = tonumber(digits)
+  if n == nil then return nil end
+  local p = math.floor(n * 100 + 0.5)
+  if neg then p = -p end
+  return p
+end
+
+-- VAT number shapes: bare 9 digits, GB+9, GB+12 (branch or group
+-- registrations), XI+9 (Northern Ireland), or a 'not registered'
+-- statement. The frontier patterns (%f) stop a shorter shape from
+-- matching inside a longer one, so free text like 'VAT number:
+-- GB123456789' passes and the obsolete 13-char 'GB123456789AB' form
+-- does not.
+local VAT_BARE = "%f[%w]%d%d%d%d%d%d%d%d%d%f[^%w]"
+local VAT_GB9 = "GB%d%d%d%d%d%d%d%d%d%f[^%w]"
+local VAT_GB12 = "GB%d%d%d%d%d%d%d%d%d%d%d%d%f[^%w]"
+local VAT_XI9 = "XI%d%d%d%d%d%d%d%d%d%f[^%w]"
+
+local function is_vat_status(t)
+  if t:lower():find("not registered") then return true end
+  return t:match(VAT_BARE) ~= nil or t:match(VAT_GB9) ~= nil
+      or t:match(VAT_GB12) ~= nil or t:match(VAT_XI9) ~= nil
+end
+
+local function check_invoice(inv, doc_meta)
   -- Sender.
   local sender = inv["sender"]
   if sender then
@@ -273,11 +311,19 @@ local function check_invoice(inv)
     local saddr = tostring_meta(sender["address"])
     check_address("invoice.sender.address", saddr)
     local contact = tostring_meta(sender["contact"])
-    if not is_empty(contact) and is_placeholder(contact) then
-      warn("invoice.sender.contact", "contact contains a placeholder")
+    if not is_empty(contact) then
+      if is_placeholder(contact) then
+        warn("invoice.sender.contact", "contact contains a placeholder")
+      else
+        check_phone("invoice.sender.contact", contact)
+      end
     end
   else
-    warn("invoice.sender", "sender block is missing")
+    -- invoice.lua falls back to the document author for the
+    -- letterhead name; warn only when there is no author to use.
+    if is_empty(tostring_meta(doc_meta["author"])) then
+      warn("invoice.sender", "sender block is missing")
+    end
   end
 
   -- Client.
@@ -298,10 +344,17 @@ local function check_invoice(inv)
     warn("invoice.number", "invoice number contains a placeholder")
   end
 
-  -- Dates and their ordering.
+  -- Dates and their ordering. supply-date and due-date are optional
+  -- per the schema; only check them when present.
   local date = check_date("invoice.date", tostring_meta(inv["date"]))
-  local supply = check_date("invoice.supply-date", tostring_meta(inv["supply-date"]))
-  local due = check_date("invoice.due-date", tostring_meta(inv["due-date"]))
+  local supply = nil
+  if not is_empty(tostring_meta(inv["supply-date"])) then
+    supply = check_date("invoice.supply-date", tostring_meta(inv["supply-date"]))
+  end
+  local due = nil
+  if not is_empty(tostring_meta(inv["due-date"])) then
+    due = check_date("invoice.due-date", tostring_meta(inv["due-date"]))
+  end
   if date and supply and not date_le(supply, date) then
     warn("invoice.date ordering", "supply-date is after the invoice date")
   end
@@ -317,7 +370,7 @@ local function check_invoice(inv)
     local subtotal = 0
     for i, item in ipairs(items) do
       local qty = num(item["quantity"])
-      local price = num(item["unit-price"])
+      local price = money_pence(item["unit-price"])
       local label = string.format("invoice.items[%d]", i)
       if not qty or qty <= 0 then
         warn(label .. ".quantity", "quantity must be a positive number")
@@ -332,10 +385,20 @@ local function check_invoice(inv)
     end
     -- The recomputed subtotal is allowed to differ from the stated
     -- one only by rounding to pence.
-    local stated = num(inv["subtotal"])
-    if stated and math.abs(stated - subtotal) > 0.01 then
+    local stated = money_pence(inv["subtotal"])
+    if stated and math.abs(stated - subtotal) > 1 then
       warn("invoice.subtotal", string.format(
-        "stated %.2f does not match items (%.2f)", stated, subtotal))
+        "stated %.2f does not match items (%.2f)", stated / 100, subtotal / 100))
+    end
+    -- discount and tax are money amounts too; an unparseable value
+    -- would silently vanish from the totals in invoice.lua.
+    local discount = inv["discount"]
+    if not is_empty(tostring_meta(discount)) and not money_pence(discount) then
+      warn("invoice.discount", "discount must be a money amount")
+    end
+    local tax = inv["tax"]
+    if not is_empty(tostring_meta(tax)) and not money_pence(tax) then
+      warn("invoice.tax", "tax must be a money amount")
     end
   end
 
@@ -345,7 +408,7 @@ local function check_invoice(inv)
     local provider = tostring_meta(payment["provider"])
     if not is_empty(provider) then
       local p = strip(provider)
-      if not (p == "stripe" or p == "paypal" or p == "bank-transfer" or p == "none") then
+      if not (p == "stripe" or p == "paypal" or p == "generic" or p == "bank-transfer" or p == "none") then
         warn("invoice.payment.provider", "unrecognised provider: '" .. p .. "'")
       end
       if (p == "stripe" or p == "paypal") and is_empty(tostring_meta(payment["link"])) then
@@ -358,9 +421,8 @@ local function check_invoice(inv)
   local vat = tostring_meta(inv["vat-status"])
   if not is_empty(vat) then
     local t = strip(vat)
-    if not (t:lower():find("not registered") or t:match("GB%d{9}%d%d?") or
-            t:match("GB%d{9}%w%w")) then
-      warn("invoice.vat-status", "neither a no-VAT statement nor a GB VAT number: '" .. t .. "'")
+    if not is_vat_status(t) then
+      warn("invoice.vat-status", "neither a no-VAT statement nor a UK VAT number: '" .. t .. "'")
     end
   end
 end
@@ -373,7 +435,7 @@ function Meta(m)
 
   check_common(m)
   if m["invoice"] then
-    check_invoice(m["invoice"])
+    check_invoice(m["invoice"], m)
   end
 
   for _, w in ipairs(WARN) do
