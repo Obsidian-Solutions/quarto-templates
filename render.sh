@@ -112,18 +112,15 @@ if [ "$ENGINE" = "typst" ]; then
   # AFRelationship + MIME keys PDF/A-4f requires. The tool needs
   # pikepdf; absent, the gate fails (a Typst PDF/A-4f claim without
   # embedded provenance is a false green). The interpreter is found
-  # in order: an explicit PIKEPDF_PY, a python3 with pikepdf
-  # importable, or the pdf2quarto venv (a known pikepdf host).
+  # in order: an explicit PIKEPDF_PY, or a python3 with pikepdf
+  # importable. No machine-specific path is assumed; on a host
+  # without pikepdf in the system python, set PIKEPDF_PY.
   # GATE_SKIP=provenance disables the gate (and the attachment)
   # deliberately.
   if [[ ",${GATE_SKIP:-}," != *",provenance,"* ]]; then
     PIKEPDF_PY="${PIKEPDF_PY:-}"
-    if [ -z "$PIKEPDF_PY" ]; then
-      if python3 -c "import pikepdf" 2>/dev/null; then
-        PIKEPDF_PY=python3
-      elif [ -x /home/matt/Documents/Writing/pdf2quarto/.venv/bin/python ]; then
-        PIKEPDF_PY=/home/matt/Documents/Writing/pdf2quarto/.venv/bin/python
-      fi
+    if [ -z "$PIKEPDF_PY" ] && python3 -c "import pikepdf" 2>/dev/null; then
+      PIKEPDF_PY=python3
     fi
     if [ -x "$(dirname "$0")/tools/attach-provenance.py" ] && [ -n "$PIKEPDF_PY" ]; then
       "$PIKEPDF_PY" "$(dirname "$0")/tools/attach-provenance.py" \

@@ -82,7 +82,7 @@ jobs:
         run: bash tools/install-fonts.sh
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
 
       - name: Install verapdf, qpdf, and pikepdf
         run: |
@@ -109,7 +109,7 @@ jobs:
           # the smoke renders with lualatex and the Lua tests need
           # pandoc. A failure here means a tool or the docs
           # catalogue regressed.
-          python3 -m unittest tools.test_tools tools.test_lua_filters -v
+          python3 -m unittest tools.test_tools tools.test_lua_filters tools.test_floats tools.test_verify -v
           python3 tools/check-docs.py
           ./tools/smoke.sh examples/template.qmd
           # The showcase examples: the components page (HTML) and the
@@ -127,6 +127,18 @@ jobs:
           for t in letter memo agenda brief; do
             ./render.sh examples/template-$t.qmd
           done
+
+      - name: Render the invoice with the list of tables
+        run: |
+          # The invoice example sets lot: false; the lot: true path
+          # (list of tables) must also render through the gates. Copy
+          # the example with the override and run the full pipeline.
+          # The copy stays inside the repo so Quarto resolves the
+          # extension.
+          cp examples/template-invoice.qmd examples/template-invoice-lot.qmd
+          sed -i 's/lot: false/lot: true/' examples/template-invoice-lot.qmd
+          ./render.sh examples/template-invoice-lot.qmd
+          rm -f examples/template-invoice-lot.qmd _output/examples/template-invoice-lot.pdf
 
       - name: Assert PDF/A-4f validation passed
         run: |
@@ -296,12 +308,8 @@ jobs:
             calculator wallpaper hyphenat
           which tlmgr lualatex && lualatex --version | head -1
 
-      - name: Install Montserrat
-        run: |
-          mkdir -p ~/.fonts
-          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-Regular.ttf" -o ~/.fonts/Montserrat-Regular.ttf
-          curl -sL "https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-Bold.ttf" -o ~/.fonts/Montserrat-Bold.ttf
-          fc-cache -f ~/.fonts
+      - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
+        run: bash tools/install-fonts.sh
 
       - name: Install verapdf
         run: quarto install verapdf

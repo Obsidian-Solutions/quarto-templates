@@ -23,7 +23,9 @@ for t in awk grep dirname cat sed head tail; do
 done
 cat > "$mockbin/python3" <<'EOF'
 #!/bin/bash
-exit 0
+# MOCK_PY_EXIT lets a case simulate the checker's verdict: 0 (pass)
+# or 1 (fail, the documented heading-role-gap outcome).
+exit "${MOCK_PY_EXIT:-0}"
 EOF
 chmod +x "$mockbin/python3"
 
@@ -54,18 +56,30 @@ expect "pdffonts present -> pass(0)" 0 "$?"
 rm -f "$mockbin/pdffonts"
 
 # ---- pdfua gate (file -x check on tools/check-pdfua.py) ----
-printf 'pdf-standard: [a-4f, ua-2]\n' > "$SB/_extensions/obsidian/_extension.yml"
+# The gate fires only when the DOCUMENT declares ua-2 (front matter
+# or metadata file), not when the extension default merely permits
+# it. The sandbox document must declare it, or the gate never fires
+# and the test passes vacuously (finding N3). Run the fragment from
+# the sandbox so $FILE resolves to the declaring document.
+printf -- '---\nformat:\n  obsidian-pdf:\n    pdf-standard: [a-4f, ua-2]\n---\n' > "$SB/template.qmd"
 # B1: checker present -> python3 mock runs, pass
 touch "$SB/tools/check-pdfua.py"; chmod +x "$SB/tools/check-pdfua.py"
-PATH="$mockbin" /bin/bash "$SB/frag-pdfua.sh" >/dev/null 2>&1
+(cd "$SB" && PATH="$mockbin" /bin/bash "$SB/frag-pdfua.sh") >/dev/null 2>&1
 expect "pdfua checker present -> pass(0)" 0 "$?"
+# B1b: checker present but fails (the documented heading-role gap: a
+# LaTeX UA-2 render has no heading roles, so check-pdfua.py exits 1)
+# -> the gate must fail, matching the README expectation. This is the
+# non-vacuous assertion: it proves the gate fired on the declaration.
+(cd "$SB" && PATH="$mockbin" MOCK_PY_EXIT=1 /bin/bash "$SB/frag-pdfua.sh") >/dev/null 2>&1
+expect "pdfua checker fails on heading-role gap -> fail(1)" 1 "$?"
 # B2: checker absent -> fail
 rm "$SB/tools/check-pdfua.py"
-PATH="$mockbin" /bin/bash "$SB/frag-pdfua.sh" >/dev/null 2>&1
+(cd "$SB" && PATH="$mockbin" /bin/bash "$SB/frag-pdfua.sh") >/dev/null 2>&1
 expect "pdfua checker absent -> fail(1)" 1 "$?"
 # B3: absent + GATE_SKIP -> pass
-PATH="$mockbin" GATE_SKIP=pdfua /bin/bash "$SB/frag-pdfua.sh" >/dev/null 2>&1
+(cd "$SB" && PATH="$mockbin" GATE_SKIP=pdfua /bin/bash "$SB/frag-pdfua.sh") >/dev/null 2>&1
 expect "pdfua absent+GATE_SKIP -> pass(0)" 0 "$?"
+rm -f "$SB/template.qmd"
 
 # ---- ste gate (file -f check) ----
 touch "$SB/tools/check-ste.py"

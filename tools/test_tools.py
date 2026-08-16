@@ -32,9 +32,16 @@ def _load(name):
 
 tokens_mod = _load("tokens")
 
-# The provenance tool needs pikepdf, which lives in the pdf2quarto
-# venv. If that venv is present, run the tool tests under it.
-PIKEPDF_PY = Path("/home/matt/Documents/Writing/pdf2quarto/.venv/bin/python")
+# The provenance tool needs pikepdf. Detect it by import in the
+# current interpreter: the tests skip only when the import genuinely
+# fails, so CI runs them whenever pikepdf is installed (no hardcoded
+# venv path).
+try:
+    import pikepdf  # noqa: F401
+
+    PIKEPDF_PY = sys.executable
+except ImportError:
+    PIKEPDF_PY = None
 
 
 def run(*args, python=sys.executable, cwd=None):
@@ -106,12 +113,11 @@ class TestTokens(unittest.TestCase):
 
 
 class TestAttachProvenance(unittest.TestCase):
-    """Requires pikepdf (pdf2quarto venv). Skipped when absent."""
+    """Requires pikepdf. Skipped when absent."""
 
     def setUp(self):
         self.tmp = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.tmp)
-        self.venv_ok = PIKEPDF_PY.exists()
 
     def _fixture_pdf(self):
         """Render a tiny typst document to get a real PDF fixture.
@@ -151,7 +157,7 @@ class TestAttachProvenance(unittest.TestCase):
             self.skipTest("could not render the typst fixture: %s" % r.stderr[-300:])
         return out
 
-    @unittest.skipUnless(PIKEPDF_PY.exists(), "pikepdf venv not present")
+    @unittest.skipUnless(PIKEPDF_PY, "pikepdf not importable")
     def test_attach_and_afrelationship(self):
         import json
 
