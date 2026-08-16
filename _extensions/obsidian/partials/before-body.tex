@@ -119,25 +119,38 @@ $endif$
 % ---- Document format switch ----
 % Exposes the doc-type to the (non-processed) header/footer furniture
 % in include-in-header.tex, which reads \docform to choose the page
-% style for format documents (letter, memo) vs reports.
+% style for format documents (letter, memo, invoice, agenda) vs
+% reports. \docformatplain is empty for reports and 1 for format
+% documents; the plain page style in include-in-header.tex checks it
+% to drop the report identity line, page number and cover.
 $if(doc-type)$\newcommand{\docform}{$doc-type$}$else$\newcommand{\docform}{}$endif$
+\newcommand{\docformatplain}{}
+$if(doc-type)$
+\ifdefstring{\docform}{Letter}{\renewcommand{\docformatplain}{1}}{%
+  \ifdefstring{\docform}{Memo}{\renewcommand{\docformatplain}{1}}{%
+    \ifdefstring{\docform}{Invoice}{\renewcommand{\docformatplain}{1}}{%
+      \ifdefstring{\docform}{Agenda}{\renewcommand{\docformatplain}{1}}{}%
+    }%
+  }%
+}
+$endif$
 
 % ---- Format documents: paginate arabic from page 1 ----
 % Reports (and the monochrome cover path) use roman-numbered front
-% matter before the body. Letters and memos are single-flow business
-% documents: no cover, no separate front matter, paginate from 1.
+% matter before the body. Letters, memos, invoices and agendas are
+% single-flow business documents: no cover, no separate front
+% matter, paginate from 1.
 $if(titlepage-none)$
 \pagenumbering{arabic}
 
 % ---- Format documents keep the minimal furniture everywhere ----
 % The report running header (identity line + page number) is a
-% report convention. Letters and memos use the minimal plain style
-% (classification bands only) on every page; page 1 carries the
-% format's own letterhead or masthead instead.
+% report convention. Letters, memos, invoices and agendas use the
+% minimal plain style (classification bands only) on every page;
+% page 1 carries the format's own letterhead, masthead or header
+% block instead.
 $if(doc-type)$
-\ifdefstring{\docform}{Letter}{\pagestyle{plain}}{%
-  \ifdefstring{\docform}{Memo}{\pagestyle{plain}}{}%
-}
+\ifdefstring{\docformatplain}{1}{\pagestyle{plain}}{}
 $endif$
 
 % ---- Format-document page-1 furniture ----
