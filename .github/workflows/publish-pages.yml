@@ -1,5 +1,16 @@
 # SPDX-License-Identifier: MIT
 name: publish-pages
+# Builds the template showcase and deploys it to GitHub Pages.
+# The site ships every format the template produces (PDF, HTML, DOCX,
+# EPUB, slides, PPTX, dashboard, Typst) and every document type the
+# examples demonstrate (letter, memo, agenda, brief, invoice, component
+# showcase), plus the cover-theme family.
+#
+# The job runs in the same pinned container image as render-and-validate
+# (see .github/Containerfile), so the site is built from the identical
+# configuration baseline that gates the renders: Quarto 1.10.18, TinyTeX
+# with the document-class packages, Montserrat, veraPDF, qpdf, pikepdf.
+
 on:
   push:
     branches: [main]
@@ -7,6 +18,7 @@ on:
 
 permissions:
   contents: read
+  packages: read
   pages: write
   id-token: write
 
@@ -17,46 +29,12 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    container: ghcr.io/obsidian-solutions/quarto-templates-ci:1.10.18
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2
-        with:
-          version: 1.10.18
-
-      - name: Install TeX Live (TinyTeX, matches the 2026 dev toolchain)
-        run: |
-          # The Pages site ships PDF and DOCX alongside the HTML, so
-          # the full TeX toolchain is needed here too. TinyTeX is a
-          # rolling distribution matching the Arch TeX Live 2026 the
-          # template is developed against.
-          # Accepted supply-chain risk: TinyTeX and its packages are
-          # unpinned (rolling by design). The GitHub Actions and the
-          # Montserrat fonts ARE pinned and checksum-verified.
-          quarto install tinytex --update-path
-          tlmgr install \
-            titlesec fancyhdr zref draftwatermark tocloft embedfile \
-            tcolorbox needspace caption microtype booktabs etoolbox float \
-            fontspec tex-gyre \
-            calculator wallpaper hyphenat
-          which tlmgr lualatex && lualatex --version | head -1
-
-      - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
-        run: bash tools/install-fonts.sh
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
-
-      - name: Install qpdf, fonts, poppler, verapdf and pikepdf
-        run: |
-          sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation poppler-utils
-          quarto install verapdf
-          # pikepdf backs the Typst provenance gate (tools/attach-provenance.py).
-          sudo env "PATH=$PATH" uv pip install --system --break-system-packages -r requirements.txt
 
       - name: Render the example (HTML, PDF, DOCX)
         run: |
@@ -66,6 +44,21 @@ jobs:
           # the front matter: PDF, HTML, DOCX and EPUB.
           ./render.sh examples/template.qmd
           cp _extensions/obsidian/assets/obsidian-logo.png obsidian-logo.png
+
+      - name: Render the document-type templates
+        run: |
+          # Each document type is its own example. The letter, memo,
+          # agenda and brief are thin documents on the house identity,
+          # rendered through the same gates as the main example. The
+          # invoice is a single-format document (PDF); the component
+          # showcase is the HTML document furniture. The invoice's
+          # lot: false default renders here; the lot: true list-of-
+          # tables path is exercised by the render-and-validate gate.
+          for t in letter memo agenda brief; do
+            ./render.sh examples/template-$t.qmd
+          done
+          ./render.sh examples/template-invoice.qmd
+          quarto render examples/template-components.qmd --to obsidian-html
 
       - name: Render the remaining formats (deck, dashboard, typst)
         run: |
@@ -93,6 +86,12 @@ jobs:
           cp _output/examples/template-slides.pptx site/template-slides.pptx
           cp _output/examples/template-dashboard.html site/template-dashboard.html
           cp _output/examples/template-typst.pdf site/template-typst.pdf
+          # Document-type showcase: the thin documents as PDFs and the
+          # component showcase as HTML.
+          for t in letter memo agenda brief invoice; do
+            cp _output/examples/template-$t.pdf site/template-$t.pdf
+          done
+          cp _output/examples/template-components.html site/template-components.html
           cp obsidian-logo.png site/obsidian-logo.png
           # The accessibility statement ships as a rendered HTML page,
           # not a raw markdown file (a bare .md would serve as text).
@@ -111,9 +110,10 @@ jobs:
       - name: Add format download links to the page
         run: |
           python3 - <<'PYEOF'
-          # Insert a small download bar and the cover-themes row inside
-          # the constrained content column (main.content), so they
-          # match the body width instead of spanning the viewport.
+          # Insert a small download bar, the document-type row and the
+          # cover-themes row inside the constrained content column
+          # (main.content), so they match the body width instead of
+          # spanning the viewport.
           html = open('site/index.html').read()
           bar = (
             '<div style="font-family: Montserrat, sans-serif; font-size: 0.85rem; '
@@ -130,6 +130,16 @@ jobs:
             '<a href="template-dashboard.html">Dashboard</a> &nbsp;|&nbsp; '
             '<a href="template-typst.pdf">Typst PDF</a> &nbsp;|&nbsp; '
             '<a href="accessibility-statement.html">Accessibility statement</a>'
+            '</div>'
+            '<div style="font-family: Montserrat, sans-serif; font-size: 0.8rem; '
+            'color: #484949; margin: 0.4rem 0 1.5rem 0;">'
+            'Document types: '
+            '<a href="template-letter.pdf">letter</a> &nbsp;|&nbsp; '
+            '<a href="template-memo.pdf">memo</a> &nbsp;|&nbsp; '
+            '<a href="template-agenda.pdf">agenda</a> &nbsp;|&nbsp; '
+            '<a href="template-brief.pdf">brief</a> &nbsp;|&nbsp; '
+            '<a href="template-invoice.pdf">invoice</a> &nbsp;|&nbsp; '
+            '<a href="template-components.html">components</a>'
             '</div>'
             '<div style="font-family: Montserrat, sans-serif; font-size: 0.8rem; '
             'color: #484949; margin: 0.4rem 0 1.5rem 0;">'
