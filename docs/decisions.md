@@ -189,9 +189,9 @@ one render command produces every format in that family with no
 content loss. The document family is PDF, HTML, DOCX, and EPUB. The
 deck family is revealjs, beamer, and PPTX.
 
-**Consequence.** Three source files, three render commands, nine
-formats. Merging the families would guarantee content loss, so the
-split is deliberate.
+**Consequence.** One source file per artefact family, one render
+command per file, nine formats across the families. Merging the
+families would guarantee content loss, so the split is deliberate.
 
 ## The controlled-language gate is repo tooling
 

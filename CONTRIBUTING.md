@@ -77,13 +77,22 @@ number you give it:
 2. Generate the release content: `python3 tools/make-changelog.py --version 3.4.0`.
    This regenerates `CHANGELOG.md` from the commit history, keeps the
    version homes in step (`_extensions/obsidian/_extension.yml` and
-   `tools/make-sbom.py`), and regenerates the SBOM.
+   `tools/make-sbom.py`), and regenerates the SBOM. The SBOM records
+   the current commit in its document namespace. It is generated
+   before the release commit exists, so the committed SBOM lags the
+   release by one commit. The lag is deliberate. The CI freshness
+   check regenerates the SBOM and compares it with
+   `git diff --exit-code`. The committed file must match the tree at
+   generation time.
 3. Commit and push: `git add -A && git commit -S -m "chore: prepare release v3.4.0" && git push`.
    Sign the commit with your key.
-4. Create the release: `gh release create v3.4.0 --generate-notes`.
-   GitHub creates the tag and signs it with GitHub's key, so the
-   release carries the verified badge. The account is the owner's,
-   so the signature carries the owner's authority.
+4. Create the release tag locally, annotated and GPG-signed with your
+   key: `git tag -s v3.4.0 -m "Release v3.4.0"` and push it with
+   `git push origin v3.4.0`. GitHub does not create the tag. The
+   owner creates it, so the signature carries the owner's authority.
+5. Create the release: `gh release create v3.4.0 --generate-notes`.
+   The release points at the tag you pushed, so it carries the
+   verified badge.
 
 Semantic versioning is a judgement call: pick the major, minor, or
 patch step that fits the change.

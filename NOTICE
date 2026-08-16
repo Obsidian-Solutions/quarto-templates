@@ -36,12 +36,12 @@ satisfied by the licence file shipped alongside them.
 
 | Tool | Licence | Source | Used by |
 |---|---|---|---|
-| pikepdf | BSD-3-Clause (https://opensource.org/license/bsd-3-clause) | PyPI `pikepdf` | `tools/attach-provenance.py` (embeds the source and manifest with the AFRelationship and MIME keys PDF/A-4f requires) |
+| pikepdf | MPL-2.0 (https://opensource.org/license/mpl-2-0) | PyPI `pikepdf` | `tools/attach-provenance.py` (embeds the source and manifest with the AFRelationship and MIME keys PDF/A-4f requires) |
 
 pikepdf is a Python dependency of the Typst provenance gate only. It
 is not imported by the LaTeX path, which embeds provenance during the
-LaTeX run. `render.sh` resolves it from an explicit `PIKEPDF_PY`, a
-`python3` with pikepdf importable, or the pdf2quarto virtualenv.
+LaTeX run. `render.sh` resolves it from an explicit `PIKEPDF_PY` or a
+`python3` with pikepdf importable.
 
 ## Reason for this file
 

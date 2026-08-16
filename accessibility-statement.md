@@ -11,7 +11,7 @@ honest about the limits of the toolchain.
 ## Our commitment
 
 - The HTML companion is the reading format. It targets WCAG 2.2 AA.
-- Text contrast passes AAA: primary text 16.8:1 on white and 16.6:1
+- Text contrast passes AAA: primary text 18.7:1 on white and 16.6:1
   on the dark background; secondary text 9.0:1 and 9.4:1.
 - A visible focus ring (WCAG 2.4.7) and permanent link underlines
   mean colour is never the only cue.

@@ -189,10 +189,10 @@ renders to PDF, HTML, DOCX, and EPUB from the same prose; the deck
 renders to revealjs, beamer PDF, and PPTX from the same slides; and
 `obsidian-typst` renders a fast-draft PDF from the same source with
 the house identity (cover, classification, identity line) and PDF/A-4f
-provenance attached by `render.sh`. The three source files exist
-because a document, a deck, and a dashboard are different artefacts: a
-slide is a summary, not a paragraph, and merging the families would
-guarantee loss, not avoid it.
+provenance attached by `render.sh`. One source file per artefact
+exists because a document, a deck, and a dashboard are different
+artefacts: a slide is a summary, not a paragraph, and merging the
+families would guarantee loss, not avoid it.
 
 The per-format capabilities are in [docs/reference.md](docs/reference.md).
 
@@ -274,7 +274,7 @@ section heading in the document.
 
 ## Brand
 
-The identity is monochrome: a near-black primary (`#121212`, 16.8:1
+The identity is monochrome: a near-black primary (`#121212`, 18.7:1
 on white), a grey secondary (`#484949`, AAA), and grey hairlines.
 The palette is a token system: `brand.yml` is the single source,
 `tools/tokens.py` generates the LaTeX and SCSS token files, and a

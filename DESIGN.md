@@ -17,13 +17,13 @@ structure, one accent choice per document. It is the visual language
 of a consulting firm that wants the document to be taken seriously
 before the logo is read.
 
-## 2. Color
+## 2. Colour
 
 ### Palette (semantic roles, from brand.yml)
 
 | Role | Token | Value | Contrast on white | Usage |
 |------|-------|-------|-------------------|-------|
-| Text/primary | primary | #121212 | 16.8:1 | Body, headings, focus ring |
+| Text/primary | primary | #121212 | 18.7:1 | Body, headings, focus ring |
 | Text/secondary | secondary | #484949 | 9.0:1 (AAA) | Muted text, links, captions |
 | Border/hairline | border | #cecece | decorative | Rules, table lines, separators |
 | Surface/raised | surface | #f3f3f3 | on white | Panels, masthead band, callout background |
@@ -68,7 +68,7 @@ document opts into ONE accent; the house monochrome is the default.
 - Mono: Liberation Mono
 
 ### Rules
-- Headings are Montserrat, body is serif — the editorial pairing is
+- Headings are Montserrat, body is serif. The editorial pairing is
   the identity. Do not swap to a generic sans for body.
 - Body text never below 16px on the web.
 - Numbers in data tables use tabular figures where available.
@@ -106,7 +106,7 @@ document opts into ONE accent; the house monochrome is the default.
 ### Inset text
 - **Structure**: block with 4px left rule (primary token)
 - **Spacing**: 1.5rem margin, 0.75/1rem padding
-- **Accessibility**: the left rule carries meaning (guidance) — text
+- **Accessibility**: the left rule carries meaning (guidance). Text
   also states the guidance
 
 ### Phase banner
@@ -122,7 +122,7 @@ document opts into ONE accent; the house monochrome is the default.
 
 ## 6. Motion & Interaction
 
-Minimal by design — this is a document system, not an app. Web
+Minimal by design. This is a document system, not an app. Web
 surfaces (HTML companion, dashboard) keep transitions to a 200-300ms
 ease for interactive elements. Links underline on hover; focus shows
 a visible 2-3px ring (primary token). No scroll-jacking, no entry
@@ -132,14 +132,14 @@ animations on document pages.
 
 **Strategy: borders-only.** Structure comes from hairline rules
 (#cecece) and the surface token (#f3f3f3) for the masthead band and
-raised callouts. Cards and panels stay white with hairline borders —
-no shadows, no rounded corners. This matches the print origin of the
+raised callouts. Cards and panels stay white with hairline borders.
+No shadows, no rounded corners. This matches the print origin of the
 system (haplines read as rules on paper).
 
 ## Known inconsistencies (extraction flags)
 
 - The dark theme's raised surface (#1e1e1e) and hairline
-  (#484949) are not in brand.yml as named tokens — they are inline
+  (#484949) are not in brand.yml as named tokens. They are inline
   overrides in theme-dark.scss. Candidate for consolidation.
 - The accent palette lives only in brand.yml; the SCSS token file
   exposes it ($token-*) but the HTML themes do not consume the
@@ -147,10 +147,10 @@ system (haplines read as rules on paper).
 - tabular figures are not enforced for tables on the web; the
   LaTeX booktabs path handles this natively.
 - The dashboard navbar inherited Quarto's default steel-blue
-  gradient (--bg-gradient) — overridden to house monochrome in the
-  theme (resolved in the polish pass).
+  gradient (--bg-gradient). The theme overrides it to house
+  monochrome (resolved in the polish pass).
 - The HTML body renders at Bootstrap's default 1rem (16px), below
-  the 19px body token in brand.yml — the theme now sets the token
+  the 19px body token in brand.yml. The theme now sets the token
   value (resolved in the polish pass).
 - Dashboard cards inherited Bootstrap's rounded corners; the
   borders-only strategy wants radius 0 (resolved in the polish
