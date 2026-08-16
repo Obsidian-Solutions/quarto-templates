@@ -100,4 +100,10 @@ RUN quarto --version \
     && pandoc --version | head -1 \
     && python3 -c "import pikepdf; print('pikepdf', pikepdf.__version__)"
 
+# Warm the TeX formats so the first render in CI does not pay the
+# format-generation cost on every fresh runner.
+RUN printf '\\documentclass{article}\\begin{document}x\\end{document}\n' > /tmp/warm.tex \
+    && lualatex -interaction=nonstopmode -halt-on-error /tmp/warm.tex >/dev/null 2>&1 \
+    && rm -f /tmp/warm.*
+
 ENV DEBIAN_FRONTEND=
