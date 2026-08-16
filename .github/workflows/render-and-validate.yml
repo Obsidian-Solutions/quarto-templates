@@ -4,6 +4,11 @@ name: render-and-validate
 # validation the template guarantees. Applies the "verify every
 # change" rule to the template itself: a document that renders here
 # is the "properly ready" state for the public flip.
+#
+# The toolchain is a pinned container image (quarto, TinyTeX with the
+# document-class packages, Montserrat, veraPDF, qpdf, pikepdf): see
+# .github/Containerfile. The image is the configuration baseline; the
+# jobs never assemble a toolchain at run time.
 
 on:
   push:
@@ -12,10 +17,51 @@ on:
 
 permissions:
   contents: read
+  packages: read
 
 jobs:
+  # Fast smoke: unit tests, docs check, and every format via the
+  # smoke scripts. Runs in parallel with the gated renders below.
+  smoke:
+    runs-on: ubuntu-latest
+    container: ghcr.io/obsidian-solutions/quarto-templates-ci:1.10.18
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Unit tests, docs check, and format smoke
+        run: |
+          # Unit tests for the tools and Lua filters (tokens drift,
+          # provenance/pptx attachment fixtures, filter behaviour),
+          # the docs-consistency check (formats, gates, examples all
+          # agree), and a full smoke render of one document through
+          # every format. The smoke renders with lualatex and the Lua
+          # tests need pandoc; both live in the container image.
+          python3 -m unittest tools.test_tools tools.test_lua_filters tools.test_floats tools.test_verify -v
+          python3 tools/check-docs.py
+          ./tools/smoke.sh examples/template.qmd
+          # The components showcase (HTML) also renders through the
+          # smoke pipeline.
+          ./tools/smoke.sh examples/template-components.qmd
+
+  # The cover-theme showcase renders the same source eight times, one
+  # PDF per titlepage theme. It runs in its own job because each
+  # render writes manifest.json and LaTeX intermediates next to the
+  # source: a separate workspace keeps the writes from interfering
+  # with the smoke and render jobs, and the job runs in parallel.
+  covers:
+    runs-on: ubuntu-latest
+    container: ghcr.io/obsidian-solutions/quarto-templates-ci:1.10.18
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Render the cover-theme showcase
+        run: |
+          # One PDF per titlepage theme, into examples/covers/.
+          ./tools/render-covers.sh examples/template-covers.qmd
+
   render:
     runs-on: ubuntu-latest
+    container: ghcr.io/obsidian-solutions/quarto-templates-ci:1.10.18
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -51,72 +97,6 @@ jobs:
           print('SBOM fresh')
           EOF
 
-      - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2
-        with:
-          version: 1.10.18
-
-      - name: Install TeX Live (TinyTeX, matches the 2026 dev toolchain)
-        run: |
-          # Ubuntu's apt TeX Live 2023 cannot run \DocumentMetadata with
-          # pdf-standard (missing the 2025+ pdfmanagement rename). TinyTeX
-          # is a rolling distribution that matches the Arch TeX Live 2026
-          # the template is developed against. --update-path puts tlmgr
-          # and lualatex on PATH (the flag the Quarto docs name).
-          # Accepted supply-chain risk: TinyTeX and its packages are
-          # unpinned (rolling by design). The GitHub Actions and the
-          # Montserrat fonts ARE pinned and checksum-verified; revisit
-          # TinyTeX pinning if this CI must meet a stricter baseline.
-          quarto install tinytex --update-path
-          # TinyTeX base already carries Latin Modern, fontspec and the
-          # kernel. Install the document-class packages the template
-          # preamble uses, plus TeX Gyre Pagella (the main font).
-          tlmgr install \
-            titlesec fancyhdr zref draftwatermark tocloft embedfile \
-            tcolorbox needspace caption microtype booktabs etoolbox float \
-            fontspec tex-gyre \
-            calculator wallpaper hyphenat
-          which tlmgr lualatex && lualatex --version | head -1
-
-      - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
-        run: bash tools/install-fonts.sh
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
-
-      - name: Install verapdf, qpdf, and pikepdf
-        run: |
-          quarto install verapdf
-          sudo apt-get update && sudo apt-get install -y qpdf fonts-liberation poppler-utils
-          # pikepdf backs the Typst provenance gate (tools/attach-provenance.py).
-          # uv matches the local tooling (pdf2quarto is uv-managed) and
-          # installs the pinned requirements into the runner's python so
-          # the gates can import it.
-          sudo env "PATH=$PATH" uv pip install --system --break-system-packages -r requirements.txt
-          # The Lua filter unit tests drive pandoc directly; Quarto
-          # bundles its own pandoc but does not export it to PATH.
-          # pandoc is a lightweight apt package, so install it for the
-          # tests (the tests skip cleanly when it is absent).
-          sudo apt-get install -y pandoc
-
-      - name: Unit tests, docs check, and format smoke
-        run: |
-          # Unit tests for the tools and Lua filters (tokens drift,
-          # provenance/pptx attachment fixtures, filter behaviour),
-          # the docs-consistency check (formats, gates, examples all
-          # agree), and a full smoke render of one document through
-          # every format. Runs after the toolchain installs because
-          # the smoke renders with lualatex and the Lua tests need
-          # pandoc. A failure here means a tool or the docs
-          # catalogue regressed.
-          python3 -m unittest tools.test_tools tools.test_lua_filters tools.test_floats tools.test_verify -v
-          python3 tools/check-docs.py
-          ./tools/smoke.sh examples/template.qmd
-          # The showcase examples: the components page (HTML) and the
-          # cover-themes showcase (one PDF per theme).
-          ./tools/smoke.sh examples/template-components.qmd
-          ./tools/render-covers.sh examples/template-covers.qmd
-
       - name: Render default document (PDF/A-4f)
         run: ./render.sh examples/template.qmd
 
@@ -144,8 +124,7 @@ jobs:
         run: |
           # render.sh already ran verapdf and failed on violation.
           # Re-validate explicitly so the CI log shows the result.
-          VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
-          "$VERAPDF" --format text _output/examples/template.pdf | grep -q "PASS.*4f"
+          verapdf --format text _output/examples/template.pdf | grep -q "PASS.*4f"
 
       - name: Assert self-contained provenance
         run: |
@@ -165,8 +144,7 @@ jobs:
 
       - name: Assert Typst PDF/A-4f with provenance
         run: |
-          VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
-          "$VERAPDF" --format text _output/examples/template-typst.pdf | grep -q "PASS.*4f"
+          verapdf --format text _output/examples/template-typst.pdf | grep -q "PASS.*4f"
           qpdf --list-attachments _output/examples/template-typst.pdf | grep -q "template-typst.qmd"
           qpdf --list-attachments _output/examples/template-typst.pdf | grep -q "manifest.json"
 
@@ -216,7 +194,7 @@ jobs:
           # One command renders the deck's declared formats: revealjs
           # html, beamer PDF, and pptx. The presentation formats need
           # no TeX engine for the html, but the beamer PDF does; this
-          # job already carries the TeX toolchain.
+          # job carries the TeX toolchain in the container image.
           quarto render examples/template-slides.qmd
 
       - name: Assert beamer deck (PDF slides)
@@ -277,42 +255,10 @@ jobs:
   # the finding visible in CI without blocking the default pipeline.
   ua2:
     runs-on: ubuntu-latest
+    container: ghcr.io/obsidian-solutions/quarto-templates-ci:1.10.18
     continue-on-error: true
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2
-        with:
-          version: 1.10.18
-
-      - name: Install TeX Live (TinyTeX, matches the 2026 dev toolchain)
-        run: |
-          # Ubuntu's apt TeX Live 2023 cannot run \DocumentMetadata with
-          # pdf-standard (missing the 2025+ pdfmanagement rename). TinyTeX
-          # is a rolling distribution that matches the Arch TeX Live 2026
-          # the template is developed against. --update-path puts tlmgr
-          # and lualatex on PATH (the flag the Quarto docs name).
-          # Accepted supply-chain risk: TinyTeX and its packages are
-          # unpinned (rolling by design). The GitHub Actions and the
-          # Montserrat fonts ARE pinned and checksum-verified; revisit
-          # TinyTeX pinning if this CI must meet a stricter baseline.
-          quarto install tinytex --update-path
-          # TinyTeX base already carries Latin Modern, fontspec and the
-          # kernel. Install the document-class packages the template
-          # preamble uses, plus TeX Gyre Pagella (the main font).
-          tlmgr install \
-            titlesec fancyhdr zref draftwatermark tocloft embedfile \
-            tcolorbox needspace caption microtype booktabs etoolbox float \
-            fontspec tex-gyre \
-            calculator wallpaper hyphenat
-          which tlmgr lualatex && lualatex --version | head -1
-
-      - name: Install Montserrat (pinned upstream commit, SHA-256 verified)
-        run: bash tools/install-fonts.sh
-
-      - name: Install verapdf
-        run: quarto install verapdf
 
       - name: Render with PDF/UA-2
         run: |
@@ -324,5 +270,4 @@ jobs:
         run: |
           python3 tools/check-pdfua.py _output/examples/template.pdf || \
             echo "EXPECTED: heading-role gap documented in README (upstream KOMA/tagging limitation)"
-          VERAPDF="$HOME/.local/share/quarto/verapdf/verapdf"
-          "$VERAPDF" --format text _output/examples/template.pdf | tail -3
+          verapdf --format text _output/examples/template.pdf | tail -3
