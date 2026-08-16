@@ -42,6 +42,30 @@ def pandoc_ast(md: str, filters: list[str], meta: str = "") -> dict:
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def pandoc_run(md: str, filters: list[str], meta: str = "") -> tuple[int, str]:
+    """Run pandoc with the given filters and metadata, return (exit code, stderr).
+
+    Unlike pandoc_ast this does not raise on a non-zero exit, so tests
+    can assert that a filter fails loudly.
+    """
+    tmp = tempfile.mkdtemp()
+    try:
+        src = Path(tmp) / "in.md"
+        src.write_text(md)
+        cmd = ["pandoc", "--from", "markdown", "--to", "json", "--standalone"]
+        for f in filters:
+            cmd += ["--lua-filter", str(FILTERS / f)]
+        if meta:
+            meta_file = Path(tmp) / "meta.yml"
+            meta_file.write_text(meta)
+            cmd += ["--metadata-file", str(meta_file)]
+        cmd.append(str(src))
+        r = subprocess.run(cmd, capture_output=True, text=True)
+        return r.returncode, r.stderr
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def walk(node, pred, out):
     if isinstance(node, dict):
         if pred(node):
@@ -251,6 +275,59 @@ invoice:
         texts = " ".join(self._texts(ast))
         self.assertIn("VAT", texts)
         self.assertIn("Not registered for VAT", texts)
+
+    # Fail-loud regression tests. The filter aborts with a non-zero
+    # exit (os.exit(1)) because Quarto's filter runner redefines the
+    # global error() to print and continue: under `quarto render` a
+    # plain error() would ship the broken invoice with exit code 0.
+    # Bare pandoc propagates the exit code, so these tests assert the
+    # filter fails and names the field.
+
+    def test_missing_number_fails(self):
+        """Invoice metadata without a number stops the render."""
+        meta = self.META.replace('  number: "2026-008"\n', "")
+        md = "::: {.obsidian-invoice}\n:::\n"
+        code, err = pandoc_run(md, ["invoice.lua"], meta)
+        self.assertNotEqual(code, 0, "missing number must fail the render")
+        self.assertIn("missing or invalid field 'number'", err)
+
+    def test_unparseable_unit_price_fails(self):
+        """An unparseable unit price stops the render."""
+        meta = self.META.replace('unit-price: "300.00"', 'unit-price: "abc"')
+        md = "::: {.obsidian-invoice}\n:::\n"
+        code, err = pandoc_run(md, ["invoice.lua"], meta)
+        self.assertNotEqual(code, 0, "unparseable unit price must fail the render")
+        self.assertIn("unparseable unit price", err)
+
+    def test_missing_marker_fails(self):
+        """Invoice metadata with no marker Div stops the render."""
+        md = "# Heading\n\nBody.\n"
+        code, err = pandoc_run(md, ["invoice.lua"], self.META)
+        self.assertNotEqual(code, 0, "missing marker Div must fail the render")
+        self.assertIn("no .obsidian-invoice marker Div", err)
+
+    def test_negative_discount_adds_to_total(self):
+        """A negative discount (surcharge) adds to the total."""
+        meta = self.META + '  discount: "-25.00"\n'
+        md = "::: {.obsidian-invoice}\n:::\n"
+        ast = pandoc_ast(md, ["invoice.lua"], meta)
+        texts = " ".join(self._texts(ast))
+        # 450.00 subtotal + 25.00 surcharge = 475.00; the surcharge
+        # displays as a positive adjustment, not "- GBP 25.00".
+        self.assertIn("+ GBP 25.00", texts)
+        self.assertIn("475.00", texts)
+
+    def test_provider_whitespace(self):
+        """A provider with surrounding whitespace still renders the block."""
+        meta = self.META.replace(
+            'provider: "stripe"\n    link: "https://buy.stripe.com/test_0000"',
+            'provider: " bank-transfer "\n    details:\n      bank: "Example Bank"\n      sort-code: "00-00-00"\n      account: "00000000"\n      name: "Obsidian Solutions"\n      reference: "INV-2026-008"',
+        )
+        md = "::: {.obsidian-invoice}\n:::\n"
+        ast = pandoc_ast(md, ["invoice.lua"], meta)
+        texts = " ".join(self._texts(ast))
+        self.assertIn("Example Bank", texts)
+        self.assertIn("INV-2026-008", texts)
 
 
 @unittest.skipUnless(shutil.which("pandoc"), "pandoc not on PATH")
@@ -462,6 +539,27 @@ letter:
             self.fail("expected a missing-field error")
         except AssertionError:
             pass
+
+    def test_letter_missing_field_fails_loud(self):
+        """A missing required field exits non-zero and names the field.
+
+        The filter aborts with os.exit(1) because Quarto's filter
+        runner redefines the global error() to print and continue;
+        under `quarto render` a plain error() would ship the document
+        with a blank recipient block and exit code 0.
+        """
+        md = "::: {.obsidian-letter}\n:::\n"
+        meta = """
+title: Test letter
+author: A. Author
+date: 2026-08-15
+reference: OS-LET-001
+letter:
+  subject: Quarterly report
+"""
+        code, err = pandoc_run(md, ["structured-fields.lua"], meta)
+        self.assertNotEqual(code, 0, "missing letter.address must fail the render")
+        self.assertIn("missing required field 'letter.address'", err)
 
     def test_memo_renders_heading_block(self):
         """A memo with to/from/subject renders the heading block."""

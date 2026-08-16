@@ -94,15 +94,26 @@ local function meta_map(m, key)
   return out
 end
 
+-- Abort the render with a clear error. Quarto's filter runner
+-- (share/filters/main.lua) redefines the global error() to print the
+-- message and continue, so a plain error() call would let the render
+-- ship a document with a blank recipient block or memo header. Print
+-- the message and exit non-zero instead; this aborts under both bare
+-- pandoc and quarto render.
+local function fail_loud(msg)
+  io.stderr:write(msg .. "\n")
+  os.exit(1)
+end
+
 local function require_field(value, label)
   if value == nil or value == "" then
-    error("structured-fields: missing required field '" .. label .. "'")
+    fail_loud("structured-fields: missing required field '" .. label .. "'")
   end
 end
 
 local function require_list(items, label)
   if items == nil or #items == 0 then
-    error("structured-fields: missing required field '" .. label .. "'")
+    fail_loud("structured-fields: missing required field '" .. label .. "'")
   end
 end
 

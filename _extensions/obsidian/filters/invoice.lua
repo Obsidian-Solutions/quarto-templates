@@ -79,10 +79,16 @@ local function empty_caption()
 end
 
 -- Parse a money string to integer pence. Strips anything that is not
--- a digit or a decimal point, so "300.00", "£300.00", and "300" all
--- parse to 30000.
+-- a digit, a decimal point, or a leading minus sign, so "300.00",
+-- "£300.00", "300", and "-25.00" parse to 30000, 30000, 30000, and
+-- -2500. A minus anywhere else is dropped.
 local function parse_pence(v)
-  local s = tostring_meta(v):gsub("[^%d.]", "")
+  local s = tostring_meta(v):gsub("[^%d.%-]", "")
+  if s:sub(1, 1) == "-" then
+    s = "-" .. s:gsub("%-", "")
+  else
+    s = s:gsub("%-", "")
+  end
   local n = tonumber(s)
   if n == nil then
     return nil
@@ -335,17 +341,21 @@ local function totals_block(inv)
   }
   local discount_pence = inv["discount"] ~= nil and parse_pence(inv["discount"]) or nil
   if discount_pence ~= nil then
+    -- A negative discount is a surcharge: it displays as a positive
+    -- adjustment and adds to the total (docstring above).
+    local sign = discount_pence < 0 and "+" or "-"
     rows[#rows + 1] = pandoc.Row{
       pandoc.Cell(pandoc.Plain({ pandoc.Str("Discount") })),
-      pandoc.Cell(pandoc.Plain({ pandoc.Str("- GBP " .. format_pence(math.abs(discount_pence))) })),
+      pandoc.Cell(pandoc.Plain({ pandoc.Str(sign .. " GBP " .. format_pence(math.abs(discount_pence))) })),
     }
     total_pence = total_pence - discount_pence
   end
   local tax_pence = inv["tax"] ~= nil and parse_pence(inv["tax"]) or nil
   if tax_pence ~= nil then
+    local sign = tax_pence < 0 and "+" or "-"
     rows[#rows + 1] = pandoc.Row{
       pandoc.Cell(pandoc.Plain({ pandoc.Str("Adjustment") })),
-      pandoc.Cell(pandoc.Plain({ pandoc.Str("- GBP " .. format_pence(math.abs(tax_pence))) })),
+      pandoc.Cell(pandoc.Plain({ pandoc.Str(sign .. " GBP " .. format_pence(math.abs(tax_pence))) })),
     }
     total_pence = total_pence - tax_pence
   end
@@ -398,7 +408,9 @@ local function payment_block(inv)
   if vat_status ~= nil then
     blocks[#blocks + 1] = kv_para("VAT", tostring_meta(vat_status))
   end
-  local provider = payment["provider"] ~= nil and tostring_meta(payment["provider"]):lower() or ""
+  -- Trim surrounding whitespace before matching: a provider value
+  -- like ' bank-transfer ' must still select the bank-transfer block.
+  local provider = payment["provider"] ~= nil and tostring_meta(payment["provider"]):gsub("^%s+", ""):gsub("%s+$", ""):lower() or ""
   local link = payment["link"]
   if provider == "bank-transfer" then
     local details = payment["details"]
@@ -434,6 +446,17 @@ local function payment_block(inv)
   return blocks
 end
 
+-- Abort the render with a clear error. Quarto's filter runner
+-- (share/filters/main.lua) redefines the global error() to print the
+-- message and continue, so a plain error() call would let the render
+-- ship a broken invoice with exit code 0. Print the message and exit
+-- non-zero instead; this aborts under both bare pandoc and quarto
+-- render.
+local function fail_loud(msg)
+  io.stderr:write(msg .. "\n")
+  os.exit(1)
+end
+
 -- Fail loudly when the invoice is unusable. A missing number, date,
 -- client name, or empty items list must stop the render with a clear
 -- error instead of silently rendering an empty block or a zero
@@ -441,7 +464,7 @@ end
 -- amount column would show GBP 0.00 for a real charge.
 local function validate_invoice(inv)
   local function fail(field)
-    error("invoice: missing or invalid field '" .. field .. "'")
+    fail_loud("invoice: missing or invalid field '" .. field .. "'")
   end
   if inv["number"] == nil or tostring_meta(inv["number"]) == "" then
     fail("number")
@@ -460,8 +483,8 @@ local function validate_invoice(inv)
   for _, item in ipairs(items) do
     local price = parse_pence(item["unit-price"])
     if price == nil then
-      error("invoice: item '" .. tostring_meta(item["description"]) ..
-            "' has an unparseable unit price")
+      fail_loud("invoice: item '" .. tostring_meta(item["description"]) ..
+                "' has an unparseable unit price")
     end
   end
 end
@@ -497,6 +520,7 @@ function Pandoc(doc)
   end
   -- Walk the document and fill the marker Div with the generated
   -- content. Other blocks pass through untouched.
+  local found_marker = false
   local function fill(items)
     local out = {}
     for _, item in ipairs(items) do
@@ -509,6 +533,7 @@ function Pandoc(doc)
           end
         end
         if is_marker then
+          found_marker = true
           item.content = pandoc.List(generated)
           out[#out + 1] = item
         else
@@ -525,6 +550,11 @@ function Pandoc(doc)
     return out
   end
   doc.blocks = fill(doc.blocks)
+  -- Invoice metadata with no marker Div would silently drop the whole
+  -- invoice from the render; stop instead.
+  if not found_marker then
+    fail_loud("invoice: no .obsidian-invoice marker Div found in the document body")
+  end
   return doc
 end
 
