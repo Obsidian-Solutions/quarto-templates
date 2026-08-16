@@ -116,11 +116,67 @@ $else$
 $endif$
 $endif$
 
+% ---- Document format switch ----
+% Exposes the doc-type to the (non-processed) header/footer furniture
+% in include-in-header.tex, which reads \docform to choose the page
+% style for format documents (letter, memo) vs reports.
+$if(doc-type)$\newcommand{\docform}{$doc-type$}$else$\newcommand{\docform}{}$endif$
+
+% ---- Format documents: paginate arabic from page 1 ----
+% Reports (and the monochrome cover path) use roman-numbered front
+% matter before the body. Letters and memos are single-flow business
+% documents: no cover, no separate front matter, paginate from 1.
+$if(titlepage-none)$
+\pagenumbering{arabic}
+
+% ---- Format documents keep the minimal furniture everywhere ----
+% The report running header (identity line + page number) is a
+% report convention. Letters and memos use the minimal plain style
+% (classification bands only) on every page; page 1 carries the
+% format's own letterhead or masthead instead.
+$if(doc-type)$
+\ifdefstring{\docform}{Letter}{\pagestyle{plain}}{%
+  \ifdefstring{\docform}{Memo}{\pagestyle{plain}}{}%
+}
+$endif$
+
+% ---- Format-document page-1 furniture ----
+% Letters and memos carry their own first-page identity instead of
+% the report cover. The classification band stays (marking
+% contract); the running report header is suppressed by the
+% docform-aware plain page style in include-in-header.tex.
+$if(doc-type)$
+\ifdefstring{\docform}{Letter}{%
+  % Sender letterhead: brand left, sender identity and date right.
+  \begin{minipage}{0.5\textwidth}
+    \raggedright
+    {\IfFileExists{obsidian-logo.png}{\includegraphics[width=0.5\linewidth]{obsidian-logo.png}}{}}%
+  \end{minipage}\hfill
+  \begin{minipage}{0.4\textwidth}
+    \raggedleft
+    {\small\bfseries Obsidian Solutions\par}%
+    {\small obsidiansolutions.co.uk\par}%
+    \vspace{0.8em}%
+    {\small $date$\par}%
+  \end{minipage}\par
+  {\color{obsidian}\hrule height 0.8pt}\par
+  \vspace{0.8em}
+}{%
+  \ifdefstring{\docform}{Memo}{%
+    % Memo masthead: letterspaced title with a heavy rule.
+    {\LARGE\bfseries\sffamily\color{obsidian}\lsstyle MEMORANDUM\par}%
+    {\color{obsidian}\hrule height 1.2pt}\par
+    \vspace{0.5em}
+  }{}%
+}
+$endif$
+$else$
 % ---- Front matter page numbering: roman, body arabic ----
 % The cover is unnumbered. Front matter (abstract, approval,
 % contents) uses roman numerals. The body switches to arabic after
 % the TOC ships; see the TOC wrapper in include-in-header.tex.
 \pagenumbering{roman}
+$endif$
 
 % ---- Approval page (only when approver is set) ----
 $if(approver)$

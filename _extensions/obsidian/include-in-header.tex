@@ -148,25 +148,42 @@
 \renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
 
 % The TOC and similar pages use the plain page style by default.
-% Make it match so every page carries the same marking.
+% Make it match so every page carries the same marking. Letters and
+% memos use a minimal variant: the classification band stays (the
+% marking contract) but the report identity line and page number
+% drop out, because the format carries its own page-1 identity.
 \fancypagestyle{plain}{%
   \fancyhf{}%
-  \fancyhead[L]{\parbox[b][1.05cm][c]{\textwidth}{%
-    {\centering\classification\par}%
-    \vspace{1pt}%
-    {\IfFileExists{obsidian-favicon.png}{\includegraphics[height=0.5cm]{obsidian-favicon.png}\hspace{0.4em}}{}%
-     \small\color{obsidianl}\docref{} ~\textbar{}~ \doctitle}%
-    \hfill{\small\color{obsidianl}\thepage\ / \ztotpages}%
-  }}%
-  \fancyhead[C]{}
-  \fancyhead[R]{}
-  \fancyfoot[C]{\parbox[t][0.9cm][c]{\textwidth}{%
-    {\small\color{obsidianl}Obsidian Solutions ~\textbar{}~ obsidiansolutions.co.uk%
-     \ifdefempty{\obsidianproprietor}{}{\textbar{} \obsidianproprietor}%
-     ~\textbar{}~ \obsidianpubdate%
-     \ifdefempty{\obsidianversion}{}{\textbar{} \obsidianversion}}\\[2pt]
-    {\centering\classification\par}%
-  }}%
+  \ifdefstring{\docform}{Letter}{%
+    \fancyhead[L]{\parbox[b][1.05cm][c]{\textwidth}{%
+      {\centering\classification\par}}}%
+    \fancyfoot[C]{\parbox[t][0.9cm][c]{\textwidth}{%
+      {\centering\classification\par}}}%
+  }{%
+    \ifdefstring{\docform}{Memo}{%
+      \fancyhead[L]{\parbox[b][1.05cm][c]{\textwidth}{%
+        {\centering\classification\par}}}%
+      \fancyfoot[C]{\parbox[t][0.9cm][c]{\textwidth}{%
+        {\centering\classification\par}}}%
+    }{%
+      \fancyhead[L]{\parbox[b][1.05cm][c]{\textwidth}{%
+        {\centering\classification\par}%
+        \vspace{1pt}%
+        {\IfFileExists{obsidian-favicon.png}{\includegraphics[height=0.5cm]{obsidian-favicon.png}\hspace{0.4em}}{}%
+         \small\color{obsidianl}\docref{} ~\textbar{}~ \doctitle}%
+        \hfill{\small\color{obsidianl}\thepage\ / \ztotpages}%
+      }}%
+      \fancyhead[C]{}
+      \fancyhead[R]{}
+      \fancyfoot[C]{\parbox[t][0.9cm][c]{\textwidth}{%
+        {\small\color{obsidianl}Obsidian Solutions ~\textbar{}~ obsidiansolutions.co.uk%
+         \ifdefempty{\obsidianproprietor}{}{\textbar{} \obsidianproprietor}%
+         ~\textbar{}~ \obsidianpubdate%
+         \ifdefempty{\obsidianversion}{}{\textbar{} \obsidianversion}}\\[2pt]
+        {\centering\classification\par}%
+      }}%
+    }%
+  }%
   \renewcommand{\headrule}{\color{obsidian}\hrule width\headwidth height 0.6pt}
   \renewcommand{\footrule}{\color{ruled}\hrule height 0.4pt}
 }

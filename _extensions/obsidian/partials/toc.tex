@@ -25,8 +25,13 @@ $if(has-tables)$
 \listoftables
 $endif$
 $endif$
-% Front matter ends here. Body numbering switches from roman to arabic
-% only after the lists, so every front-matter page carries a roman
-% number (JSP 101 layout).
+% Format documents (letter, memo, invoice, agenda) have no front
+% matter: titlepage-none starts arabic pagination from page 1 in
+% before-body.tex, so the body flows straight after the letterhead
+% or masthead. Reports only switch from roman to arabic here, after
+% the lists, so every front-matter page carries a roman number.
+$if(titlepage-none)$
+$else$
 \clearpage
 \pagenumbering{arabic}
+$endif$
