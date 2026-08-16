@@ -1,0 +1,96 @@
+# SPDX-License-Identifier: MIT
+# CI toolchain for the quarto-templates render-and-validate workflow.
+#
+# This image is the auditable build baseline (JSP 945 / AQAP 2210):
+# every dependency is resolved once at build time and frozen by the
+# image digest pushed to GHCR. The workflow consumes this image
+# instead of assembling tools from unpinned rolling sources per run.
+#
+# Pin discipline:
+#   - base image: by digest
+#   - Quarto:     exact version deb, SHA-256 checked
+#   - veraPDF:    quarto's VERAPDF env pin (default 1.28.2)
+#   - Montserrat: SHA-256 checked by tools/install-fonts.sh
+#   - TinyTeX:    rolling upstream (tlmgr), frozen by image digest
+#
+# Runtime note: the GitHub Actions container runner overrides HOME and
+# PATH. All tools are therefore installed to system locations and
+# symlinked into /usr/local/bin, which the runner always keeps on PATH.
+
+FROM ubuntu:24.04@sha256:019e8eb29a85e74d64925745884f2ec79aa27e3feab36353d24656f4d6b89467
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# System packages: TeX-side helpers, PDF validation, JRE for the
+# veraPDF izpack installer, Python for the gate tooling, and git for
+# actions/checkout and the token-drift check.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        default-jre-headless \
+        fontconfig \
+        fonts-liberation \
+        git \
+        pandoc \
+        perl \
+        poppler-utils \
+        python3 \
+        python3-pip \
+        qpdf \
+        unzip \
+        xz-utils \
+    && rm -rf /var/lib/apt/lists/*
+
+# Quarto 1.10.18, pinned by version and SHA-256.
+ADD --checksum=sha256:4bdf5a17df300003beb2f8f0e4dfe568e2ca0ff91318220c8537d2655015c430 \
+    https://github.com/quarto-dev/quarto-cli/releases/download/v1.10.18/quarto-1.10.18-linux-amd64.deb \
+    /tmp/quarto.deb
+RUN dpkg -i /tmp/quarto.deb && rm /tmp/quarto.deb
+
+# TinyTeX v2026.08 (rstudio/tinytex-releases), pinned by release and
+# SHA-256, extracted to the layout quarto expects (~/.TinyTeX) instead
+# of quarto's API-driven installer (unauthenticated GitHub API is
+# rate-limited inside builds, and "latest" is not reproducible).
+ADD --checksum=sha256:6bcde65cbbc147d6e492fa105a7210a06792d609358ef74a14a95228e3e36656 \
+    https://github.com/rstudio/tinytex-releases/releases/download/v2026.08/TinyTeX-1-linux-x86_64-v2026.08.tar.xz \
+    /tmp/tinytex.tar.xz
+RUN mkdir -p /root \
+    && tar xJf /tmp/tinytex.tar.xz -C /root \
+    && rm /tmp/tinytex.tar.xz \
+    && echo "v2026.08" > /root/.TinyTeX/version \
+    && mv /root/.TinyTeX /opt/TinyTeX \
+    && ln -s /opt/TinyTeX/bin/x86_64-linux/* /usr/local/bin/ \
+    && tlmgr install titlesec fancyhdr zref draftwatermark tocloft \
+        embedfile tcolorbox needspace caption microtype booktabs \
+        etoolbox float fontspec tex-gyre calculator wallpaper hyphenat
+
+# Montserrat TTFs, SHA-256 checked, installed to the system font dir
+# so fontconfig finds them regardless of HOME.
+COPY tools/install-fonts.sh /tmp/install-fonts.sh
+RUN bash /tmp/install-fonts.sh \
+    && mkdir -p /usr/local/share/fonts/montserrat \
+    && cp /root/.fonts/*.ttf /usr/local/share/fonts/montserrat/ \
+    && fc-cache -f /usr/local/share/fonts/montserrat \
+    && rm /tmp/install-fonts.sh
+
+# veraPDF, version pinned via quarto's VERAPDF env (default 1.28.2).
+# Installed into /opt and symlinked so quarto's `which("verapdf")`
+# fallback and the workflow's assert step both resolve it.
+ENV VERAPDF=1.28.2
+RUN quarto install verapdf \
+    && mv /root/.local/share/quarto/verapdf /opt/verapdf \
+    && ln -s /opt/verapdf/verapdf /usr/local/bin/verapdf
+
+# Python gate tooling: pikepdf backs the Typst provenance gate.
+COPY requirements.txt /tmp/requirements.txt
+RUN pip3 install --break-system-packages -r /tmp/requirements.txt \
+    && rm /tmp/requirements.txt
+
+# Smoke sanity check that the toolchain is complete and on PATH.
+RUN quarto --version \
+    && lualatex --version | head -1 \
+    && verapdf --version | head -1 \
+    && pandoc --version | head -1 \
+    && python3 -c "import pikepdf; print('pikepdf', pikepdf.__version__)"
+
+ENV DEBIAN_FRONTEND=
