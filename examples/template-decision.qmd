@@ -1,0 +1,64 @@
+---
+title: "Adopt the shared knowledge platform"
+subtitle: "Template: a recorded decision with its context and consequences"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["decision", "record", "template"]
+reference: "OS-DEC-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Decision Record"
+doc-type: "Decision Record"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+decision:
+  status: "Proposed"
+  decision-makers:
+    - "Your name"
+  consulted:
+    - "Advisor name"
+  informed:
+    - "Team name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-decision}
+:::
+
+# Context
+
+State the background in one paragraph. Name the problem or the
+opportunity, and say why the decision matters now.
+
+# Decision drivers
+
+List the things that constrain or shape the decision. Include
+timescales, cost limits, risk appetite, and any policy or legal
+requirements.
+
+# Considered options
+
+Describe the options the decision makers weighed. One paragraph per
+option works well:
+
+**Option A.** The favoured option and the reasons it fits.
+
+**Option B.** The alternative and why it falls short.
+
+# Decision outcome
+
+State the chosen option in one sentence, then say who approved it and
+when. Record any conditions on the decision.
+
+# Consequences
+
+Record the expected consequences. Name what must happen next, who
+owns it, and when it falls due.
