@@ -38,6 +38,12 @@
 \usepackage{hyperref}
 \usepackage{float}
 \usepackage{booktabs}
+% tcolorbox is used by the policy brief key-findings block
+% (before-body.tex) and by review-overdue.lua. Quarto loads it too
+% only when a document contains a callout, so pin it here for every
+% format. The [most] option loads the skins library that Quarto
+% callouts need (enhanced jigsaw skin).
+\usepackage[most]{tcolorbox}
 \usepackage{microtype}
 \usepackage{needspace}
 \usepackage{etoolbox}
