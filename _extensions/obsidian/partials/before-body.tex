@@ -119,17 +119,19 @@ $endif$
 % ---- Document format switch ----
 % Exposes the doc-type to the (non-processed) header/footer furniture
 % in include-in-header.tex, which reads \docform to choose the page
-% style for format documents (letter, memo, invoice, agenda) vs
-% reports. \docformatplain is empty for reports and 1 for format
-% documents; the plain page style in include-in-header.tex checks it
-% to drop the report identity line, page number and cover.
+% style for format documents (letter, memo, invoice, agenda, policy
+% brief) vs reports. \docformatplain is empty for reports and 1 for
+% format documents; the plain page style in include-in-header.tex
+% checks it to drop the report identity line, page number and cover.
 $if(doc-type)$\newcommand{\docform}{$doc-type$}$else$\newcommand{\docform}{}$endif$
 \newcommand{\docformatplain}{}
 $if(doc-type)$
 \ifdefstring{\docform}{Letter}{\renewcommand{\docformatplain}{1}}{%
   \ifdefstring{\docform}{Memo}{\renewcommand{\docformatplain}{1}}{%
     \ifdefstring{\docform}{Invoice}{\renewcommand{\docformatplain}{1}}{%
-      \ifdefstring{\docform}{Agenda}{\renewcommand{\docformatplain}{1}}{}%
+      \ifdefstring{\docform}{Agenda}{\renewcommand{\docformatplain}{1}}{%
+        \ifdefstring{\docform}{Policy Brief}{\renewcommand{\docformatplain}{1}}{}%
+      }%
     }%
   }%
 }
@@ -137,18 +139,18 @@ $endif$
 
 % ---- Format documents: paginate arabic from page 1 ----
 % Reports (and the monochrome cover path) use roman-numbered front
-% matter before the body. Letters, memos, invoices and agendas are
-% single-flow business documents: no cover, no separate front
-% matter, paginate from 1.
+% matter before the body. Letters, memos, invoices, agendas and
+% policy briefs are single-flow business documents: no cover, no
+% separate front matter, paginate from 1.
 $if(titlepage-none)$
 \pagenumbering{arabic}
 
 % ---- Format documents keep the minimal furniture everywhere ----
 % The report running header (identity line + page number) is a
-% report convention. Letters, memos, invoices and agendas use the
-% minimal plain style (classification bands only) on every page;
-% page 1 carries the format's own letterhead, masthead or header
-% block instead.
+% report convention. Letters, memos, invoices, agendas and policy
+% briefs use the minimal plain style (classification bands only) on
+% every page; page 1 carries the format's own letterhead, masthead
+% or header block instead.
 $if(doc-type)$
 \ifdefstring{\docformatplain}{1}{\pagestyle{plain}}{}
 $endif$
@@ -242,7 +244,54 @@ $endif$
       {\color{obsidian}\hrule height 0.8pt}\par
       \vspace{0.8em}
     }%
-  }{}%
+  }{%
+    \ifdefstring{\docform}{Agenda}{%
+      % Agenda head: centred masthead, then the flush-left colon-line
+      % field block. The attendee lists follow from the body marker.
+      \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle AGENDA\par}\end{center}%
+      {\color{obsidian}\hrule height 1.2pt}\par
+      \vspace{0.5em}
+      \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+        \textbf{Meeting:} & $agenda.meeting$ \\
+        \textbf{Date:} & $agenda.date$ \\
+        \textbf{Time:} & $agenda.time$ \\
+        \textbf{Location:} & $agenda.location$ \\
+        $if(agenda.chair)$\textbf{Chair:} & $agenda.chair$ \\$endif$
+        $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+      \end{tabular}\par
+      \vspace{0.5em}
+      {\color{obsidian}\hrule height 0.8pt}\par
+      \vspace{0.8em}
+    }{%
+      \ifdefstring{\docform}{Policy Brief}{%
+        % Brief head: series/issue banner (series left, issue and date
+        % right), rule, then the key-findings box. No bordered table.
+        \noindent
+        \begin{minipage}{0.6\textwidth}
+          \raggedright
+          {\small\bfseries\obsidianheadfont\lsstyle $brief.series$\par}%
+        \end{minipage}\hfill
+        \begin{minipage}{0.3\textwidth}
+          \raggedleft
+          {\small\bfseries $brief.issue$ \textbullet\ $date$\par}%
+        \end{minipage}\par
+        {\color{obsidian}\hrule height 0.8pt}\par
+        \vspace{0.8em}
+        $if(brief.key-findings)$
+        \noindent
+        \begin{tcolorbox}[colback=cream, colframe=obsidian, boxrule=0.6pt, arc=0pt, left=1.5mm, right=1.5mm, top=1mm, bottom=1mm]
+          {\bfseries\obsidianheadfont Key findings\par}
+          \begin{itemize}
+          $for(brief.key-findings)$
+          \item $brief.key-findings$
+          $endfor$
+          \end{itemize}
+        \end{tcolorbox}\par
+        \vspace{0.8em}
+        $endif$
+      }{}%
+    }%
+  }%
 }
 $endif$
 $else$

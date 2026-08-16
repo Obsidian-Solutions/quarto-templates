@@ -260,6 +260,17 @@ All three print the To, From, Date, Subject, Reference, and
 Co-signature lines as flush-left `Label: value` lines; no bordered
 table is used on PDF.
 
+The agenda head on PDF is a centred AGENDA masthead followed by the
+Meeting, Date, Time, Location, Chair, and Reference lines as
+flush-left `Label: value` lines; no bordered table is used on PDF.
+The attendee, apology, and guest lists render in the body below the
+head.
+
+The policy brief head on PDF is a series/issue banner (series left,
+issue and date right) with the key findings in a boxed block below
+it. The citation and contact blocks render in the body. No bordered
+table is used on PDF.
+
 The examples (`template-letter.qmd`, `template-memo.qmd`,
 `template-agenda.qmd`, `template-brief.qmd`) show each block filled
 in. The schema for IDE completion lives in

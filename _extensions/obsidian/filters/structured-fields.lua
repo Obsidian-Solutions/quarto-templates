@@ -337,10 +337,17 @@ local function render_agenda(m)
   local guests = meta_list(agenda, "guests")
 
   local blocks = {}
-  table.insert(blocks, pandoc.Header(2, { pandoc.Str("Meeting details") }))
-  local tbl = label_table(details)
-  if tbl ~= nil then
-    table.insert(blocks, tbl)
+  -- PDF carries the whole agenda head (masthead and field block) in
+  -- before-body.tex, so the filter emits nothing for LaTeX. HTML and
+  -- DOCX get the heading and the bordered label table instead. The
+  -- attendee, apology and guest lists are body content, so they
+  -- render in every format.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Meeting details") }))
+    local tbl = label_table(details)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
   end
   if #members > 0 then
     table.insert(blocks, pandoc.Header(3, { pandoc.Str("Attendees") }))
@@ -364,17 +371,24 @@ local function render_brief(m)
   local contact = meta_map(brief, "contact")
 
   local blocks = {}
-  local series = meta_str(brief, "series")
-  local issue = meta_str(brief, "issue")
-  if series ~= nil and series ~= "" then
-    table.insert(blocks, pandoc.Para({
-      pandoc.Strong(pandoc.Str("Series:")), pandoc.Space(),
-      pandoc.Str(series .. (issue ~= nil and issue ~= "" and (" (" .. issue .. ")") or "")),
-    }))
-  end
-  if #key_findings > 0 then
-    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Key findings") }))
-    table.insert(blocks, bullet(key_findings))
+  -- PDF carries the brief head (series/issue line and key-findings
+  -- block) in before-body.tex, so the filter emits nothing for
+  -- LaTeX. HTML and DOCX get the standard blocks here. The citation
+  -- and contact blocks are body content, so they render in every
+  -- format.
+  if FORMAT ~= "latex" then
+    local series = meta_str(brief, "series")
+    local issue = meta_str(brief, "issue")
+    if series ~= nil and series ~= "" then
+      table.insert(blocks, pandoc.Para({
+        pandoc.Strong(pandoc.Str("Series:")), pandoc.Space(),
+        pandoc.Str(series .. (issue ~= nil and issue ~= "" and (" (" .. issue .. ")") or "")),
+      }))
+    end
+    if #key_findings > 0 then
+      table.insert(blocks, pandoc.Header(2, { pandoc.Str("Key findings") }))
+      table.insert(blocks, bullet(key_findings))
+    end
   end
   local cite_as = meta_str(brief, "cite-as")
   if cite_as ~= nil and cite_as ~= "" then
