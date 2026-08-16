@@ -246,6 +246,11 @@ The structured fields per block:
 | `minutes` | `committee`, `date` | `time`, `location`, `chair`, `notetaker`, `present` (list), `absent` (list), `guests` (list), `actions` (list of `owner`, `due`, `text`) |
 | `contract` | `party-a.name`, `party-b.name` | `party-a.address`, `party-b.address`, `term`, `governing-law` |
 | `press-release` | none | `status`, `subheadline`, `dateline`, `contacts` (list) |
+| `newsletter` | `name`, `issue` | `date` |
+| `certificate` | `type`, `recipient` | `date` |
+| `reading-list` | none | `scope` |
+| `sop` | `number` | `approved-by`, `revision-date`, `author` |
+| `after-action` | none | `facilitator`, `scenario` |
 
 For the letter the whole head (recipient block, date, reference,
 subject, opening) is owned by LaTeX on PDF: the recipient block sits
@@ -299,10 +304,39 @@ FOR IMMEDIATE RELEASE), the headline, the subheadline, and the
 dateline. The body carries the news, detail, and about sections. The
 contact lines render at the end of the release.
 
+The newsletter head on PDF is a centred masthead with the publication
+name, then the issue and date on the line below, then a rule. The
+body carries the items and the diary dates.
+
+The certificate head on PDF is portrait: the issuer at the top, the
+certificate type, the recipient name, and the date. The signature
+block renders in the body.
+
+The reading list head on PDF is a centred READING LIST masthead with
+an optional scope line. The annotated entries render in the body.
+
+The NDA and MOU heads on PDF carry the fixed masthead (NON-DISCLOSURE
+AGREEMENT or MEMORANDUM OF UNDERSTANDING), the date-of-agreement
+line, the two parties side by side, and the term and governing law
+lines. Both reuse the `contract:` block for the parties; the clause
+sections render in the body.
+
+The SOP head on PDF is a centred STANDARD OPERATING PROCEDURE
+masthead with the SOP number, title, date, approver, revision date,
+author, and reference lines as flush-left `Label: value` lines. The
+procedure steps render in the body.
+
+The after-action report head on PDF is a centred AFTER-ACTION REPORT
+masthead with the event, date, facilitator, scenario, and reference
+lines. The ODR entries and action items render in the body.
+
 The examples (`template-letter.qmd`, `template-memo.qmd`,
 `template-agenda.qmd`, `template-brief.qmd`, `template-decision.qmd`,
 `template-minutes.qmd`, `template-contract.qmd`,
-`template-press-release.qmd`) show each block filled in. The schema
+`template-press-release.qmd`, `template-newsletter.qmd`,
+`template-certificate.qmd`, `template-reading-list.qmd`,
+`template-nda.qmd`, `template-mou.qmd`, `template-sop.qmd`,
+`template-after-action.qmd`) show each block filled in. The schema
 for IDE completion lives in `_extensions/obsidian/_schema.yml`, and
 front-matter snippets for each document type live in
 `_extensions/obsidian/_snippets.json`.

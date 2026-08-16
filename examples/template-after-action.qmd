@@ -1,0 +1,60 @@
+---
+title: "Exercise Steadfast Response"
+subtitle: "Template: an after-action report"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["after-action", "lessons", "exercises", "template"]
+reference: "OS-AAR-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "After-Action Report"
+doc-type: "After-Action Report"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+after-action:
+  facilitator: "Your name"
+  scenario: "Exercise Steadfast Response"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-after-action}
+:::
+
+# Executive summary
+
+State the overall outcome in two or three sentences. Name the
+strengths and the main shortfall.
+
+# Observations
+
+One observation, discussion, and recommendation (ODR) entry per
+issue. Record what happened, why it happened, and what should change.
+
+## Observation 1
+
+**Observation.** What actually happened.
+
+**Discussion.** Why it happened, and what the impact was.
+
+**Recommendation.** The change that prevents recurrence.
+
+# Action items
+
+Record each action with an owner and a due date.
+
+| Action | Owner | Due |
+|---|---|---|
+| Update the radio procedure | Your name | 2026-08-21 |
+| Retrain the shift leads | Operations Manager | 2026-08-28 |
+
+# Conclusion
+
+Close with the overall judgement and the priority of the actions.

@@ -1,0 +1,58 @@
+---
+title: "Non-Disclosure Agreement"
+subtitle: "Template: a mutual non-disclosure agreement"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["NDA", "non-disclosure", "template"]
+reference: "OS-NDA-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Non-Disclosure Agreement"
+doc-type: "NDA"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+contract:
+  party-a:
+    name: "Your company name"
+    address: |
+      [Registered address]
+  party-b:
+    name: "Disclosing company name"
+    address: |
+      [Disclosing company registered address]
+  term: "24 months from the effective date"
+  governing-law: "England and Wales"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-contract}
+:::
+
+# Confidential information
+
+Define what counts as confidential information. Include written and
+oral disclosure, and name any excluded information.
+
+# Obligations
+
+State what each party must do with the information. Name the
+permitted purpose, the care standard, and who inside each party may
+see the information.
+
+# Term and return
+
+State how long the obligations last and what happens to the
+information at the end. Name the return or destruction duty.
+
+# General
+
+Record the remaining boilerplate: no licence grant, no warranty,
+assignment, and notices.

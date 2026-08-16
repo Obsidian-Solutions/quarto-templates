@@ -370,6 +370,83 @@ options:
         items:
           type: string
 
+  # ---- Newsletter ----
+  newsletter:
+    type: object
+    description: "Structured newsletter fields."
+    properties:
+      name:
+        type: string
+        required: true
+        description: "Publication name (required)."
+      issue:
+        type: string
+        required: true
+        description: "Issue number (required)."
+      date:
+        type: string
+        format: date
+        description: "Publication date, defaults to the document date."
+
+  # ---- Certificate ----
+  certificate:
+    type: object
+    description: "Structured certificate fields."
+    properties:
+      type:
+        type: string
+        required: true
+        description: "Certificate type, e.g. Certificate of Achievement (required)."
+      recipient:
+        type: string
+        required: true
+        description: "Recipient name (required)."
+      date:
+        type: string
+        format: date
+        description: "Award date, defaults to the document date."
+
+  # ---- Reading list ----
+  reading-list:
+    type: object
+    description: "Structured reading list fields."
+    properties:
+      scope:
+        type: string
+        description: "Scope of the list, e.g. MOD Defence Logistics Framework."
+
+  # ---- SOP ----
+  sop:
+    type: object
+    description: "Structured standard operating procedure fields."
+    properties:
+      number:
+        type: string
+        required: true
+        description: "SOP number (required)."
+      approved-by:
+        type: string
+        description: "Approving authority."
+      revision-date:
+        type: string
+        format: date
+        description: "Latest revision date."
+      author:
+        type: string
+        description: "Document author."
+
+  # ---- After-action report ----
+  after-action:
+    type: object
+    description: "Structured after-action report fields."
+    properties:
+      facilitator:
+        type: string
+        description: "After-action review facilitator."
+      scenario:
+        type: string
+        description: "Scenario or exercise name."
+
   # ---- Invoice ----
   invoice:
     type: object
