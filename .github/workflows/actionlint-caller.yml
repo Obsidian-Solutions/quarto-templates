@@ -1,0 +1,13 @@
+name: actionlint
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    uses: Obsidian-Solutions/.github/.github/workflows/actionlint.yml@a4b6d2cd6bf622f2eaefa3bde4c8f3d62fb3e5be
