@@ -1,0 +1,63 @@
+---
+title: "Services Agreement"
+subtitle: "Template: a two-party contract for services"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["contract", "agreement", "template"]
+reference: "OS-CTR-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Services Agreement"
+doc-type: "Contract"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: true
+number-sections: true
+contract:
+  party-a:
+    name: "Your company name"
+    address: |
+      [Registered address]
+  party-b:
+    name: "Client company name"
+    address: |
+      [Client registered address]
+  term: "12 months from the effective date"
+  governing-law: "England and Wales"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-contract}
+:::
+
+# Services
+
+State the services the supplier will provide. Give the scope, the
+deliverables, and any exclusions. Use one clause per service so the
+agreement stays easy to read.
+
+# Fees and payment
+
+State the fees and the payment terms. Name the currency, the
+invoicing cycle, and the payment window. Add late payment terms if
+the parties agreed them.
+
+# Term and termination
+
+State when the agreement starts and how it ends. Give the notice
+period and the grounds for early termination.
+
+# Liability
+
+State the liability limits. Set the cap and the excluded losses.
+
+# General
+
+Record the remaining boilerplate: confidentiality, data protection,
+subcontracting, assignment, amendment, and notices.

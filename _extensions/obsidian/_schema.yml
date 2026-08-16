@@ -231,6 +231,145 @@ options:
             type: string
             description: "Contact phone."
 
+  # ---- Decision record ----
+  decision:
+    type: object
+    description: "Structured decision record fields (MADR conventions)."
+    properties:
+      status:
+        type: string
+        required: true
+        enum: [Proposed, Accepted, Rejected, Superseded]
+        description: "Decision status (required)."
+      decision-makers:
+        type: array
+        description: "Those who made the decision."
+        items:
+          type: string
+      consulted:
+        type: array
+        description: "Those consulted before the decision."
+        items:
+          type: string
+      informed:
+        type: array
+        description: "Those informed of the decision."
+        items:
+          type: string
+
+  # ---- Meeting minutes ----
+  minutes:
+    type: object
+    description: "Structured meeting minutes fields."
+    properties:
+      committee:
+        type: string
+        required: true
+        description: "Committee name (required)."
+      date:
+        type: string
+        format: date
+        required: true
+        description: "Meeting date (required)."
+      time:
+        type: string
+        description: "Meeting time."
+      location:
+        type: string
+        description: "Meeting location."
+      chair:
+        type: string
+        description: "Meeting chair."
+      notetaker:
+        type: string
+        description: "Minutes notetaker."
+      present:
+        type: array
+        description: "Members present."
+        items:
+          type: string
+      absent:
+        type: array
+        description: "Members absent."
+        items:
+          type: string
+      guests:
+        type: array
+        description: "Guests."
+        items:
+          type: string
+      actions:
+        type: array
+        description: "Action items, sorted by due date at render."
+        items:
+          type: object
+          description: "One action item."
+          properties:
+            owner:
+              type: string
+              description: "Owner of the action."
+            due:
+              type: string
+              format: date
+              description: "Due date."
+            text:
+              type: string
+              description: "The action itself."
+
+  # ---- Contract ----
+  contract:
+    type: object
+    description: "Structured contract fields."
+    properties:
+      party-a:
+        type: object
+        description: "First party."
+        properties:
+          name:
+            type: string
+            required: true
+            description: "Party name (required)."
+          address:
+            type: string
+            description: "Party address."
+      party-b:
+        type: object
+        description: "Second party."
+        properties:
+          name:
+            type: string
+            required: true
+            description: "Party name (required)."
+          address:
+            type: string
+            description: "Party address."
+      term:
+        type: string
+        description: "Contract term."
+      governing-law:
+        type: string
+        description: "Governing law."
+
+  # ---- Press release ----
+  press-release:
+    type: object
+    description: "Structured press release fields."
+    properties:
+      status:
+        type: string
+        description: "Release line, defaults to FOR IMMEDIATE RELEASE."
+      subheadline:
+        type: string
+        description: "Subheadline under the title."
+      dateline:
+        type: string
+        description: "Dateline, e.g. LONDON -- 16 August 2026."
+      contacts:
+        type: array
+        description: "Media contacts."
+        items:
+          type: string
+
   # ---- Invoice ----
   invoice:
     type: object

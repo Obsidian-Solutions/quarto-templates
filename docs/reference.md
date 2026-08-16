@@ -242,6 +242,10 @@ The structured fields per block:
 | `memo` | `to` (list), `from`, `subject` | `cosig`, `cosig-title` |
 | `agenda` | `meeting`, `date`, `time`, `location` | `chair`, `members` (list), `apologies` (list), `guests` (list) |
 | `brief` | none | `series`, `issue`, `key-findings` (list), `cite-as`, `contact` (`name`, `email`, `phone`) |
+| `decision` | `status` | `decision-makers` (list), `consulted` (list), `informed` (list) |
+| `minutes` | `committee`, `date` | `time`, `location`, `chair`, `notetaker`, `present` (list), `absent` (list), `guests` (list), `actions` (list of `owner`, `due`, `text`) |
+| `contract` | `party-a.name`, `party-b.name` | `party-a.address`, `party-b.address`, `term`, `governing-law` |
+| `press-release` | none | `status`, `subheadline`, `dateline`, `contacts` (list) |
 
 For the letter the whole head (recipient block, date, reference,
 subject, opening) is owned by LaTeX on PDF: the recipient block sits
@@ -271,11 +275,37 @@ issue and date right) with the key findings in a boxed block below
 it. The citation and contact blocks render in the body. No bordered
 table is used on PDF.
 
+The decision record head on PDF is a centred DECISION RECORD masthead
+with the decision title, status, date, decision makers, consulted,
+informed, and reference lines as flush-left `Label: value` lines. The
+context, drivers, options, outcome, and consequences sections render
+in the body.
+
+The meeting minutes head on PDF names the committee at the top with
+the date, time, location, chair, notetaker, attendance, and reference
+lines as flush-left `Label: value` lines. The present, absent, and
+guest lists render in the body. A closing marker
+(`.obsidian-minutes-actions`) placed at the end of the document
+collects the `actions` list into an Action items section sorted by
+due date.
+
+The contract head on PDF centres the agreement title, then prints
+"This Agreement is dated ... between:" with the two parties side by
+side, then the term and governing law lines. The clause sections
+render in the body.
+
+The press release head on PDF centres the release status (default
+FOR IMMEDIATE RELEASE), the headline, the subheadline, and the
+dateline. The body carries the news, detail, and about sections. The
+contact lines render at the end of the release.
+
 The examples (`template-letter.qmd`, `template-memo.qmd`,
-`template-agenda.qmd`, `template-brief.qmd`) show each block filled
-in. The schema for IDE completion lives in
-`_extensions/obsidian/_schema.yml`, and front-matter snippets for
-each document type live in `_extensions/obsidian/_snippets.json`.
+`template-agenda.qmd`, `template-brief.qmd`, `template-decision.qmd`,
+`template-minutes.qmd`, `template-contract.qmd`,
+`template-press-release.qmd`) show each block filled in. The schema
+for IDE completion lives in `_extensions/obsidian/_schema.yml`, and
+front-matter snippets for each document type live in
+`_extensions/obsidian/_snippets.json`.
 
 ## Invoice fields
 

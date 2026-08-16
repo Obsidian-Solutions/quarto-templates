@@ -413,6 +413,203 @@ local function render_brief(m)
   return pandoc.Div(blocks, { class = "obsidian-doc-brief" })
 end
 
+-- ---- Decision record ----
+local function render_decision(m)
+  local decision = meta_map(m, "decision")
+  local status = meta_str(decision, "status")
+  require_field(status, "decision.status")
+
+  local rows = {
+    { "Decision", meta_str(m, "title") or "" },
+    { "Status", status },
+    { "Date", meta_str(m, "date") or "" },
+    { "Reference", meta_str(m, "reference") or "" },
+  }
+  local makers = meta_list(decision, "decision-makers")
+  if #makers > 0 then
+    table.insert(rows, { "Decision makers", table.concat(makers, ", ") })
+  end
+  local consulted = meta_list(decision, "consulted")
+  if #consulted > 0 then
+    table.insert(rows, { "Consulted", table.concat(consulted, ", ") })
+  end
+  local informed = meta_list(decision, "informed")
+  if #informed > 0 then
+    table.insert(rows, { "Informed", table.concat(informed, ", ") })
+  end
+
+  local blocks = {}
+  -- PDF carries the whole decision head (masthead and colon-line field
+  -- block) in before-body.tex, so the filter emits nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Decision record") }))
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-decision" })
+end
+
+-- ---- Meeting minutes ----
+local function render_minutes(m)
+  local minutes = meta_map(m, "minutes")
+  require_field(meta_str(minutes, "committee"), "minutes.committee")
+  require_field(meta_str(minutes, "date"), "minutes.date")
+
+  local rows = {
+    { "Date", meta_str(minutes, "date") },
+    { "Time", meta_str(minutes, "time") or "" },
+    { "Location", meta_str(minutes, "location") or "" },
+    { "Chair", meta_str(minutes, "chair") or "" },
+    { "Notetaker", meta_str(minutes, "notetaker") or "" },
+    { "Reference", meta_str(m, "reference") or "" },
+  }
+  local present = meta_list(minutes, "present")
+  local absent = meta_list(minutes, "absent")
+  local guests = meta_list(minutes, "guests")
+
+  local blocks = {}
+  -- PDF carries the whole minutes head (committee title and colon-line
+  -- field block) in before-body.tex, so the filter emits nothing for
+  -- LaTeX. The attendance lists are body content, so they render in
+  -- every format.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Meeting details") }))
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  if #present > 0 then
+    table.insert(blocks, pandoc.Header(3, { pandoc.Str("Present") }))
+    table.insert(blocks, bullet(present))
+  end
+  if #absent > 0 then
+    table.insert(blocks, pandoc.Header(3, { pandoc.Str("Absent") }))
+    table.insert(blocks, bullet(absent))
+  end
+  if #guests > 0 then
+    table.insert(blocks, pandoc.Header(3, { pandoc.Str("Guests") }))
+    table.insert(blocks, bullet(guests))
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-minutes" })
+end
+
+-- ---- Minutes action items (closing marker) ----
+-- The action items sort by due date, so an overdue item never sits
+-- below a due one. Each action carries owner, due date and text; the
+-- sorted list renders in every format.
+local function render_minutes_actions(m)
+  local minutes = meta_map(m, "minutes")
+  local actions = minutes.actions
+  local blocks = {}
+  if actions ~= nil and type(actions) == "table" then
+    local rows = {}
+    for _, a in ipairs(actions) do
+      local owner = meta_str(a, "owner") or ""
+      local due = meta_str(a, "due") or ""
+      local text = meta_str(a, "text") or ""
+      if text ~= "" or owner ~= "" then
+        table.insert(rows, { owner = owner, due = due, text = text })
+      end
+    end
+    table.sort(rows, function(x, y) return (x.due or "") < (y.due or "") end)
+    if #rows > 0 then
+      table.insert(blocks, pandoc.Header(2, { pandoc.Str("Action items") }))
+      local items = {}
+      for _, r in ipairs(rows) do
+        local parts = {}
+        if r.text ~= "" then
+          table.insert(parts, pandoc.Str(r.text))
+        end
+        if r.owner ~= "" then
+          table.insert(parts, pandoc.Space())
+          table.insert(parts, pandoc.Str("(" .. r.owner))
+          if r.due ~= "" then
+            table.insert(parts, pandoc.Str("; due " .. r.due))
+          end
+          table.insert(parts, pandoc.Str(")"))
+        elseif r.due ~= "" then
+          table.insert(parts, pandoc.Space())
+          table.insert(parts, pandoc.Str("(due " .. r.due .. ")"))
+        end
+        table.insert(items, pandoc.Plain(parts))
+      end
+      table.insert(blocks, pandoc.BulletList(items))
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-minutes-actions" })
+end
+
+-- ---- Contract ----
+local function render_contract(m)
+  local contract = meta_map(m, "contract")
+  local party_a = meta_map(contract, "party-a")
+  local party_b = meta_map(contract, "party-b")
+  require_field(meta_str(party_a, "name"), "contract.party-a.name")
+  require_field(meta_str(party_b, "name"), "contract.party-b.name")
+
+  local blocks = {}
+  -- PDF carries the whole contract head (title and party block) in
+  -- before-body.tex, so the filter emits nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Agreement") }))
+    local rows = {
+      { "Date", meta_str(m, "date") or "" },
+      { "Party A", meta_str(party_a, "name") },
+      { "Party B", meta_str(party_b, "name") },
+      { "Term", meta_str(contract, "term") or "" },
+      { "Governing law", meta_str(contract, "governing-law") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+    local addr_a = meta_str(party_a, "address")
+    local addr_b = meta_str(party_b, "address")
+    if addr_a ~= nil or addr_b ~= nil then
+      table.insert(blocks, pandoc.Header(3, { pandoc.Str("Parties") }))
+      if addr_a ~= nil and addr_a ~= "" then
+        table.insert(blocks, pandoc.Para({ pandoc.Strong(pandoc.Str(meta_str(party_a, "name"))), pandoc.Space(), pandoc.Str(addr_a) }))
+      end
+      if addr_b ~= nil and addr_b ~= "" then
+        table.insert(blocks, pandoc.Para({ pandoc.Strong(pandoc.Str(meta_str(party_b, "name"))), pandoc.Space(), pandoc.Str(addr_b) }))
+      end
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-contract" })
+end
+
+-- ---- Press release ----
+local function render_press_release(m)
+  local press = meta_map(m, "press-release")
+  local blocks = {}
+  -- PDF carries the whole press head (release line, headline,
+  -- subheadline, dateline) in before-body.tex, so the filter emits
+  -- nothing for LaTeX. The contact block is body content and renders
+  -- in every format.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Press release") }))
+    local rows = {
+      { "Release", meta_str(press, "status") or "FOR IMMEDIATE RELEASE" },
+      { "Headline", meta_str(m, "title") or "" },
+      { "Subheadline", meta_str(press, "subheadline") or "" },
+      { "Dateline", meta_str(press, "dateline") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  local contacts = meta_list(press, "contacts")
+  if #contacts > 0 then
+    table.insert(blocks, pandoc.Header(3, { pandoc.Str("Contact") }))
+    table.insert(blocks, bullet(contacts))
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-press-release" })
+end
+
 -- ---- Document walk ----
 -- The marker Divs carry the class. Replace each with the rendered
 -- block. The letter marker splits into two parts: the opening block
@@ -425,6 +622,11 @@ local renderers = {
   ["obsidian-memo"] = render_memo,
   ["obsidian-agenda"] = render_agenda,
   ["obsidian-brief"] = render_brief,
+  ["obsidian-decision"] = render_decision,
+  ["obsidian-minutes"] = render_minutes,
+  ["obsidian-minutes-actions"] = render_minutes_actions,
+  ["obsidian-contract"] = render_contract,
+  ["obsidian-press-release"] = render_press_release,
 }
 
 local function has_class(el, wanted)

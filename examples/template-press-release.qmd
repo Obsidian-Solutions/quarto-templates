@@ -1,0 +1,47 @@
+---
+title: "Press Release"
+subtitle: "Template: announcement for the media"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["press", "release", "media", "template"]
+reference: "OS-PRS-001"
+version: "1.0.0"
+confidentiality: "Public"
+short-title: "Press Release"
+doc-type: "Press Release"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+press-release:
+  status: "FOR IMMEDIATE RELEASE"
+  subheadline: "A short line that draws the reader in"
+  dateline: "LONDON -- 16 August 2026"
+  contacts:
+    - "Your name, you@obsidiansolutions.co.uk, 01234 567890"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-press-release}
+:::
+
+State the news in the first paragraph. Answer who, what, when,
+where, why, and how in the first two sentences.
+
+# Detail
+
+Give the background and the detail. Use short paragraphs. Quote a
+spokesperson in a quote block:
+
+> "Write the key message here."
+
+# About
+
+One paragraph of boilerplate about the organisation. Copy this
+paragraph from the About page of your website.

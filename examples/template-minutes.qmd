@@ -1,0 +1,64 @@
+---
+title: "Meeting Minutes"
+subtitle: "Template: record of a meeting and its action items"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["minutes", "meeting", "template"]
+reference: "OS-MIN-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Meeting Minutes"
+doc-type: "Meeting Minutes"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+minutes:
+  committee: "Project Board"
+  date: "2026-08-14"
+  time: "10:00"
+  location: "Room 1"
+  chair: "Chair name"
+  notetaker: "Your name"
+  present:
+    - "Member name"
+    - "Member name"
+  absent:
+    - "Member name"
+  guests:
+    - "Guest name"
+  actions:
+    - owner: "Your name"
+      due: "2026-08-21"
+      text: "Circulate the draft minutes"
+    - owner: "Member name"
+      due: "2026-08-28"
+      text: "Return the cost estimate"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-minutes}
+:::
+
+# Agenda and notes
+
+Record the agenda items in order. For each item, note the discussion
+and any decision reached. Write the minutes in the past tense, and
+keep each item to a short paragraph or a short list.
+
+# Any other business
+
+Note anything raised outside the published agenda.
+
+# Date of next meeting
+
+State the date, time and location of the next meeting here.
+
+::: {.obsidian-minutes-actions}
+:::

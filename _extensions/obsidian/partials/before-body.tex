@@ -120,7 +120,8 @@ $endif$
 % Exposes the doc-type to the (non-processed) header/footer furniture
 % in include-in-header.tex, which reads \docform to choose the page
 % style for format documents (letter, memo, invoice, agenda, policy
-% brief) vs reports. \docformatplain is empty for reports and 1 for
+% brief, decision record, meeting minutes, contract, press release)
+% vs reports. \docformatplain is empty for reports and 1 for
 % format documents; the plain page style in include-in-header.tex
 % checks it to drop the report identity line, page number and cover.
 $if(doc-type)$\newcommand{\docform}{$doc-type$}$else$\newcommand{\docform}{}$endif$
@@ -130,7 +131,15 @@ $if(doc-type)$
   \ifdefstring{\docform}{Memo}{\renewcommand{\docformatplain}{1}}{%
     \ifdefstring{\docform}{Invoice}{\renewcommand{\docformatplain}{1}}{%
       \ifdefstring{\docform}{Agenda}{\renewcommand{\docformatplain}{1}}{%
-        \ifdefstring{\docform}{Policy Brief}{\renewcommand{\docformatplain}{1}}{}%
+        \ifdefstring{\docform}{Policy Brief}{\renewcommand{\docformatplain}{1}}{%
+          \ifdefstring{\docform}{Decision Record}{\renewcommand{\docformatplain}{1}}{%
+            \ifdefstring{\docform}{Meeting Minutes}{\renewcommand{\docformatplain}{1}}{%
+              \ifdefstring{\docform}{Contract}{\renewcommand{\docformatplain}{1}}{%
+                \ifdefstring{\docform}{Press Release}{\renewcommand{\docformatplain}{1}}{}%
+              }%
+            }%
+          }%
+        }%
       }%
     }%
   }%
@@ -139,17 +148,19 @@ $endif$
 
 % ---- Format documents: paginate arabic from page 1 ----
 % Reports (and the monochrome cover path) use roman-numbered front
-% matter before the body. Letters, memos, invoices, agendas and
-% policy briefs are single-flow business documents: no cover, no
+% matter before the body. Letters, memos, invoices, agendas, policy
+% briefs, decision records, meeting minutes, contracts and press
+% releases are single-flow business documents: no cover, no
 % separate front matter, paginate from 1.
 $if(titlepage-none)$
 \pagenumbering{arabic}
 
 % ---- Format documents keep the minimal furniture everywhere ----
 % The report running header (identity line + page number) is a
-% report convention. Letters, memos, invoices, agendas and policy
-% briefs use the minimal plain style (classification bands only) on
-% every page; page 1 carries the format's own letterhead, masthead
+% report convention. Letters, memos, invoices, agendas, policy
+% briefs, decision records, meeting minutes, contracts and press
+% releases use the minimal plain style (classification bands only)
+% on every page; page 1 carries the format's own letterhead, masthead
 % or header block instead.
 $if(doc-type)$
 \ifdefstring{\docformatplain}{1}{\pagestyle{plain}}{}
@@ -289,7 +300,95 @@ $endif$
         \end{tcolorbox}\par
         \vspace{0.8em}
         $endif$
-      }{}%
+      }{%
+        \ifdefstring{\docform}{Decision Record}{%
+          % Decision record head: centred masthead, then the flush-left
+          % colon-line field block (MADR conventions).
+          \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle DECISION RECORD\par}\end{center}%
+          {\color{obsidian}\hrule height 1.2pt}\par
+          \vspace{0.5em}
+          \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+            \textbf{Decision:} & $title$ \\
+            \textbf{Status:} & $decision.status$ \\
+            \textbf{Date:} & $date$ \\
+            $if(decision.decision-makers)$\textbf{Decision makers:} & $for(decision.decision-makers)$$decision.decision-makers$$sep$; $endfor$ \\$endif$
+            $if(decision.consulted)$\textbf{Consulted:} & $for(decision.consulted)$$decision.consulted$$sep$; $endfor$ \\$endif$
+            $if(decision.informed)$\textbf{Informed:} & $for(decision.informed)$$decision.informed$$sep$; $endfor$ \\$endif$
+            $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+          \end{tabular}\par
+          \vspace{0.5em}
+          {\color{obsidian}\hrule height 0.8pt}\par
+          \vspace{0.8em}
+        }{%
+          \ifdefstring{\docform}{Meeting Minutes}{%
+            % Minutes head: committee name as the title (no masthead
+            % word), then the flush-left colon-line field block.
+            {\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle $minutes.committee$\par}%
+            \vspace{0.3em}
+            {\color{obsidian}\hrule height 1.2pt}\par
+            \vspace{0.5em}
+            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+              \textbf{Date:} & $minutes.date$ \\
+              $if(minutes.time)$\textbf{Time:} & $minutes.time$ \\$endif$
+              $if(minutes.location)$\textbf{Location:} & $minutes.location$ \\$endif$
+              $if(minutes.chair)$\textbf{Chair:} & $minutes.chair$ \\$endif$
+              $if(minutes.notetaker)$\textbf{Notetaker:} & $minutes.notetaker$ \\$endif$
+              $if(minutes.present)$\textbf{Present:} & $for(minutes.present)$$minutes.present$$sep$, $endfor$ \\$endif$
+              $if(minutes.absent)$\textbf{Absent:} & $for(minutes.absent)$$minutes.absent$$sep$, $endfor$ \\$endif$
+              $if(minutes.guests)$\textbf{Guests:} & $for(minutes.guests)$$minutes.guests$$sep$, $endfor$ \\$endif$
+              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+            \end{tabular}\par
+            \vspace{0.5em}
+            {\color{obsidian}\hrule height 0.8pt}\par
+            \vspace{0.8em}
+          }{%
+            \ifdefstring{\docform}{Contract}{%
+              % Contract head: centred agreement title, then the party
+              % block (This Agreement is dated ... between ...).
+              \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle $title$\par}\end{center}%
+              {\color{obsidian}\hrule height 1.2pt}\par
+              \vspace{0.5em}
+              \noindent This Agreement is dated \textbf{$date$}, between:\par
+              \vspace{0.8em}
+              \begin{minipage}[t]{0.45\textwidth}
+                \raggedright
+                {\small\bfseries $contract.party-a.name$\par}%
+                {\small $contract.party-a.address$\par}%
+              \end{minipage}\hfill
+              \begin{minipage}[t]{0.45\textwidth}
+                \raggedright
+                {\small\bfseries $contract.party-b.name$\par}%
+                {\small $contract.party-b.address$\par}%
+              \end{minipage}\par
+              \vspace{0.8em}
+              $if(contract.term)${\small\bfseries Term:} {\small $contract.term$\par}$endif$
+              $if(contract.governing-law)${\small\bfseries Governing law:} {\small $contract.governing-law$\par}$endif$
+              \vspace{0.5em}
+              {\color{obsidian}\hrule height 0.8pt}\par
+              \vspace{0.8em}
+            }{%
+              \ifdefstring{\docform}{Press Release}{%
+                % Press release head: release line, centred headline,
+                % subheadline, dateline, then the rule.
+                \begin{center}{\small\bfseries\lsstyle\obsidianheadfont $press-release.status$\par}\end{center}%
+                \vspace{0.5em}
+                \begin{center}{\LARGE\bfseries\obsidianheadfont\color{obsidian}\lsstyle $title$\par}\end{center}%
+                $if(press-release.subheadline)$
+                \vspace{0.3em}
+                \begin{center}{\normalsize $press-release.subheadline$\par}\end{center}%
+                $endif$
+                $if(press-release.dateline)$
+                \vspace{0.5em}
+                \begin{center}{\small\itshape $press-release.dateline$\par}\end{center}%
+                $endif$
+                \vspace{0.5em}
+                {\color{obsidian}\hrule height 0.8pt}\par
+                \vspace{0.8em}
+              }{}%
+            }%
+          }%
+        }%
+      }%
     }%
   }%
 }
