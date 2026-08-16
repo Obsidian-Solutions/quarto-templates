@@ -12,6 +12,7 @@ short-title: "Internal Memo"
 doc-type: "Memo"
 edition: "First Edition"
 draft: true
+titlepage: none
 toc: false
 number-sections: false
 memo:

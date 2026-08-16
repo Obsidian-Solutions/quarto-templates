@@ -102,6 +102,53 @@ figcaption,
   margin-bottom: 1.5rem;
 }
 
+/* ---- Structured document headers ---- */
+/* After filters/structured-fields.lua, each document type (letter,
+   memo, agenda, brief) opens with a header block carrying an
+   obsidian-doc-<type> class. The header tables below get a
+   per-type accent rule so the first page of each document reads
+   differently at a glance. Colour never carries the meaning alone:
+   the type name and the row labels stay in text beside it (WCAG
+   1.4.1), and every accent is at least 4.5:1 against white. */
+.obsidian-doc-letter,
+.obsidian-doc-memo,
+.obsidian-doc-agenda,
+.obsidian-doc-brief {
+  border-left: 4px solid $theme-obsidian;
+  padding-left: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.obsidian-doc-letter {
+  border-left-color: #532a45; /* plum, 9.9:1 on white */
+}
+.obsidian-doc-memo {
+  border-left-color: #313d47; /* slate, 10.2:1 on white */
+}
+.obsidian-doc-agenda {
+  border-left-color: #6a7a4a; /* olive, 5.4:1 on white */
+}
+.obsidian-doc-brief {
+  border-left-color: #8e1537; /* crimson, 8.1:1 on white */
+}
+
+.obsidian-doc-letter h2,
+.obsidian-doc-memo h2,
+.obsidian-doc-agenda h2,
+.obsidian-doc-brief h2 {
+  margin-top: 0;
+}
+
+/* The header tables keep the house booktabs look; only the border
+   colour of the top rule varies per type. */
+.obsidian-doc-letter table,
+.obsidian-doc-memo table,
+.obsidian-doc-agenda table,
+.obsidian-doc-brief table {
+  max-width: 100%;
+  margin-bottom: 1rem;
+}
+
 /* Tables: top and bottom rules only, like booktabs */
 .table > :not(caption) > * > * {
   border-bottom: 1px solid $theme-ruled;

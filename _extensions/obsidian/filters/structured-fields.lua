@@ -129,6 +129,35 @@ local function bullet(items)
   return pandoc.BulletList(blocks)
 end
 
+-- A two-column header table: bold label in the left column, value on
+-- the right. Emits a pandoc Table so every output format (PDF, HTML,
+-- DOCX, EPUB) typesets it as a bordered header, the classic memo and
+-- agenda look. Empty values are dropped so a document never ships a
+-- blank row. Built via pandoc.SimpleTable (cells are plain block
+-- lists), which pandoc 3.x converts to a real Table; the direct
+-- Table/TableHead/TableBody constructors differ across pandoc 3.x
+-- minors, so this route keeps the filter portable.
+local function label_table(rows)
+  local table_rows = {}
+  for _, row in ipairs(rows) do
+    if row[2] ~= nil and row[2] ~= "" then
+      table.insert(table_rows, {
+        { pandoc.Str(row[1]) },
+        { pandoc.Str(row[2]) },
+      })
+    end
+  end
+  if #table_rows == 0 then return nil end
+  local st = pandoc.SimpleTable(
+    {},
+    { pandoc.AlignLeft, pandoc.AlignLeft },
+    { 0, 0 },
+    { { pandoc.Str("") }, { pandoc.Str("") } },
+    table_rows
+  )
+  return pandoc.utils.from_simple_table(st)
+end
+
 -- ---- Letter ----
 local function render_letter(m)
   local letter = meta_map(m, "letter")
@@ -159,7 +188,7 @@ local function render_letter(m)
     table.insert(blocks, para(opening))
   end
 
-  return blocks
+  return pandoc.Div(blocks, { class = "obsidian-doc-letter" })
 end
 
 -- The closing half of the letter: closing salutation, cc, encl, ps,
@@ -193,7 +222,7 @@ local function render_letter_closing(m)
   if signature ~= nil and signature ~= "" then
     table.insert(blocks, para(signature))
   end
-  return blocks
+  return pandoc.Div(blocks, { class = "obsidian-doc-letter-closing" })
 end
 
 -- ---- Memo ----
@@ -218,12 +247,11 @@ local function render_memo(m)
 
   local blocks = {}
   table.insert(blocks, pandoc.Header(2, { pandoc.Str("Memo") }))
-  for _, row in ipairs(rows) do
-    table.insert(blocks, pandoc.Para({
-      pandoc.Strong(pandoc.Str(row[1] .. ":")), pandoc.Space(), pandoc.Str(row[2]),
-    }))
+  local tbl = label_table(rows)
+  if tbl ~= nil then
+    table.insert(blocks, tbl)
   end
-  return blocks
+  return pandoc.Div(blocks, { class = "obsidian-doc-memo" })
 end
 
 -- ---- Agenda ----
@@ -247,12 +275,9 @@ local function render_agenda(m)
 
   local blocks = {}
   table.insert(blocks, pandoc.Header(2, { pandoc.Str("Meeting details") }))
-  for _, row in ipairs(details) do
-    if row[2] ~= "" then
-      table.insert(blocks, pandoc.Para({
-        pandoc.Strong(pandoc.Str(row[1] .. ":")), pandoc.Space(), pandoc.Str(row[2]),
-      }))
-    end
+  local tbl = label_table(details)
+  if tbl ~= nil then
+    table.insert(blocks, tbl)
   end
   if #members > 0 then
     table.insert(blocks, pandoc.Header(3, { pandoc.Str("Attendees") }))
@@ -266,7 +291,7 @@ local function render_agenda(m)
     table.insert(blocks, pandoc.Header(3, { pandoc.Str("Guests") }))
     table.insert(blocks, bullet(guests))
   end
-  return blocks
+  return pandoc.Div(blocks, { class = "obsidian-doc-agenda" })
 end
 
 -- ---- Brief ----
@@ -308,7 +333,7 @@ local function render_brief(m)
       table.insert(blocks, para(contact_phone))
     end
   end
-  return blocks
+  return pandoc.Div(blocks, { class = "obsidian-doc-brief" })
 end
 
 -- ---- Document walk ----
@@ -340,9 +365,7 @@ local function walk_blocks(blocks, is_top)
     if block.t == "Div" then
       for cls, renderer in pairs(renderers) do
         if has_class(block, cls) then
-          for _, b in ipairs(renderer(_G.meta)) do
-            table.insert(out, b)
-          end
+          table.insert(out, renderer(_G.meta))
           rendered = true
           break
         end
