@@ -18,10 +18,19 @@ verbs, nominalisation, long paragraphs).
 A document can opt out with `ste: false` in its front matter (for
 example to quote external material verbatim).
 
+Exempt-by-design (docs/reference.md "Exempt-by-design from the
+language gate"): whole files (this script, theme*.scss, epub.css,
+CODE_OF_CONDUCT.md, SECURITY.md, and _extensions/obsidian/NOTICE)
+and fixed identifiers (SPDX-License-Identifier, the LICENSE
+filename, SIL Open Font License, and licence URLs) are not prose
+and are not checked.
+
 Usage: python3 tools/check-ste.py document.qmd
 Exit codes: 0 = clean, 1 = hard violations, 2 = usage error.
 """
 
+import fnmatch
+import os
 import re
 import sys
 
@@ -309,6 +318,55 @@ CONTRACTION_RE = re.compile(
 EM_DASH = "\u2014"
 LONG_SENTENCE = 20
 
+# Exempt-by-design (docs/reference.md "Exempt-by-design from the
+# language gate"). The gate measures documents, not machinery.
+#
+# Whole files, named in the documentation: the embedded word list is
+# the source the gate checks against (check-ste.py itself); CSS
+# colour tokens and property names are not prose (theme*.scss,
+# epub.css); the organisation-supplied defaults are not maintained
+# here (CODE_OF_CONDUCT.md, SECURITY.md); the extension NOTICE's
+# remaining hits are the fixed identifiers and licence-URL table
+# cells (_extensions/obsidian/NOTICE).
+WHOLE_FILE_EXEMPT = (
+    "check-ste.py",
+    "epub.css",
+    "CODE_OF_CONDUCT.md",
+    "SECURITY.md",
+)
+
+
+def whole_file_exempt(path):
+    """True when the file is exempt by name (docs/reference.md)."""
+    name = os.path.basename(path)
+    if name in WHOLE_FILE_EXEMPT:
+        return True
+    if fnmatch.fnmatch(name, "theme*.scss"):
+        return True
+    if path.replace(os.sep, "/").endswith("_extensions/obsidian/NOTICE"):
+        return True
+    return False
+
+
+# Fixed identifiers: standard strings from their licences, not prose.
+# Blank them out so the word lists do not flag them.
+FIXED_IDENTIFIERS = (
+    "SPDX-License-Identifier",
+    "SIL Open Font License",
+    "GUST Font License",
+)
+LICENSE_FILENAME_RE = re.compile(r"\bLICENSE\b")
+LICENCE_URL_RE = re.compile(r"https?://[^\s()<>\[\]]*licen[cs]e[^\s()<>\[\]]*", re.I)
+
+
+def exempt_fixed_identifiers(text):
+    """Blank out fixed identifiers and licence URLs (not prose)."""
+    for ident in FIXED_IDENTIFIERS:
+        text = text.replace(ident, " " * len(ident))
+    text = LICENSE_FILENAME_RE.sub(lambda m: " " * len(m.group(0)), text)
+    text = LICENCE_URL_RE.sub(lambda m: " " * len(m.group(0)), text)
+    return text
+
 
 def strip_frontmatter(text):
     """Remove YAML front matter; report the ste: opt-out flag."""
@@ -384,6 +442,7 @@ def check(text):
     raw, opted_out = strip_frontmatter(text)
     if opted_out:
         return None
+    raw = exempt_fixed_identifiers(raw)
     body = strip_code(raw)
     sents = sentences(body)
     hard, warns = [], []
@@ -434,7 +493,11 @@ def main() -> int:
     if len(sys.argv) != 2:
         print("usage: check-ste.py document.qmd")
         return 2
-    with open(sys.argv[1], encoding="utf-8") as fh:
+    path = sys.argv[1]
+    if whole_file_exempt(path):
+        print(f"STE: skipped ({path} is exempt-by-design)")
+        return 0
+    with open(path, encoding="utf-8") as fh:
         result = check(fh.read())
     if result is None:
         print("STE: skipped (ste: false in front matter)")
