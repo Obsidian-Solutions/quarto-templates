@@ -47,6 +47,13 @@ ADD --checksum=sha256:4bdf5a17df300003beb2f8f0e4dfe568e2ca0ff91318220c8537d26550
     /tmp/quarto.deb
 RUN dpkg -i /tmp/quarto.deb && rm /tmp/quarto.deb
 
+# Trust every repository the CI runner mounts. The runner's checkout
+# action records safe.directory for the host git only; the container
+# git runs as a different user and would otherwise treat the mounted
+# /__w workspace as a foreign-owned repo and silently fall back to
+# no-index file comparison in `git diff --exit-code A B`.
+RUN git config --system --add safe.directory '*'
+
 # TinyTeX v2026.08 (rstudio/tinytex-releases), pinned by release and
 # SHA-256, extracted to the layout quarto expects (~/.TinyTeX) instead
 # of quarto's API-driven installer (unauthenticated GitHub API is
