@@ -82,13 +82,20 @@ local function meta_list(m, key)
 end
 
 -- A map field: MetaMap or a plain Lua table. Returns {string: string}.
+-- List values are preserved as their raw arrays so meta_list keeps
+-- their structure; stringifying a list would glue its items into one
+-- line (the recipient-block bug). Scalars are stringified.
 local function meta_map(m, key)
   local v = m[key]
   if v == nil or type(v) ~= "table" then return {} end
   local out = {}
   for k, val in pairs(v) do
     if type(k) == "string" and k ~= "t" then
-      out[k] = pandoc.utils.stringify(val)
+      if type(val) == "table" and val.t == nil then
+        out[k] = val
+      else
+        out[k] = pandoc.utils.stringify(val)
+      end
     end
   end
   return out
@@ -119,6 +126,38 @@ end
 
 local function para(text)
   return pandoc.Para({ pandoc.Str(text) })
+end
+
+-- Front-matter multiline fields (the letter signature) arrive as a
+-- YAML block scalar. Pandoc parses that into a paragraph whose newlines
+-- are soft breaks; stringify collapses the soft breaks to spaces, so a
+-- naive read glues the signature into one line. Rebuild the value as
+-- Paras, turning each soft break into a hard line break, whichever
+-- shape the metadata arrives in (pandoc userdata or Quarto's plain
+-- Lua tables). Returns a list of Paras, or nil when empty.
+local function para_field(value)
+  if type(value) == "string" then
+    if value == "" then return nil end
+    return { para_lines(value) }
+  end
+  if type(value) ~= "table" then return nil end
+  local out = {}
+  for _, blk in ipairs(value) do
+    local content = blk and blk.content
+    if type(content) == "table" and #content > 0 then
+      local inlines = {}
+      for _, inl in ipairs(content) do
+        if inl.t == "SoftBreak" then
+          table.insert(inlines, pandoc.LineBreak())
+        else
+          table.insert(inlines, inl)
+        end
+      end
+      table.insert(out, pandoc.Para(inlines))
+    end
+  end
+  if #out == 0 then return nil end
+  return out
 end
 
 local function bullet(items)
@@ -165,8 +204,12 @@ local function render_letter(m)
   require_list(address, "letter.address")
 
   local blocks = {}
-  -- Recipient address
-  table.insert(blocks, pandoc.Header(2, { pandoc.Str("Recipient") }))
+  -- Recipient address. PDF carries the letterhead in before-body.tex,
+  -- so the "Recipient" heading would read twice. HTML and DOCX get
+  -- the standard document header from the reference templates.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Recipient") }))
+  end
   for _, line in ipairs(address) do
     table.insert(blocks, para(line))
   end
@@ -218,9 +261,15 @@ local function render_letter_closing(m)
   if ps ~= nil and ps ~= "" then
     table.insert(blocks, pandoc.Para({ pandoc.Str("P.S."), pandoc.Space(), pandoc.Str(ps) }))
   end
-  local signature = meta_str(letter, "signature")
-  if signature ~= nil and signature ~= "" then
-    table.insert(blocks, para(signature))
+  -- Signature: a YAML block scalar, parsed as a Para with soft breaks.
+  -- Read the raw value so para_field can turn the soft breaks into
+  -- hard line breaks; meta_str would stringify the breaks to spaces.
+  local letter_raw = m.letter
+  local sig_blocks = letter_raw ~= nil and para_field(letter_raw.signature) or nil
+  if sig_blocks ~= nil then
+    for _, blk in ipairs(sig_blocks) do
+      table.insert(blocks, blk)
+    end
   end
   return pandoc.Div(blocks, { class = "obsidian-doc-letter-closing" })
 end
@@ -246,7 +295,12 @@ local function render_memo(m)
   end
 
   local blocks = {}
-  table.insert(blocks, pandoc.Header(2, { pandoc.Str("Memo") }))
+  -- PDF carries the MEMORANDUM masthead in before-body.tex, so the
+  -- "Memo" heading would read twice. HTML and DOCX get the standard
+  -- document header instead, from the reference templates.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Memo") }))
+  end
   local tbl = label_table(rows)
   if tbl ~= nil then
     table.insert(blocks, tbl)
