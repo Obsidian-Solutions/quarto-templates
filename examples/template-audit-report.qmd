@@ -1,0 +1,54 @@
+---
+title: "Procurement process audit"
+subtitle: "Template: internal audit report with findings and corrective actions"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["audit", "report", "template"]
+reference: "OS-AUD-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Audit Report"
+doc-type: "Audit Report"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+audit-report:
+  number: "IA-2026-014"
+  status: "Draft"
+  scope: "Procurement process, financial year 2026"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-audit-report}
+:::
+
+State the audit objective in one paragraph. Name the process
+audited, the period, and the standards or policies applied.
+
+# Findings
+
+Record each finding with its severity. Use one sub section per
+finding. Name the evidence and the process requirement it
+contravenes.
+
+# Nonconformities
+
+List the nonconformities with their classification: major or minor.
+For each, state what failed and the standard breached.
+
+# Corrective actions
+
+For each nonconformity, state the corrective action, the owner, and
+the due date. Use a table.
+
+# Conclusion
+
+State the overall opinion on the process. Confirm the scope limits
+and any reliance placed on management assurance.

@@ -251,6 +251,13 @@ The structured fields per block:
 | `reading-list` | none | `scope` |
 | `sop` | `number` | `approved-by`, `revision-date`, `author` |
 | `after-action` | none | `facilitator`, `scenario` |
+| `business-case` | none | `status`, `version`, `sponsor` |
+| `project-charter` | none | `sponsor`, `team` |
+| `dpia` | none | `activity`, `controller`, `dpo` |
+| `audit-report` | `number` | `status`, `scope` |
+| `incident-report` | none | `severity`, `duration`, `status` |
+| `sow` | none | `client`, `period` |
+| `fact-sheet` | none | `last-updated`, `developer`, `launch-date` |
 
 For the letter the whole head (recipient block, date, reference,
 subject, opening) is owned by LaTeX on PDF: the recipient block sits
@@ -330,13 +337,47 @@ The after-action report head on PDF is a centred AFTER-ACTION REPORT
 masthead with the event, date, facilitator, scenario, and reference
 lines. The ODR entries and action items render in the body.
 
+The business case head on PDF is a centred BUSINESS CASE masthead
+with the title, date, status, version, sponsor, and reference lines
+as flush-left `Label: value` lines. The Five Case Model sections
+render in the body.
+
+The project charter head on PDF is a centred PROJECT CHARTER masthead
+with the project, date, sponsor, team, and reference lines. The
+objectives, success criteria, and milestones render in the body.
+
+The DPIA head on PDF is a centred DATA PROTECTION IMPACT ASSESSMENT
+masthead with the activity, controller, date, DPO, and reference
+lines. The Article 35 assessment sections render in the body.
+
+The audit report head on PDF is a centred AUDIT REPORT masthead with
+the audit number, date, status, scope, and reference lines. The
+findings, nonconformities, and corrective actions render in the body.
+
+The incident report head on PDF is a centred INCIDENT REPORT masthead
+with the incident, date, severity, duration, status, and reference
+lines. The timeline, root cause, resolution, and prevention sections
+render in the body.
+
+The statement of work head on PDF is a centred STATEMENT OF WORK
+masthead with the project, date, client, period, and reference lines.
+The scope, deliverables, and milestones render in the body.
+
+The fact sheet head on PDF is a centred FACT SHEET masthead with the
+entity name, last updated, developer, launch date, and reference
+lines. The key facts render as bullets in the body.
+
 The examples (`template-letter.qmd`, `template-memo.qmd`,
 `template-agenda.qmd`, `template-brief.qmd`, `template-decision.qmd`,
 `template-minutes.qmd`, `template-contract.qmd`,
 `template-press-release.qmd`, `template-newsletter.qmd`,
 `template-certificate.qmd`, `template-reading-list.qmd`,
 `template-nda.qmd`, `template-mou.qmd`, `template-sop.qmd`,
-`template-after-action.qmd`) show each block filled in. The schema
+`template-after-action.qmd`, `template-business-case.qmd`,
+`template-project-charter.qmd`, `template-dpia.qmd`,
+`template-audit-report.qmd`, `template-incident-report.qmd`,
+`template-sow.qmd`, `template-fact-sheet.qmd`) show each block
+filled in. The schema
 for IDE completion lives in `_extensions/obsidian/_schema.yml`, and
 front-matter snippets for each document type live in
 `_extensions/obsidian/_snippets.json`.

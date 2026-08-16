@@ -1,0 +1,51 @@
+---
+title: "Platform upgrade"
+subtitle: "Template: project charter for a new initiative"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["charter", "project", "template"]
+reference: "OS-PC-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Project Charter"
+doc-type: "Project Charter"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+project-charter:
+  sponsor: "Sponsor name"
+  team: "Team name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-project-charter}
+:::
+
+State the background in one paragraph. Name the problem or the
+opportunity, and the value of acting now.
+
+# Objectives
+
+State the objectives in measurable terms. Each objective should name
+the outcome and the measure of success.
+
+# Success criteria
+
+List the criteria that prove the project has succeeded. Make each
+criterion testable.
+
+# Milestones
+
+List the milestones with their dates. Use a table for clarity.
+
+# Budget and roles
+
+State the budget envelope and the funding source. Name the roles:
+sponsor, project manager, and the delivery team.

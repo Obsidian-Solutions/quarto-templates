@@ -447,6 +447,109 @@ options:
         type: string
         description: "Scenario or exercise name."
 
+  # ---- Business case ----
+  business-case:
+    type: object
+    description: "Structured business case fields (UK Green Book)."
+    properties:
+      status:
+        type: string
+        description: "Case status, e.g. Draft or Approved."
+      version:
+        type: string
+        description: "Case version."
+      sponsor:
+        type: string
+        description: "Senior responsible owner or sponsor."
+
+  # ---- Project charter ----
+  project-charter:
+    type: object
+    description: "Structured project charter fields."
+    properties:
+      sponsor:
+        type: string
+        description: "Project sponsor."
+      team:
+        type: string
+        description: "Project team, one line."
+
+  # ---- DPIA ----
+  dpia:
+    type: object
+    description: "Structured data protection impact assessment fields (GDPR Article 35)."
+    properties:
+      activity:
+        type: string
+        description: "Processing activity being assessed."
+      controller:
+        type: string
+        description: "Data controller."
+      dpo:
+        type: string
+        description: "Data protection officer consulted."
+
+  # ---- Audit report ----
+  audit-report:
+    type: object
+    description: "Structured internal audit report fields."
+    properties:
+      number:
+        type: string
+        required: true
+        description: "Audit number, e.g. IA-2026-014 (required)."
+      status:
+        type: string
+        enum: [Draft, Final]
+        description: "Report status."
+      scope:
+        type: string
+        description: "Audit scope, one line."
+
+  # ---- Incident report ----
+  incident-report:
+    type: object
+    description: "Structured incident report fields (ITIL)."
+    properties:
+      severity:
+        type: string
+        description: "Severity, e.g. SEV1 to SEV4."
+      duration:
+        type: string
+        description: "Incident duration."
+      status:
+        type: string
+        description: "Incident status, e.g. Open, Resolved, Closed."
+
+  # ---- Statement of work ----
+  sow:
+    type: object
+    description: "Structured statement of work fields."
+    properties:
+      client:
+        type: string
+        description: "Client name."
+      period:
+        type: string
+        description: "Delivery period."
+
+  # ---- Fact sheet ----
+  fact-sheet:
+    type: object
+    description: "Structured fact sheet fields."
+    properties:
+      last-updated:
+        type: string
+        format: date
+        description: "Last updated date."
+      developer:
+        type: string
+        description: "Developer or owner of the entity."
+      launch-date:
+        type: string
+        format: date
+        description: "Launch date."
+
   # ---- Invoice ----
   invoice:
     type: object

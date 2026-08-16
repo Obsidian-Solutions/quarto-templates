@@ -1,0 +1,48 @@
+---
+title: "Obsidian Intelligence Engine"
+subtitle: "Template: fact sheet for a product or service"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["fact", "sheet", "template"]
+reference: "OS-FAC-001"
+version: "1.0.0"
+confidentiality: "Public"
+short-title: "Fact Sheet"
+doc-type: "Fact Sheet"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+fact-sheet:
+  last-updated: "2026-08-14"
+  developer: "Obsidian Solutions"
+  launch-date: "2025-03-01"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-fact-sheet}
+:::
+
+# What it does
+
+State the purpose of the entity in two or three sentences. A reader
+should know the core function at a glance.
+
+# Key facts
+
+Present the key facts as short bullets.
+
+- One fact with a figure,
+- one fact about the underlying technology,
+- one fact about scale or usage,
+- one fact about provenance or data sources.
+
+# Contact
+
+State the contact route for enquiries.

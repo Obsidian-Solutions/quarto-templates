@@ -1,0 +1,51 @@
+---
+title: "Knowledge platform migration"
+subtitle: "Template: statement of work for a delivery engagement"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["statement", "work", "template"]
+reference: "OS-SOW-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Statement of Work"
+doc-type: "Statement of Work"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+sow:
+  client: "Client company name"
+  period: "1 August to 31 October 2026"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-sow}
+:::
+
+State the purpose of the engagement in one paragraph. Name the
+background, the context, and the desired outcome.
+
+# Scope
+
+State what the work covers and what it excludes. Name the systems,
+the data, and the boundaries.
+
+# Deliverables
+
+List the deliverables. For each, name the form and the acceptance
+criteria.
+
+# Milestones
+
+List the milestones with their dates and owners. Use a table.
+
+# Acceptance
+
+State the acceptance process. Name who accepts each deliverable,
+the review period, and the criteria applied.

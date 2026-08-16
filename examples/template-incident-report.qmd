@@ -1,0 +1,53 @@
+---
+title: "Payment service outage"
+subtitle: "Template: incident report for a live service disruption"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["incident", "report", "template"]
+reference: "OS-INC-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Incident Report"
+doc-type: "Incident Report"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+incident-report:
+  severity: "SEV2"
+  duration: "1 hour 20 minutes"
+  status: "Resolved"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-incident-report}
+:::
+
+State the incident in one paragraph. Name the service, the start and
+end times, and the overall impact.
+
+# Timeline
+
+Record the incident timeline in chronological order. Use a table
+with time, event, and actor columns.
+
+# Root cause
+
+State the root cause of the incident. Separate the direct cause from
+any contributing factors.
+
+# Resolution
+
+State how the team restored the service. Name the technical actions
+and any customer communication issued.
+
+# Prevention
+
+List the actions that prevent recurrence. For each, name the owner
+and the due date. Use a table.
