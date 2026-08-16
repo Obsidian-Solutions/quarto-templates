@@ -243,6 +243,23 @@ The structured fields per block:
 | `agenda` | `meeting`, `date`, `time`, `location` | `chair`, `members` (list), `apologies` (list), `guests` (list) |
 | `brief` | none | `series`, `issue`, `key-findings` (list), `cite-as`, `contact` (`name`, `email`, `phone`) |
 
+For the letter the whole head (recipient block, date, reference,
+subject, opening) is owned by LaTeX on PDF: the recipient block sits
+left at the UK window-envelope position, the date aligns right at its
+top line, and the reference and subject are field lines, not
+headings. The closing block renders as closing, signature gap,
+signature, then cc, enclosures, and P.S. The HTML and DOCX companions
+keep the labelled block layout instead.
+
+The memo head on PDF is a masthead chosen by the top-level
+`memo-style` option (`centred`, `flush-left`, or `military`,
+default `centred`). `centred` centres the MEMORANDUM title,
+`flush-left` puts the title and date on one line, and `military`
+uses the no-masthead memorandum form (MEMORANDUM FOR ... SUBJECT: ...).
+All three print the To, From, Date, Subject, Reference, and
+Co-signature lines as flush-left `Label: value` lines; no bordered
+table is used on PDF.
+
 The examples (`template-letter.qmd`, `template-memo.qmd`,
 `template-agenda.qmd`, `template-brief.qmd`) show each block filled
 in. The schema for IDE completion lives in
