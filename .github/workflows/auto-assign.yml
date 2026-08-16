@@ -1,0 +1,15 @@
+name: Auto assign
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  assign:
+    uses: Obsidian-Solutions/.github/.github/workflows/auto-assign.yml@0645fc0cb717dbf312151371b5582f5a2292322c
