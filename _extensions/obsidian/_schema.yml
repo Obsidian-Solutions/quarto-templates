@@ -44,8 +44,8 @@ options:
       - Open
       - Internal
       - "Commercial in Confidence"
-      - Restricted
-      - Confidential
+      - Official
+      - "Official-Sensitive"
       - Secret
       - "Top Secret"
     description: "Classification marking. Shown on every page."
@@ -251,6 +251,25 @@ options:
       po-number:
         type: string
         description: "Purchase order number."
+      sender:
+        type: object
+        description: "Business letterhead. Optional; the filter falls back to the document author."
+        properties:
+          name:
+            type: string
+            description: "Business name in the letterhead."
+          address:
+            type: array
+            description: "Business address in the letterhead, one line per line break."
+            items:
+              type: string
+          contact:
+            type: string
+            description: "Contact line in the letterhead, for example email and phone."
+      subtotal:
+        type: [number, string]
+        minimum: 0
+        description: "Optional stated subtotal, as a number or a money string; the filter recomputes it from the items."
       client:
         type: object
         required: true
@@ -279,12 +298,12 @@ options:
               description: "Item description (required)."
             quantity:
               type: number
-              minimum: 0
-              description: "Item quantity."
+              minimum: 1
+              description: "Item quantity, a positive number (the verifier rejects zero or negative)."
             unit-price:
-              type: number
+              type: [number, string]
               minimum: 0
-              description: "Unit price in GBP."
+              description: "Unit price in GBP, as a number or a money string (for example \"300.00\" or \"£300.00\")."
       payment:
         type: object
         description: "Payment block."
@@ -294,6 +313,7 @@ options:
             enum:
               - stripe
               - paypal
+              - generic
               - bank-transfer
               - none
             description: "Payment provider. stripe and paypal need a link."
@@ -305,8 +325,8 @@ options:
         type: string
         description: "VAT statement, for example 'Not registered for VAT'."
       discount:
-        type: number
-        description: "Discount in GBP."
+        type: [number, string]
+        description: "Discount in GBP, as a number or a money string (for example \"25.00\")."
       tax:
-        type: number
-        description: "Tax amount in GBP."
+        type: [number, string]
+        description: "Tax amount in GBP, as a number or a money string (for example \"0.00\")."
