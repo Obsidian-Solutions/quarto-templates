@@ -120,8 +120,9 @@ $endif$
 % Exposes the doc-type to the (non-processed) header/footer furniture
 % in include-in-header.tex, which reads \docform to choose the page
 % style for format documents (letter, memo, invoice, agenda, policy
-% brief, decision record, meeting minutes, contract, press release)
-% vs reports. \docformatplain is empty for reports and 1 for
+% brief, decision record, meeting minutes, contract, press release,
+% newsletter, certificate, reading list, NDA, MOU, SOP, after-action
+% report) vs reports. \docformatplain is empty for reports and 1 for
 % format documents; the plain page style in include-in-header.tex
 % checks it to drop the report identity line, page number and cover.
 $if(doc-type)$\newcommand{\docform}{$doc-type$}$else$\newcommand{\docform}{}$endif$
@@ -135,7 +136,21 @@ $if(doc-type)$
           \ifdefstring{\docform}{Decision Record}{\renewcommand{\docformatplain}{1}}{%
             \ifdefstring{\docform}{Meeting Minutes}{\renewcommand{\docformatplain}{1}}{%
               \ifdefstring{\docform}{Contract}{\renewcommand{\docformatplain}{1}}{%
-                \ifdefstring{\docform}{Press Release}{\renewcommand{\docformatplain}{1}}{}%
+                \ifdefstring{\docform}{Press Release}{\renewcommand{\docformatplain}{1}}{%
+                  \ifdefstring{\docform}{Newsletter}{\renewcommand{\docformatplain}{1}}{%
+                    \ifdefstring{\docform}{Certificate}{\renewcommand{\docformatplain}{1}}{%
+                      \ifdefstring{\docform}{Reading List}{\renewcommand{\docformatplain}{1}}{%
+                        \ifdefstring{\docform}{NDA}{\renewcommand{\docformatplain}{1}}{%
+                          \ifdefstring{\docform}{MOU}{\renewcommand{\docformatplain}{1}}{%
+                            \ifdefstring{\docform}{SOP}{\renewcommand{\docformatplain}{1}}{%
+                              \ifdefstring{\docform}{After-Action Report}{\renewcommand{\docformatplain}{1}}{}%
+                            }%
+                          }%
+                        }%
+                      }%
+                    }%
+                  }%
+                }%
               }%
             }%
           }%
@@ -149,19 +164,21 @@ $endif$
 % ---- Format documents: paginate arabic from page 1 ----
 % Reports (and the monochrome cover path) use roman-numbered front
 % matter before the body. Letters, memos, invoices, agendas, policy
-% briefs, decision records, meeting minutes, contracts and press
-% releases are single-flow business documents: no cover, no
-% separate front matter, paginate from 1.
+% briefs, decision records, meeting minutes, contracts, press
+% releases, newsletters, certificates, reading lists, NDAs, MOUs,
+% SOPs and after-action reports are single-flow business documents:
+% no cover, no separate front matter, paginate from 1.
 $if(titlepage-none)$
 \pagenumbering{arabic}
 
 % ---- Format documents keep the minimal furniture everywhere ----
 % The report running header (identity line + page number) is a
 % report convention. Letters, memos, invoices, agendas, policy
-% briefs, decision records, meeting minutes, contracts and press
-% releases use the minimal plain style (classification bands only)
-% on every page; page 1 carries the format's own letterhead, masthead
-% or header block instead.
+% briefs, decision records, meeting minutes, contracts, press
+% releases, newsletters, certificates, reading lists, NDAs, MOUs,
+% SOPs and after-action reports use the minimal plain style
+% (classification bands only) on every page; page 1 carries the
+% format's own letterhead, masthead or header block instead.
 $if(doc-type)$
 \ifdefstring{\docformatplain}{1}{\pagestyle{plain}}{}
 $endif$
@@ -384,7 +401,142 @@ $endif$
                 \vspace{0.5em}
                 {\color{obsidian}\hrule height 0.8pt}\par
                 \vspace{0.8em}
-              }{}%
+              }{%
+                \ifdefstring{\docform}{Newsletter}{%
+                  % Newsletter head: publication name as masthead,
+                  % issue and date on the line below, then the rule.
+                  \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle $newsletter.name$\par}\end{center}%
+                  \begin{center}{\small\bfseries\lsstyle Issue $newsletter.issue$$if(newsletter.date)$ \textbullet\ $newsletter.date$$endif$\par}\end{center}%
+                  {\color{obsidian}\hrule height 1.2pt}\par
+                  \vspace{0.8em}
+                }{%
+                  \ifdefstring{\docform}{Certificate}{%
+                    % Certificate head (portrait): issuer, certificate
+                    % type, recipient name, date. The signature block
+                    % renders in the body.
+                    \begin{center}{\small\bfseries\lsstyle $author$\par}\end{center}%
+                    \vspace{1.5em}
+                    \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle $certificate.type$\par}\end{center}%
+                    \vspace{2em}
+                    \begin{center}{\LARGE\bfseries\obsidianheadfont $certificate.recipient$\par}\end{center}%
+                    $if(certificate.date)$
+                    \vspace{2em}
+                    \begin{center}{\small $certificate.date$\par}\end{center}%
+                    $endif$
+                    \vspace{1.5em}
+                    {\color{obsidian}\hrule height 0.8pt}\par
+                    \vspace{1em}
+                  }{%
+                    \ifdefstring{\docform}{Reading List}{%
+                      % Reading list head: centred masthead and an
+                      % optional scope line. Entries render in the
+                      % body.
+                      \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle READING LIST\par}\end{center}%
+                      {\color{obsidian}\hrule height 1.2pt}\par
+                      $if(reading-list.scope)$
+                      \vspace{0.5em}
+                      \noindent{\small\bfseries Scope:} {\small $reading-list.scope$\par}%
+                      $endif$
+                      \vspace{0.8em}
+                    }{%
+                      \ifdefstring{\docform}{NDA}{%
+                        % NDA head: same agreement form as the
+                        % contract, with the fixed masthead. Parties
+                        % come from the contract: block.
+                        \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle NON-DISCLOSURE AGREEMENT\par}\end{center}%
+                        {\color{obsidian}\hrule height 1.2pt}\par
+                        \vspace{0.5em}
+                        \noindent This Agreement is dated \textbf{$date$}, between:\par
+                        \vspace{0.8em}
+                        \begin{minipage}[t]{0.45\textwidth}
+                          \raggedright
+                          {\small\bfseries $contract.party-a.name$\par}%
+                          {\small $contract.party-a.address$\par}%
+                        \end{minipage}\hfill
+                        \begin{minipage}[t]{0.45\textwidth}
+                          \raggedright
+                          {\small\bfseries $contract.party-b.name$\par}%
+                          {\small $contract.party-b.address$\par}%
+                        \end{minipage}\par
+                        \vspace{0.8em}
+                        $if(contract.term)${\small\bfseries Term:} {\small $contract.term$\par}$endif$
+                        $if(contract.governing-law)${\small\bfseries Governing law:} {\small $contract.governing-law$\par}$endif$
+                        \vspace{0.5em}
+                        {\color{obsidian}\hrule height 0.8pt}\par
+                        \vspace{0.8em}
+                      }{%
+                        \ifdefstring{\docform}{MOU}{%
+                          % MOU head: same agreement form as the
+                          % contract, with the fixed masthead.
+                          \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle MEMORANDUM OF UNDERSTANDING\par}\end{center}%
+                          {\color{obsidian}\hrule height 1.2pt}\par
+                          \vspace{0.5em}
+                          \noindent This Memorandum of Understanding is dated \textbf{$date$}, between:\par
+                          \vspace{0.8em}
+                          \begin{minipage}[t]{0.45\textwidth}
+                            \raggedright
+                            {\small\bfseries $contract.party-a.name$\par}%
+                            {\small $contract.party-a.address$\par}%
+                          \end{minipage}\hfill
+                          \begin{minipage}[t]{0.45\textwidth}
+                            \raggedright
+                            {\small\bfseries $contract.party-b.name$\par}%
+                            {\small $contract.party-b.address$\par}%
+                          \end{minipage}\par
+                          \vspace{0.8em}
+                          $if(contract.term)${\small\bfseries Term:} {\small $contract.term$\par}$endif$
+                          $if(contract.governing-law)${\small\bfseries Governing law:} {\small $contract.governing-law$\par}$endif$
+                          \vspace{0.5em}
+                          {\color{obsidian}\hrule height 0.8pt}\par
+                          \vspace{0.8em}
+                        }{%
+                          \ifdefstring{\docform}{SOP}{%
+                            % SOP head: centred masthead, then the
+                            % control fields as flush-left colon
+                            % lines (house style, not the bordered
+                            % title table some classes use).
+                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle STANDARD OPERATING PROCEDURE\par}\end{center}%
+                            {\color{obsidian}\hrule height 1.2pt}\par
+                            \vspace{0.5em}
+                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                              \textbf{SOP number:} & $sop.number$ \\
+                              \textbf{Title:} & $title$ \\
+                              \textbf{Date:} & $date$ \\
+                              $if(sop.approved-by)$\textbf{Approved by:} & $sop.approved-by$ \\$endif$
+                              $if(sop.revision-date)$\textbf{Revision date:} & $sop.revision-date$ \\$endif$
+                              $if(sop.author)$\textbf{Author:} & $sop.author$ \\$endif$
+                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                            \end{tabular}\par
+                            \vspace{0.5em}
+                            {\color{obsidian}\hrule height 0.8pt}\par
+                            \vspace{0.8em}
+                          }{%
+                            \ifdefstring{\docform}{After-Action Report}{%
+                              % After-action report head: centred
+                              % masthead, then event, date,
+                              % facilitator and scenario lines. The
+                              % ODR entries render in the body.
+                              \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle AFTER-ACTION REPORT\par}\end{center}%
+                              {\color{obsidian}\hrule height 1.2pt}\par
+                              \vspace{0.5em}
+                              \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                \textbf{Event:} & $title$ \\
+                                \textbf{Date:} & $date$ \\
+                                $if(after-action.facilitator)$\textbf{Facilitator:} & $after-action.facilitator$ \\$endif$
+                                $if(after-action.scenario)$\textbf{Scenario:} & $after-action.scenario$ \\$endif$
+                                $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                              \end{tabular}\par
+                              \vspace{0.5em}
+                              {\color{obsidian}\hrule height 0.8pt}\par
+                              \vspace{0.8em}
+                            }{}%
+                          }%
+                        }%
+                      }%
+                    }%
+                  }%
+                }%
+              }%
             }%
           }%
         }%

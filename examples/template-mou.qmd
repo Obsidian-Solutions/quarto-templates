@@ -1,0 +1,61 @@
+---
+title: "Memorandum of Understanding"
+subtitle: "Template: a two-party memorandum of understanding"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["MOU", "memorandum", "understanding", "template"]
+reference: "OS-MOU-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Memorandum of Understanding"
+doc-type: "MOU"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+contract:
+  party-a:
+    name: "Your organisation name"
+    address: |
+      [Registered address]
+  party-b:
+    name: "Partner organisation name"
+    address: |
+      [Partner registered address]
+  term: "12 months from the effective date"
+  governing-law: "England and Wales"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-contract}
+:::
+
+# Purpose
+
+State the shared purpose of the arrangement. Say what both
+organisations aim to achieve together.
+
+# Scope of cooperation
+
+Name the activities the parties will cooperate on. State what each
+party contributes.
+
+# Resources and costs
+
+State who provides what, and how shared costs split.
+
+# Review and termination
+
+State when the parties review the arrangement, and how either party
+may end it.
+
+# General
+
+Record the remaining boilerplate: points of contact, notices, and
+the non-binding nature of the understanding.

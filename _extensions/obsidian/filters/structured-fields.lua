@@ -610,6 +610,123 @@ local function render_press_release(m)
   return pandoc.Div(blocks, { class = "obsidian-doc-press-release" })
 end
 
+-- ---- Newsletter ----
+local function render_newsletter(m)
+  local newsletter = meta_map(m, "newsletter")
+  require_field(meta_str(newsletter, "name"), "newsletter.name")
+  require_field(meta_str(newsletter, "issue"), "newsletter.issue")
+
+  local blocks = {}
+  -- PDF carries the newsletter masthead in before-body.tex; the
+  -- filter emits nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Newsletter") }))
+    local rows = {
+      { "Publication", meta_str(newsletter, "name") },
+      { "Issue", meta_str(newsletter, "issue") },
+      { "Date", meta_str(newsletter, "date") or meta_str(m, "date") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-newsletter" })
+end
+
+-- ---- Certificate ----
+local function render_certificate(m)
+  local certificate = meta_map(m, "certificate")
+  require_field(meta_str(certificate, "type"), "certificate.type")
+  require_field(meta_str(certificate, "recipient"), "certificate.recipient")
+
+  local blocks = {}
+  -- PDF carries the certificate head in before-body.tex; the filter
+  -- emits nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Certificate") }))
+    local rows = {
+      { "Issuer", meta_str(m, "author") or "" },
+      { "Type", meta_str(certificate, "type") },
+      { "Recipient", meta_str(certificate, "recipient") },
+      { "Date", meta_str(certificate, "date") or meta_str(m, "date") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-certificate" })
+end
+
+-- ---- Reading list ----
+local function render_reading_list(m)
+  local reading_list = meta_map(m, "reading-list")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Reading list") }))
+    local scope = meta_str(reading_list, "scope")
+    if scope ~= nil and scope ~= "" then
+      table.insert(blocks, pandoc.Para({
+        pandoc.Strong(pandoc.Str("Scope:")), pandoc.Space(), pandoc.Str(scope),
+      }))
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-reading-list" })
+end
+
+-- ---- SOP ----
+local function render_sop(m)
+  local sop = meta_map(m, "sop")
+  require_field(meta_str(sop, "number"), "sop.number")
+
+  local blocks = {}
+  -- PDF carries the SOP head in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Standard operating procedure") }))
+    local rows = {
+      { "SOP number", meta_str(sop, "number") },
+      { "Title", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Approved by", meta_str(sop, "approved-by") or "" },
+      { "Revision date", meta_str(sop, "revision-date") or "" },
+      { "Author", meta_str(sop, "author") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-sop" })
+end
+
+-- ---- After-action report ----
+local function render_after_action(m)
+  local after_action = meta_map(m, "after-action")
+
+  local blocks = {}
+  -- PDF carries the after-action head in before-body.tex; the filter
+  -- emits nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("After-action report") }))
+    local rows = {
+      { "Event", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Facilitator", meta_str(after_action, "facilitator") or "" },
+      { "Scenario", meta_str(after_action, "scenario") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-after-action" })
+end
+
 -- ---- Document walk ----
 -- The marker Divs carry the class. Replace each with the rendered
 -- block. The letter marker splits into two parts: the opening block
@@ -627,6 +744,11 @@ local renderers = {
   ["obsidian-minutes-actions"] = render_minutes_actions,
   ["obsidian-contract"] = render_contract,
   ["obsidian-press-release"] = render_press_release,
+  ["obsidian-newsletter"] = render_newsletter,
+  ["obsidian-certificate"] = render_certificate,
+  ["obsidian-reading-list"] = render_reading_list,
+  ["obsidian-sop"] = render_sop,
+  ["obsidian-after-action"] = render_after_action,
 }
 
 local function has_class(el, wanted)

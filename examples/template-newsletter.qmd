@@ -1,0 +1,48 @@
+---
+title: "The Obsidian Brief"
+subtitle: "Template: a newsletter or bulletin"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["newsletter", "bulletin", "template"]
+reference: "OS-NWS-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "The Obsidian Brief"
+doc-type: "Newsletter"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+newsletter:
+  name: "The Obsidian Brief"
+  issue: "01"
+  date: "August 2026"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-newsletter}
+:::
+
+# From the editor
+
+Write the lead item here. One or two paragraphs that set the tone
+for the issue.
+
+# Project news
+
+- One line per item. Use short sentences.
+- Name the project, the milestone, and the date.
+
+# People news
+
+Record new starters, leavers, and promotions in short paragraphs.
+
+# Dates for the diary
+
+List the diary dates with the day, the month, and the time.

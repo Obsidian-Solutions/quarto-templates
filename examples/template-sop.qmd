@@ -1,0 +1,55 @@
+---
+title: "Invoice Processing"
+subtitle: "Template: a standard operating procedure"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["SOP", "procedure", "template"]
+reference: "OS-SOP-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Invoice Processing"
+doc-type: "SOP"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+sop:
+  number: "SOP-001"
+  approved-by: "Operations Director"
+  revision-date: "2026-08-14"
+  author: "Your name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-sop}
+:::
+
+# Purpose and scope
+
+State what the procedure achieves and when to use it.
+
+# Responsibilities
+
+Name who carries out the procedure and who approves it.
+
+# Procedure
+
+Number the steps and write each as one instruction. Start each step
+with an action verb:
+
+1. Receive the invoice and check the purchase order number.
+2. Match the goods received note to the invoice lines.
+3. Enter the invoice in the accounts system.
+4. Send the invoice for approval.
+5. File the approved invoice.
+
+# References
+
+List the related documents: this SOP, the finance policy, and any
+supporting forms.

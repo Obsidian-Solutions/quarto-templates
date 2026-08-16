@@ -1,0 +1,44 @@
+---
+title: "Reading List"
+subtitle: "Template: an annotated reading list"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["reading", "list", "bibliography", "template"]
+reference: "OS-RDL-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Reading List"
+doc-type: "Reading List"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+reading-list:
+  scope: "Defence logistics"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-reading-list}
+:::
+
+# Core reading
+
+1. Author, *Title*, Publisher, Year. One sentence on what it covers
+   and why it matters.
+
+2. Author, *Title*, Publisher, Year. One sentence on what it covers
+   and why it matters.
+
+# Further reading
+
+3. Author, *Title*, Publisher, Year. One sentence on what it covers
+   and why it matters.
+
+4. Author, *Title*, Publisher, Year. One sentence on what it covers
+   and why it matters.

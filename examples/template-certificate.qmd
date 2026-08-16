@@ -1,0 +1,53 @@
+---
+title: "Certificate of Achievement"
+subtitle: "Template: an award certificate"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["certificate", "award", "template"]
+reference: "OS-CER-001"
+version: "1.0.0"
+confidentiality: "Public"
+short-title: "Certificate of Achievement"
+doc-type: "Certificate"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+certificate:
+  type: "Certificate of Achievement"
+  recipient: "Recipient name"
+  date: "14 August 2026"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-certificate}
+:::
+
+**This certificate is awarded to** \
+
+*Recipient name* \
+
+**for** \
+
+Write the reason for the award here in one or two sentences. State
+the achievement simply and name the period it covers.
+
+\vspace{2em}
+
+| **Awarded on behalf of** | **Date** |
+|---|---|
+| Awarding officer name | 14 August 2026 |
+
+\vspace{1em}
+
+**Signature** \
+
+\rule{6cm}{0.4pt}
+
+Awarding officer name
