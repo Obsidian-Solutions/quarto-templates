@@ -11,4 +11,4 @@ permissions:
 
 jobs:
   update:
-    uses: Obsidian-Solutions/.github/.github/workflows/dependabot-update-branch.yml@4a484222a90ded0b2aaf3b2d4a177a41b253a312
+    uses: Obsidian-Solutions/.github/.github/workflows/dependabot-update-branch.yml@c0f4b15212359e6ff4b0bb5e3baa50d5bbe34390
