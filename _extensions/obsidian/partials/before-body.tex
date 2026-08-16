@@ -159,8 +159,17 @@ $endif$
 % contract); the running report header is suppressed by the
 % docform-aware plain page style in include-in-header.tex.
 $if(doc-type)$
+% Memo head layout: centred (default), flush-left or military.
+$if(memo-style)$
+\newcommand{\memostyle}{$memo-style$}
+$else$
+\newcommand{\memostyle}{centred}
+$endif$
 \ifdefstring{\docform}{Letter}{%
-  % Sender letterhead: brand left, sender identity and date right.
+  % Sender letterhead: brand and sender identity only. The date is
+  % not part of the letterhead; it sits top-right, level with the
+  % first line of the recipient block, the window-envelope
+  % correspondence layout.
   \begin{minipage}{0.5\textwidth}
     \raggedright
     {\IfFileExists{obsidian-logo.png}{\includegraphics[width=0.5\linewidth]{obsidian-logo.png}}{}}%
@@ -169,17 +178,70 @@ $if(doc-type)$
     \raggedleft
     {\small\bfseries Obsidian Solutions\par}%
     {\small obsidiansolutions.co.uk\par}%
-    \vspace{0.8em}%
-    {\small $date$\par}%
   \end{minipage}\par
   {\color{obsidian}\hrule height 0.8pt}\par
-  \vspace{0.8em}
+  \vspace{1.2em}
+  % Recipient block left, date right, both top-aligned: the date's
+  % first line is level with the recipient's first line.
+  \begin{minipage}[t]{0.58\textwidth}
+    \raggedright
+    \small
+    $for(letter.address)$$letter.address$\par $endfor$
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.3\textwidth}
+    \raggedleft
+    {\small $date$\par}%
+  \end{minipage}\par
+  \vspace{1.2em}
+  % Reference and subject as field lines, not headings.
+  $if(reference)$
+  {\small\bfseries Our reference:} {\small $reference$\par}%
+  $endif$
+  $if(letter.subject)$
+  {\small\bfseries Subject:} {\small $letter.subject$\par}%
+  $endif$
+  \vspace{1.2em}
+  $if(letter.opening)$
+  $letter.opening$\par
+  \vspace{1.2em}
+  $endif$
 }{%
   \ifdefstring{\docform}{Memo}{%
-    % Memo masthead: letterspaced title with a heavy rule.
-    {\LARGE\bfseries\sffamily\color{obsidian}\lsstyle MEMORANDUM\par}%
-    {\color{obsidian}\hrule height 1.2pt}\par
-    \vspace{0.5em}
+    \ifdefstring{\memostyle}{military}{%
+      % Army memorandum style: no masthead title, the office-symbol
+      % date sits top right and the recipient line opens the head.
+      {\small\raggedleft $date$\par}%
+      \vspace{0.4em}
+      \noindent MEMORANDUM FOR $for(memo.to)$$memo.to$$sep$; $endfor$\par
+      \vspace{0.8em}
+      \noindent{\bfseries\obsidianheadfont SUBJECT:} $memo.subject$\par
+      \vspace{0.8em}
+      {\color{obsidian}\hrule height 0.8pt}\par
+      \vspace{0.8em}
+    }{%
+      % Centred (default) or flush-left masthead. Both use the same
+      % flush-left colon-line field block; only the title and date
+      % placement differ.
+      \ifdefstring{\memostyle}{flush-left}{%
+        \noindent{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle MEMORANDUM\hfill\normalsize $date$\par}%
+      }{%
+        \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle MEMORANDUM\par}\end{center}%
+      }%
+      {\color{obsidian}\hrule height 1.2pt}\par
+      \vspace{0.5em}
+      % Field block: flush-left colon lines, no borders.
+      \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+        \textbf{To:} & $for(memo.to)$$memo.to$$sep$; $endfor$ \\
+        \textbf{From:} & $memo.from$ \\
+        \textbf{Date:} & $date$ \\
+        \textbf{Subject:} & $memo.subject$ \\
+        $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+        $if(memo.cosig)$\textbf{Co-signature:} & $memo.cosig$$if(memo.cosig-title)$, $memo.cosig-title$$endif$ \\$endif$
+      \end{tabular}\par
+      \vspace{0.5em}
+      {\color{obsidian}\hrule height 0.8pt}\par
+      \vspace{0.8em}
+    }%
   }{}%
 }
 $endif$

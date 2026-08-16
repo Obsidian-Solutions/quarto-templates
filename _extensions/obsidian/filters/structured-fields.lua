@@ -204,31 +204,32 @@ local function render_letter(m)
   require_list(address, "letter.address")
 
   local blocks = {}
-  -- Recipient address. PDF carries the letterhead in before-body.tex,
-  -- so the "Recipient" heading would read twice. HTML and DOCX get
-  -- the standard document header from the reference templates.
+  -- PDF carries the whole letter head (letterhead, recipient block,
+  -- date, reference, subject, opening) in before-body.tex, so the
+  -- filter emits nothing for LaTeX. HTML and DOCX get the standard
+  -- document header from the reference templates.
   if FORMAT ~= "latex" then
     table.insert(blocks, pandoc.Header(2, { pandoc.Str("Recipient") }))
-  end
-  for _, line in ipairs(address) do
-    table.insert(blocks, para(line))
-  end
-  -- Reference and subject
-  table.insert(blocks, pandoc.Para({
-    pandoc.Str("Our reference:"), pandoc.Space(),
-    pandoc.Strong(pandoc.Str(meta_str(m, "reference") or "")),
-  }))
-  local subject = meta_str(letter, "subject")
-  if subject ~= nil and subject ~= "" then
+    for _, line in ipairs(address) do
+      table.insert(blocks, para(line))
+    end
+    -- Reference and subject
     table.insert(blocks, pandoc.Para({
-      pandoc.Str("Subject:"), pandoc.Space(),
-      pandoc.Strong(pandoc.Str(subject)),
+      pandoc.Str("Our reference:"), pandoc.Space(),
+      pandoc.Strong(pandoc.Str(meta_str(m, "reference") or "")),
     }))
-  end
-  -- Opening
-  local opening = meta_str(letter, "opening")
-  if opening ~= nil and opening ~= "" then
-    table.insert(blocks, para(opening))
+    local subject = meta_str(letter, "subject")
+    if subject ~= nil and subject ~= "" then
+      table.insert(blocks, pandoc.Para({
+        pandoc.Str("Subject:"), pandoc.Space(),
+        pandoc.Strong(pandoc.Str(subject)),
+      }))
+    end
+    -- Opening
+    local opening = meta_str(letter, "opening")
+    if opening ~= nil and opening ~= "" then
+      table.insert(blocks, para(opening))
+    end
   end
 
   return pandoc.Div(blocks, { class = "obsidian-doc-letter" })
@@ -243,6 +244,23 @@ local function render_letter_closing(m)
   if closing ~= nil and closing ~= "" then
     table.insert(blocks, para(closing))
   end
+  -- Signature: a YAML block scalar, parsed as a Para with soft breaks.
+  -- Read the raw value so para_field can turn the soft breaks into
+  -- hard line breaks; meta_str would stringify the breaks to spaces.
+  local letter_raw = m.letter
+  local sig_blocks = letter_raw ~= nil and para_field(letter_raw.signature) or nil
+  if sig_blocks ~= nil then
+    -- The gap for a handwritten signature (scrlttr2 leaves roughly
+    -- six \medskipamount between closing and signature). HTML and
+    -- DOCX keep the closing and signature adjacent.
+    if FORMAT == "latex" then
+      table.insert(blocks, pandoc.RawBlock("latex", "\\vspace{2.5em}"))
+    end
+    for _, blk in ipairs(sig_blocks) do
+      table.insert(blocks, blk)
+    end
+  end
+  -- cc, encl and ps come after the signature block.
   local cc = meta_list(letter, "cc")
   if #cc > 0 then
     table.insert(blocks, pandoc.Para({ pandoc.Str("cc:"), pandoc.Space() }))
@@ -260,16 +278,6 @@ local function render_letter_closing(m)
   local ps = meta_str(letter, "ps")
   if ps ~= nil and ps ~= "" then
     table.insert(blocks, pandoc.Para({ pandoc.Str("P.S."), pandoc.Space(), pandoc.Str(ps) }))
-  end
-  -- Signature: a YAML block scalar, parsed as a Para with soft breaks.
-  -- Read the raw value so para_field can turn the soft breaks into
-  -- hard line breaks; meta_str would stringify the breaks to spaces.
-  local letter_raw = m.letter
-  local sig_blocks = letter_raw ~= nil and para_field(letter_raw.signature) or nil
-  if sig_blocks ~= nil then
-    for _, blk in ipairs(sig_blocks) do
-      table.insert(blocks, blk)
-    end
   end
   return pandoc.Div(blocks, { class = "obsidian-doc-letter-closing" })
 end
@@ -295,15 +303,16 @@ local function render_memo(m)
   end
 
   local blocks = {}
-  -- PDF carries the MEMORANDUM masthead in before-body.tex, so the
-  -- "Memo" heading would read twice. HTML and DOCX get the standard
-  -- document header instead, from the reference templates.
+  -- PDF carries the whole memo head (masthead and colon-line field
+  -- block) in before-body.tex, so the filter emits nothing for
+  -- LaTeX. HTML and DOCX get the standard document header and the
+  -- bordered label table from the reference templates.
   if FORMAT ~= "latex" then
     table.insert(blocks, pandoc.Header(2, { pandoc.Str("Memo") }))
-  end
-  local tbl = label_table(rows)
-  if tbl ~= nil then
-    table.insert(blocks, tbl)
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
   end
   return pandoc.Div(blocks, { class = "obsidian-doc-memo" })
 end

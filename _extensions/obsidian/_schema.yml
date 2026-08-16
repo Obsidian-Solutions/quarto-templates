@@ -125,6 +125,11 @@ options:
         description: "Signature block under the closing, usually the author's name and title."
 
   # ---- Memo ----
+  memo-style:
+    type: string
+    enum: [centred, flush-left, military]
+    default: centred
+    description: "Memo head layout. centred has a centred MEMORANDUM title, flush-left puts the title and date on one line, military uses the no-masthead Army memorandum form (MEMORANDUM FOR ... SUBJECT ...)."
   memo:
     type: object
     description: "Structured memo fields."

@@ -43,6 +43,11 @@
 \usepackage{etoolbox}
 \usepackage{caption}
 \SetTracking{encoding=*, family={Montserrat}}{80}
+% Headings use Montserrat through an explicit font command, not
+% \sffamily: \sfdefault is only Montserrat while the pdf format
+% metadata carries sansfont, and a document that drops sansfont would
+% silently render serif headings. \obsidianheadfont pins the intent.
+\newfontfamily\obsidianheadfont{Montserrat}
 
 % ---- Palette ----
 % Monochrome brand identity: near-black primary, drawn from the
@@ -97,21 +102,21 @@
 
 % ---- Section headings: letterspaced, thin rule under sections ----
 \titleformat{\section}
-  {\Large\bfseries\sffamily\color{obsidian}\lsstyle}
+  {\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle}
   {\thesection.}{0.6em}{}
   [\vspace{0.15em}{\color{obsidian}\titlerule[0.8pt]}]
 \titleformat{\subsection}
-  {\large\bfseries\sffamily\color{obsidianl}\lsstyle}
+  {\large\bfseries\obsidianheadfont\color{obsidianl}\lsstyle}
   {\thesubsection.}{0.6em}{}
 \titleformat{\subsubsection}
-  {\normalsize\bfseries\sffamily\color{obsidianl}\lsstyle}
+  {\normalsize\bfseries\obsidianheadfont\color{obsidianl}\lsstyle}
   {\thesubsubsection.}{0.6em}{}
 \titlespacing*{\section}{0pt}{2.2ex}{1.5ex}
 \titlespacing*{\subsection}{0pt}{1.6ex}{0.9ex}
 \titlespacing*{\subsubsection}{0pt}{1.4ex}{0.8ex}
 
 % Keep the current section name in the running header.
-\renewcommand{\sectionmark}[1]{\markright{\thesection.~{\sffamily#1}}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.~{\obsidianheadfont #1}}}
 
 % ---- Captions: small, bold slate label ----
 \captionsetup{font={small}, labelfont={bf,color=obsidianl}, labelsep=colon}
