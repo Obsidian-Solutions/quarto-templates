@@ -1,0 +1,47 @@
+---
+title: "What the new platform means for your team"
+subtitle: "Template: a blog post"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["blog", "post", "template"]
+reference: "OS-BLG-001"
+version: "1.0.0"
+confidentiality: "Public"
+short-title: "Blog Post"
+doc-type: "Blog Post"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+blog-post:
+  author: "Author name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-blog-post}
+:::
+
+State the hook in the first paragraph. Give the reader a reason to
+keep reading.
+
+# The problem
+
+State the problem the post addresses. Keep it concrete.
+
+# The answer
+
+State the answer and how it works. Use short paragraphs.
+
+# What it means
+
+State the practical effect for the reader.
+
+# Takeaway
+
+Close with the one thing the reader should remember.

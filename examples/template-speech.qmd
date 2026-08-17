@@ -1,0 +1,41 @@
+---
+title: "A word on our commitment to quality"
+subtitle: "Template: a speech for an internal or public occasion"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["speech", "remarks", "template"]
+reference: "OS-SPC-001"
+version: "1.0.0"
+confidentiality: "Public"
+short-title: "Speech"
+doc-type: "Speech"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+speech:
+  speaker: "Speaker name"
+  venue: "Company all-hands"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-speech}
+:::
+
+State the opening in one or two sentences. Thank the audience and
+name the occasion.
+
+# Body
+
+Write the body in short paragraphs. Read the speech aloud as you
+write. Keep each paragraph to one idea.
+
+# Conclusion
+
+Close with a clear message. Restate the call to action or the thanks.

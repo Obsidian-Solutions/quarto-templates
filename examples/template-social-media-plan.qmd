@@ -1,0 +1,50 @@
+---
+title: "Summer launch campaign"
+subtitle: "Template: a social media plan"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["social", "media", "plan", "template"]
+reference: "OS-SMP-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Social Media Plan"
+doc-type: "Social Media Plan"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+social-media-plan:
+  platform: "LinkedIn"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-social-media-plan}
+:::
+
+State the campaign objective in one sentence. Name the audience and
+the desired action.
+
+# Platforms
+
+Name the platforms and the role each plays. Use one short paragraph
+per platform.
+
+# Content calendar
+
+List the planned posts in a table. Name the date, the platform, the
+message, and the asset for each.
+
+# Tone and style
+
+State the voice the campaign uses. Give examples of the language to
+use and the language to avoid.
+
+# Success measures
+
+Name the metrics that prove success and the target for each.

@@ -1,0 +1,43 @@
+---
+title: "Platform reliability update"
+subtitle: "Template: Q&A brief for a spokesperson"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["q&a", "brief", "template"]
+reference: "OS-QA-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Q&A Brief"
+doc-type: "Q&A Brief"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+qa-brief:
+  prepared-by: "Comms team"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-qa-brief}
+:::
+
+State the context in one paragraph. Name the topic, the audience,
+and the message the spokesperson must land.
+
+# Questions and answers
+
+Write the likely questions and the agreed answers. Keep each answer
+to two or three sentences. Use a quote block for the approved
+statement.
+
+> "Write the approved spokesperson quote here."
+
+# Boundary questions
+
+State the questions that are off-limits and the agreed deflection.

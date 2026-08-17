@@ -1,0 +1,50 @@
+---
+title: "Balance sheet and profit and loss"
+subtitle: "Template: a financial statement for a period"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["financial", "statement", "template"]
+reference: "OS-FIN-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Financial Statement"
+doc-type: "Financial Statement"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+financial-statement:
+  period: "FY 2026"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-financial-statement}
+:::
+
+State the basis of preparation in one paragraph. Name the
+accounting standards applied and the reporting currency.
+
+# Income statement
+
+State the revenue, the costs, and the profit for the period. Use a
+table.
+
+# Balance sheet
+
+State the assets, the liabilities, and the equity at the period end.
+Use a table.
+
+# Cash flow
+
+State the operating, investing, and financing cash flows.
+
+# Notes
+
+Give the notes that support the figures. One note per significant
+item.

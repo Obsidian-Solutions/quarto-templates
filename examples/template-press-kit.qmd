@@ -1,0 +1,53 @@
+---
+title: "Obsidian Solutions media kit"
+subtitle: "Template: a press kit for the media"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["press", "kit", "media", "template"]
+reference: "OS-PK-001"
+version: "1.0.0"
+confidentiality: "Public"
+short-title: "Press Kit"
+doc-type: "Press Kit"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+press-kit:
+  version: "1.0"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-press-kit}
+:::
+
+State who the organisation is and what it does. One paragraph that
+a journalist can lift for a story.
+
+# Company overview
+
+Give the founding story, the mission, and the key facts. Include the
+founding date and the head office location.
+
+# Products and services
+
+List the main products or services. One short paragraph each.
+
+# Key executives
+
+Name the senior team and their roles.
+
+# Media assets
+
+List the available assets: logos, imagery, and boilerplate. State
+how to request them.
+
+# Contact
+
+State the media contact route.

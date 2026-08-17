@@ -201,9 +201,33 @@ $if(doc-type)$
                                                                                                                                         \ifdefstring{\docform}{Packing List}{\renewcommand{\docformatplain}{1}}{%
                                                                                                                                           \ifdefstring{\docform}{Shipping Manifest}{\renewcommand{\docformatplain}{1}}{%
                                                                                                                                             \ifdefstring{\docform}{Purchase Order}{\renewcommand{\docformatplain}{1}}{%
-                                                                                                                                              \ifdefstring{\docform}{Quote}{\renewcommand{\docformatplain}{1}}{}%
-                                                                                                                      }%
-                                                                                                                    }%
+                                                                                                                                              \ifdefstring{\docform}{Quote}{\renewcommand{\docformatplain}{1}}{%
+                                \ifdefstring{\docform}{Press Kit}{\renewcommand{\docformatplain}{1}}{%
+                                  \ifdefstring{\docform}{Speech}{\renewcommand{\docformatplain}{1}}{%
+                                    \ifdefstring{\docform}{Talking Points}{\renewcommand{\docformatplain}{1}}{%
+                                      \ifdefstring{\docform}{Q\&A Brief}{\renewcommand{\docformatplain}{1}}{%
+                                        \ifdefstring{\docform}{Blog Post}{\renewcommand{\docformatplain}{1}}{%
+                                          \ifdefstring{\docform}{Social Media Plan}{\renewcommand{\docformatplain}{1}}{%
+                                            \ifdefstring{\docform}{Crisis Statement}{\renewcommand{\docformatplain}{1}}{%
+                                              \ifdefstring{\docform}{Apology Letter}{\renewcommand{\docformatplain}{1}}{%
+                                                \ifdefstring{\docform}{Budget Proposal}{\renewcommand{\docformatplain}{1}}{%
+                                                  \ifdefstring{\docform}{Expense Report}{\renewcommand{\docformatplain}{1}}{%
+                                                    \ifdefstring{\docform}{Financial Statement}{\renewcommand{\docformatplain}{1}}{%
+                                                       \ifdefstring{\docform}{Invoice / Bill}{\renewcommand{\docformatplain}{1}}{}%
+                                                     }%
+                                                   }%
+                                                 }%
+                                               }%
+                                             }%
+                                           }%
+                                         }%
+                                       }%
+                                     }%
+                                   }%
+                                 }%
+                               }%
+                             }%
+                                                                                                                       }%
                                                                                                                   }%
                                                                                                                 }%
                                                                                                               }%
@@ -298,7 +322,10 @@ $endif$
 % and timesheets, job safety analyses, permits to work, safety data
 % sheets, shift handovers, daily activity reports, equipment checkouts,
 % purchase requisitions, packing lists, shipping manifests, purchase
-% orders and quotes are single-flow business documents:
+% orders, quotes, press kits, speeches, talking points, Q&A briefs,
+% blog posts, social media plans, crisis statements, apology letters,
+% budget proposals, expense reports, financial statements and
+% invoice/bills are single-flow business documents:
 % no cover, no separate front matter, paginate from 1.
 $if(titlepage-none)$
 \pagenumbering{arabic}
@@ -325,7 +352,10 @@ $if(titlepage-none)$
 % and timesheets, job safety analyses, permits to work, safety data
 % sheets, shift handovers, daily activity reports, equipment checkouts,
 % purchase requisitions, packing lists, shipping manifests, purchase
-% orders and quotes use the minimal plain style
+% orders, quotes, press kits, speeches, talking points, Q&A briefs,
+% blog posts, social media plans, crisis statements, apology letters,
+% budget proposals, expense reports, financial statements and
+% invoice/bills use the minimal plain style
 % (classification bands only) on every page; page 1 carries the
 % format's own letterhead, masthead or header block instead.
 $if(doc-type)$
@@ -1789,9 +1819,219 @@ $endif$
                                                                                                                             \end{tabular}\par
                                                                                                                             \vspace{0.5em}
                                                                                                                             {\color{obsidian}\hrule height 0.8pt}\par
-                                                                                                                            \vspace{0.8em}
-                                                                                                                          }{}%
-                                                                                                                        }%
+                                                              \vspace{0.8em}
+                                                            }{%
+                                                              \ifdefstring{\docform}{Press Kit}{%
+                                                                % Press kit head: centred masthead, then the
+                                                                % publication control lines. The coverage and
+                                                                % assets render in the body.
+                                                                \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle PRESS KIT\par}\end{center}%
+                                                                {\color{obsidian}\hrule height 1.2pt}\par
+                                                                \vspace{0.5em}
+                                                                \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                  \textbf{Publication:} & $title$ \\
+                                                                  \textbf{Date:} & $date$ \\
+                                                                  $if(press-kit.version)$\textbf{Version:} & $press-kit.version$ \\$endif$
+                                                                  $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                \end{tabular}\par
+                                                                \vspace{0.5em}
+                                                                {\color{obsidian}\hrule height 0.8pt}\par
+                                                                \vspace{0.8em}
+                                                              }{%
+                                                                \ifdefstring{\docform}{Speech}{%
+                                                                  % Speech head: centred masthead, then the
+                                                                  % engagement control lines. The remarks render
+                                                                  % in the body.
+                                                                  \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle SPEECH\par}\end{center}%
+                                                                  {\color{obsidian}\hrule height 1.2pt}\par
+                                                                  \vspace{0.5em}
+                                                                  \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                    \textbf{Occasion:} & $title$ \\
+                                                                    \textbf{Date:} & $date$ \\
+                                                                    $if(speech.speaker)$\textbf{Speaker:} & $speech.speaker$ \\$endif$
+                                                                    $if(speech.venue)$\textbf{Venue:} & $speech.venue$ \\$endif$
+                                                                    $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                  \end{tabular}\par
+                                                                  \vspace{0.5em}
+                                                                  {\color{obsidian}\hrule height 0.8pt}\par
+                                                                  \vspace{0.8em}
+                                                                }{%
+                                                                  \ifdefstring{\docform}{Talking Points}{%
+                                                                    % Talking points head: centred masthead, then
+                                                                    % the briefing control lines.
+                                                                    \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle TALKING POINTS\par}\end{center}%
+                                                                    {\color{obsidian}\hrule height 1.2pt}\par
+                                                                    \vspace{0.5em}
+                                                                    \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                      \textbf{Topic:} & $title$ \\
+                                                                      \textbf{Date:} & $date$ \\
+                                                                      $if(talking-points.audience)$\textbf{Audience:} & $talking-points.audience$ \\$endif$
+                                                                      $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                    \end{tabular}\par
+                                                                    \vspace{0.5em}
+                                                                    {\color{obsidian}\hrule height 0.8pt}\par
+                                                                    \vspace{0.8em}
+                                                                  }{%
+                                                                    \ifdefstring{\docform}{Q\&A Brief}{%
+                                                                      % Q&A brief head: centred masthead, then the
+                                                                      % briefing control lines.
+                                                                      \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle Q\&A BRIEF\par}\end{center}%
+                                                                      {\color{obsidian}\hrule height 1.2pt}\par
+                                                                      \vspace{0.5em}
+                                                                      \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                        \textbf{Topic:} & $title$ \\
+                                                                        \textbf{Date:} & $date$ \\
+                                                                        $if(qa-brief.prepared-by)$\textbf{Prepared by:} & $qa-brief.prepared-by$ \\$endif$
+                                                                        $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                      \end{tabular}\par
+                                                                      \vspace{0.5em}
+                                                                      {\color{obsidian}\hrule height 0.8pt}\par
+                                                                      \vspace{0.8em}
+                                                                    }{%
+                                                                      \ifdefstring{\docform}{Blog Post}{%
+                                                                        % Blog post head: centred masthead, then the
+                                                                        % publication control lines.
+                                                                        \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle BLOG POST\par}\end{center}%
+                                                                        {\color{obsidian}\hrule height 1.2pt}\par
+                                                                        \vspace{0.5em}
+                                                                        \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                          \textbf{Post:} & $title$ \\
+                                                                          \textbf{Date:} & $date$ \\
+                                                                          $if(blog-post.author)$\textbf{Author:} & $blog-post.author$ \\$endif$
+                                                                          $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                        \end{tabular}\par
+                                                                        \vspace{0.5em}
+                                                                        {\color{obsidian}\hrule height 0.8pt}\par
+                                                                        \vspace{0.8em}
+                                                                      }{%
+                                                                        \ifdefstring{\docform}{Social Media Plan}{%
+                                                                          % Social media plan head: centred masthead,
+                                                                          % then the campaign control lines.
+                                                                          \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle SOCIAL MEDIA PLAN\par}\end{center}%
+                                                                          {\color{obsidian}\hrule height 1.2pt}\par
+                                                                          \vspace{0.5em}
+                                                                          \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                            \textbf{Campaign:} & $title$ \\
+                                                                            \textbf{Date:} & $date$ \\
+                                                                            $if(social-media-plan.platform)$\textbf{Platform:} & $social-media-plan.platform$ \\$endif$
+                                                                            $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                          \end{tabular}\par
+                                                                          \vspace{0.5em}
+                                                                          {\color{obsidian}\hrule height 0.8pt}\par
+                                                                          \vspace{0.8em}
+                                                                        }{%
+                                                                          \ifdefstring{\docform}{Crisis Statement}{%
+                                                                            % Crisis statement head: centred masthead,
+                                                                            % then the statement control lines.
+                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle CRISIS STATEMENT\par}\end{center}%
+                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                            \vspace{0.5em}
+                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                              \textbf{Statement:} & $title$ \\
+                                                                              \textbf{Date:} & $date$ \\
+                                                                              $if(crisis-statement.spokesperson)$\textbf{Spokesperson:} & $crisis-statement.spokesperson$ \\$endif$
+                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                            \end{tabular}\par
+                                                                            \vspace{0.5em}
+                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                            \vspace{0.8em}
+                                                                          }{%
+                                                                            \ifdefstring{\docform}{Apology Letter}{%
+                                                                              % Apology letter head: centred masthead,
+                                                                              % then the recipient lines.
+                                                                              \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle APOLOGY LETTER\par}\end{center}%
+                                                                              {\color{obsidian}\hrule height 1.2pt}\par
+                                                                              \vspace{0.5em}
+                                                                              \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                \textbf{To:} & $apology-letter.to$ \\
+                                                                                \textbf{Date:} & $date$ \\
+                                                                                $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                              \end{tabular}\par
+                                                                              \vspace{0.5em}
+                                                                              {\color{obsidian}\hrule height 0.8pt}\par
+                                                                              \vspace{0.8em}
+                                                                            }{%
+                                                                              \ifdefstring{\docform}{Budget Proposal}{%
+                                                                                % Budget proposal head: centred masthead,
+                                                                                % then the budget control lines.
+                                                                                \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle BUDGET PROPOSAL\par}\end{center}%
+                                                                                {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                \vspace{0.5em}
+                                                                                \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                  \textbf{Budget:} & $title$ \\
+                                                                                  \textbf{Date:} & $date$ \\
+                                                                                  $if(budget-proposal.department)$\textbf{Department:} & $budget-proposal.department$ \\$endif$
+                                                                                  $if(budget-proposal.period)$\textbf{Period:} & $budget-proposal.period$ \\$endif$
+                                                                                  $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                \end{tabular}\par
+                                                                                \vspace{0.5em}
+                                                                                {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                \vspace{0.8em}
+                                                                              }{%
+                                                                                \ifdefstring{\docform}{Expense Report}{%
+                                                                                  % Expense report head: centred masthead,
+                                                                                  % then the claimant control lines.
+                                                                                  \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle EXPENSE REPORT\par}\end{center}%
+                                                                                  {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                  \vspace{0.5em}
+                                                                                  \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                    \textbf{Expense:} & $title$ \\
+                                                                                    \textbf{Date:} & $date$ \\
+                                                                                    $if(expense-report.employee)$\textbf{Employee:} & $expense-report.employee$ \\$endif$
+                                                                                    $if(expense-report.period)$\textbf{Period:} & $expense-report.period$ \\$endif$
+                                                                                    $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                  \end{tabular}\par
+                                                                                  \vspace{0.5em}
+                                                                                  {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                  \vspace{0.8em}
+                                                                                }{%
+                                                                                  \ifdefstring{\docform}{Financial Statement}{%
+                                                                                    % Financial statement head: centred
+                                                                                    % masthead, then the period control
+                                                                                    % lines.
+                                                                                    \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle FINANCIAL STATEMENT\par}\end{center}%
+                                                                                    {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                    \vspace{0.5em}
+                                                                                    \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                      \textbf{Statement:} & $title$ \\
+                                                                                      $if(financial-statement.period)$\textbf{Period:} & $financial-statement.period$ \\$endif$
+                                                                                      \textbf{Date:} & $date$ \\
+                                                                                      $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                    \end{tabular}\par
+                                                                                    \vspace{0.5em}
+                                                                                    {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                    \vspace{0.8em}
+                                                                                  }{%
+                                                                                    \ifdefstring{\docform}{Invoice / Bill}{%
+                                                                                      % Invoice/bill head: centred masthead,
+                                                                                      % then the invoice control lines.
+                                                                                      \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle INVOICE / BILL\par}\end{center}%
+                                                                                      {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                      \vspace{0.5em}
+                                                                                      \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                        \textbf{Invoice:} & $invoice-bill.number$ \\
+                                                                                        \textbf{Client:} & $invoice-bill.client$ \\
+                                                                                        \textbf{Date:} & $date$ \\
+                                                                                        $if(invoice-bill.due)$\textbf{Due:} & $invoice-bill.due$ \\$endif$
+                                                                                        $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                      \end{tabular}\par
+                                                                                      \vspace{0.5em}
+                                                                                      {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                      \vspace{0.8em}
+                                                                                    }{}%
+                                                                                  }%
+                                                                                }%
+                                                                              }%
+                                                                            }%
+                                                                          }%
+                                                                        }%
+                                                                      }%
+                                                                    }%
+                                                                  }%
+                                                                }%
+                                                              }%
+                                                            }%
+                                                          }%
                                                                                                                       }%
                                                                                                                     }%
                                                                                                                   }%

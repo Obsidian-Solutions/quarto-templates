@@ -309,6 +309,18 @@ The structured fields per block:
 | `shipping-manifest` | none | `number`, `carrier` |
 | `purchase-order` | `number` | `supplier`, `delivery-date` |
 | `quote` | none | `number`, `client`, `valid-until` |
+| `press-kit` | none | `version` |
+| `speech` | none | `speaker`, `venue` |
+| `talking-points` | none | `audience` |
+| `qa-brief` | none | `prepared-by` |
+| `blog-post` | none | `author` |
+| `social-media-plan` | none | `platform` |
+| `crisis-statement` | none | `spokesperson` |
+| `apology-letter` | none | `to` |
+| `budget-proposal` | none | `department`, `period` |
+| `expense-report` | none | `employee`, `period` |
+| `financial-statement` | none | `period` |
+| `invoice-bill` | none | `number`, `client`, `due` |
 
 For the letter the whole head (recipient block, date, reference,
 subject, opening) is owned by LaTeX on PDF: the recipient block sits
@@ -608,8 +620,14 @@ The examples (`template-letter.qmd`, `template-memo.qmd`,
 `template-equipment-checkout.qmd`,
 `template-purchase-requisition.qmd`, `template-packing-list.qmd`,
 `template-shipping-manifest.qmd`, `template-purchase-order.qmd`,
-`template-quote.qmd`) show
-each block
+`template-quote.qmd`, `template-press-kit.qmd`,
+`template-speech.qmd`, `template-talking-points.qmd`,
+`template-qa-brief.qmd`, `template-blog-post.qmd`,
+`template-social-media-plan.qmd`, `template-crisis-statement.qmd`,
+`template-apology-letter.qmd`, `template-budget-proposal.qmd`,
+`template-expense-report.qmd`,
+`template-financial-statement.qmd`, `template-invoice-bill.qmd`)
+show each block
 filled in. The schema
 for IDE completion lives in `_extensions/obsidian/_schema.yml`, and
 front-matter snippets for each document type live in

@@ -2063,6 +2063,261 @@ local function render_quote(m)
   return pandoc.Div(blocks, { class = "obsidian-doc-quote" })
 end
 
+-- ---- Press kit ----
+local function render_press_kit(m)
+  local pk = meta_map(m, "press-kit")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Press kit") }))
+    local rows = {
+      { "Publication", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Version", meta_str(pk, "version") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-press-kit" })
+end
+
+-- ---- Speech ----
+local function render_speech(m)
+  local sp = meta_map(m, "speech")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Speech") }))
+    local rows = {
+      { "Occasion", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Speaker", meta_str(sp, "speaker") or "" },
+      { "Venue", meta_str(sp, "venue") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-speech" })
+end
+
+-- ---- Talking points ----
+local function render_talking_points(m)
+  local tp = meta_map(m, "talking-points")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Talking points") }))
+    local rows = {
+      { "Topic", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Audience", meta_str(tp, "audience") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-talking-points" })
+end
+
+-- ---- Q&A brief ----
+local function render_qa_brief(m)
+  local qa = meta_map(m, "qa-brief")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Q&A brief") }))
+    local rows = {
+      { "Topic", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Prepared by", meta_str(qa, "prepared-by") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-qa-brief" })
+end
+
+-- ---- Blog post ----
+local function render_blog_post(m)
+  local bp = meta_map(m, "blog-post")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Blog post") }))
+    local rows = {
+      { "Post", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Author", meta_str(bp, "author") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-blog-post" })
+end
+
+-- ---- Social media plan ----
+local function render_social_media_plan(m)
+  local smp = meta_map(m, "social-media-plan")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Social media plan") }))
+    local rows = {
+      { "Campaign", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Platform", meta_str(smp, "platform") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-social-media-plan" })
+end
+
+-- ---- Crisis statement ----
+local function render_crisis_statement(m)
+  local cs = meta_map(m, "crisis-statement")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Crisis statement") }))
+    local rows = {
+      { "Statement", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Spokesperson", meta_str(cs, "spokesperson") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-crisis-statement" })
+end
+
+-- ---- Apology letter ----
+local function render_apology_letter(m)
+  local al = meta_map(m, "apology-letter")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Apology letter") }))
+    local rows = {
+      { "To", meta_str(al, "to") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-apology-letter" })
+end
+
+-- ---- Budget proposal ----
+local function render_budget_proposal(m)
+  local bp = meta_map(m, "budget-proposal")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Budget proposal") }))
+    local rows = {
+      { "Budget", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Department", meta_str(bp, "department") or "" },
+      { "Period", meta_str(bp, "period") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-budget-proposal" })
+end
+
+-- ---- Expense report ----
+local function render_expense_report(m)
+  local er = meta_map(m, "expense-report")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Expense report") }))
+    local rows = {
+      { "Expense", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Employee", meta_str(er, "employee") or "" },
+      { "Period", meta_str(er, "period") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-expense-report" })
+end
+
+-- ---- Financial statement ----
+local function render_financial_statement(m)
+  local fs = meta_map(m, "financial-statement")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Financial statement") }))
+    local rows = {
+      { "Statement", meta_str(m, "title") or "" },
+      { "Period", meta_str(fs, "period") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-financial-statement" })
+end
+
+-- ---- Invoice / bill ----
+local function render_invoice_bill(m)
+  local ib = meta_map(m, "invoice-bill")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Invoice / bill") }))
+    local rows = {
+      { "Invoice", meta_str(ib, "number") or "" },
+      { "Client", meta_str(ib, "client") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Due", meta_str(ib, "due") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-invoice-bill" })
+end
+
 -- ---- Document walk ----
 -- The marker Divs carry the class. Replace each with the rendered
 -- block. The letter marker splits into two parts: the opening block
@@ -2143,6 +2398,18 @@ local renderers = {
   ["obsidian-shipping-manifest"] = render_shipping_manifest,
   ["obsidian-purchase-order"] = render_purchase_order,
   ["obsidian-quote"] = render_quote,
+  ["obsidian-press-kit"] = render_press_kit,
+  ["obsidian-speech"] = render_speech,
+  ["obsidian-talking-points"] = render_talking_points,
+  ["obsidian-qa-brief"] = render_qa_brief,
+  ["obsidian-blog-post"] = render_blog_post,
+  ["obsidian-social-media-plan"] = render_social_media_plan,
+  ["obsidian-crisis-statement"] = render_crisis_statement,
+  ["obsidian-apology-letter"] = render_apology_letter,
+  ["obsidian-budget-proposal"] = render_budget_proposal,
+  ["obsidian-expense-report"] = render_expense_report,
+  ["obsidian-financial-statement"] = render_financial_statement,
+  ["obsidian-invoice-bill"] = render_invoice_bill,
 }
 
 local function has_class(el, wanted)

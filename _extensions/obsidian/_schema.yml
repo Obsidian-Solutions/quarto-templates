@@ -1236,6 +1236,130 @@ options:
         format: date
         description: "Quote validity date."
 
+  # ---- Press kit ----
+  press-kit:
+    type: object
+    description: "Structured press kit fields."
+    properties:
+      version:
+        type: string
+        description: "Kit version."
+
+  # ---- Speech ----
+  speech:
+    type: object
+    description: "Structured speech fields."
+    properties:
+      speaker:
+        type: string
+        description: "Speaker name."
+      venue:
+        type: string
+        description: "Speech venue."
+
+  # ---- Talking points ----
+  talking-points:
+    type: object
+    description: "Structured talking points fields."
+    properties:
+      audience:
+        type: string
+        description: "Intended audience."
+
+  # ---- Q&A brief ----
+  qa-brief:
+    type: object
+    description: "Structured Q&A brief fields."
+    properties:
+      prepared-by:
+        type: string
+        description: "Who prepared the brief."
+
+  # ---- Blog post ----
+  blog-post:
+    type: object
+    description: "Structured blog post fields."
+    properties:
+      author:
+        type: string
+        description: "Post author."
+
+  # ---- Social media plan ----
+  social-media-plan:
+    type: object
+    description: "Structured social media plan fields."
+    properties:
+      platform:
+        type: string
+        description: "Primary platform."
+
+  # ---- Crisis statement ----
+  crisis-statement:
+    type: object
+    description: "Structured crisis statement fields."
+    properties:
+      spokesperson:
+        type: string
+        description: "Named spokesperson."
+
+  # ---- Apology letter ----
+  apology-letter:
+    type: object
+    description: "Structured apology letter fields."
+    properties:
+      to:
+        type: string
+        description: "Recipient of the apology."
+
+  # ---- Budget proposal ----
+  budget-proposal:
+    type: object
+    description: "Structured budget proposal fields."
+    properties:
+      department:
+        type: string
+        description: "Owning department."
+      period:
+        type: string
+        description: "Budget period."
+
+  # ---- Expense report ----
+  expense-report:
+    type: object
+    description: "Structured expense report fields."
+    properties:
+      employee:
+        type: string
+        description: "Claimant name."
+      period:
+        type: string
+        description: "Expense period."
+
+  # ---- Financial statement ----
+  financial-statement:
+    type: object
+    description: "Structured financial statement fields."
+    properties:
+      period:
+        type: string
+        description: "Statement period."
+
+  # ---- Invoice / bill ----
+  invoice-bill:
+    type: object
+    description: "Structured invoice or bill fields."
+    properties:
+      number:
+        type: string
+        description: "Invoice number."
+      client:
+        type: string
+        description: "Client name."
+      due:
+        type: string
+        format: date
+        description: "Payment due date."
+
   # ---- Invoice ----
   invoice:
     type: object
