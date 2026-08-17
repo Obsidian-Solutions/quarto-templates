@@ -1,0 +1,55 @@
+---
+title: "2027 capability budget"
+subtitle: "Template: a budget proposal for the next financial year"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["budget", "proposal", "template"]
+reference: "OS-BUD-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Budget Proposal"
+doc-type: "Budget Proposal"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+budget-proposal:
+  department: "Engineering"
+  period: "FY 2027"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-budget-proposal}
+:::
+
+State the proposal in one paragraph. Name the total, the period, and
+the strategic goal it serves.
+
+# Strategic context
+
+State how the budget supports the organisation plan. Link the spend
+to a named objective.
+
+# Cost breakdown
+
+Break the budget into categories. Use a table with category, amount,
+and justification columns.
+
+# Assumptions
+
+State the assumptions behind the figures. Name the cost drivers and
+the sensitivities.
+
+# Risks
+
+State the risks to the budget and the mitigation for each.
+
+# Approval
+
+State the decision required and the date by which it is needed.

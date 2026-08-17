@@ -1,0 +1,45 @@
+---
+title: "Platform reliability update"
+subtitle: "Template: talking points for a briefing"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["talking", "points", "briefing", "template"]
+reference: "OS-TP-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Talking Points"
+doc-type: "Talking Points"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+talking-points:
+  audience: "Internal staff"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-talking-points}
+:::
+
+State the purpose of the briefing in one sentence.
+
+# Key messages
+
+- Write the first key message.
+- Write the second key message.
+- Write the third key message.
+
+# Supporting points
+
+Give one or two sentences of support for each key message.
+
+# Likely questions
+
+Anticipate the questions the audience will ask. Draft a short answer
+for each.

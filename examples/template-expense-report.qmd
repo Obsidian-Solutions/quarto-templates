@@ -1,0 +1,47 @@
+---
+title: "August travel and subsistence"
+subtitle: "Template: an expense report for reimbursement"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["expense", "report", "template"]
+reference: "OS-EXP-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Expense Report"
+doc-type: "Expense Report"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+expense-report:
+  employee: "Your name"
+  period: "August 2026"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-expense-report}
+:::
+
+State the purpose of the claim in one sentence. Name the trip or the
+project it relates to.
+
+# Expense items
+
+List the items in a table with date, description, and amount
+columns.
+
+# Approvals
+
+State the approvals required. Name the approver and the date of
+submission.
+
+# Declaration
+
+Confirm the claim is accurate and compliant with the expenses
+policy.

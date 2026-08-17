@@ -1,0 +1,48 @@
+---
+title: "Apology for the delivery delay"
+subtitle: "Template: an apology letter to a client"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["apology", "letter", "template"]
+reference: "OS-APL-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Apology Letter"
+doc-type: "Apology Letter"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+apology-letter:
+  to: "Client name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-apology-letter}
+:::
+
+State the apology directly in the first sentence. Name what went
+wrong and the effect on the reader.
+
+# What happened
+
+Give the facts of the failure. Do not make excuses or shift blame.
+
+# What we are doing
+
+State the corrective actions and the owner of each. Give a date for
+the correction.
+
+# What we have changed
+
+State the change that stops the failure recurring.
+
+# Offer
+
+State any goodwill offered, such as a discount or a credit.

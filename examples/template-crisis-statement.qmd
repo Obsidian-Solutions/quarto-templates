@@ -1,0 +1,49 @@
+---
+title: "Statement on the service interruption"
+subtitle: "Template: a crisis statement for public release"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["crisis", "statement", "template"]
+reference: "OS-CRS-001"
+version: "1.0.0"
+confidentiality: "Public"
+short-title: "Crisis Statement"
+doc-type: "Crisis Statement"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+crisis-statement:
+  spokesperson: "Communications director name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-crisis-statement}
+:::
+
+State the situation in one or two sentences. Acknowledge the impact
+without speculation.
+
+# What we know
+
+State the confirmed facts only. Do not guess at causes you cannot
+support.
+
+# What we are doing
+
+State the actions taken and the next steps. Name the owner of each
+action.
+
+# When we will update
+
+State the timing of the next update and the channel.
+
+# Contact
+
+State the media contact route.

@@ -1,0 +1,48 @@
+---
+title: "Consultancy services, July 2026"
+subtitle: "Template: an invoice or bill for payment"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["invoice", "bill", "template"]
+reference: "OS-INV-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Invoice / Bill"
+doc-type: "Invoice / Bill"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+invoice-bill:
+  number: "INV-2026-0001"
+  client: "Client name"
+  due: "2026-09-14"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-invoice-bill}
+:::
+
+State the services supplied in one paragraph. Reference the
+agreement or purchase order.
+
+# Items
+
+List the items in a table with description, quantity, rate, and
+amount columns.
+
+# Payment
+
+State the total, the currency, and the due date. Name the payment
+method and bank details.
+
+# Notes
+
+Add any notes the client needs. State the late payment terms if
+they apply.
