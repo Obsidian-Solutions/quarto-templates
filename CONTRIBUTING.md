@@ -70,27 +70,37 @@ A change is done when:
 ## Releases
 
 Releases are automated. Do not bump versions or write changelog
-entries by hand. The generator does the whole job from the version
-number you give it:
+entries by hand. The version has a single source of truth:
+`_extensions/obsidian/_extension.yml`. The generator derives
+everything from that one value:
 
 1. Merge the change to `main` with squash.
-2. Generate the release content: `python3 tools/make-changelog.py --version 3.4.0`.
-   This regenerates `CHANGELOG.md` from the commit history, keeps the
-   version homes in step (`_extensions/obsidian/_extension.yml` and
-   `tools/make-sbom.py`), and regenerates the SBOM. The SBOM records
-   the current commit in its document namespace. It is generated
-   before the release commit exists, so the committed SBOM lags the
-   release by one commit. The lag is deliberate. The CI freshness
-   check regenerates the SBOM and compares it with
-   `git diff --exit-code`. The committed file must match the tree at
-   generation time.
-3. Commit and push: `git add -A && git commit -S -m "chore: prepare release v3.4.0" && git push`.
-   Sign the commit with your key.
+2. Bump the version in `_extensions/obsidian/_extension.yml`, then
+   generate the release content: `python3 tools/make-changelog.py`.
+   The script reads the version from the manifest, not from a flag.
+   It stops if that version is already tagged. It regenerates
+   `CHANGELOG.md` from the commit history, keeps the version homes
+   in step (`tools/make-sbom.py` versionInfo), and regenerates the
+   SBOM. The SBOM records the current commit in its document
+   namespace. It is generated before the release commit exists, so
+   the committed SBOM lags the release by one commit. The lag is
+   deliberate. The CI freshness check regenerates the SBOM and
+   compares it with `git diff --exit-code`. The committed file must
+   match the tree at generation time.
+3. Commit and push: `git add -A && git commit -S -m "chore: prepare release v3.4.0"`.
+   Sign the commit with your key. `main` is protected: direct
+   pushes are rejected, so push a release branch and merge it with a
+   squash PR.
 4. Create the release tag locally, annotated and GPG-signed with your
    key: `git tag -s v3.4.0 -m "Release v3.4.0"` and push it with
    `git push origin v3.4.0`. GitHub does not create the tag. The
    owner creates it, so the signature carries the owner's authority.
-5. Create the release: `gh release create v3.4.0 --generate-notes`.
+5. Publish the draft release. The `release` workflow drafts it
+   automatically when the tag lands: it renders the release
+   examples, regenerates the SBOM, and creates a draft with the
+   automatic release notes. Review the draft on GitHub, then publish
+   it with `gh release edit v3.4.0 --draft=false`. Publishing
+   triggers the attestation workflow, which signs the assets.
    The release points at the tag you pushed, so it carries the
    verified badge.
 
