@@ -1,0 +1,53 @@
+---
+title: "Measurement of g"
+subtitle: "Template: laboratory report for a practical experiment"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["laboratory", "report", "template"]
+reference: "OS-LAB-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Laboratory Report"
+doc-type: "Laboratory Report"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+lab-report:
+  course: "Physics module"
+  student: "Student name"
+  partner: "Partner name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-lab-report}
+:::
+
+State the aim in one paragraph. Say what the experiment set out to
+measure and why.
+
+# Method
+
+Describe the apparatus and procedure. Give enough detail for a
+reader to repeat the work.
+
+# Results
+
+Present the measurements and the calculated values. Use a table for
+the raw data and state the uncertainties.
+
+# Analysis
+
+Show the calculations. State the derived value with its uncertainty
+and compare it with the accepted value.
+
+# Conclusion
+
+State what the experiment established. Name the main sources of
+error and how to reduce them.

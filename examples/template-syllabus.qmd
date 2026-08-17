@@ -1,0 +1,51 @@
+---
+title: "Systems Engineering"
+subtitle: "Template: course syllabus and assessment plan"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["syllabus", "course", "template"]
+reference: "OS-SYL-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Syllabus"
+doc-type: "Syllabus"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+syllabus:
+  code: "SE-101"
+  term: "Autumn 2026"
+  instructor: "Instructor name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-syllabus}
+:::
+
+State the course in one paragraph. Name the level, the audience, and
+the learning outcomes.
+
+# Schedule
+
+List the teaching weeks with their topics. Use a table.
+
+# Assessment
+
+State the assessment structure. Name the components, their weights,
+and the due dates.
+
+# Grading
+
+State the grading scale and the marks required for each grade.
+
+# Policies
+
+State the course policies: attendance, late work, academic
+integrity, and extensions.

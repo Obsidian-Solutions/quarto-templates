@@ -1,0 +1,51 @@
+---
+title: "Resilience engineering"
+subtitle: "Template: literature review with thematic synthesis"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["literature", "review", "template"]
+reference: "OS-LRV-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Literature Review"
+doc-type: "Literature Review"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+literature-review:
+  scope: "Peer-reviewed papers, 2015 to 2026"
+  reviewer: "Reviewer name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-literature-review}
+:::
+
+State the review scope in one paragraph. Name the search strategy,
+the inclusion criteria, and the body of literature covered.
+
+# Theme 1
+
+Synthesise the first theme. Compare the findings and name the
+agreement and disagreement between sources.
+
+# Theme 2
+
+Synthesise the second theme in the same way.
+
+# Gaps
+
+Name the gaps in the literature and the questions the review leaves
+open.
+
+# Conclusion
+
+State what the review establishes and how the field should move
+forward.

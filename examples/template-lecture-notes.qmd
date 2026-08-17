@@ -1,0 +1,51 @@
+---
+title: "Introduction to templates"
+subtitle: "Template: lecture notes for a single session"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["lecture", "notes", "template"]
+reference: "OS-LEC-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Lecture Notes"
+doc-type: "Lecture Notes"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+lecture-notes:
+  course: "Module name"
+  date: "2026-08-14"
+  speaker: "Lecturer name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-lecture-notes}
+:::
+
+State the lecture objectives in one paragraph. Name what the
+student should know and be able to do by the end.
+
+# Key points
+
+Develop the key points in short sections. Use one sub heading per
+point and one paragraph or list per sub heading.
+
+# Examples
+
+Work through one or two worked examples. Show the reasoning step by
+step.
+
+# Reading
+
+List the required reading and the optional reading.
+
+# Questions
+
+List the questions for the tutorial and for self study.

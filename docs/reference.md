@@ -266,6 +266,15 @@ The structured fields per block:
 | `test-report` | none | `version`, `tester` |
 | `rfp` | `issuer` | `deadline` |
 | `sla` | `parties` | `term` |
+| `exam-paper` | `course` | `duration`, `examiner` |
+| `lab-report` | none | `course`, `student`, `partner` |
+| `syllabus` | none | `code`, `term`, `instructor` |
+| `essay` | none | `course`, `word-count` |
+| `research-proposal` | none | `supervisor`, `duration` |
+| `dissertation-proposal` | none | `degree`, `supervisor` |
+| `literature-review` | none | `scope`, `reviewer` |
+| `marking-rubric` | none | `course`, `marker` |
+| `lecture-notes` | none | `course`, `date`, `speaker` |
 
 For the letter the whole head (recipient block, date, reference,
 subject, opening) is owned by LaTeX on PDF: the recipient block sits
@@ -409,6 +418,43 @@ The service level agreement head on PDF is a centred SERVICE LEVEL
 AGREEMENT masthead with the service, parties, date, term, and
 reference lines. The service levels and credits render in the body.
 
+The exam paper head on PDF is a centred EXAM PAPER masthead with the
+course, date, duration, examiner, and reference lines. The questions
+render in the body.
+
+The laboratory report head on PDF is a centred LABORATORY REPORT
+masthead with the experiment, course, date, student, partner, and
+reference lines. The abstract, method, results, and discussion
+render in the body.
+
+The syllabus head on PDF is a centred SYLLABUS masthead with the
+course, code, term, instructor, and reference lines. The schedule,
+assessment, and policies render in the body.
+
+The essay head on PDF is a centred ESSAY masthead with the title,
+course, date, word count, and reference lines. The argument and
+conclusion render in the body.
+
+The research proposal head on PDF is a centred RESEARCH PROPOSAL
+masthead with the proposal, date, supervisor, duration, and
+reference lines. The objectives and methodology render in the body.
+
+The dissertation proposal head on PDF is a centred DISSERTATION
+PROPOSAL masthead with the dissertation, degree, date, supervisor,
+and reference lines. The research plan renders in the body.
+
+The literature review head on PDF is a centred LITERATURE REVIEW
+masthead with the topic, scope, date, reviewer, and reference lines.
+The thematic sections render in the body.
+
+The marking rubric head on PDF is a centred MARKING RUBRIC masthead
+with the assignment, course, date, marker, and reference lines. The
+criteria table renders in the body.
+
+The lecture notes head on PDF is a centred LECTURE NOTES masthead
+with the lecture, course, date, speaker, and reference lines. The
+notes render in the body.
+
 The examples (`template-letter.qmd`, `template-memo.qmd`,
 `template-agenda.qmd`, `template-brief.qmd`, `template-decision.qmd`,
 `template-minutes.qmd`, `template-contract.qmd`,
@@ -422,7 +468,12 @@ The examples (`template-letter.qmd`, `template-memo.qmd`,
 `template-requirements-spec.qmd`, `template-technical-design.qmd`,
 `template-reference-letter.qmd`, `template-staff-report.qmd`,
 `template-release-notes.qmd`, `template-test-report.qmd`,
-`template-rfp.qmd`, `template-sla.qmd`) show each block
+`template-rfp.qmd`, `template-sla.qmd`, `template-exam-paper.qmd`,
+`template-lab-report.qmd`, `template-syllabus.qmd`,
+`template-essay.qmd`, `template-research-proposal.qmd`,
+`template-dissertation-proposal.qmd`, `template-literature-review.qmd`,
+`template-marking-rubric.qmd`, `template-lecture-notes.qmd`) show
+each block
 filled in. The schema
 for IDE completion lives in `_extensions/obsidian/_schema.yml`, and
 front-matter snippets for each document type live in

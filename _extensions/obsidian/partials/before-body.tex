@@ -158,7 +158,25 @@ $if(doc-type)$
                                                       \ifdefstring{\docform}{Release Notes}{\renewcommand{\docformatplain}{1}}{%
                                                         \ifdefstring{\docform}{Test Report}{\renewcommand{\docformatplain}{1}}{%
                                                           \ifdefstring{\docform}{Request for Proposal}{\renewcommand{\docformatplain}{1}}{%
-                                                            \ifdefstring{\docform}{Service Level Agreement}{\renewcommand{\docformatplain}{1}}{}%
+                                                            \ifdefstring{\docform}{Service Level Agreement}{\renewcommand{\docformatplain}{1}}{%
+                                                              \ifdefstring{\docform}{Exam Paper}{\renewcommand{\docformatplain}{1}}{%
+                                                                \ifdefstring{\docform}{Laboratory Report}{\renewcommand{\docformatplain}{1}}{%
+                                                                  \ifdefstring{\docform}{Syllabus}{\renewcommand{\docformatplain}{1}}{%
+                                                                    \ifdefstring{\docform}{Essay}{\renewcommand{\docformatplain}{1}}{%
+                                                                      \ifdefstring{\docform}{Research Proposal}{\renewcommand{\docformatplain}{1}}{%
+                                                                        \ifdefstring{\docform}{Dissertation Proposal}{\renewcommand{\docformatplain}{1}}{%
+                                                                          \ifdefstring{\docform}{Literature Review}{\renewcommand{\docformatplain}{1}}{%
+                                                                            \ifdefstring{\docform}{Marking Rubric}{\renewcommand{\docformatplain}{1}}{%
+                                                                              \ifdefstring{\docform}{Lecture Notes}{\renewcommand{\docformatplain}{1}}{}%
+                                                                            }%
+                                                                          }%
+                                                                        }%
+                                                                      }%
+                                                                    }%
+                                                                  }%
+                                                                }%
+                                                              }%
+                                                            }%
                                                           }%
                                                         }%
                                                       }%
@@ -200,8 +218,10 @@ $endif$
 % audit reports, incident reports, statements of work, fact sheets,
 % requirements specifications, technical design documents, reference
 % letters, staff reports, release notes, test reports, requests for
-% proposal and service level agreements are single-flow business
-% documents:
+% proposal, service level agreements, exam papers, laboratory
+% reports, syllabuses, essays, research proposals, dissertation
+% proposals, literature reviews, marking rubrics and lecture notes
+% are single-flow business documents:
 % no cover, no separate front matter, paginate from 1.
 $if(titlepage-none)$
 \pagenumbering{arabic}
@@ -215,7 +235,10 @@ $if(titlepage-none)$
 % audit reports, incident reports, statements of work, fact sheets,
 % requirements specifications, technical design documents, reference
 % letters, staff reports, release notes, test reports, requests for
-% proposal and service level agreements use the minimal plain style
+% proposal, service level agreements, exam papers, laboratory
+% reports, syllabuses, essays, research proposals, dissertation
+% proposals, literature reviews, marking rubrics and lecture notes
+% use the minimal plain style
 % (classification bands only) on every page; page 1 carries the
 % format's own letterhead, masthead or header block instead.
 $if(doc-type)$
@@ -885,7 +908,181 @@ $endif$
                                                             \vspace{0.5em}
                                                             {\color{obsidian}\hrule height 0.8pt}\par
                                                             \vspace{0.8em}
-                                                          }{}%
+                                                          }{%
+                                                            \ifdefstring{\docform}{Exam Paper}{%
+                                                              % Exam paper head: centred masthead, then the
+                                                              % examination control lines. Questions render
+                                                              % in the body.
+                                                              \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle EXAM PAPER\par}\end{center}%
+                                                              {\color{obsidian}\hrule height 1.2pt}\par
+                                                              \vspace{0.5em}
+                                                              \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                \textbf{Course:} & $exam-paper.course$ \\
+                                                                \textbf{Date:} & $date$ \\
+                                                                $if(exam-paper.duration)$\textbf{Duration:} & $exam-paper.duration$ \\$endif$
+                                                                $if(exam-paper.examiner)$\textbf{Examiner:} & $exam-paper.examiner$ \\$endif$
+                                                                $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                              \end{tabular}\par
+                                                              \vspace{0.5em}
+                                                              {\color{obsidian}\hrule height 0.8pt}\par
+                                                              \vspace{0.8em}
+                                                            }{%
+                                                              \ifdefstring{\docform}{Laboratory Report}{%
+                                                                % Laboratory report head: centred masthead,
+                                                                % then course and experiment lines. The
+                                                                % abstract, method, results and discussion
+                                                                % render in the body.
+                                                                \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle LABORATORY REPORT\par}\end{center}%
+                                                                {\color{obsidian}\hrule height 1.2pt}\par
+                                                                \vspace{0.5em}
+                                                                \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                  \textbf{Experiment:} & $title$ \\
+                                                                  $if(lab-report.course)$\textbf{Course:} & $lab-report.course$ \\$endif$
+                                                                  \textbf{Date:} & $date$ \\
+                                                                  $if(lab-report.student)$\textbf{Student:} & $lab-report.student$ \\$endif$
+                                                                  $if(lab-report.partner)$\textbf{Partner:} & $lab-report.partner$ \\$endif$
+                                                                  $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                \end{tabular}\par
+                                                                \vspace{0.5em}
+                                                                {\color{obsidian}\hrule height 0.8pt}\par
+                                                                \vspace{0.8em}
+                                                              }{%
+                                                                \ifdefstring{\docform}{Syllabus}{%
+                                                                  % Syllabus head: centred masthead, then the
+                                                                  % course identity lines. The schedule,
+                                                                  % assessment and policies render in the body.
+                                                                  \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle SYLLABUS\par}\end{center}%
+                                                                  {\color{obsidian}\hrule height 1.2pt}\par
+                                                                  \vspace{0.5em}
+                                                                  \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                    \textbf{Course:} & $title$ \\
+                                                                    $if(syllabus.code)$\textbf{Code:} & $syllabus.code$ \\$endif$
+                                                                    $if(syllabus.term)$\textbf{Term:} & $syllabus.term$ \\$endif$
+                                                                    $if(syllabus.instructor)$\textbf{Instructor:} & $syllabus.instructor$ \\$endif$
+                                                                    $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                  \end{tabular}\par
+                                                                  \vspace{0.5em}
+                                                                  {\color{obsidian}\hrule height 0.8pt}\par
+                                                                  \vspace{0.8em}
+                                                                }{%
+                                                                  \ifdefstring{\docform}{Essay}{%
+                                                                    % Essay head: centred masthead, then the
+                                                                    % assignment lines. The argument and
+                                                                    % conclusion render in the body.
+                                                                    \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle ESSAY\par}\end{center}%
+                                                                    {\color{obsidian}\hrule height 1.2pt}\par
+                                                                    \vspace{0.5em}
+                                                                    \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                      \textbf{Title:} & $title$ \\
+                                                                      $if(essay.course)$\textbf{Course:} & $essay.course$ \\$endif$
+                                                                      \textbf{Date:} & $date$ \\
+                                                                      $if(essay.word-count)$\textbf{Word count:} & $essay.word-count$ \\$endif$
+                                                                      $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                    \end{tabular}\par
+                                                                    \vspace{0.5em}
+                                                                    {\color{obsidian}\hrule height 0.8pt}\par
+                                                                    \vspace{0.8em}
+                                                                  }{%
+                                                                    \ifdefstring{\docform}{Research Proposal}{%
+                                                                      % Research proposal head: centred masthead,
+                                                                      % then the proposal identity lines. The
+                                                                      % objectives and methodology render in the
+                                                                      % body.
+                                                                      \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle RESEARCH PROPOSAL\par}\end{center}%
+                                                                      {\color{obsidian}\hrule height 1.2pt}\par
+                                                                      \vspace{0.5em}
+                                                                      \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                        \textbf{Proposal:} & $title$ \\
+                                                                        \textbf{Date:} & $date$ \\
+                                                                        $if(research-proposal.supervisor)$\textbf{Supervisor:} & $research-proposal.supervisor$ \\$endif$
+                                                                        $if(research-proposal.duration)$\textbf{Duration:} & $research-proposal.duration$ \\$endif$
+                                                                        $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                      \end{tabular}\par
+                                                                      \vspace{0.5em}
+                                                                      {\color{obsidian}\hrule height 0.8pt}\par
+                                                                      \vspace{0.8em}
+                                                                    }{%
+                                                                      \ifdefstring{\docform}{Dissertation Proposal}{%
+                                                                        % Dissertation proposal head: centred
+                                                                        % masthead, then the degree lines. The
+                                                                        % research plan renders in the body.
+                                                                        \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle DISSERTATION PROPOSAL\par}\end{center}%
+                                                                        {\color{obsidian}\hrule height 1.2pt}\par
+                                                                        \vspace{0.5em}
+                                                                        \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                          \textbf{Dissertation:} & $title$ \\
+                                                                          $if(dissertation-proposal.degree)$\textbf{Degree:} & $dissertation-proposal.degree$ \\$endif$
+                                                                          \textbf{Date:} & $date$ \\
+                                                                          $if(dissertation-proposal.supervisor)$\textbf{Supervisor:} & $dissertation-proposal.supervisor$ \\$endif$
+                                                                          $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                        \end{tabular}\par
+                                                                        \vspace{0.5em}
+                                                                        {\color{obsidian}\hrule height 0.8pt}\par
+                                                                        \vspace{0.8em}
+                                                                      }{%
+                                                                        \ifdefstring{\docform}{Literature Review}{%
+                                                                          % Literature review head: centred
+                                                                          % masthead, then the review lines. The
+                                                                          % thematic sections render in the body.
+                                                                          \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle LITERATURE REVIEW\par}\end{center}%
+                                                                          {\color{obsidian}\hrule height 1.2pt}\par
+                                                                          \vspace{0.5em}
+                                                                          \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                            \textbf{Topic:} & $title$ \\
+                                                                            $if(literature-review.scope)$\textbf{Scope:} & $literature-review.scope$ \\$endif$
+                                                                            \textbf{Date:} & $date$ \\
+                                                                            $if(literature-review.reviewer)$\textbf{Reviewer:} & $literature-review.reviewer$ \\$endif$
+                                                                            $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                          \end{tabular}\par
+                                                                          \vspace{0.5em}
+                                                                          {\color{obsidian}\hrule height 0.8pt}\par
+                                                                          \vspace{0.8em}
+                                                                        }{%
+                                                                          \ifdefstring{\docform}{Marking Rubric}{%
+                                                                            % Marking rubric head: centred masthead,
+                                                                            % then the assessment lines. The criteria
+                                                                            % table renders in the body.
+                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle MARKING RUBRIC\par}\end{center}%
+                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                            \vspace{0.5em}
+                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                              \textbf{Assignment:} & $title$ \\
+                                                                              $if(marking-rubric.course)$\textbf{Course:} & $marking-rubric.course$ \\$endif$
+                                                                              \textbf{Date:} & $date$ \\
+                                                                              $if(marking-rubric.marker)$\textbf{Marker:} & $marking-rubric.marker$ \\$endif$
+                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                            \end{tabular}\par
+                                                                            \vspace{0.5em}
+                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                            \vspace{0.8em}
+                                                                          }{%
+                                                                            \ifdefstring{\docform}{Lecture Notes}{%
+                                                                              % Lecture notes head: centred masthead,
+                                                                              % then the lecture identity lines. The
+                                                                              % notes render in the body.
+                                                                              \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle LECTURE NOTES\par}\end{center}%
+                                                                              {\color{obsidian}\hrule height 1.2pt}\par
+                                                                              \vspace{0.5em}
+                                                                              \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                \textbf{Lecture:} & $title$ \\
+                                                                                $if(lecture-notes.course)$\textbf{Course:} & $lecture-notes.course$ \\$endif$
+                                                                                $if(lecture-notes.date)$\textbf{Date:} & $lecture-notes.date$ \\$endif$
+                                                                                $if(lecture-notes.speaker)$\textbf{Speaker:} & $lecture-notes.speaker$ \\$endif$
+                                                                                $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                              \end{tabular}\par
+                                                                              \vspace{0.5em}
+                                                                              {\color{obsidian}\hrule height 0.8pt}\par
+                                                                              \vspace{0.8em}
+                                                                             }{}%
+                                                                           }%
+                                                                         }%
+                                                                       }%
+                                                                     }%
+                                                                   }%
+                                                                 }%
+                                                               }%
+                                                             }%
+                                                             }%
                                                         }%
                                                       }%
                                                     }%

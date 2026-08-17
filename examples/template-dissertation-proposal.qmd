@@ -1,0 +1,54 @@
+---
+title: "Knowledge graphs for compliance audit"
+subtitle: "Template: dissertation proposal for a masters degree"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["dissertation", "proposal", "template"]
+reference: "OS-DSP-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Dissertation Proposal"
+doc-type: "Dissertation Proposal"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+dissertation-proposal:
+  degree: "MSc Computing"
+  supervisor: "Supervisor name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-dissertation-proposal}
+:::
+
+State the proposed topic in one paragraph. Name the research
+question and the expected contribution.
+
+# Literature review
+
+Summarise the relevant literature. Name the theories and findings
+the dissertation will build on.
+
+# Research questions
+
+List the research questions the dissertation will answer.
+
+# Methodology
+
+Describe the method. Name the data, the tools, and the analysis
+technique.
+
+# Planned chapters
+
+List the planned chapters with a short description of each.
+
+# Timeline
+
+Give the work plan with milestones and dates. Use a table.
