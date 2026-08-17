@@ -298,6 +298,17 @@ The structured fields per block:
 | `idp` | `employee` | `role`, `manager` |
 | `onboarding-checklist` | `employee` | `role`, `start-date`, `manager` |
 | `timesheet` | `employee` | `period`, `manager` |
+| `jsa` | none | `location`, `analyst` |
+| `permit-to-work` | none | `location`, `validity` |
+| `sds` | none | `version` |
+| `shift-handover` | none | `from`, `to` |
+| `daily-activity` | none | `operator`, `location` |
+| `equipment-checkout` | none | `borrower`, `return-date` |
+| `purchase-requisition` | `number` | `department`, `requester` |
+| `packing-list` | none | `order`, `shipper` |
+| `shipping-manifest` | none | `number`, `carrier` |
+| `purchase-order` | `number` | `supplier`, `delivery-date` |
+| `quote` | none | `number`, `client`, `valid-until` |
 
 For the letter the whole head (recipient block, date, reference,
 subject, opening) is owned by LaTeX on PDF: the recipient block sits
@@ -546,6 +557,22 @@ date, and manager lines. The timesheet head is a centred TIMESHEET
 masthead with the employee, period, date, and manager lines. All use
 flush-left `Label: value` lines; no bordered table is used on PDF.
 
+The operations and finance heads all follow the same pattern. The job
+safety analysis head is a centred JOB SAFETY ANALYSIS masthead with
+activity, date, location, and analyst lines. The permit to work head
+carries the work, date, location, and validity lines. The safety data
+sheet head carries product, date, and version lines. The shift
+handover head carries shift, date, from, and to lines. The daily
+activity report head carries date, operator, and location lines. The
+equipment checkout head carries equipment, date, borrower, and return
+date lines. The purchase requisition head carries requisition,
+department, date, and requester lines. The packing list head carries
+order, date, and shipper lines. The shipping manifest head carries
+manifest, date, and carrier lines. The purchase order head carries
+order, supplier, date, and delivery lines. The quote head carries
+quote, client, date, and validity lines. All use flush-left
+`Label: value` lines; no bordered table is used on PDF.
+
 The examples (`template-letter.qmd`, `template-memo.qmd`,
 `template-agenda.qmd`, `template-brief.qmd`, `template-decision.qmd`,
 `template-minutes.qmd`, `template-contract.qmd`,
@@ -575,7 +602,13 @@ The examples (`template-letter.qmd`, `template-memo.qmd`,
 `template-warning-letter.qmd`, `template-disciplinary-notice.qmd`,
 `template-job-description.qmd`, `template-exit-interview.qmd`,
 `template-idp.qmd`, `template-onboarding-checklist.qmd`,
-`template-timesheet.qmd`) show
+`template-timesheet.qmd`, `template-jsa.qmd`,
+`template-permit-to-work.qmd`, `template-sds.qmd`,
+`template-shift-handover.qmd`, `template-daily-activity.qmd`,
+`template-equipment-checkout.qmd`,
+`template-purchase-requisition.qmd`, `template-packing-list.qmd`,
+`template-shipping-manifest.qmd`, `template-purchase-order.qmd`,
+`template-quote.qmd`) show
 each block
 filled in. The schema
 for IDE completion lives in `_extensions/obsidian/_schema.yml`, and

@@ -1,0 +1,46 @@
+---
+title: "Laptop loan stock"
+subtitle: "Template: equipment checkout"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["equipment", "checkout", "template"]
+reference: "OS-EQ-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Equipment Checkout"
+doc-type: "Equipment Checkout"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+equipment-checkout:
+  borrower: "Borrower name"
+  return-date: "2026-08-21"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-equipment-checkout}
+:::
+
+State the equipment and the borrower in one paragraph. Note the
+condition at checkout.
+
+# Items
+
+List the items with serial numbers and condition notes. Use a
+table.
+
+# Terms
+
+State the loan terms: the return date, the care requirements, and
+the responsibility for damage.
+
+# Return
+
+Record the return details: date, condition, and any damage.

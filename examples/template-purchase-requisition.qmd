@@ -1,0 +1,46 @@
+---
+title: "Annual equipment refresh"
+subtitle: "Template: purchase requisition"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["purchase", "requisition", "template"]
+reference: "OS-PR-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Purchase Requisition"
+doc-type: "Purchase Requisition"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+purchase-requisition:
+  number: "REQ-2026-042"
+  department: "Professional Services"
+  requester: "Your name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-purchase-requisition}
+:::
+
+State the need in one paragraph. Name the goods or services, the
+purpose, and the urgency.
+
+# Items
+
+List the items with quantities and estimated costs. Use a table.
+
+# Justification
+
+State the reason the purchase matters and the budget line it
+charges.
+
+# Approval
+
+Record the approval chain and the decision.

@@ -1,0 +1,45 @@
+---
+title: "Consignment OS-SHP-1142"
+subtitle: "Template: shipping manifest"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["shipping", "manifest", "template"]
+reference: "OS-SM-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Shipping Manifest"
+doc-type: "Shipping Manifest"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+shipping-manifest:
+  number: "MAN-2026-031"
+  carrier: "Carrier name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-shipping-manifest}
+:::
+
+State the consignment in one paragraph. Name the origin, the
+destination, and the carrier.
+
+# Cargo
+
+List the cargo with descriptions, quantities, and weights. Use a
+table.
+
+# Declarations
+
+Record the export or customs declarations, if any.
+
+# Signature
+
+Record the carrier acceptance and the date.
