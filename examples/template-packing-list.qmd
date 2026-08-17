@@ -1,0 +1,45 @@
+---
+title: "Consignment OS-SHP-1142"
+subtitle: "Template: packing list"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["packing", "list", "shipping", "template"]
+reference: "OS-PL-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Packing List"
+doc-type: "Packing List"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+packing-list:
+  order: "PO-2026-088"
+  shipper: "Your company name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-packing-list}
+:::
+
+State the consignment in one paragraph. Name the order, the
+destination, and the number of packages.
+
+# Packages
+
+List each package with its contents, weight, and dimensions. Use
+a table.
+
+# Handling marks
+
+State any handling marks or labels on the packages.
+
+# Certification
+
+Record the packer name and the date of packing.

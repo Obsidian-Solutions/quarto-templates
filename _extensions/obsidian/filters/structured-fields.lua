@@ -1821,6 +1821,248 @@ local function render_timesheet(m)
   return pandoc.Div(blocks, { class = "obsidian-doc-timesheet" })
 end
 
+-- ---- Job safety analysis ----
+local function render_jsa(m)
+  local jsa = meta_map(m, "jsa")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Job safety analysis") }))
+    local rows = {
+      { "Activity", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Location", meta_str(jsa, "location") or "" },
+      { "Analyst", meta_str(jsa, "analyst") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-jsa" })
+end
+
+-- ---- Permit to work ----
+local function render_permit_to_work(m)
+  local ptw = meta_map(m, "permit-to-work")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Permit to work") }))
+    local rows = {
+      { "Work", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Location", meta_str(ptw, "location") or "" },
+      { "Validity", meta_str(ptw, "validity") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-permit-to-work" })
+end
+
+-- ---- Safety data sheet ----
+local function render_sds(m)
+  local sds = meta_map(m, "sds")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Safety data sheet") }))
+    local rows = {
+      { "Product", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Version", meta_str(sds, "version") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-sds" })
+end
+
+-- ---- Shift handover ----
+local function render_shift_handover(m)
+  local sh = meta_map(m, "shift-handover")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Shift handover") }))
+    local rows = {
+      { "Shift", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "From", meta_str(sh, "from") or "" },
+      { "To", meta_str(sh, "to") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-shift-handover" })
+end
+
+-- ---- Daily activity report ----
+local function render_daily_activity(m)
+  local da = meta_map(m, "daily-activity")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Daily activity report") }))
+    local rows = {
+      { "Date", meta_str(m, "date") or "" },
+      { "Operator", meta_str(da, "operator") or "" },
+      { "Location", meta_str(da, "location") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-daily-activity" })
+end
+
+-- ---- Equipment checkout ----
+local function render_equipment_checkout(m)
+  local ec = meta_map(m, "equipment-checkout")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Equipment checkout") }))
+    local rows = {
+      { "Equipment", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Borrower", meta_str(ec, "borrower") or "" },
+      { "Return date", meta_str(ec, "return-date") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-equipment-checkout" })
+end
+
+-- ---- Purchase requisition ----
+local function render_purchase_requisition(m)
+  local pr = meta_map(m, "purchase-requisition")
+  require_field(meta_str(pr, "number"), "purchase-requisition.number")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Purchase requisition") }))
+    local rows = {
+      { "Requisition", meta_str(pr, "number") },
+      { "Department", meta_str(pr, "department") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Requester", meta_str(pr, "requester") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-purchase-requisition" })
+end
+
+-- ---- Packing list ----
+local function render_packing_list(m)
+  local pl = meta_map(m, "packing-list")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Packing list") }))
+    local rows = {
+      { "Order", meta_str(pl, "order") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Shipper", meta_str(pl, "shipper") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-packing-list" })
+end
+
+-- ---- Shipping manifest ----
+local function render_shipping_manifest(m)
+  local sm = meta_map(m, "shipping-manifest")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Shipping manifest") }))
+    local rows = {
+      { "Manifest", meta_str(sm, "number") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Carrier", meta_str(sm, "carrier") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-shipping-manifest" })
+end
+
+-- ---- Purchase order ----
+local function render_purchase_order(m)
+  local po = meta_map(m, "purchase-order")
+  require_field(meta_str(po, "number"), "purchase-order.number")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Purchase order") }))
+    local rows = {
+      { "Order", meta_str(po, "number") },
+      { "Supplier", meta_str(po, "supplier") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Delivery", meta_str(po, "delivery-date") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-purchase-order" })
+end
+
+-- ---- Quote ----
+local function render_quote(m)
+  local q = meta_map(m, "quote")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Quote") }))
+    local rows = {
+      { "Quote", meta_str(q, "number") or "" },
+      { "Client", meta_str(q, "client") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Valid until", meta_str(q, "valid-until") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-quote" })
+end
+
 -- ---- Document walk ----
 -- The marker Divs carry the class. Replace each with the rendered
 -- block. The letter marker splits into two parts: the opening block
@@ -1890,6 +2132,17 @@ local renderers = {
   ["obsidian-idp"] = render_idp,
   ["obsidian-onboarding-checklist"] = render_onboarding_checklist,
   ["obsidian-timesheet"] = render_timesheet,
+  ["obsidian-jsa"] = render_jsa,
+  ["obsidian-permit-to-work"] = render_permit_to_work,
+  ["obsidian-sds"] = render_sds,
+  ["obsidian-shift-handover"] = render_shift_handover,
+  ["obsidian-daily-activity"] = render_daily_activity,
+  ["obsidian-equipment-checkout"] = render_equipment_checkout,
+  ["obsidian-purchase-requisition"] = render_purchase_requisition,
+  ["obsidian-packing-list"] = render_packing_list,
+  ["obsidian-shipping-manifest"] = render_shipping_manifest,
+  ["obsidian-purchase-order"] = render_purchase_order,
+  ["obsidian-quote"] = render_quote,
 }
 
 local function has_class(el, wanted)

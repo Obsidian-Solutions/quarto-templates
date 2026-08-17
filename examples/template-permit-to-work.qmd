@@ -1,0 +1,46 @@
+---
+title: "Electrical panel access"
+subtitle: "Template: permit to work"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["permit", "work", "safety", "template"]
+reference: "OS-PTW-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Permit to Work"
+doc-type: "Permit to Work"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+permit-to-work:
+  location: "Plant room 1"
+  validity: "2026-08-14 08:00 to 16:00"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-permit-to-work}
+:::
+
+State the work and the reason for the permit. Name
+the system, the isolation points, and the area of work.
+
+# Authorisation
+
+Record who issued the permit, who accepted it, and the times.
+
+# Precautions
+
+List the precautions taken before work starts. Include isolation,
+locking off, testing, and personal protective equipment.
+
+# Handback
+
+State the process for handing the system back. Name who verifies
+the work and when the permit closes.

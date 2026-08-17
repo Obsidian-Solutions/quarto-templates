@@ -1,0 +1,43 @@
+---
+title: "Managed support engagement"
+subtitle: "Template: quote"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["quote", "offer", "template"]
+reference: "OS-QT-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Quote"
+doc-type: "Quote"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+quote:
+  number: "QT-2026-057"
+  client: "Client company name"
+  valid-until: "2026-09-14"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-quote}
+:::
+
+State the quote in one paragraph. Name the client, the scope, and
+the validity period.
+
+# Items
+
+List the items with quantities, unit prices, and line totals. Use
+a table.
+
+# Terms
+
+State the payment terms, the delivery period, and the acceptance
+process.

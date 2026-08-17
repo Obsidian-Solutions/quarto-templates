@@ -1,0 +1,94 @@
+---
+title: "Surface cleaner concentrate"
+subtitle: "Template: safety data sheet"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["safety", "data", "sheet", "template"]
+reference: "OS-SDS-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Safety Data Sheet"
+doc-type: "Safety Data Sheet"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+sds:
+  version: "1.2"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-sds}
+:::
+
+# Identification
+
+State the product name, the intended use, and the supplier contact.
+
+# Hazards
+
+Classify the hazards under the regulation. Give the hazard
+statements and the precautionary statements.
+
+# Composition
+
+List the hazardous ingredients and their concentration ranges.
+
+# First aid measures
+
+State the first aid for each route of exposure: inhalation, skin,
+eye, and ingestion.
+
+# Firefighting measures
+
+State the extinguishing media and the fire hazards.
+
+# Accidental release
+
+State the containment and clean-up procedures.
+
+# Handling and storage
+
+State the safe handling precautions and the storage conditions.
+
+# Exposure controls
+
+Give the exposure limits and the personal protection required.
+
+# Physical and chemical properties
+
+Give the appearance, flash point, and solubility.
+
+# Stability and reactivity
+
+State the conditions to avoid and the incompatible materials.
+
+# Toxicological information
+
+Summarise the acute and chronic effects.
+
+# Ecological information
+
+Summarise the ecotoxicity and persistence.
+
+# Disposal considerations
+
+State the disposal route.
+
+# Transport information
+
+Give the UN number and the transport hazard class.
+
+# Regulatory information
+
+State the regulatory status.
+
+# Other information
+
+State the revision date and the source of the data.

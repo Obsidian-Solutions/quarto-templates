@@ -1,0 +1,43 @@
+---
+title: "Laptop refresh"
+subtitle: "Template: purchase order"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["purchase", "order", "template"]
+reference: "OS-PO-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Purchase Order"
+doc-type: "Purchase Order"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+purchase-order:
+  number: "PO-2026-088"
+  supplier: "Supplier company name"
+  delivery-date: "2026-09-01"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-purchase-order}
+:::
+
+State the order in one paragraph. Name the supplier, the delivery
+point, and the terms.
+
+# Items
+
+List the items with quantities, unit prices, and line totals. Use
+a table.
+
+# Terms
+
+State the payment terms, the delivery terms, and the acceptance
+conditions.

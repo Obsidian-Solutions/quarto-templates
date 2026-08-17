@@ -1093,6 +1093,149 @@ options:
         type: string
         description: "Approving manager."
 
+  # ---- Job safety analysis ----
+  jsa:
+    type: object
+    description: "Structured job safety analysis fields."
+    properties:
+      location:
+        type: string
+        description: "Work location."
+      analyst:
+        type: string
+        description: "Analyst who prepared the assessment."
+
+  # ---- Permit to work ----
+  permit-to-work:
+    type: object
+    description: "Structured permit to work fields."
+    properties:
+      location:
+        type: string
+        description: "Work location."
+      validity:
+        type: string
+        description: "Permit validity period."
+
+  # ---- Safety data sheet ----
+  sds:
+    type: object
+    description: "Structured safety data sheet fields."
+    properties:
+      version:
+        type: string
+        description: "SDS version."
+
+  # ---- Shift handover ----
+  shift-handover:
+    type: object
+    description: "Structured shift handover fields."
+    properties:
+      from:
+        type: string
+        description: "Outgoing crew or shift."
+      to:
+        type: string
+        description: "Incoming crew or shift."
+
+  # ---- Daily activity report ----
+  daily-activity:
+    type: object
+    description: "Structured daily activity report fields."
+    properties:
+      operator:
+        type: string
+        description: "Operator who wrote the report."
+      location:
+        type: string
+        description: "Work location."
+
+  # ---- Equipment checkout ----
+  equipment-checkout:
+    type: object
+    description: "Structured equipment checkout fields."
+    properties:
+      borrower:
+        type: string
+        description: "Borrower of the equipment."
+      return-date:
+        type: string
+        format: date
+        description: "Expected return date."
+
+  # ---- Purchase requisition ----
+  purchase-requisition:
+    type: object
+    description: "Structured purchase requisition fields."
+    properties:
+      number:
+        type: string
+        required: true
+        description: "Requisition number (required)."
+      department:
+        type: string
+        description: "Requesting department."
+      requester:
+        type: string
+        description: "Requester name."
+
+  # ---- Packing list ----
+  packing-list:
+    type: object
+    description: "Structured packing list fields."
+    properties:
+      order:
+        type: string
+        description: "Order reference."
+      shipper:
+        type: string
+        description: "Shipper name."
+
+  # ---- Shipping manifest ----
+  shipping-manifest:
+    type: object
+    description: "Structured shipping manifest fields."
+    properties:
+      number:
+        type: string
+        description: "Manifest number."
+      carrier:
+        type: string
+        description: "Carrier name."
+
+  # ---- Purchase order ----
+  purchase-order:
+    type: object
+    description: "Structured purchase order fields."
+    properties:
+      number:
+        type: string
+        required: true
+        description: "Purchase order number (required)."
+      supplier:
+        type: string
+        description: "Supplier name."
+      delivery-date:
+        type: string
+        format: date
+        description: "Delivery date."
+
+  # ---- Quote ----
+  quote:
+    type: object
+    description: "Structured quote fields."
+    properties:
+      number:
+        type: string
+        description: "Quote number."
+      client:
+        type: string
+        description: "Client name."
+      valid-until:
+        type: string
+        format: date
+        description: "Quote validity date."
+
   # ---- Invoice ----
   invoice:
     type: object

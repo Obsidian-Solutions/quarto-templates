@@ -1,0 +1,50 @@
+---
+title: "Racking system maintenance"
+subtitle: "Template: job safety analysis"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["job", "safety", "analysis", "template"]
+reference: "OS-JSA-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Job Safety Analysis"
+doc-type: "Job Safety Analysis"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+jsa:
+  location: "Warehouse 2"
+  analyst: "Safety officer name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-jsa}
+:::
+
+State the purpose of the analysis. Name the job, the location, and
+the people who carry it out.
+
+# Job steps
+
+Break the job into steps. Use a table with step, hazard, control,
+and residual risk columns.
+
+# Personal protective equipment
+
+State the PPE required for each step.
+
+# Emergency arrangements
+
+State the emergency response for the work. Name the first aid
+provision and the emergency contact.
+
+# Approval
+
+State who approves the analysis and the review date.

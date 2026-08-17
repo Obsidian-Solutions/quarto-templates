@@ -1,0 +1,46 @@
+---
+title: "Site operations 2026-08-13"
+subtitle: "Template: daily activity report"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["daily", "activity", "report", "template"]
+reference: "OS-DAR-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Daily Activity Report"
+doc-type: "Daily Activity Report"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+daily-activity:
+  operator: "Operator name"
+  location: "Site name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-daily-activity}
+:::
+
+State the day summary in one paragraph. Note the main activities
+and any incidents.
+
+# Activity log
+
+Record the activities in chronological order. Use a table with
+time, activity, and outcome columns.
+
+# Incidents
+
+List any incidents, near misses, or safety events. For each, state
+what happened and the action taken.
+
+# Follow-up
+
+List the follow-up items with owners and due dates.

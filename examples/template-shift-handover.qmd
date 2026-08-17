@@ -1,0 +1,46 @@
+---
+title: "Night shift 2026-08-13"
+subtitle: "Template: shift handover"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["shift", "handover", "template"]
+reference: "OS-SH-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Shift Handover"
+doc-type: "Shift Handover"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+shift-handover:
+  from: "Night shift lead name"
+  to: "Day shift lead name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-shift-handover}
+:::
+
+State the shift summary in one paragraph. Note what happened, what
+changed, and anything the next shift must know.
+
+# Status
+
+State the status of each system or task. Use a table with system,
+status, and notes columns.
+
+# Open items
+
+List the items that carry over to the next shift. For each, name
+the owner and the expected resolution.
+
+# Safety notes
+
+Record any safety-relevant events and the actions taken.

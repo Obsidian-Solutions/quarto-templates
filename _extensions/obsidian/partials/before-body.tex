@@ -191,7 +191,28 @@ $if(doc-type)$
                                                                                                                       \ifdefstring{\docform}{Individual Development Plan}{\renewcommand{\docformatplain}{1}}{%
                                                                                                                         \ifdefstring{\docform}{Onboarding Checklist}{\renewcommand{\docformatplain}{1}}{%
                                                                                                                           \ifdefstring{\docform}{Timesheet}{\renewcommand{\docformatplain}{1}}{}%
-                                                                                                                        }%
+                                                                                                                          \ifdefstring{\docform}{Job Safety Analysis}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                            \ifdefstring{\docform}{Permit to Work}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                              \ifdefstring{\docform}{Safety Data Sheet}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                                \ifdefstring{\docform}{Shift Handover}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                                  \ifdefstring{\docform}{Daily Activity Report}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                                    \ifdefstring{\docform}{Equipment Checkout}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                                      \ifdefstring{\docform}{Purchase Requisition}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                                        \ifdefstring{\docform}{Packing List}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                                          \ifdefstring{\docform}{Shipping Manifest}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                                            \ifdefstring{\docform}{Purchase Order}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                                              \ifdefstring{\docform}{Quote}{\renewcommand{\docformatplain}{1}}{}%
+                                                                                                                      }%
+                                                                                                                    }%
+                                                                                                                  }%
+                                                                                                                }%
+                                                                                                              }%
+                                                                                                            }%
+                                                                                                          }%
+                                                                                                        }%
+                                                                                                      }%
+                                                                                                    }%
+                                                                                                    }%
                                                                                                                       }%
                                                                                                                     }%
                                                                                                                   }%
@@ -274,7 +295,10 @@ $endif$
 % letters, offer letters, termination letters, resignation letters,
 % warning letters, disciplinary notices, job descriptions, exit
 % interviews, individual development plans, onboarding checklists
-% and timesheets are single-flow business documents:
+% and timesheets, job safety analyses, permits to work, safety data
+% sheets, shift handovers, daily activity reports, equipment checkouts,
+% purchase requisitions, packing lists, shipping manifests, purchase
+% orders and quotes are single-flow business documents:
 % no cover, no separate front matter, paginate from 1.
 $if(titlepage-none)$
 \pagenumbering{arabic}
@@ -298,7 +322,10 @@ $if(titlepage-none)$
 % letters, offer letters, termination letters, resignation letters,
 % warning letters, disciplinary notices, job descriptions, exit
 % interviews, individual development plans, onboarding checklists
-% and timesheets use the minimal plain style
+% and timesheets, job safety analyses, permits to work, safety data
+% sheets, shift handovers, daily activity reports, equipment checkouts,
+% purchase requisitions, packing lists, shipping manifests, purchase
+% orders and quotes use the minimal plain style
 % (classification bands only) on every page; page 1 carries the
 % format's own letterhead, masthead or header block instead.
 $if(doc-type)$
@@ -1570,7 +1597,211 @@ $endif$
                                                                                                                             \vspace{0.5em}
                                                                                                                             {\color{obsidian}\hrule height 0.8pt}\par
                                                                                                                             \vspace{0.8em}
+                                                                                                                          }{%
+                                                                                                                          \ifdefstring{\docform}{Job Safety Analysis}{%
+                                                                                                                            % Job safety analysis head: centred masthead, then the
+                                                                                                                            % activity and control lines. The hazard steps render
+                                                                                                                            % in the body.
+                                                                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle JOB SAFETY ANALYSIS\par}\end{center}%
+                                                                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                              \textbf{Activity:} & $title$ \\
+                                                                                                                              \textbf{Date:} & $date$ \\
+                                                                                                                              $if(jsa.location)$\textbf{Location:} & $jsa.location$ \\$endif$
+                                                                                                                              $if(jsa.analyst)$\textbf{Analyst:} & $jsa.analyst$ \\$endif$
+                                                                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                            \end{tabular}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                            \vspace{0.8em}
+                                                                                                                          }{%
+                                                                                                                          \ifdefstring{\docform}{Permit to Work}{%
+                                                                                                                            % Permit to work head: centred masthead, then the
+                                                                                                                            % permit control lines. The work steps render in the
+                                                                                                                            % body.
+                                                                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle PERMIT TO WORK\par}\end{center}%
+                                                                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                              \textbf{Work:} & $title$ \\
+                                                                                                                              \textbf{Date:} & $date$ \\
+                                                                                                                              $if(permit-to-work.location)$\textbf{Location:} & $permit-to-work.location$ \\$endif$
+                                                                                                                              $if(permit-to-work.validity)$\textbf{Validity:} & $permit-to-work.validity$ \\$endif$
+                                                                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                            \end{tabular}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                            \vspace{0.8em}
+                                                                                                                          }{%
+                                                                                                                          \ifdefstring{\docform}{Safety Data Sheet}{%
+                                                                                                                            % Safety data sheet head: centred masthead, then the
+                                                                                                                            % substance and version lines. The 16 regulatory
+                                                                                                                            % sections render in the body.
+                                                                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle SAFETY DATA SHEET\par}\end{center}%
+                                                                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                              \textbf{Product:} & $title$ \\
+                                                                                                                              \textbf{Date:} & $date$ \\
+                                                                                                                              $if(sds.version)$\textbf{Version:} & $sds.version$ \\$endif$
+                                                                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                            \end{tabular}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                            \vspace{0.8em}
+                                                                                                                          }{%
+                                                                                                                          \ifdefstring{\docform}{Shift Handover}{%
+                                                                                                                            % Shift handover head: centred masthead, then the
+                                                                                                                            % shift and crew lines. The handover log renders in
+                                                                                                                            % the body.
+                                                                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle SHIFT HANDOVER\par}\end{center}%
+                                                                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                              \textbf{Shift:} & $title$ \\
+                                                                                                                              \textbf{Date:} & $date$ \\
+                                                                                                                              $if(shift-handover.from)$\textbf{From:} & $shift-handover.from$ \\$endif$
+                                                                                                                              $if(shift-handover.to)$\textbf{To:} & $shift-handover.to$ \\$endif$
+                                                                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                            \end{tabular}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                            \vspace{0.8em}
+                                                                                                                          }{%
+                                                                                                                          \ifdefstring{\docform}{Daily Activity Report}{%
+                                                                                                                            % Daily activity report head: centred masthead, then
+                                                                                                                            % the operator and location lines. The activity log
+                                                                                                                            % renders in the body.
+                                                                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle DAILY ACTIVITY REPORT\par}\end{center}%
+                                                                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                              \textbf{Date:} & $date$ \\
+                                                                                                                              $if(daily-activity.operator)$\textbf{Operator:} & $daily-activity.operator$ \\$endif$
+                                                                                                                              $if(daily-activity.location)$\textbf{Location:} & $daily-activity.location$ \\$endif$
+                                                                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                            \end{tabular}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                            \vspace{0.8em}
+                                                                                                                          }{%
+                                                                                                                          \ifdefstring{\docform}{Equipment Checkout}{%
+                                                                                                                            % Equipment checkout head: centred masthead, then the
+                                                                                                                            % borrower and return lines. The checkout log renders
+                                                                                                                            % in the body.
+                                                                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle EQUIPMENT CHECKOUT\par}\end{center}%
+                                                                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                              \textbf{Equipment:} & $title$ \\
+                                                                                                                              \textbf{Date:} & $date$ \\
+                                                                                                                              $if(equipment-checkout.borrower)$\textbf{Borrower:} & $equipment-checkout.borrower$ \\$endif$
+                                                                                                                              $if(equipment-checkout.return-date)$\textbf{Return date:} & $equipment-checkout.return-date$ \\$endif$
+                                                                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                            \end{tabular}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                            \vspace{0.8em}
+                                                                                                                          }{%
+                                                                                                                          \ifdefstring{\docform}{Purchase Requisition}{%
+                                                                                                                            % Purchase requisition head: centred masthead, then
+                                                                                                                            % the requisition control lines. The item lines render
+                                                                                                                            % in the body.
+                                                                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle PURCHASE REQUISITION\par}\end{center}%
+                                                                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                              \textbf{Requisition:} & $purchase-requisition.number$ \\
+                                                                                                                              \textbf{Department:} & $purchase-requisition.department$ \\
+                                                                                                                              \textbf{Date:} & $date$ \\
+                                                                                                                              $if(purchase-requisition.requester)$\textbf{Requester:} & $purchase-requisition.requester$ \\$endif$
+                                                                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                            \end{tabular}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                            \vspace{0.8em}
+                                                                                                                          }{%
+                                                                                                                          \ifdefstring{\docform}{Packing List}{%
+                                                                                                                            % Packing list head: centred masthead, then the order
+                                                                                                                            % and shipper lines. The packed items render in the
+                                                                                                                            % body.
+                                                                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle PACKING LIST\par}\end{center}%
+                                                                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                              \textbf{Order:} & $packing-list.order$ \\
+                                                                                                                              \textbf{Date:} & $date$ \\
+                                                                                                                              $if(packing-list.shipper)$\textbf{Shipper:} & $packing-list.shipper$ \\$endif$
+                                                                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                            \end{tabular}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                            \vspace{0.8em}
+                                                                                                                          }{%
+                                                                                                                          \ifdefstring{\docform}{Shipping Manifest}{%
+                                                                                                                            % Shipping manifest head: centred masthead, then the
+                                                                                                                            % manifest and carrier lines. The cargo list renders
+                                                                                                                            % in the body.
+                                                                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle SHIPPING MANIFEST\par}\end{center}%
+                                                                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                              \textbf{Manifest:} & $shipping-manifest.number$ \\
+                                                                                                                              \textbf{Date:} & $date$ \\
+                                                                                                                              $if(shipping-manifest.carrier)$\textbf{Carrier:} & $shipping-manifest.carrier$ \\$endif$
+                                                                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                            \end{tabular}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                            \vspace{0.8em}
+                                                                                                                          }{%
+                                                                                                                          \ifdefstring{\docform}{Purchase Order}{%
+                                                                                                                            % Purchase order head: centred masthead, then the
+                                                                                                                            % order control lines. The ordered items render in the
+                                                                                                                            % body.
+                                                                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle PURCHASE ORDER\par}\end{center}%
+                                                                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                              \textbf{Order:} & $purchase-order.number$ \\
+                                                                                                                              \textbf{Supplier:} & $purchase-order.supplier$ \\
+                                                                                                                              \textbf{Date:} & $date$ \\
+                                                                                                                              $if(purchase-order.delivery-date)$\textbf{Delivery:} & $purchase-order.delivery-date$ \\$endif$
+                                                                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                            \end{tabular}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                            \vspace{0.8em}
+                                                                                                                          }{%
+                                                                                                                          \ifdefstring{\docform}{Quote}{%
+                                                                                                                            % Quote head: centred masthead, then the offer control
+                                                                                                                            % lines. The quoted items render in the body.
+                                                                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle QUOTE\par}\end{center}%
+                                                                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                              \textbf{Quote:} & $quote.number$ \\
+                                                                                                                              \textbf{Client:} & $quote.client$ \\
+                                                                                                                              \textbf{Date:} & $date$ \\
+                                                                                                                              $if(quote.valid-until)$\textbf{Valid until:} & $quote.valid-until$ \\$endif$
+                                                                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                            \end{tabular}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                            \vspace{0.8em}
                                                                                                                           }{}%
+                                                                                                                        }%
+                                                                                                                      }%
+                                                                                                                    }%
+                                                                                                                  }%
+                                                                                                                }%
+                                                                                                              }%
+                                                                                                            }%
+                                                                                                          }%
+                                                                                                        }%
+                                                                                                      }%
+                                                                                                    }%
                                                                                                                         }%
                                                                                                                       }%
                                                                                                                     }%
