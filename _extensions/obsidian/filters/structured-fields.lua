@@ -727,6 +727,177 @@ local function render_after_action(m)
   return pandoc.Div(blocks, { class = "obsidian-doc-after-action" })
 end
 
+-- ---- Business case ----
+local function render_business_case(m)
+  local bc = meta_map(m, "business-case")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Business case") }))
+    local rows = {
+      { "Title", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Status", meta_str(bc, "status") or "" },
+      { "Version", meta_str(bc, "version") or "" },
+      { "Sponsor", meta_str(bc, "sponsor") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-business-case" })
+end
+
+-- ---- Project charter ----
+local function render_project_charter(m)
+  local chart = meta_map(m, "project-charter")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Project charter") }))
+    local rows = {
+      { "Project", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Sponsor", meta_str(chart, "sponsor") or "" },
+      { "Team", meta_str(chart, "team") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-project-charter" })
+end
+
+-- ---- DPIA ----
+local function render_dpia(m)
+  local dpia = meta_map(m, "dpia")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Data protection impact assessment") }))
+    local rows = {
+      { "Activity", meta_str(dpia, "activity") or "" },
+      { "Controller", meta_str(dpia, "controller") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "DPO", meta_str(dpia, "dpo") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-dpia" })
+end
+
+-- ---- Audit report ----
+local function render_audit_report(m)
+  local audit = meta_map(m, "audit-report")
+  require_field(meta_str(audit, "number"), "audit-report.number")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Audit report") }))
+    local rows = {
+      { "Audit number", meta_str(audit, "number") },
+      { "Date", meta_str(m, "date") or "" },
+      { "Status", meta_str(audit, "status") or "" },
+      { "Scope", meta_str(audit, "scope") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-audit-report" })
+end
+
+-- ---- Incident report ----
+local function render_incident_report(m)
+  local incident = meta_map(m, "incident-report")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Incident report") }))
+    local rows = {
+      { "Incident", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Severity", meta_str(incident, "severity") or "" },
+      { "Duration", meta_str(incident, "duration") or "" },
+      { "Status", meta_str(incident, "status") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-incident-report" })
+end
+
+-- ---- Statement of work ----
+local function render_sow(m)
+  local sow = meta_map(m, "sow")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Statement of work") }))
+    local rows = {
+      { "Project", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Client", meta_str(sow, "client") or "" },
+      { "Period", meta_str(sow, "period") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-sow" })
+end
+
+-- ---- Fact sheet ----
+local function render_fact_sheet(m)
+  local sheet = meta_map(m, "fact-sheet")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Fact sheet") }))
+    local rows = {
+      { "Name", meta_str(m, "title") or "" },
+      { "Last updated", meta_str(sheet, "last-updated") or "" },
+      { "Developer", meta_str(sheet, "developer") or "" },
+      { "Launch date", meta_str(sheet, "launch-date") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-fact-sheet" })
+end
+
 -- ---- Document walk ----
 -- The marker Divs carry the class. Replace each with the rendered
 -- block. The letter marker splits into two parts: the opening block
@@ -749,6 +920,13 @@ local renderers = {
   ["obsidian-reading-list"] = render_reading_list,
   ["obsidian-sop"] = render_sop,
   ["obsidian-after-action"] = render_after_action,
+  ["obsidian-business-case"] = render_business_case,
+  ["obsidian-project-charter"] = render_project_charter,
+  ["obsidian-dpia"] = render_dpia,
+  ["obsidian-audit-report"] = render_audit_report,
+  ["obsidian-incident-report"] = render_incident_report,
+  ["obsidian-sow"] = render_sow,
+  ["obsidian-fact-sheet"] = render_fact_sheet,
 }
 
 local function has_class(el, wanted)

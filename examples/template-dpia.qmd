@@ -1,0 +1,58 @@
+---
+title: "Customer analytics platform"
+subtitle: "Template: data protection impact assessment (GDPR Article 35)"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["dpia", "data", "protection", "template"]
+reference: "OS-DPIA-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "DPIA"
+doc-type: "DPIA"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+dpia:
+  activity: "Customer behaviour analytics"
+  controller: "Obsidian Solutions"
+  dpo: "Data protection officer name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-dpia}
+:::
+
+State the processing overview in one paragraph. Name the data, the
+purposes, the systems, and the data subjects.
+
+# Lawful basis
+
+State the lawful basis for the processing under Article 6. Name any
+special category basis under Article 9.
+
+# Necessity and proportionality
+
+State why the processing is necessary. Show that the purposes cannot
+be met with less intrusive means.
+
+# Risk assessment
+
+Identify the risks to the rights and freedoms of the data subjects.
+Rate each risk for likelihood and severity. Use a table.
+
+# Mitigation measures
+
+Map each risk to the measure that mitigates it. State the residual
+risk after the measure.
+
+# DPO consultation
+
+Record the data protection officer consultation. State the opinion
+and any conditions imposed.

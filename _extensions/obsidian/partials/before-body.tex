@@ -143,7 +143,21 @@ $if(doc-type)$
                         \ifdefstring{\docform}{NDA}{\renewcommand{\docformatplain}{1}}{%
                           \ifdefstring{\docform}{MOU}{\renewcommand{\docformatplain}{1}}{%
                             \ifdefstring{\docform}{SOP}{\renewcommand{\docformatplain}{1}}{%
-                              \ifdefstring{\docform}{After-Action Report}{\renewcommand{\docformatplain}{1}}{}%
+                              \ifdefstring{\docform}{After-Action Report}{\renewcommand{\docformatplain}{1}}{%
+                                \ifdefstring{\docform}{Business Case}{\renewcommand{\docformatplain}{1}}{%
+                                  \ifdefstring{\docform}{Project Charter}{\renewcommand{\docformatplain}{1}}{%
+                                    \ifdefstring{\docform}{DPIA}{\renewcommand{\docformatplain}{1}}{%
+                                      \ifdefstring{\docform}{Audit Report}{\renewcommand{\docformatplain}{1}}{%
+                                        \ifdefstring{\docform}{Incident Report}{\renewcommand{\docformatplain}{1}}{%
+                                          \ifdefstring{\docform}{Statement of Work}{\renewcommand{\docformatplain}{1}}{%
+                                            \ifdefstring{\docform}{Fact Sheet}{\renewcommand{\docformatplain}{1}}{}%
+                                          }%
+                                        }%
+                                      }%
+                                    }%
+                                  }%
+                                }%
+                              }%
                             }%
                           }%
                         }%
@@ -166,7 +180,9 @@ $endif$
 % matter before the body. Letters, memos, invoices, agendas, policy
 % briefs, decision records, meeting minutes, contracts, press
 % releases, newsletters, certificates, reading lists, NDAs, MOUs,
-% SOPs and after-action reports are single-flow business documents:
+% SOPs, after-action reports, business cases, project charters, DPIAs,
+% audit reports, incident reports, statements of work and fact sheets
+% are single-flow business documents:
 % no cover, no separate front matter, paginate from 1.
 $if(titlepage-none)$
 \pagenumbering{arabic}
@@ -176,7 +192,9 @@ $if(titlepage-none)$
 % report convention. Letters, memos, invoices, agendas, policy
 % briefs, decision records, meeting minutes, contracts, press
 % releases, newsletters, certificates, reading lists, NDAs, MOUs,
-% SOPs and after-action reports use the minimal plain style
+% SOPs, after-action reports, business cases, project charters, DPIAs,
+% audit reports, incident reports, statements of work and fact sheets
+% use the minimal plain style
 % (classification bands only) on every page; page 1 carries the
 % format's own letterhead, masthead or header block instead.
 $if(doc-type)$
@@ -529,7 +547,153 @@ $endif$
                               \vspace{0.5em}
                               {\color{obsidian}\hrule height 0.8pt}\par
                               \vspace{0.8em}
-                            }{}%
+                            }{%
+                              \ifdefstring{\docform}{Business Case}{%
+                                % Business case head: centred
+                                % masthead, then the document control
+                                % lines. The Five Case Model sections
+                                % render in the body.
+                                \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle BUSINESS CASE\par}\end{center}%
+                                {\color{obsidian}\hrule height 1.2pt}\par
+                                \vspace{0.5em}
+                                \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                  \textbf{Title:} & $title$ \\
+                                  \textbf{Date:} & $date$ \\
+                                  $if(business-case.status)$\textbf{Status:} & $business-case.status$ \\$endif$
+                                  $if(business-case.version)$\textbf{Version:} & $business-case.version$ \\$endif$
+                                  $if(business-case.sponsor)$\textbf{Sponsor:} & $business-case.sponsor$ \\$endif$
+                                  $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                \end{tabular}\par
+                                \vspace{0.5em}
+                                {\color{obsidian}\hrule height 0.8pt}\par
+                                \vspace{0.8em}
+                              }{%
+                                \ifdefstring{\docform}{Project Charter}{%
+                                  % Project charter head: centred
+                                  % masthead, then the charter fields.
+                                  % Objectives and milestones render
+                                  % in the body.
+                                  \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle PROJECT CHARTER\par}\end{center}%
+                                  {\color{obsidian}\hrule height 1.2pt}\par
+                                  \vspace{0.5em}
+                                  \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                    \textbf{Project:} & $title$ \\
+                                    \textbf{Date:} & $date$ \\
+                                    $if(project-charter.sponsor)$\textbf{Sponsor:} & $project-charter.sponsor$ \\$endif$
+                                    $if(project-charter.team)$\textbf{Team:} & $project-charter.team$ \\$endif$
+                                    $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                  \end{tabular}\par
+                                  \vspace{0.5em}
+                                  {\color{obsidian}\hrule height 0.8pt}\par
+                                  \vspace{0.8em}
+                                }{%
+                                  \ifdefstring{\docform}{DPIA}{%
+                                    % DPIA head: centred masthead, then
+                                    % the processing activity lines.
+                                    % The Article 35 assessment
+                                    % sections render in the body.
+                                    \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle DATA PROTECTION IMPACT ASSESSMENT\par}\end{center}%
+                                    {\color{obsidian}\hrule height 1.2pt}\par
+                                    \vspace{0.5em}
+                                    \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                      \textbf{Activity:} & $dpia.activity$ \\
+                                      \textbf{Controller:} & $dpia.controller$ \\
+                                      \textbf{Date:} & $date$ \\
+                                      $if(dpia.dpo)$\textbf{DPO:} & $dpia.dpo$ \\$endif$
+                                      $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                    \end{tabular}\par
+                                    \vspace{0.5em}
+                                    {\color{obsidian}\hrule height 0.8pt}\par
+                                    \vspace{0.8em}
+                                  }{%
+                                    \ifdefstring{\docform}{Audit Report}{%
+                                      % Audit report head: centred
+                                      % masthead, then the audit
+                                      % identification lines. Findings
+                                      % and corrective actions render
+                                      % in the body.
+                                      \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle AUDIT REPORT\par}\end{center}%
+                                      {\color{obsidian}\hrule height 1.2pt}\par
+                                      \vspace{0.5em}
+                                      \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                        \textbf{Audit number:} & $audit-report.number$ \\
+                                        \textbf{Date:} & $date$ \\
+                                        \textbf{Status:} & $audit-report.status$ \\
+                                        $if(audit-report.scope)$\textbf{Scope:} & $audit-report.scope$ \\$endif$
+                                        $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                      \end{tabular}\par
+                                      \vspace{0.5em}
+                                      {\color{obsidian}\hrule height 0.8pt}\par
+                                      \vspace{0.8em}
+                                    }{%
+                                      \ifdefstring{\docform}{Incident Report}{%
+                                        % Incident report head: centred
+                                        % masthead, then the incident
+                                        % lifecycle lines. Timeline,
+                                        % root cause and prevention
+                                        % render in the body.
+                                        \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle INCIDENT REPORT\par}\end{center}%
+                                        {\color{obsidian}\hrule height 1.2pt}\par
+                                        \vspace{0.5em}
+                                        \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                          \textbf{Incident:} & $title$ \\
+                                          \textbf{Date:} & $date$ \\
+                                          $if(incident-report.severity)$\textbf{Severity:} & $incident-report.severity$ \\$endif$
+                                          $if(incident-report.duration)$\textbf{Duration:} & $incident-report.duration$ \\$endif$
+                                          $if(incident-report.status)$\textbf{Status:} & $incident-report.status$ \\$endif$
+                                          $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                        \end{tabular}\par
+                                        \vspace{0.5em}
+                                        {\color{obsidian}\hrule height 0.8pt}\par
+                                        \vspace{0.8em}
+                                      }{%
+                                        \ifdefstring{\docform}{Statement of Work}{%
+                                          % Statement of work head:
+                                          % centred masthead, then the
+                                          % contract control lines.
+                                          % Deliverables and milestones
+                                          % render in the body.
+                                          \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle STATEMENT OF WORK\par}\end{center}%
+                                          {\color{obsidian}\hrule height 1.2pt}\par
+                                          \vspace{0.5em}
+                                          \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                            \textbf{Project:} & $title$ \\
+                                            \textbf{Date:} & $date$ \\
+                                            $if(sow.client)$\textbf{Client:} & $sow.client$ \\$endif$
+                                            $if(sow.period)$\textbf{Period:} & $sow.period$ \\$endif$
+                                            $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                          \end{tabular}\par
+                                          \vspace{0.5em}
+                                          {\color{obsidian}\hrule height 0.8pt}\par
+                                          \vspace{0.8em}
+                                        }{%
+                                          \ifdefstring{\docform}{Fact Sheet}{%
+                                            % Fact sheet head: centred
+                                            % masthead, then the entity
+                                            % identity lines. Key facts
+                                            % render as bullets in the
+                                            % body.
+                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle FACT SHEET\par}\end{center}%
+                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                            \vspace{0.5em}
+                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                              \textbf{Name:} & $title$ \\
+                                              $if(fact-sheet.last-updated)$\textbf{Last updated:} & $fact-sheet.last-updated$ \\$endif$
+                                              $if(fact-sheet.developer)$\textbf{Developer:} & $fact-sheet.developer$ \\$endif$
+                                              $if(fact-sheet.launch-date)$\textbf{Launch date:} & $fact-sheet.launch-date$ \\$endif$
+                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                            \end{tabular}\par
+                                            \vspace{0.5em}
+                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                            \vspace{0.8em}
+                                          }{}%
+                                        }%
+                                      }%
+                                    }%
+                                  }%
+                                }%
+                              }%
+                            }%
                           }%
                         }%
                       }%

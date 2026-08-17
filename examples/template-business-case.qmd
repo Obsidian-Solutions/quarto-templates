@@ -1,0 +1,64 @@
+---
+title: "Upgrade the shared knowledge platform"
+subtitle: "Template: a Five Case Model business case"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["business", "case", "template"]
+reference: "OS-BC-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Business Case"
+doc-type: "Business Case"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+business-case:
+  status: "Draft"
+  version: "0.9"
+  sponsor: "Sponsor name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-business-case}
+:::
+
+State the executive summary here. One paragraph that names the
+decision, the preferred option, the cost, and the benefits. A senior
+reader should absorb this section alone and know what to approve.
+
+# Strategic case
+
+State the case for change. Name the strategic objectives the
+proposal serves, the need it answers, and the alignment with the
+organisation plan.
+
+# Economic case
+
+Set out the options with their costs and benefits. Use one sub
+section per option, with the preferred option last.
+
+**Option 1.** The status quo, and why it fails the need.
+
+**Option 2.** The recommended option, with the net present value.
+
+# Commercial case
+
+State the procurement route, the commercial arrangement, and the
+supply market position.
+
+# Financial case
+
+State the affordability position. Give the capital and revenue
+costs, the funding source, and the impact on the budget.
+
+# Management case
+
+State the delivery plan. Name the sponsor, the project manager, the
+milestones, the governance, and the benefits realisation plan.
