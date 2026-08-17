@@ -40,6 +40,9 @@ jobs:
       - name: Install TeX Live (TinyTeX, matches the 2026 dev toolchain)
         run: |
           quarto install tinytex --update-path
+          # The bundled tlmgr ships older than the tlnet repository and
+          # refuses to install packages until updated. Update it first.
+          tlmgr update --self
           tlmgr install \
             titlesec fancyhdr zref draftwatermark tocloft embedfile \
             tcolorbox needspace caption microtype booktabs etoolbox float \
