@@ -1,0 +1,62 @@
+---
+title: "Privacy Policy"
+subtitle: "Template: privacy policy for a website or service"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["privacy", "policy", "template"]
+reference: "OS-PP-001"
+version: "1.0.0"
+confidentiality: "Public"
+short-title: "Privacy Policy"
+doc-type: "Privacy Policy"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+privacy-policy:
+  controller: "Obsidian Solutions Ltd"
+  jurisdiction: "United Kingdom"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-privacy-policy}
+:::
+
+State the purpose in one paragraph. Name the controller and the
+services this policy covers.
+
+# Personal data we collect
+
+Describe the categories of personal data the service collects and
+the sources.
+
+# How we use personal data
+
+State each purpose and the lawful basis for it. Use one paragraph
+per purpose.
+
+# Sharing and disclosure
+
+State who receives the personal data and why.
+
+# Retention
+
+State how long the organisation keeps the personal data and the
+criteria for the period.
+
+# Your rights
+
+State the rights of the data subject under the applicable law:
+access, rectification, erasure, restriction, portability, and
+objection.
+
+# Contact
+
+State how to contact the controller and the supervisory
+authority.

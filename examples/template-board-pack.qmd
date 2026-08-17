@@ -1,0 +1,56 @@
+---
+title: "Board Pack"
+subtitle: "Template: papers and reports for a board meeting"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["board", "pack", "template"]
+reference: "OS-BP-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Board Pack"
+doc-type: "Board Pack"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+board-pack:
+  meeting: "Quarterly board meeting"
+  period: "Quarter 2 2026"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-board-pack}
+:::
+
+State the purpose of the pack in one paragraph. Summarise the
+decisions the board must take at this meeting.
+
+# Chairman's report
+
+Summarise the position since the last meeting. Name the major
+events and the decisions taken by the executive.
+
+# Financial report
+
+Present the financial position. Give the revenue, the costs, the
+cash position, and the variance against budget.
+
+# Operational report
+
+Present the operational position. Name the key metrics, the
+deliverables, and the risks.
+
+# Papers for decision
+
+List each paper for decision. For each, state the recommendation
+and the decision required.
+
+# Papers for noting
+
+List each paper for noting. These need no decision.

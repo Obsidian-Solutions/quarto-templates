@@ -1317,6 +1317,285 @@ local function render_lecture_notes(m)
   return pandoc.Div(blocks, { class = "obsidian-doc-lecture-notes" })
 end
 
+-- ---- Legal memo ----
+local function render_legal_memo(m)
+  local lm = meta_map(m, "legal-memo")
+  require_field(meta_str(lm, "to"), "legal-memo.to")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Legal memo") }))
+    local rows = {
+      { "To", meta_str(lm, "to") },
+      { "From", meta_str(lm, "from") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Re", meta_str(m, "title") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-legal-memo" })
+end
+
+-- ---- Board minutes ----
+local function render_board_minutes(m)
+  local bm = meta_map(m, "board-minutes")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Board minutes") }))
+    local rows = {
+      { "Company", meta_str(bm, "company") or "" },
+      { "Date", meta_str(bm, "date") or "" },
+      { "Location", meta_str(bm, "location") or "" },
+      { "Chair", meta_str(bm, "chair") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-board-minutes" })
+end
+
+-- ---- Corporate resolution ----
+local function render_corporate_resolution(m)
+  local cr = meta_map(m, "corporate-resolution")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Corporate resolution") }))
+    local rows = {
+      { "Company", meta_str(cr, "company") or "" },
+      { "Resolution", meta_str(cr, "number") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-corporate-resolution" })
+end
+
+-- ---- Board pack ----
+local function render_board_pack(m)
+  local bp = meta_map(m, "board-pack")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Board pack") }))
+    local rows = {
+      { "Meeting", meta_str(bp, "meeting") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Period", meta_str(bp, "period") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-board-pack" })
+end
+
+-- ---- Strategy paper ----
+local function render_strategy_paper(m)
+  local sp = meta_map(m, "strategy-paper")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Strategy paper") }))
+    local rows = {
+      { "Title", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Version", meta_str(sp, "version") or "" },
+      { "Owner", meta_str(sp, "owner") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-strategy-paper" })
+end
+
+-- ---- Policy document ----
+local function render_policy_document(m)
+  local pd = meta_map(m, "policy-document")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Policy document") }))
+    local rows = {
+      { "Title", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Version", meta_str(pd, "version") or "" },
+      { "Owner", meta_str(pd, "owner") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-policy-document" })
+end
+
+-- ---- Procedure document ----
+local function render_procedure_document(m)
+  local pd = meta_map(m, "procedure-document")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Procedure document") }))
+    local rows = {
+      { "Title", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Version", meta_str(pd, "version") or "" },
+      { "Owner", meta_str(pd, "owner") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-procedure-document" })
+end
+
+-- ---- Framework document ----
+local function render_framework_document(m)
+  local fd = meta_map(m, "framework-document")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Framework document") }))
+    local rows = {
+      { "Title", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Version", meta_str(fd, "version") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-framework-document" })
+end
+
+-- ---- Terms and conditions ----
+local function render_terms_conditions(m)
+  local tc = meta_map(m, "terms-conditions")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Terms and conditions") }))
+    local rows = {
+      { "Parties", meta_str(tc, "parties") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Term", meta_str(tc, "term") or "" },
+      { "Governing law", meta_str(tc, "governing-law") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-terms-conditions" })
+end
+
+-- ---- Data processing agreement ----
+local function render_dpa(m)
+  local dpa = meta_map(m, "dpa")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Data processing agreement") }))
+    local rows = {
+      { "Controller", meta_str(dpa, "controller") or "" },
+      { "Processor", meta_str(dpa, "processor") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-dpa" })
+end
+
+-- ---- Privacy policy ----
+local function render_privacy_policy(m)
+  local pp = meta_map(m, "privacy-policy")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Privacy policy") }))
+    local rows = {
+      { "Controller", meta_str(pp, "controller") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Jurisdiction", meta_str(pp, "jurisdiction") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-privacy-policy" })
+end
+
+-- ---- Non-compete agreement ----
+local function render_non_compete(m)
+  local nc = meta_map(m, "non-compete")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Non-compete agreement") }))
+    local rows = {
+      { "Parties", meta_str(nc, "parties") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Term", meta_str(nc, "term") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-non-compete" })
+end
+
+-- ---- Cease and desist ----
+local function render_cease_desist(m)
+  local cd = meta_map(m, "cease-desist")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Cease and desist") }))
+    local rows = {
+      { "Recipient", meta_str(cd, "recipient") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-cease-desist" })
+end
+
 -- ---- Document walk ----
 -- The marker Divs carry the class. Replace each with the rendered
 -- block. The letter marker splits into two parts: the opening block
@@ -1363,6 +1642,19 @@ local renderers = {
   ["obsidian-literature-review"] = render_literature_review,
   ["obsidian-marking-rubric"] = render_marking_rubric,
   ["obsidian-lecture-notes"] = render_lecture_notes,
+  ["obsidian-legal-memo"] = render_legal_memo,
+  ["obsidian-board-minutes"] = render_board_minutes,
+  ["obsidian-corporate-resolution"] = render_corporate_resolution,
+  ["obsidian-board-pack"] = render_board_pack,
+  ["obsidian-strategy-paper"] = render_strategy_paper,
+  ["obsidian-policy-document"] = render_policy_document,
+  ["obsidian-procedure-document"] = render_procedure_document,
+  ["obsidian-framework-document"] = render_framework_document,
+  ["obsidian-terms-conditions"] = render_terms_conditions,
+  ["obsidian-dpa"] = render_dpa,
+  ["obsidian-privacy-policy"] = render_privacy_policy,
+  ["obsidian-non-compete"] = render_non_compete,
+  ["obsidian-cease-desist"] = render_cease_desist,
 }
 
 local function has_class(el, wanted)

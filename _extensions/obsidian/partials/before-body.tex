@@ -167,7 +167,33 @@ $if(doc-type)$
                                                                         \ifdefstring{\docform}{Dissertation Proposal}{\renewcommand{\docformatplain}{1}}{%
                                                                           \ifdefstring{\docform}{Literature Review}{\renewcommand{\docformatplain}{1}}{%
                                                                             \ifdefstring{\docform}{Marking Rubric}{\renewcommand{\docformatplain}{1}}{%
-                                                                              \ifdefstring{\docform}{Lecture Notes}{\renewcommand{\docformatplain}{1}}{}%
+                                                                              \ifdefstring{\docform}{Lecture Notes}{\renewcommand{\docformatplain}{1}}{%
+                                                                                \ifdefstring{\docform}{Legal Memo}{\renewcommand{\docformatplain}{1}}{%
+                                                                                  \ifdefstring{\docform}{Board Minutes}{\renewcommand{\docformatplain}{1}}{%
+                                                                                    \ifdefstring{\docform}{Corporate Resolution}{\renewcommand{\docformatplain}{1}}{%
+                                                                                      \ifdefstring{\docform}{Board Pack}{\renewcommand{\docformatplain}{1}}{%
+                                                                                        \ifdefstring{\docform}{Strategy Paper}{\renewcommand{\docformatplain}{1}}{%
+                                                                                          \ifdefstring{\docform}{Policy Document}{\renewcommand{\docformatplain}{1}}{%
+                                                                                            \ifdefstring{\docform}{Procedure Document}{\renewcommand{\docformatplain}{1}}{%
+                                                                                              \ifdefstring{\docform}{Framework Document}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                \ifdefstring{\docform}{Terms and Conditions}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                  \ifdefstring{\docform}{Data Processing Agreement}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                    \ifdefstring{\docform}{Privacy Policy}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                      \ifdefstring{\docform}{Non-Compete Agreement}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                        \ifdefstring{\docform}{Cease and Desist}{\renewcommand{\docformatplain}{1}}{}%
+                                                                                                      }%
+                                                                                                    }%
+                                                                                                  }%
+                                                                                                }%
+                                                                                              }%
+                                                                                            }%
+                                                                                          }%
+                                                                                        }%
+                                                                                      }%
+                                                                                    }%
+                                                                                  }%
+                                                                                }%
+                                                                              }%
                                                                             }%
                                                                           }%
                                                                         }%
@@ -220,8 +246,12 @@ $endif$
 % letters, staff reports, release notes, test reports, requests for
 % proposal, service level agreements, exam papers, laboratory
 % reports, syllabuses, essays, research proposals, dissertation
-% proposals, literature reviews, marking rubrics and lecture notes
-% are single-flow business documents:
+% proposals, literature reviews, marking rubrics, lecture notes,
+% legal memos, board minutes, corporate resolutions, board packs,
+% strategy papers, policy documents, procedure documents, framework
+% documents, terms and conditions, data processing agreements,
+% privacy policies, non-compete agreements and cease and desist
+% letters are single-flow business documents:
 % no cover, no separate front matter, paginate from 1.
 $if(titlepage-none)$
 \pagenumbering{arabic}
@@ -237,8 +267,12 @@ $if(titlepage-none)$
 % letters, staff reports, release notes, test reports, requests for
 % proposal, service level agreements, exam papers, laboratory
 % reports, syllabuses, essays, research proposals, dissertation
-% proposals, literature reviews, marking rubrics and lecture notes
-% use the minimal plain style
+% proposals, literature reviews, marking rubrics, lecture notes,
+% legal memos, board minutes, corporate resolutions, board packs,
+% strategy papers, policy documents, procedure documents, framework
+% documents, terms and conditions, data processing agreements,
+% privacy policies, non-compete agreements and cease and desist
+% letters use the minimal plain style
 % (classification bands only) on every page; page 1 carries the
 % format's own letterhead, masthead or header block instead.
 $if(doc-type)$
@@ -1073,7 +1107,252 @@ $endif$
                                                                               \vspace{0.5em}
                                                                               {\color{obsidian}\hrule height 0.8pt}\par
                                                                               \vspace{0.8em}
-                                                                             }{}%
+                                                                             }{% 
+                                                                              \ifdefstring{\docform}{Legal Memo}{%
+                                                                                % Legal memo head: centred masthead,
+                                                                                % then the TO/FROM/DATE/RE block as
+                                                                                % flush-left label lines.
+                                                                                \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle LEGAL MEMO\par}\end{center}%
+                                                                                {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                \vspace{0.5em}
+                                                                                \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                  \textbf{To:} & $legal-memo.to$ \\
+                                                                                  $if(legal-memo.from)$\textbf{From:} & $legal-memo.from$ \\$endif$
+                                                                                  \textbf{Date:} & $date$ \\
+                                                                                  \textbf{Re:} & $title$ \\
+                                                                                  $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                \end{tabular}\par
+                                                                                \vspace{0.5em}
+                                                                                {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                \vspace{0.8em}
+                                                                              }{%
+                                                                                \ifdefstring{\docform}{Board Minutes}{%
+                                                                                  % Board minutes head: centred
+                                                                                  % masthead, then the meeting
+                                                                                  % identity lines.
+                                                                                  \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle BOARD MINUTES\par}\end{center}%
+                                                                                  {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                  \vspace{0.5em}
+                                                                                  \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                    \textbf{Company:} & $board-minutes.company$ \\
+                                                                                    \textbf{Date:} & $board-minutes.date$ \\
+                                                                                    $if(board-minutes.location)$\textbf{Location:} & $board-minutes.location$ \\$endif$
+                                                                                    $if(board-minutes.chair)$\textbf{Chair:} & $board-minutes.chair$ \\$endif$
+                                                                                    $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                  \end{tabular}\par
+                                                                                  \vspace{0.5em}
+                                                                                  {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                  \vspace{0.8em}
+                                                                                }{%
+                                                                                  \ifdefstring{\docform}{Corporate Resolution}{%
+                                                                                    % Corporate resolution head:
+                                                                                    % centred masthead, then the
+                                                                                    % company and resolution number.
+                                                                                    \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle CORPORATE RESOLUTION\par}\end{center}%
+                                                                                    {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                    \vspace{0.5em}
+                                                                                    \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                      \textbf{Company:} & $corporate-resolution.company$ \\
+                                                                                      $if(corporate-resolution.number)$\textbf{Resolution:} & $corporate-resolution.number$ \\$endif$
+                                                                                      \textbf{Date:} & $date$ \\
+                                                                                      $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                    \end{tabular}\par
+                                                                                    \vspace{0.5em}
+                                                                                    {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                    \vspace{0.8em}
+                                                                                  }{%
+                                                                                    \ifdefstring{\docform}{Board Pack}{%
+                                                                                      % Board pack head: centred
+                                                                                      % masthead, then the meeting
+                                                                                      % and period lines.
+                                                                                      \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle BOARD PACK\par}\end{center}%
+                                                                                      {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                      \vspace{0.5em}
+                                                                                      \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                        \textbf{Meeting:} & $board-pack.meeting$ \\
+                                                                                        \textbf{Date:} & $date$ \\
+                                                                                        $if(board-pack.period)$\textbf{Period:} & $board-pack.period$ \\$endif$
+                                                                                        $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                      \end{tabular}\par
+                                                                                      \vspace{0.5em}
+                                                                                      {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                      \vspace{0.8em}
+                                                                                    }{%
+                                                                                      \ifdefstring{\docform}{Strategy Paper}{%
+                                                                                        % Strategy paper head: centred
+                                                                                        % masthead, then the document
+                                                                                        % control lines.
+                                                                                        \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle STRATEGY PAPER\par}\end{center}%
+                                                                                        {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                        \vspace{0.5em}
+                                                                                        \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                          \textbf{Title:} & $title$ \\
+                                                                                          \textbf{Date:} & $date$ \\
+                                                                                          $if(strategy-paper.version)$\textbf{Version:} & $strategy-paper.version$ \\$endif$
+                                                                                          $if(strategy-paper.owner)$\textbf{Owner:} & $strategy-paper.owner$ \\$endif$
+                                                                                          $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                        \end{tabular}\par
+                                                                                        \vspace{0.5em}
+                                                                                        {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                        \vspace{0.8em}
+                                                                                      }{%
+                                                                                        \ifdefstring{\docform}{Policy Document}{%
+                                                                                          % Policy document head:
+                                                                                          % centred masthead, then the
+                                                                                          % document control lines.
+                                                                                          \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle POLICY DOCUMENT\par}\end{center}%
+                                                                                          {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                          \vspace{0.5em}
+                                                                                          \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                            \textbf{Title:} & $title$ \\
+                                                                                            \textbf{Date:} & $date$ \\
+                                                                                            $if(policy-document.version)$\textbf{Version:} & $policy-document.version$ \\$endif$
+                                                                                            $if(policy-document.owner)$\textbf{Owner:} & $policy-document.owner$ \\$endif$
+                                                                                            $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                          \end{tabular}\par
+                                                                                          \vspace{0.5em}
+                                                                                          {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                          \vspace{0.8em}
+                                                                                        }{%
+                                                                                          \ifdefstring{\docform}{Procedure Document}{%
+                                                                                            % Procedure document head:
+                                                                                            % centred masthead, then the
+                                                                                            % document control lines.
+                                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle PROCEDURE DOCUMENT\par}\end{center}%
+                                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                            \vspace{0.5em}
+                                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                              \textbf{Title:} & $title$ \\
+                                                                                              \textbf{Date:} & $date$ \\
+                                                                                              $if(procedure-document.version)$\textbf{Version:} & $procedure-document.version$ \\$endif$
+                                                                                              $if(procedure-document.owner)$\textbf{Owner:} & $procedure-document.owner$ \\$endif$
+                                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                            \end{tabular}\par
+                                                                                            \vspace{0.5em}
+                                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                            \vspace{0.8em}
+                                                                                          }{%
+                                                                                            \ifdefstring{\docform}{Framework Document}{%
+                                                                                              % Framework document head:
+                                                                                              % centred masthead, then the
+                                                                                              % document control lines.
+                                                                                              \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle FRAMEWORK DOCUMENT\par}\end{center}%
+                                                                                              {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                              \vspace{0.5em}
+                                                                                              \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                \textbf{Title:} & $title$ \\
+                                                                                                \textbf{Date:} & $date$ \\
+                                                                                                $if(framework-document.version)$\textbf{Version:} & $framework-document.version$ \\$endif$
+                                                                                                $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                              \end{tabular}\par
+                                                                                              \vspace{0.5em}
+                                                                                              {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                              \vspace{0.8em}
+                                                                                            }{%
+                                                                                              \ifdefstring{\docform}{Terms and Conditions}{%
+                                                                                                % Terms and conditions
+                                                                                                % head: centred masthead,
+                                                                                                % then the parties and
+                                                                                                % term lines.
+                                                                                                \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle TERMS AND CONDITIONS\par}\end{center}%
+                                                                                                {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                \vspace{0.5em}
+                                                                                                \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                  \textbf{Parties:} & $terms-conditions.parties$ \\
+                                                                                                  \textbf{Date:} & $date$ \\
+                                                                                                  $if(terms-conditions.term)$\textbf{Term:} & $terms-conditions.term$ \\$endif$
+                                                                                                  $if(terms-conditions.governing-law)$\textbf{Governing law:} & $terms-conditions.governing-law$ \\$endif$
+                                                                                                  $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                \end{tabular}\par
+                                                                                                \vspace{0.5em}
+                                                                                                {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                \vspace{0.8em}
+                                                                                              }{%
+                                                                                                \ifdefstring{\docform}{Data Processing Agreement}{%
+                                                                                                  % Data processing
+                                                                                                  % agreement head: centred
+                                                                                                  % masthead, then the
+                                                                                                  % controller and
+                                                                                                  % processor lines.
+                                                                                                  \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle DATA PROCESSING AGREEMENT\par}\end{center}%
+                                                                                                  {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                  \vspace{0.5em}
+                                                                                                  \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                    \textbf{Controller:} & $dpa.controller$ \\
+                                                                                                    \textbf{Processor:} & $dpa.processor$ \\
+                                                                                                    \textbf{Date:} & $date$ \\
+                                                                                                    $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                  \end{tabular}\par
+                                                                                                  \vspace{0.5em}
+                                                                                                  {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                  \vspace{0.8em}
+                                                                                                }{%
+                                                                                                  \ifdefstring{\docform}{Privacy Policy}{%
+                                                                                                    % Privacy policy head:
+                                                                                                    % centred masthead, then
+                                                                                                    % the controller and
+                                                                                                    % jurisdiction lines.
+                                                                                                    \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle PRIVACY POLICY\par}\end{center}%
+                                                                                                    {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                    \vspace{0.5em}
+                                                                                                    \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                      \textbf{Controller:} & $privacy-policy.controller$ \\
+                                                                                                      \textbf{Date:} & $date$ \\
+                                                                                                      $if(privacy-policy.jurisdiction)$\textbf{Jurisdiction:} & $privacy-policy.jurisdiction$ \\$endif$
+                                                                                                      $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                    \end{tabular}\par
+                                                                                                    \vspace{0.5em}
+                                                                                                    {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                    \vspace{0.8em}
+                                                                                                  }{%
+                                                                                                    \ifdefstring{\docform}{Non-Compete Agreement}{%
+                                                                                                      % Non-compete head:
+                                                                                                      % centred masthead,
+                                                                                                      % then the parties and
+                                                                                                      % term lines.
+                                                                                                      \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle NON-COMPETE AGREEMENT\par}\end{center}%
+                                                                                                      {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                      \vspace{0.5em}
+                                                                                                      \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                        \textbf{Parties:} & $non-compete.parties$ \\
+                                                                                                        \textbf{Date:} & $date$ \\
+                                                                                                        $if(non-compete.term)$\textbf{Term:} & $non-compete.term$ \\$endif$
+                                                                                                        $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                      \end{tabular}\par
+                                                                                                      \vspace{0.5em}
+                                                                                                      {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                      \vspace{0.8em}
+                                                                                                    }{%
+                                                                                                      \ifdefstring{\docform}{Cease and Desist}{%
+                                                                                                        % Cease and desist
+                                                                                                        % head: centred
+                                                                                                        % masthead, then the
+                                                                                                        % recipient line.
+                                                                                                        \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle CEASE AND DESIST\par}\end{center}%
+                                                                                                        {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                        \vspace{0.5em}
+                                                                                                        \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                          \textbf{Recipient:} & $cease-desist.recipient$ \\
+                                                                                                          \textbf{Date:} & $date$ \\
+                                                                                                          $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                        \end{tabular}\par
+                                                                                                        \vspace{0.5em}
+                                                                                                        {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                        \vspace{0.8em}
+                                                                                                      }{}%
+                                                                                                    }%
+                                                                                                  }%
+                                                                                                }%
+                                                                                              }%
+                                                                                            }%
+                                                                                          }%
+                                                                                        }%
+                                                                                      }%
+                                                                                    }%
+                                                                                  }%
+                                                                                }%
+                                                                              }%
+                                                                             }%
                                                                            }%
                                                                          }%
                                                                        }%

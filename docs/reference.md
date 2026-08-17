@@ -275,6 +275,19 @@ The structured fields per block:
 | `literature-review` | none | `scope`, `reviewer` |
 | `marking-rubric` | none | `course`, `marker` |
 | `lecture-notes` | none | `course`, `date`, `speaker` |
+| `legal-memo` | `to` | `from` |
+| `board-minutes` | none | `company`, `date`, `location`, `chair` |
+| `corporate-resolution` | none | `company`, `number` |
+| `board-pack` | none | `meeting`, `period` |
+| `strategy-paper` | none | `version`, `owner` |
+| `policy-document` | none | `version`, `owner` |
+| `procedure-document` | none | `version`, `owner` |
+| `framework-document` | none | `version` |
+| `terms-conditions` | none | `parties`, `term`, `governing-law` |
+| `dpa` | none | `controller`, `processor` |
+| `privacy-policy` | none | `controller`, `jurisdiction` |
+| `non-compete` | none | `parties`, `term` |
+| `cease-desist` | none | `recipient` |
 
 For the letter the whole head (recipient block, date, reference,
 subject, opening) is owned by LaTeX on PDF: the recipient block sits
@@ -455,6 +468,58 @@ The lecture notes head on PDF is a centred LECTURE NOTES masthead
 with the lecture, course, date, speaker, and reference lines. The
 notes render in the body.
 
+The legal memo head on PDF is a centred LEGAL MEMO masthead with the
+to, from, date, re, and reference lines as a TO/FROM/DATE/RE block.
+The issue, facts, analysis, and conclusion render in the body.
+
+The board minutes head on PDF is a centred BOARD MINUTES masthead
+with the company, date, location, chair, and reference lines. The
+resolutions and action items render in the body.
+
+The corporate resolution head on PDF is a centred CORPORATE
+RESOLUTION masthead with the company, resolution number, and date
+lines. The resolved clauses render in the body.
+
+The board pack head on PDF is a centred BOARD PACK masthead with the
+meeting, date, and period lines. The reports and papers render in
+the body.
+
+The strategy paper head on PDF is a centred STRATEGY PAPER masthead
+with the title, date, version, owner, and reference lines. The
+context, options, and recommendation render in the body.
+
+The policy document head on PDF is a centred POLICY DOCUMENT masthead
+with the title, date, version, owner, and reference lines. The
+policy statement and compliance sections render in the body.
+
+The procedure document head on PDF is a centred PROCEDURE DOCUMENT
+masthead with the title, date, version, owner, and reference lines.
+The numbered steps render in the body.
+
+The framework document head on PDF is a centred FRAMEWORK DOCUMENT
+masthead with the title, date, version, and reference lines. The
+principles and structure render in the body.
+
+The terms and conditions head on PDF is a centred TERMS AND
+CONDITIONS masthead with the parties, date, term, governing law, and
+reference lines. The numbered clauses render in the body.
+
+The data processing agreement head on PDF is a centred DATA
+PROCESSING AGREEMENT masthead with the controller, processor, date,
+and reference lines. The Article 28 obligations render in the body.
+
+The privacy policy head on PDF is a centred PRIVACY POLICY masthead
+with the controller, date, jurisdiction, and reference lines. The
+data handling sections render in the body.
+
+The non-compete agreement head on PDF is a centred NON-COMPETE
+AGREEMENT masthead with the parties, date, term, and reference lines.
+The restriction and enforcement sections render in the body.
+
+The cease and desist head on PDF is a centred CEASE AND DESIST
+masthead with the recipient, date, and reference lines. The demand
+sections render in the body.
+
 The examples (`template-letter.qmd`, `template-memo.qmd`,
 `template-agenda.qmd`, `template-brief.qmd`, `template-decision.qmd`,
 `template-minutes.qmd`, `template-contract.qmd`,
@@ -472,7 +537,14 @@ The examples (`template-letter.qmd`, `template-memo.qmd`,
 `template-lab-report.qmd`, `template-syllabus.qmd`,
 `template-essay.qmd`, `template-research-proposal.qmd`,
 `template-dissertation-proposal.qmd`, `template-literature-review.qmd`,
-`template-marking-rubric.qmd`, `template-lecture-notes.qmd`) show
+`template-marking-rubric.qmd`, `template-lecture-notes.qmd`,
+`template-legal-memo.qmd`, `template-board-minutes.qmd`,
+`template-corporate-resolution.qmd`, `template-board-pack.qmd`,
+`template-strategy-paper.qmd`, `template-policy-document.qmd`,
+`template-procedure-document.qmd`, `template-framework-document.qmd`,
+`template-terms-conditions.qmd`, `template-dpa.qmd`,
+`template-privacy-policy.qmd`, `template-non-compete.qmd`,
+`template-cease-desist.qmd`) show
 each block
 filled in. The schema
 for IDE completion lives in `_extensions/obsidian/_schema.yml`, and

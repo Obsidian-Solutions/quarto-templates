@@ -1,0 +1,63 @@
+---
+title: "Terms and Conditions"
+subtitle: "Template: standard terms for the supply of services"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["terms", "conditions", "template"]
+reference: "OS-TAC-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Terms and Conditions"
+doc-type: "Terms and Conditions"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+terms-conditions:
+  parties: "The supplier and the customer"
+  term: "12 months from the effective date"
+  governing-law: "England and Wales"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-terms-conditions}
+:::
+
+Define the terms used in this document. Give each defined term its
+own paragraph.
+
+# Supply of services
+
+State the basis on which the supplier provides the services. Cover
+the standard of care, the personnel, and the subcontracting.
+
+# Charges and payment
+
+State the charges, the invoicing, and the payment terms.
+
+# Liability
+
+State the liability cap and the excluded losses.
+
+# Confidentiality
+
+State the confidentiality obligations of both parties.
+
+# Data protection
+
+State the data protection duties and the applicable law.
+
+# Term and termination
+
+State how the terms end and the consequences of termination.
+
+# General
+
+State the remaining boilerplate: notices, assignment, entire
+agreement, and governing law.
