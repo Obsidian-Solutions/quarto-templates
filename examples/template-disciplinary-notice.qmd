@@ -1,0 +1,52 @@
+---
+title: "Disciplinary meeting notice"
+subtitle: "Template: notice of a disciplinary hearing"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["disciplinary", "hearing", "template"]
+reference: "OS-DIS-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Disciplinary Notice"
+doc-type: "Disciplinary Notice"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+disciplinary-notice:
+  employee: "Employee name"
+  meeting-date: "2026-08-21"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-disciplinary-notice}
+:::
+
+State the purpose of the notice. Name the allegations the meeting
+will consider and the policy that applies.
+
+# The allegations
+
+Set out the allegations in detail. Give the dates, the evidence,
+and the witnesses.
+
+# The meeting
+
+State the date, time and location of the meeting. Name the chair
+and the right of the employee to bring a companion.
+
+# The right to bring a companion
+
+State the right of the employee to bring a companion and the role
+the companion plays.
+
+# Possible outcomes
+
+State the range of outcomes the chair may decide. Name the right
+of appeal.

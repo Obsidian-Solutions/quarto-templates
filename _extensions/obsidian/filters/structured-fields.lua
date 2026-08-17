@@ -1596,6 +1596,231 @@ local function render_cease_desist(m)
   return pandoc.Div(blocks, { class = "obsidian-doc-cease-desist" })
 end
 
+-- ---- Offer letter ----
+local function render_offer_letter(m)
+  local ol = meta_map(m, "offer-letter")
+  require_field(meta_str(ol, "employee"), "offer-letter.employee")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Offer letter") }))
+    local rows = {
+      { "Employee", meta_str(ol, "employee") },
+      { "Position", meta_str(ol, "position") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Start date", meta_str(ol, "start-date") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-offer-letter" })
+end
+
+-- ---- Termination letter ----
+local function render_termination_letter(m)
+  local tl = meta_map(m, "termination-letter")
+  require_field(meta_str(tl, "employee"), "termination-letter.employee")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Termination letter") }))
+    local rows = {
+      { "Employee", meta_str(tl, "employee") },
+      { "Date", meta_str(m, "date") or "" },
+      { "Last day", meta_str(tl, "last-day") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-termination-letter" })
+end
+
+-- ---- Resignation letter ----
+local function render_resignation_letter(m)
+  local rl = meta_map(m, "resignation-letter")
+  require_field(meta_str(rl, "employee"), "resignation-letter.employee")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Resignation letter") }))
+    local rows = {
+      { "Employee", meta_str(rl, "employee") },
+      { "Date", meta_str(m, "date") or "" },
+      { "Last day", meta_str(rl, "last-day") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-resignation-letter" })
+end
+
+-- ---- Warning letter ----
+local function render_warning_letter(m)
+  local wl = meta_map(m, "warning-letter")
+  require_field(meta_str(wl, "employee"), "warning-letter.employee")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Warning letter") }))
+    local rows = {
+      { "Employee", meta_str(wl, "employee") },
+      { "Subject", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-warning-letter" })
+end
+
+-- ---- Disciplinary notice ----
+local function render_disciplinary_notice(m)
+  local dn = meta_map(m, "disciplinary-notice")
+  require_field(meta_str(dn, "employee"), "disciplinary-notice.employee")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Disciplinary notice") }))
+    local rows = {
+      { "Employee", meta_str(dn, "employee") },
+      { "Date", meta_str(m, "date") or "" },
+      { "Meeting date", meta_str(dn, "meeting-date") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-disciplinary-notice" })
+end
+
+-- ---- Job description ----
+local function render_job_description(m)
+  local jd = meta_map(m, "job-description")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Job description") }))
+    local rows = {
+      { "Role", meta_str(m, "title") or "" },
+      { "Department", meta_str(jd, "department") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Location", meta_str(jd, "location") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-job-description" })
+end
+
+-- ---- Exit interview ----
+local function render_exit_interview(m)
+  local ei = meta_map(m, "exit-interview")
+  require_field(meta_str(ei, "employee"), "exit-interview.employee")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Exit interview") }))
+    local rows = {
+      { "Employee", meta_str(ei, "employee") },
+      { "Department", meta_str(ei, "department") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Interviewer", meta_str(ei, "interviewer") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-exit-interview" })
+end
+
+-- ---- Individual development plan ----
+local function render_idp(m)
+  local idp = meta_map(m, "idp")
+  require_field(meta_str(idp, "employee"), "idp.employee")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Individual development plan") }))
+    local rows = {
+      { "Employee", meta_str(idp, "employee") },
+      { "Role", meta_str(idp, "role") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Manager", meta_str(idp, "manager") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-idp" })
+end
+
+-- ---- Onboarding checklist ----
+local function render_onboarding_checklist(m)
+  local oc = meta_map(m, "onboarding-checklist")
+  require_field(meta_str(oc, "employee"), "onboarding-checklist.employee")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Onboarding checklist") }))
+    local rows = {
+      { "Employee", meta_str(oc, "employee") },
+      { "Role", meta_str(oc, "role") or "" },
+      { "Start date", meta_str(oc, "start-date") or "" },
+      { "Manager", meta_str(oc, "manager") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-onboarding-checklist" })
+end
+
+-- ---- Timesheet ----
+local function render_timesheet(m)
+  local ts = meta_map(m, "timesheet")
+  require_field(meta_str(ts, "employee"), "timesheet.employee")
+
+  local blocks = {}
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Timesheet") }))
+    local rows = {
+      { "Employee", meta_str(ts, "employee") },
+      { "Period", meta_str(ts, "period") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Manager", meta_str(ts, "manager") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-timesheet" })
+end
+
 -- ---- Document walk ----
 -- The marker Divs carry the class. Replace each with the rendered
 -- block. The letter marker splits into two parts: the opening block
@@ -1655,6 +1880,16 @@ local renderers = {
   ["obsidian-privacy-policy"] = render_privacy_policy,
   ["obsidian-non-compete"] = render_non_compete,
   ["obsidian-cease-desist"] = render_cease_desist,
+  ["obsidian-offer-letter"] = render_offer_letter,
+  ["obsidian-termination-letter"] = render_termination_letter,
+  ["obsidian-resignation-letter"] = render_resignation_letter,
+  ["obsidian-warning-letter"] = render_warning_letter,
+  ["obsidian-disciplinary-notice"] = render_disciplinary_notice,
+  ["obsidian-job-description"] = render_job_description,
+  ["obsidian-exit-interview"] = render_exit_interview,
+  ["obsidian-idp"] = render_idp,
+  ["obsidian-onboarding-checklist"] = render_onboarding_checklist,
+  ["obsidian-timesheet"] = render_timesheet,
 }
 
 local function has_class(el, wanted)

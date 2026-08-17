@@ -1,0 +1,52 @@
+---
+title: "Termination Letter"
+subtitle: "Template: notice of termination of employment"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["termination", "employment", "template"]
+reference: "OS-TER-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Termination Letter"
+doc-type: "Termination Letter"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+termination-letter:
+  employee: "Employee name"
+  last-day: "2026-09-30"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-termination-letter}
+:::
+
+State the decision in the first paragraph. Name the date the
+employment ends and the reason for the decision.
+
+# Notice period
+
+State the notice period served and whether the employee works it
+or receives pay in lieu.
+
+# Payments and benefits
+
+State the final payments: salary to the last day, accrued holiday,
+and any redundancy payment. Name the benefits that end and when.
+
+# Return of property
+
+List the property the employee must return: badge, laptop, phone,
+and documents.
+
+# Next steps
+
+State the handover arrangements and the exit interview. Confirm
+any post-employment restrictions that apply.

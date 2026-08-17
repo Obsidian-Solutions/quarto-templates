@@ -944,6 +944,155 @@ options:
         type: string
         description: "Recipient of the letter."
 
+  # ---- Offer letter ----
+  offer-letter:
+    type: object
+    description: "Structured employment offer letter fields."
+    properties:
+      employee:
+        type: string
+        required: true
+        description: "Candidate name (required)."
+      position:
+        type: string
+        description: "Position offered."
+      start-date:
+        type: string
+        format: date
+        description: "Start date."
+
+  # ---- Termination letter ----
+  termination-letter:
+    type: object
+    description: "Structured termination letter fields."
+    properties:
+      employee:
+        type: string
+        required: true
+        description: "Employee name (required)."
+      last-day:
+        type: string
+        format: date
+        description: "Last working day."
+
+  # ---- Resignation letter ----
+  resignation-letter:
+    type: object
+    description: "Structured resignation letter fields."
+    properties:
+      employee:
+        type: string
+        required: true
+        description: "Employee name (required)."
+      last-day:
+        type: string
+        format: date
+        description: "Last working day."
+
+  # ---- Warning letter ----
+  warning-letter:
+    type: object
+    description: "Structured warning letter fields."
+    properties:
+      employee:
+        type: string
+        required: true
+        description: "Employee name (required)."
+
+  # ---- Disciplinary notice ----
+  disciplinary-notice:
+    type: object
+    description: "Structured disciplinary notice fields."
+    properties:
+      employee:
+        type: string
+        required: true
+        description: "Employee name (required)."
+      meeting-date:
+        type: string
+        format: date
+        description: "Disciplinary meeting date."
+
+  # ---- Job description ----
+  job-description:
+    type: object
+    description: "Structured job description fields."
+    properties:
+      department:
+        type: string
+        description: "Department."
+      location:
+        type: string
+        description: "Work location."
+
+  # ---- Exit interview ----
+  exit-interview:
+    type: object
+    description: "Structured exit interview fields."
+    properties:
+      employee:
+        type: string
+        required: true
+        description: "Employee name (required)."
+      department:
+        type: string
+        description: "Department."
+      interviewer:
+        type: string
+        description: "Interviewer name."
+
+  # ---- Individual development plan ----
+  idp:
+    type: object
+    description: "Structured individual development plan fields."
+    properties:
+      employee:
+        type: string
+        required: true
+        description: "Employee name (required)."
+      role:
+        type: string
+        description: "Current role."
+      manager:
+        type: string
+        description: "Line manager."
+
+  # ---- Onboarding checklist ----
+  onboarding-checklist:
+    type: object
+    description: "Structured onboarding checklist fields."
+    properties:
+      employee:
+        type: string
+        required: true
+        description: "Employee name (required)."
+      role:
+        type: string
+        description: "Role."
+      start-date:
+        type: string
+        format: date
+        description: "Start date."
+      manager:
+        type: string
+        description: "Line manager."
+
+  # ---- Timesheet ----
+  timesheet:
+    type: object
+    description: "Structured timesheet fields."
+    properties:
+      employee:
+        type: string
+        required: true
+        description: "Employee name (required)."
+      period:
+        type: string
+        description: "Billing period."
+      manager:
+        type: string
+        description: "Approving manager."
+
   # ---- Invoice ----
   invoice:
     type: object

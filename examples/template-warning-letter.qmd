@@ -1,0 +1,51 @@
+---
+title: "Unauthorised absence"
+subtitle: "Template: formal warning to an employee"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["warning", "disciplinary", "template"]
+reference: "OS-WRN-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Warning Letter"
+doc-type: "Warning Letter"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+warning-letter:
+  employee: "Employee name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-warning-letter}
+:::
+
+State the purpose of the letter. Name the conduct or performance
+issue, the dates, and the standard expected.
+
+# The issue
+
+Describe the issue in detail. Give the evidence and the policy
+breached.
+
+# The standard expected
+
+State the standard the employee must meet and the date by which
+they must meet it.
+
+# Consequences
+
+State the consequences of failing to improve. Name the next stage
+of the process.
+
+# Right of appeal
+
+State the right of appeal and the deadline. Give the contact for
+the appeal.

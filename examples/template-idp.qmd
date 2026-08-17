@@ -1,0 +1,56 @@
+---
+title: "Individual Development Plan"
+subtitle: "Template: personal development goals for a period"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["development", "plan", "template"]
+reference: "OS-IDP-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Individual Development Plan"
+doc-type: "Individual Development Plan"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+idp:
+  employee: "Your name"
+  role: "Systems Consultant"
+  manager: "Manager name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-idp}
+:::
+
+State the purpose of the plan in one paragraph. Name the period it
+covers and the overall development goal.
+
+# Development goals
+
+List the goals for the period. Make each goal specific and
+measurable.
+
+# Actions
+
+For each goal, state the actions, the support needed, and the
+target date. Use a table.
+
+| Goal | Action | Support | Target date |
+|------|--------|---------|-------------|
+| Example goal | Example action | Example support | 2026-12-01 |
+
+# Review
+
+State how the organisation will review the plan. Name the review
+dates and the reviewer.
+
+# Sign-off
+
+Record the sign-off by the employee and the manager, with dates.
