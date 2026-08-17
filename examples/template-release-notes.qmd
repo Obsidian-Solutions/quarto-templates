@@ -1,0 +1,55 @@
+---
+title: "Knowledge Platform Service"
+subtitle: "Template: release notes for a product release"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["release", "notes", "template"]
+reference: "OS-RN-001"
+version: "1.0.0"
+confidentiality: "Public"
+short-title: "Release Notes"
+doc-type: "Release Notes"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+release-notes:
+  version: "2.4.0"
+  status: "Stable"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-release-notes}
+:::
+
+State the release summary in one paragraph. Name the headline
+capability of this version.
+
+# New features
+
+List the new features introduced in this release.
+
+- Feature one, with its benefit.
+- Feature two, with its benefit.
+
+# Fixed issues
+
+List the issues fixed in this release.
+
+- Issue one, with the reference.
+- Issue two, with the reference.
+
+# Breaking changes
+
+List any breaking changes. State the migration needed for each.
+
+# Upgrade notes
+
+State the upgrade steps, the rollback procedure, and any
+downtime required.

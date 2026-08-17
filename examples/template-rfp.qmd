@@ -1,0 +1,56 @@
+---
+title: "Managed support services"
+subtitle: "Template: request for proposal for a services contract"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["rfp", "tender", "proposal", "template"]
+reference: "OS-RFP-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Request for Proposal"
+doc-type: "Request for Proposal"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+rfp:
+  issuer: "Obsidian Solutions"
+  deadline: "2026-09-15"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-rfp}
+:::
+
+State the purpose in one paragraph. Name the service sought, the
+context, and the intended contract form.
+
+# Background
+
+State the background to the requirement. Name the current
+arrangements and the problem they present.
+
+# Scope of work
+
+State the scope of the work. Name the services, the boundaries,
+and the exclusions.
+
+# Deliverables
+
+List the deliverables with their acceptance criteria.
+
+# Proposal requirements
+
+State the contents required of the proposal: methodology,
+resourcing, pricing, and timetable.
+
+# Evaluation criteria
+
+State the criteria and their weightings. Name the process and the
+decision timescale.

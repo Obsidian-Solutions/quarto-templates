@@ -1,0 +1,57 @@
+---
+title: "Managed support services"
+subtitle: "Template: service level agreement for a support contract"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["sla", "service", "level", "template"]
+reference: "OS-SLA-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Service Level Agreement"
+doc-type: "Service Level Agreement"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+sla:
+  parties: "Provider name and Customer name"
+  term: "12 months from the effective date"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-sla}
+:::
+
+State the purpose and scope of the agreement in one paragraph. Name
+the service covered and the parties bound.
+
+# Service levels
+
+State the service levels. Name the availability target, the
+response times, and the measurement period.
+
+| Level | Target | Measurement |
+|---|---|---|
+| Availability | 99.5 percent | Monthly |
+| Response | 4 business hours | Per request |
+
+# Service credits
+
+State the credits for missed levels. Name the amount and the
+mechanism of recovery.
+
+# Support schedule
+
+State the support hours, the escalation path, and the emergency
+provisions.
+
+# Exclusions
+
+State what the agreement does not cover and the conditions that
+suspend the levels.

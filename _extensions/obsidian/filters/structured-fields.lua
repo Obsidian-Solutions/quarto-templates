@@ -898,6 +898,208 @@ local function render_fact_sheet(m)
   return pandoc.Div(blocks, { class = "obsidian-doc-fact-sheet" })
 end
 
+-- ---- Requirements specification ----
+local function render_requirements_spec(m)
+  local spec = meta_map(m, "requirements-spec")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Requirements specification") }))
+    local rows = {
+      { "Title", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Version", meta_str(spec, "version") or "" },
+      { "Status", meta_str(spec, "status") or "" },
+      { "Approval", meta_str(spec, "approval") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-requirements-spec" })
+end
+
+-- ---- Technical design document ----
+local function render_technical_design(m)
+  local design = meta_map(m, "technical-design")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Technical design document") }))
+    local rows = {
+      { "Title", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Version", meta_str(design, "version") or "" },
+      { "Status", meta_str(design, "status") or "" },
+      { "Author", meta_str(design, "author") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-technical-design" })
+end
+
+-- ---- Reference letter ----
+local function render_reference_letter(m)
+  local ref_letter = meta_map(m, "reference-letter")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Reference letter") }))
+    local rows = {
+      { "Date", meta_str(m, "date") or "" },
+      { "Addressee", meta_str(ref_letter, "addressee") or "" },
+      { "Candidate", meta_str(ref_letter, "candidate") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+    local salutation = meta_str(ref_letter, "salutation")
+    if salutation ~= nil and salutation ~= "" then
+      table.insert(blocks, para(salutation))
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-reference-letter" })
+end
+
+-- ---- Staff report ----
+local function render_staff_report(m)
+  local staff = meta_map(m, "staff-report")
+  require_field(meta_str(staff, "to"), "staff-report.to")
+  require_field(meta_str(staff, "from"), "staff-report.from")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Staff report") }))
+    local rows = {
+      { "To", meta_str(staff, "to") },
+      { "From", meta_str(staff, "from") },
+      { "Date", meta_str(m, "date") or "" },
+      { "Subject", meta_str(m, "title") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-staff-report" })
+end
+
+-- ---- Release notes ----
+local function render_release_notes(m)
+  local notes = meta_map(m, "release-notes")
+  require_field(meta_str(notes, "version"), "release-notes.version")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Release notes") }))
+    local rows = {
+      { "Product", meta_str(m, "title") or "" },
+      { "Version", meta_str(notes, "version") },
+      { "Date", meta_str(m, "date") or "" },
+      { "Status", meta_str(notes, "status") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-release-notes" })
+end
+
+-- ---- Test report ----
+local function render_test_report(m)
+  local report = meta_map(m, "test-report")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Test report") }))
+    local rows = {
+      { "Project", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Version", meta_str(report, "version") or "" },
+      { "Tester", meta_str(report, "tester") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-test-report" })
+end
+
+-- ---- Request for proposal ----
+local function render_rfp(m)
+  local rfp = meta_map(m, "rfp")
+  require_field(meta_str(rfp, "issuer"), "rfp.issuer")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Request for proposal") }))
+    local rows = {
+      { "Title", meta_str(m, "title") or "" },
+      { "Issuer", meta_str(rfp, "issuer") },
+      { "Date", meta_str(m, "date") or "" },
+      { "Deadline", meta_str(rfp, "deadline") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-rfp" })
+end
+
+-- ---- Service level agreement ----
+local function render_sla(m)
+  local sla = meta_map(m, "sla")
+  require_field(meta_str(sla, "parties"), "sla.parties")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Service level agreement") }))
+    local rows = {
+      { "Service", meta_str(m, "title") or "" },
+      { "Parties", meta_str(sla, "parties") },
+      { "Date", meta_str(m, "date") or "" },
+      { "Term", meta_str(sla, "term") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-sla" })
+end
+
 -- ---- Document walk ----
 -- The marker Divs carry the class. Replace each with the rendered
 -- block. The letter marker splits into two parts: the opening block
@@ -927,6 +1129,14 @@ local renderers = {
   ["obsidian-incident-report"] = render_incident_report,
   ["obsidian-sow"] = render_sow,
   ["obsidian-fact-sheet"] = render_fact_sheet,
+  ["obsidian-requirements-spec"] = render_requirements_spec,
+  ["obsidian-technical-design"] = render_technical_design,
+  ["obsidian-reference-letter"] = render_reference_letter,
+  ["obsidian-staff-report"] = render_staff_report,
+  ["obsidian-release-notes"] = render_release_notes,
+  ["obsidian-test-report"] = render_test_report,
+  ["obsidian-rfp"] = render_rfp,
+  ["obsidian-sla"] = render_sla,
 }
 
 local function has_class(el, wanted)

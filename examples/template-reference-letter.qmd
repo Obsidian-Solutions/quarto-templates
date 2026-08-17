@@ -1,0 +1,48 @@
+---
+title: "Reference Letter"
+subtitle: "Template: letter of recommendation for a candidate"
+author: "Your name"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["reference", "letter", "recommendation", "template"]
+reference: "OS-REF-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Reference Letter"
+doc-type: "Reference Letter"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+reference-letter:
+  addressee: "Admissions officer name"
+  candidate: "Candidate name"
+  salutation: "To whom it may concern,"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-reference-letter}
+:::
+
+State the opening in one paragraph. Name the candidate, the role or
+programme they seek, and your relationship to them.
+
+# Qualifications
+
+State the candidate's qualifications. Give the evidence: projects,
+results, and behaviours observed.
+
+# Personal qualities
+
+State the personal qualities. Name integrity, teamwork, and
+reliability with concrete examples.
+
+# Recommendation
+
+State the overall recommendation. Repeat the strength of your
+endorsement, then sign with your name and title.

@@ -150,7 +150,23 @@ $if(doc-type)$
                                       \ifdefstring{\docform}{Audit Report}{\renewcommand{\docformatplain}{1}}{%
                                         \ifdefstring{\docform}{Incident Report}{\renewcommand{\docformatplain}{1}}{%
                                           \ifdefstring{\docform}{Statement of Work}{\renewcommand{\docformatplain}{1}}{%
-                                            \ifdefstring{\docform}{Fact Sheet}{\renewcommand{\docformatplain}{1}}{}%
+                                            \ifdefstring{\docform}{Fact Sheet}{\renewcommand{\docformatplain}{1}}{%
+                                              \ifdefstring{\docform}{Requirements Specification}{\renewcommand{\docformatplain}{1}}{%
+                                                \ifdefstring{\docform}{Technical Design Document}{\renewcommand{\docformatplain}{1}}{%
+                                                  \ifdefstring{\docform}{Reference Letter}{\renewcommand{\docformatplain}{1}}{%
+                                                    \ifdefstring{\docform}{Staff Report}{\renewcommand{\docformatplain}{1}}{%
+                                                      \ifdefstring{\docform}{Release Notes}{\renewcommand{\docformatplain}{1}}{%
+                                                        \ifdefstring{\docform}{Test Report}{\renewcommand{\docformatplain}{1}}{%
+                                                          \ifdefstring{\docform}{Request for Proposal}{\renewcommand{\docformatplain}{1}}{%
+                                                            \ifdefstring{\docform}{Service Level Agreement}{\renewcommand{\docformatplain}{1}}{}%
+                                                          }%
+                                                        }%
+                                                      }%
+                                                    }%
+                                                  }%
+                                                }%
+                                              }%
+                                            }%
                                           }%
                                         }%
                                       }%
@@ -181,8 +197,11 @@ $endif$
 % briefs, decision records, meeting minutes, contracts, press
 % releases, newsletters, certificates, reading lists, NDAs, MOUs,
 % SOPs, after-action reports, business cases, project charters, DPIAs,
-% audit reports, incident reports, statements of work and fact sheets
-% are single-flow business documents:
+% audit reports, incident reports, statements of work, fact sheets,
+% requirements specifications, technical design documents, reference
+% letters, staff reports, release notes, test reports, requests for
+% proposal and service level agreements are single-flow business
+% documents:
 % no cover, no separate front matter, paginate from 1.
 $if(titlepage-none)$
 \pagenumbering{arabic}
@@ -193,8 +212,10 @@ $if(titlepage-none)$
 % briefs, decision records, meeting minutes, contracts, press
 % releases, newsletters, certificates, reading lists, NDAs, MOUs,
 % SOPs, after-action reports, business cases, project charters, DPIAs,
-% audit reports, incident reports, statements of work and fact sheets
-% use the minimal plain style
+% audit reports, incident reports, statements of work, fact sheets,
+% requirements specifications, technical design documents, reference
+% letters, staff reports, release notes, test reports, requests for
+% proposal and service level agreements use the minimal plain style
 % (classification bands only) on every page; page 1 carries the
 % format's own letterhead, masthead or header block instead.
 $if(doc-type)$
@@ -686,7 +707,193 @@ $endif$
                                             \vspace{0.5em}
                                             {\color{obsidian}\hrule height 0.8pt}\par
                                             \vspace{0.8em}
-                                          }{}%
+                                          }{%
+                                            \ifdefstring{\docform}{Requirements Specification}{%
+                                              % Requirements spec head:
+                                              % centred masthead, then
+                                              % the document control
+                                              % lines. The IEEE 830
+                                              % sections render in the
+                                              % body.
+                                              \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle REQUIREMENTS SPECIFICATION\par}\end{center}%
+                                              {\color{obsidian}\hrule height 1.2pt}\par
+                                              \vspace{0.5em}
+                                              \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                \textbf{Title:} & $title$ \\
+                                                \textbf{Date:} & $date$ \\
+                                                $if(requirements-spec.version)$\textbf{Version:} & $requirements-spec.version$ \\$endif$
+                                                $if(requirements-spec.status)$\textbf{Status:} & $requirements-spec.status$ \\$endif$
+                                                $if(requirements-spec.approval)$\textbf{Approval:} & $requirements-spec.approval$ \\$endif$
+                                                $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                              \end{tabular}\par
+                                              \vspace{0.5em}
+                                              {\color{obsidian}\hrule height 0.8pt}\par
+                                              \vspace{0.8em}
+                                            }{%
+                                              \ifdefstring{\docform}{Technical Design Document}{%
+                                                % Technical design head:
+                                                % centred masthead, then
+                                                % the document control
+                                                % lines. The IEEE 1016
+                                                % viewpoint sections
+                                                % render in the body.
+                                                \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle TECHNICAL DESIGN DOCUMENT\par}\end{center}%
+                                                {\color{obsidian}\hrule height 1.2pt}\par
+                                                \vspace{0.5em}
+                                                \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                  \textbf{Title:} & $title$ \\
+                                                  \textbf{Date:} & $date$ \\
+                                                  $if(technical-design.version)$\textbf{Version:} & $technical-design.version$ \\$endif$
+                                                  $if(technical-design.status)$\textbf{Status:} & $technical-design.status$ \\$endif$
+                                                  $if(technical-design.author)$\textbf{Author:} & $technical-design.author$ \\$endif$
+                                                  $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                \end{tabular}\par
+                                                \vspace{0.5em}
+                                                {\color{obsidian}\hrule height 0.8pt}\par
+                                                \vspace{0.8em}
+                                              }{%
+                                                \ifdefstring{\docform}{Reference Letter}{%
+                                                  % Reference letter head:
+                                                  % centred masthead, then
+                                                  % the recipient and
+                                                  % subject lines. The
+                                                  % recommendation body
+                                                  % renders below.
+                                                  \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle REFERENCE LETTER\par}\end{center}%
+                                                  {\color{obsidian}\hrule height 1.2pt}\par
+                                                  \vspace{0.5em}
+                                                  \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                    \textbf{Date:} & $date$ \\
+                                                    $if(reference-letter.addressee)$\textbf{Addressee:} & $reference-letter.addressee$ \\$endif$
+                                                    $if(reference-letter.candidate)$\textbf{Candidate:} & $reference-letter.candidate$ \\$endif$
+                                                    $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                  \end{tabular}\par
+                                                  $if(reference-letter.salutation)$
+                                                  \vspace{0.5em}
+                                                  \noindent{\small $reference-letter.salutation$\par}%
+                                                  $endif$
+                                                  \vspace{0.5em}
+                                                  {\color{obsidian}\hrule height 0.8pt}\par
+                                                  \vspace{0.8em}
+                                                }{%
+                                                  \ifdefstring{\docform}{Staff Report}{%
+                                                    % Staff report head:
+                                                    % centred masthead,
+                                                    % then the To, From,
+                                                    % date and subject
+                                                    % lines. The body
+                                                    % renders below.
+                                                    \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle STAFF REPORT\par}\end{center}%
+                                                    {\color{obsidian}\hrule height 1.2pt}\par
+                                                    \vspace{0.5em}
+                                                    \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                      \textbf{To:} & $staff-report.to$ \\
+                                                      \textbf{From:} & $staff-report.from$ \\
+                                                      \textbf{Date:} & $date$ \\
+                                                      \textbf{Subject:} & $title$ \\
+                                                      $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                    \end{tabular}\par
+                                                    \vspace{0.5em}
+                                                    {\color{obsidian}\hrule height 0.8pt}\par
+                                                    \vspace{0.8em}
+                                                  }{%
+                                                    \ifdefstring{\docform}{Release Notes}{%
+                                                      % Release notes head:
+                                                      % centred masthead,
+                                                      % then the product,
+                                                      % version and date
+                                                      % lines. The notes
+                                                      % render in the body.
+                                                      \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle RELEASE NOTES\par}\end{center}%
+                                                      {\color{obsidian}\hrule height 1.2pt}\par
+                                                      \vspace{0.5em}
+                                                      \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                        \textbf{Product:} & $title$ \\
+                                                        \textbf{Version:} & $release-notes.version$ \\
+                                                        \textbf{Date:} & $date$ \\
+                                                        $if(release-notes.status)$\textbf{Status:} & $release-notes.status$ \\$endif$
+                                                        $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                      \end{tabular}\par
+                                                      \vspace{0.5em}
+                                                      {\color{obsidian}\hrule height 0.8pt}\par
+                                                      \vspace{0.8em}
+                                                    }{%
+                                                      \ifdefstring{\docform}{Test Report}{%
+                                                        % Test report head:
+                                                        % centred masthead,
+                                                        % then the project
+                                                        % and test-run lines.
+                                                        % The results render
+                                                        % in the body.
+                                                        \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle TEST REPORT\par}\end{center}%
+                                                        {\color{obsidian}\hrule height 1.2pt}\par
+                                                        \vspace{0.5em}
+                                                        \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                          \textbf{Project:} & $title$ \\
+                                                          \textbf{Date:} & $date$ \\
+                                                          $if(test-report.version)$\textbf{Version:} & $test-report.version$ \\$endif$
+                                                          $if(test-report.tester)$\textbf{Tester:} & $test-report.tester$ \\$endif$
+                                                          $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                        \end{tabular}\par
+                                                        \vspace{0.5em}
+                                                        {\color{obsidian}\hrule height 0.8pt}\par
+                                                        \vspace{0.8em}
+                                                      }{%
+                                                        \ifdefstring{\docform}{Request for Proposal}{%
+                                                          % RFP head: centred
+                                                          % masthead, then
+                                                          % the procurement
+                                                          % control lines.
+                                                          % Scope and
+                                                          % evaluation
+                                                          % criteria render
+                                                          % in the body.
+                                                          \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle REQUEST FOR PROPOSAL\par}\end{center}%
+                                                          {\color{obsidian}\hrule height 1.2pt}\par
+                                                          \vspace{0.5em}
+                                                          \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                            \textbf{Title:} & $title$ \\
+                                                            \textbf{Issuer:} & $rfp.issuer$ \\
+                                                            \textbf{Date:} & $date$ \\
+                                                            $if(rfp.deadline)$\textbf{Deadline:} & $rfp.deadline$ \\$endif$
+                                                            $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                          \end{tabular}\par
+                                                          \vspace{0.5em}
+                                                          {\color{obsidian}\hrule height 0.8pt}\par
+                                                          \vspace{0.8em}
+                                                        }{%
+                                                          \ifdefstring{\docform}{Service Level Agreement}{%
+                                                            % SLA head:
+                                                            % centred
+                                                            % masthead, then
+                                                            % the parties and
+                                                            % commitment
+                                                            % lines. The
+                                                            % service level
+                                                            % sections render
+                                                            % in the body.
+                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle SERVICE LEVEL AGREEMENT\par}\end{center}%
+                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                            \vspace{0.5em}
+                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                              \textbf{Service:} & $title$ \\
+                                                              \textbf{Parties:} & $sla.parties$ \\
+                                                              \textbf{Date:} & $date$ \\
+                                                              $if(sla.term)$\textbf{Term:} & $sla.term$ \\$endif$
+                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                            \end{tabular}\par
+                                                            \vspace{0.5em}
+                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                            \vspace{0.8em}
+                                                          }{}%
+                                                        }%
+                                                      }%
+                                                    }%
+                                                  }%
+                                                }%
+                                              }%
+                                            }%
+                                          }%
                                         }%
                                       }%
                                     }%

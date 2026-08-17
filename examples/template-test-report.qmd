@@ -1,0 +1,57 @@
+---
+title: "Knowledge Platform Service"
+subtitle: "Template: test report for a QA cycle"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["test", "report", "template"]
+reference: "OS-TST-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Test Report"
+doc-type: "Test Report"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+test-report:
+  version: "2.4.0"
+  tester: "QA team name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-test-report}
+:::
+
+State the scope and objective in one paragraph. Name the version
+under test and the environment used.
+
+# Test strategy
+
+State the strategy adopted: the levels, the techniques, and the
+entry and exit criteria.
+
+# Test results
+
+Summarise the results. Give the counts of passed, failed, and
+blocked cases, and the overall verdict.
+
+# Defects
+
+List the defects found. For each, state the severity, the status,
+and the case reference.
+
+| ID | Severity | Status | Description |
+|---|---|---|---|
+| T-0001 | High | Open | State the defect. |
+| T-0002 | Medium | Fixed | State the defect. |
+
+# Conclusion
+
+State whether the version meets the acceptance criteria. Name any
+risks carried into release.
