@@ -1,0 +1,55 @@
+---
+title: "Knowledge Platform Service"
+subtitle: "Template: IEEE 830 requirements specification"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["requirements", "specification", "template"]
+reference: "OS-SRS-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Requirements Specification"
+doc-type: "Requirements Specification"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+requirements-spec:
+  version: "1.0"
+  status: "Draft"
+  approval: "Approval authority"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-requirements-spec}
+:::
+
+State the purpose in one paragraph. Name the scope of the product
+and the definitions used.
+
+# Overall description
+
+State the product perspective, the functions it performs, the user
+classes, and the operating constraints.
+
+# External interface requirements
+
+State the user, hardware, software, and communication interfaces.
+
+# System features
+
+State each feature with its requirements.
+
+**Feature 1.** The requirement set for one feature.
+
+**Feature 2.** The requirement set for another feature.
+
+# Other requirements
+
+State the performance, safety, and security requirements that
+apply across the product.

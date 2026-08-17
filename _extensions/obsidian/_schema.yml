@@ -550,6 +550,117 @@ options:
         format: date
         description: "Launch date."
 
+  # ---- Requirements specification ----
+  requirements-spec:
+    type: object
+    description: "Structured requirements specification fields (IEEE 830)."
+    properties:
+      version:
+        type: string
+        description: "Document version."
+      status:
+        type: string
+        description: "Document status, e.g. Draft, Approved."
+      approval:
+        type: string
+        description: "Approval authority and date."
+
+  # ---- Technical design document ----
+  technical-design:
+    type: object
+    description: "Structured technical design document fields (IEEE 1016)."
+    properties:
+      version:
+        type: string
+        description: "Document version."
+      status:
+        type: string
+        description: "Document status, e.g. Draft, Approved."
+      author:
+        type: string
+        description: "Design author."
+
+  # ---- Reference letter ----
+  reference-letter:
+    type: object
+    description: "Structured reference letter fields."
+    properties:
+      addressee:
+        type: string
+        description: "Recipient of the letter."
+      candidate:
+        type: string
+        description: "Person the letter recommends."
+      salutation:
+        type: string
+        description: "Opening line, e.g. To whom it may concern."
+
+  # ---- Staff report ----
+  staff-report:
+    type: object
+    description: "Structured staff report fields."
+    properties:
+      to:
+        type: string
+        required: true
+        description: "Addressee (required)."
+      from:
+        type: string
+        required: true
+        description: "Sender (required)."
+
+  # ---- Release notes ----
+  release-notes:
+    type: object
+    description: "Structured release notes fields."
+    properties:
+      version:
+        type: string
+        required: true
+        description: "Release version (required)."
+      status:
+        type: string
+        description: "Release status, e.g. Stable, Beta."
+
+  # ---- Test report ----
+  test-report:
+    type: object
+    description: "Structured test report fields."
+    properties:
+      version:
+        type: string
+        description: "Version under test."
+      tester:
+        type: string
+        description: "Person or team running the tests."
+
+  # ---- Request for proposal ----
+  rfp:
+    type: object
+    description: "Structured request for proposal fields."
+    properties:
+      issuer:
+        type: string
+        required: true
+        description: "Issuing organisation (required)."
+      deadline:
+        type: string
+        format: date
+        description: "Submission deadline."
+
+  # ---- Service level agreement ----
+  sla:
+    type: object
+    description: "Structured service level agreement fields."
+    properties:
+      parties:
+        type: string
+        required: true
+        description: "Contracting parties (required)."
+      term:
+        type: string
+        description: "Agreement term."
+
   # ---- Invoice ----
   invoice:
     type: object

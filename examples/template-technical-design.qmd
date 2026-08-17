@@ -1,0 +1,57 @@
+---
+title: "Knowledge Platform Service"
+subtitle: "Template: IEEE 1016 technical design document"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["design", "document", "template"]
+reference: "OS-TDD-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Technical Design Document"
+doc-type: "Technical Design Document"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+technical-design:
+  version: "1.0"
+  status: "Draft"
+  author: "Your name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-technical-design}
+:::
+
+State the purpose and scope of the design in one paragraph. Name
+the system and the viewpoint used.
+
+# Design overview
+
+State the stakeholders and the viewpoints. Name the views the
+document presents and how they relate.
+
+# Design views
+
+State each design view.
+
+**View 1.** The structure, behaviour, or data view, with its
+decisions.
+
+**View 2.** The deployment or interface view.
+
+# Design decisions
+
+Record the significant decisions. For each, state the option
+chosen, the alternative, and the reason.
+
+# Appendices
+
+State any supplementary material: assumptions, glossary, or
+references.

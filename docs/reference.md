@@ -258,6 +258,14 @@ The structured fields per block:
 | `incident-report` | none | `severity`, `duration`, `status` |
 | `sow` | none | `client`, `period` |
 | `fact-sheet` | none | `last-updated`, `developer`, `launch-date` |
+| `requirements-spec` | none | `version`, `status`, `approval` |
+| `technical-design` | none | `version`, `status`, `author` |
+| `reference-letter` | none | `addressee`, `candidate`, `salutation` |
+| `staff-report` | `to`, `from` | none |
+| `release-notes` | `version` | `status` |
+| `test-report` | none | `version`, `tester` |
+| `rfp` | `issuer` | `deadline` |
+| `sla` | `parties` | `term` |
 
 For the letter the whole head (recipient block, date, reference,
 subject, opening) is owned by LaTeX on PDF: the recipient block sits
@@ -367,6 +375,40 @@ The fact sheet head on PDF is a centred FACT SHEET masthead with the
 entity name, last updated, developer, launch date, and reference
 lines. The key facts render as bullets in the body.
 
+The requirements specification head on PDF is a centred
+REQUIREMENTS SPECIFICATION masthead with the title, date, version,
+status, approval, and reference lines. The IEEE 830 sections render
+in the body.
+
+The technical design document head on PDF is a centred TECHNICAL
+DESIGN DOCUMENT masthead with the title, date, version, status,
+author, and reference lines. The IEEE 1016 views and decisions
+render in the body.
+
+The reference letter head on PDF is a centred REFERENCE LETTER
+masthead with the date, addressee, candidate, and reference lines,
+then the salutation. The recommendation body renders below.
+
+The staff report head on PDF is a centred STAFF REPORT masthead with
+the To, From, date, subject, and reference lines. The situation,
+options, and recommendation render in the body.
+
+The release notes head on PDF is a centred RELEASE NOTES masthead
+with the product, version, date, status, and reference lines. The
+features, fixes, and upgrade notes render in the body.
+
+The test report head on PDF is a centred TEST REPORT masthead with
+the project, date, version, tester, and reference lines. The
+strategy, results, and defects render in the body.
+
+The request for proposal head on PDF is a centred REQUEST FOR
+PROPOSAL masthead with the title, issuer, date, deadline, and
+reference lines. The scope and evaluation criteria render in the body.
+
+The service level agreement head on PDF is a centred SERVICE LEVEL
+AGREEMENT masthead with the service, parties, date, term, and
+reference lines. The service levels and credits render in the body.
+
 The examples (`template-letter.qmd`, `template-memo.qmd`,
 `template-agenda.qmd`, `template-brief.qmd`, `template-decision.qmd`,
 `template-minutes.qmd`, `template-contract.qmd`,
@@ -376,7 +418,11 @@ The examples (`template-letter.qmd`, `template-memo.qmd`,
 `template-after-action.qmd`, `template-business-case.qmd`,
 `template-project-charter.qmd`, `template-dpia.qmd`,
 `template-audit-report.qmd`, `template-incident-report.qmd`,
-`template-sow.qmd`, `template-fact-sheet.qmd`) show each block
+`template-sow.qmd`, `template-fact-sheet.qmd`,
+`template-requirements-spec.qmd`, `template-technical-design.qmd`,
+`template-reference-letter.qmd`, `template-staff-report.qmd`,
+`template-release-notes.qmd`, `template-test-report.qmd`,
+`template-rfp.qmd`, `template-sla.qmd`) show each block
 filled in. The schema
 for IDE completion lives in `_extensions/obsidian/_schema.yml`, and
 front-matter snippets for each document type live in

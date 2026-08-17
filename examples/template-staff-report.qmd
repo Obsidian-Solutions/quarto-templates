@@ -1,0 +1,52 @@
+---
+title: "Engine room staffing level"
+subtitle: "Template: report to a higher authority"
+author: "Your name"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["staff", "report", "template"]
+reference: "OS-SR-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Staff Report"
+doc-type: "Staff Report"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+staff-report:
+  to: "Authority name"
+  from: "Your name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-staff-report}
+:::
+
+State the purpose of the report in one paragraph. Name the decision
+or approval sought.
+
+# Situation
+
+State the current situation. Give the facts, the constraints, and
+the timing.
+
+# Options
+
+State the options under consideration. For each, give the merits,
+the costs, and the risks.
+
+# Recommendation
+
+State the recommended option and the reason. Give the action
+required of the authority.
+
+# Requested decision
+
+State the decision you request: approve, reject, or defer the
+recommendation.
