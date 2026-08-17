@@ -1,0 +1,48 @@
+---
+title: "Approve the annual budget"
+subtitle: "Template: corporate resolution passed by the board"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["resolution", "board", "template"]
+reference: "OS-RES-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Corporate Resolution"
+doc-type: "Corporate Resolution"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+corporate-resolution:
+  company: "Obsidian Solutions Ltd"
+  number: "2026-01"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-corporate-resolution}
+:::
+
+RESOLVED, that the board approves the annual budget for the
+financial year ending 31 December 2026, as presented.
+
+# Recitals
+
+State the background that supports the resolution. Name the
+meeting, the authority, and the document under which the board
+acts.
+
+# Resolved clauses
+
+State each resolved clause in numbered paragraphs. Write each
+clause so it stands alone as an instruction to the company.
+
+# Certification
+
+State who certifies the resolution and how. The secretary signs
+the record of the resolution.

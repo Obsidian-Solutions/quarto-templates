@@ -1,0 +1,62 @@
+---
+title: "Data Processing Agreement"
+subtitle: "Template: GDPR Article 28 processing agreement"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["data", "processing", "dpa", "template"]
+reference: "OS-DPA-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Data Processing Agreement"
+doc-type: "Data Processing Agreement"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+dpa:
+  controller: "Your company name"
+  processor: "Processor company name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-dpa}
+:::
+
+State the purpose and scope in one paragraph. Name the processing
+activities the agreement covers.
+
+# Processing of personal data
+
+Describe the processing. Name the categories of data subjects, the
+categories of data, and the purposes.
+
+# Obligations of the processor
+
+State the processor duties under Article 28: act only on
+instructions, keep the data confidential, and assist the
+controller.
+
+# Sub-processing
+
+State the terms for sub-processors. Name the approval process and
+the liability for sub-processor acts.
+
+# Security
+
+State the security measures the processor must apply.
+
+# Data subject rights
+
+State how the processor assists the controller in responding to
+data subject requests.
+
+# Duration and deletion
+
+State the duration of the processing and the deletion or return of
+data on termination.

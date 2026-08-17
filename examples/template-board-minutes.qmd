@@ -1,0 +1,61 @@
+---
+title: "Board Minutes"
+subtitle: "Template: record of a board meeting and its resolutions"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["board", "minutes", "template"]
+reference: "OS-BM-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Board Minutes"
+doc-type: "Board Minutes"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+board-minutes:
+  company: "Obsidian Solutions Ltd"
+  date: "2026-08-14"
+  location: "Board room, London"
+  chair: "Chair name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-board-minutes}
+:::
+
+Record the opening: who chaired, who attended, who sent apologies,
+and whether a quorum was present.
+
+# Minutes of the previous meeting
+
+Record the approval of the previous minutes and any matters
+arising.
+
+# Agenda items
+
+Record each agenda item in turn. For each, note the discussion and
+the decision.
+
+# Resolutions
+
+List the resolutions passed. Give each a number and state the
+voting: for, against, and abstentions.
+
+# Action items
+
+List the actions with their owners and due dates. Use a table.
+
+# Any other business
+
+Record anything raised outside the agenda.
+
+# Close
+
+Record the time of close and the date of the next meeting.

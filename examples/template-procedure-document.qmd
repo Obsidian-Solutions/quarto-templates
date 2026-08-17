@@ -1,0 +1,57 @@
+---
+title: "Procurement procedure"
+subtitle: "Template: procedure document with numbered steps"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["procedure", "template"]
+reference: "OS-PROC-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Procedure Document"
+doc-type: "Procedure Document"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+procedure-document:
+  version: "1.2"
+  owner: "Procurement manager"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-procedure-document}
+:::
+
+State the purpose of the procedure in one paragraph. Name the
+outcome the procedure delivers.
+
+# Before you start
+
+List the prerequisites. Name the approvals, the systems, and the
+inputs required before the first step.
+
+# Procedure
+
+Give the steps in order. Write each step as one instruction.
+
+1.  Raise the requisition in the system.
+2.  Get the budget holder approval.
+3.  Issue the request for quotation.
+4.  Evaluate the responses.
+5.  Award the order.
+6.  Record the order in the register.
+
+# Records
+
+Name the records the procedure creates and the place the
+organisation keeps them.
+
+# Review
+
+State the review cycle and the owner of the next review.

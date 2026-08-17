@@ -1,0 +1,47 @@
+---
+title: "Trademark dispute analysis"
+subtitle: "Template: legal memo with TO/FROM/DATE/RE block"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["legal", "memo", "template"]
+reference: "OS-LEG-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Legal Memo"
+doc-type: "Legal Memo"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+legal-memo:
+  to: "Managing partner"
+  from: "Your name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-legal-memo}
+:::
+
+State the issue in one paragraph. Frame it as the question the memo
+answers.
+
+# Facts
+
+State the material facts in chronological order. Cite the sources
+of each fact.
+
+# Analysis
+
+Apply the law to the facts. Number the paragraphs and cite the
+authority for each proposition.
+
+# Conclusion
+
+State the conclusion in one paragraph. Name the options and the
+recommended course of action.

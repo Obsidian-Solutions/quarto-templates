@@ -1,0 +1,51 @@
+---
+title: "Information security policy"
+subtitle: "Template: policy document setting mandatory controls"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["policy", "template"]
+reference: "OS-POL-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Policy Document"
+doc-type: "Policy Document"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+policy-document:
+  version: "1.0"
+  owner: "Information security manager"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-policy-document}
+:::
+
+State the purpose and scope in one paragraph. Name who the policy
+applies to and what it covers.
+
+# Policy statement
+
+State the mandatory position in clear terms. Write each requirement
+so a reader can test compliance.
+
+# Responsibilities
+
+Name who implements the policy, who enforces it, and who reports
+on it.
+
+# Compliance
+
+State how the organisation monitors compliance and what happens on
+breach.
+
+# Review
+
+State the review cycle and the owner of the next review.

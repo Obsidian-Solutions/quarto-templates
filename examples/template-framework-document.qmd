@@ -1,0 +1,54 @@
+---
+title: "Quality management framework"
+subtitle: "Template: framework document defining structure and relationships"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["framework", "template"]
+reference: "OS-FRM-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Framework Document"
+doc-type: "Framework Document"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+framework-document:
+  version: "1.0"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-framework-document}
+:::
+
+State the purpose of the framework in one paragraph. Name the
+domain it structures and the audience.
+
+# Principles
+
+State the governing principles. Each principle stands alone and
+guides the documents within the framework.
+
+# Structure
+
+Describe the components of the framework. Name the document
+hierarchy and how the components relate.
+
+# Roles and responsibilities
+
+Name the roles that own, maintain, and assure the framework.
+
+# Interaction with other documents
+
+State how the framework relates to other policies, procedures, and
+standards.
+
+# Review
+
+State the review cycle and the owner of the next review.

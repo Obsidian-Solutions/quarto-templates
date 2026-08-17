@@ -1,0 +1,46 @@
+---
+title: "Cease and Desist"
+subtitle: "Template: letter demanding the end of infringing activity"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["cease", "desist", "letter", "template"]
+reference: "OS-CD-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Cease and Desist"
+doc-type: "Cease and Desist"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+cease-desist:
+  recipient: "Recipient name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-cease-desist}
+:::
+
+State the demand in one paragraph. Name the activity that must
+stop, the deadline, and the consequence of non-compliance.
+
+# The infringement
+
+Describe the infringing activity. Name the right infringed and the
+evidence of the infringement.
+
+# The demand
+
+State the action required: cease the activity, remove the material,
+and confirm compliance in writing by a named date.
+
+# Consequence of non-compliance
+
+State what will follow if the recipient does not comply. Name the
+legal action reserved.

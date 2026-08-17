@@ -1,0 +1,57 @@
+---
+title: "Five-year strategy"
+subtitle: "Template: strategy paper for board consideration"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["strategy", "paper", "template"]
+reference: "OS-STR-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Strategy Paper"
+doc-type: "Strategy Paper"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+strategy-paper:
+  version: "0.9"
+  owner: "Managing director"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-strategy-paper}
+:::
+
+State the executive summary in one paragraph. Name the strategic
+ambition, the route, and the resources required.
+
+# Context
+
+Describe the external environment. Cover the market, the
+competition, the regulation, and the technology change.
+
+# Strategic position
+
+Assess the current position. Name the strengths, weaknesses,
+opportunities, and threats.
+
+# Strategic direction
+
+State the strategic goals. For each goal, name the outcome and the
+measures of success.
+
+# Options
+
+Present the strategic options. For each, state the costs, the
+benefits, the risks, and the dependencies.
+
+# Recommendation
+
+State the recommended option and the rationale. Name the first
+steps and the review point.

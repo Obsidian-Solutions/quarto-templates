@@ -783,6 +783,167 @@ options:
         type: string
         description: "Lecturer name."
 
+  # ---- Legal memo ----
+  legal-memo:
+    type: object
+    description: "Structured legal memo fields."
+    properties:
+      to:
+        type: string
+        required: true
+        description: "Memo addressee (required)."
+      from:
+        type: string
+        description: "Memo author."
+
+  # ---- Board minutes ----
+  board-minutes:
+    type: object
+    description: "Structured board minutes fields."
+    properties:
+      company:
+        type: string
+        description: "Company name."
+      date:
+        type: string
+        format: date
+        description: "Meeting date."
+      location:
+        type: string
+        description: "Meeting location."
+      chair:
+        type: string
+        description: "Meeting chair."
+
+  # ---- Corporate resolution ----
+  corporate-resolution:
+    type: object
+    description: "Structured corporate resolution fields."
+    properties:
+      company:
+        type: string
+        description: "Company name."
+      number:
+        type: string
+        description: "Resolution number."
+
+  # ---- Board pack ----
+  board-pack:
+    type: object
+    description: "Structured board pack fields."
+    properties:
+      meeting:
+        type: string
+        description: "Meeting name or number."
+      period:
+        type: string
+        description: "Reporting period."
+
+  # ---- Strategy paper ----
+  strategy-paper:
+    type: object
+    description: "Structured strategy paper fields."
+    properties:
+      version:
+        type: string
+        description: "Paper version."
+      owner:
+        type: string
+        description: "Owner or sponsor."
+
+  # ---- Policy document ----
+  policy-document:
+    type: object
+    description: "Structured policy document fields."
+    properties:
+      version:
+        type: string
+        description: "Policy version."
+      owner:
+        type: string
+        description: "Policy owner."
+
+  # ---- Procedure document ----
+  procedure-document:
+    type: object
+    description: "Structured procedure document fields."
+    properties:
+      version:
+        type: string
+        description: "Procedure version."
+      owner:
+        type: string
+        description: "Procedure owner."
+
+  # ---- Framework document ----
+  framework-document:
+    type: object
+    description: "Structured framework document fields."
+    properties:
+      version:
+        type: string
+        description: "Framework version."
+
+  # ---- Terms and conditions ----
+  terms-conditions:
+    type: object
+    description: "Structured terms and conditions fields."
+    properties:
+      parties:
+        type: string
+        description: "The parties to the terms."
+      term:
+        type: string
+        description: "Term of the agreement."
+      governing-law:
+        type: string
+        description: "Governing law."
+
+  # ---- Data processing agreement ----
+  dpa:
+    type: object
+    description: "Structured data processing agreement fields."
+    properties:
+      controller:
+        type: string
+        description: "Data controller."
+      processor:
+        type: string
+        description: "Data processor."
+
+  # ---- Privacy policy ----
+  privacy-policy:
+    type: object
+    description: "Structured privacy policy fields."
+    properties:
+      controller:
+        type: string
+        description: "Data controller."
+      jurisdiction:
+        type: string
+        description: "Applicable jurisdiction."
+
+  # ---- Non-compete agreement ----
+  non-compete:
+    type: object
+    description: "Structured non-compete agreement fields."
+    properties:
+      parties:
+        type: string
+        description: "The parties to the agreement."
+      term:
+        type: string
+        description: "Restriction period."
+
+  # ---- Cease and desist ----
+  cease-desist:
+    type: object
+    description: "Structured cease and desist letter fields."
+    properties:
+      recipient:
+        type: string
+        description: "Recipient of the letter."
+
   # ---- Invoice ----
   invoice:
     type: object

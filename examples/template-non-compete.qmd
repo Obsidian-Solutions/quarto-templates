@@ -1,0 +1,53 @@
+---
+title: "Non-Compete Agreement"
+subtitle: "Template: post-employment restriction agreement"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["non-compete", "template"]
+reference: "OS-NC-001"
+version: "1.0.0"
+confidentiality: "Commercial in Confidence"
+short-title: "Non-Compete Agreement"
+doc-type: "Non-Compete Agreement"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+non-compete:
+  parties: "The company and the employee"
+  term: "12 months after the end of employment"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-non-compete}
+:::
+
+State the background in one paragraph. Name the role, the reason
+for the restriction, and the legitimate business interest.
+
+# Restriction
+
+State the restricted activity: the sector, the geography, and the
+period. Write the restriction so it goes no further than the
+business interest requires.
+
+# Non-solicitation
+
+State the restriction on soliciting customers and employees. Name
+the customers covered and the period.
+
+# Consideration
+
+State the consideration for the restriction. Name the payment or
+the benefit provided in return.
+
+# Enforcement
+
+State the enforcement terms: injunctive relief, severability, and
+the law that governs the agreement.
