@@ -1,0 +1,53 @@
+---
+title: "Offer Letter"
+subtitle: "Template: offer of employment"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["offer", "employment", "template"]
+reference: "OS-OFF-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Offer Letter"
+doc-type: "Offer Letter"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+offer-letter:
+  employee: "Candidate name"
+  position: "Consultant"
+  start-date: "2026-09-01"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-offer-letter}
+:::
+
+State the offer in the first paragraph. Name the position, the
+start date, and the reporting line.
+
+# Salary and benefits
+
+State the salary, the benefits, and any bonus or commission
+arrangements.
+
+# Conditions
+
+State the conditions attached to the offer. Name any pre-employment
+checks, the probation period, and the right to withdraw the offer.
+
+# Acceptance
+
+State how the candidate accepts the offer and the deadline. Give
+the contact for questions.
+
+# Post-acceptance steps
+
+List the steps after acceptance: contracts, right to work checks,
+and the onboarding process.

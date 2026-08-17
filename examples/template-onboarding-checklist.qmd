@@ -1,0 +1,62 @@
+---
+title: "Onboarding Checklist"
+subtitle: "Template: steps to bring a new starter into the organisation"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["onboarding", "checklist", "template"]
+reference: "OS-ONB-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Onboarding Checklist"
+doc-type: "Onboarding Checklist"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+onboarding-checklist:
+  employee: "New starter name"
+  role: "Systems Consultant"
+  start-date: "2026-09-01"
+  manager: "Manager name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-onboarding-checklist}
+:::
+
+State the purpose of the checklist in one paragraph. Name who owns
+each step.
+
+# Before the start date
+
+- Send the contract and the offer pack.
+- Request right to work documents.
+- Order the laptop and the phone.
+- Create the accounts and the badge.
+- Book the desk and the induction.
+
+# First day
+
+- Welcome the starter and tour the office.
+- Introduce the team.
+- Run the security and data protection induction.
+- Set up the accounts and the phone.
+
+# First week
+
+- Run the role induction.
+- Book the mandatory training.
+- Assign the first task.
+- Schedule the first review.
+
+# First month
+
+- Hold the first performance review.
+- Confirm the probation arrangements.
+- Collect feedback on the onboarding process.

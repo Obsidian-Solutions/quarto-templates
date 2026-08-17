@@ -1,0 +1,44 @@
+---
+title: "Timesheet"
+subtitle: "Template: record of hours worked in a period"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["timesheet", "hours", "template"]
+reference: "OS-TS-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Timesheet"
+doc-type: "Timesheet"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+timesheet:
+  employee: "Your name"
+  period: "10 to 14 August 2026"
+  manager: "Manager name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-timesheet}
+:::
+
+Record the hours worked each day. Use a table with the date, the
+project or client, and the hours.
+
+| Date | Project | Hours |
+|------|---------|-------|
+| 10 August | Obsidian Platform | 7.5 |
+| 11 August | Obsidian Platform | 7.5 |
+| 12 August | Client support | 7.5 |
+| 13 August | Client support | 7.5 |
+| 14 August | Internal | 7.5 |
+
+State any leave or absence in the period. Confirm the total hours
+and that the manager has approved the sheet.

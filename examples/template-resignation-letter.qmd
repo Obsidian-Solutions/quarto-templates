@@ -1,0 +1,48 @@
+---
+title: "Resignation Letter"
+subtitle: "Template: notice of resignation by an employee"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["resignation", "notice", "template"]
+reference: "OS-RES-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Resignation Letter"
+doc-type: "Resignation Letter"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+resignation-letter:
+  employee: "Your name"
+  last-day: "2026-09-30"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-resignation-letter}
+:::
+
+State the resignation in the first paragraph. Name the last
+working day and give the notice period served.
+
+# Thanks
+
+Record your thanks for the opportunities and the support you
+received. Keep the tone positive.
+
+# Handover
+
+State your commitment to the handover. Name the tasks you will
+complete before you leave and the documentation you will leave
+behind.
+
+# Contact details
+
+Give your personal contact details so the team can reach you
+after your last day.

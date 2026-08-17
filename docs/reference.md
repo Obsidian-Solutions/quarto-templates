@@ -288,6 +288,16 @@ The structured fields per block:
 | `privacy-policy` | none | `controller`, `jurisdiction` |
 | `non-compete` | none | `parties`, `term` |
 | `cease-desist` | none | `recipient` |
+| `offer-letter` | `employee` | `position`, `start-date` |
+| `termination-letter` | `employee` | `last-day` |
+| `resignation-letter` | `employee` | `last-day` |
+| `warning-letter` | `employee` | none |
+| `disciplinary-notice` | `employee` | `meeting-date` |
+| `job-description` | none | `department`, `location` |
+| `exit-interview` | `employee` | `department`, `interviewer` |
+| `idp` | `employee` | `role`, `manager` |
+| `onboarding-checklist` | `employee` | `role`, `start-date`, `manager` |
+| `timesheet` | `employee` | `period`, `manager` |
 
 For the letter the whole head (recipient block, date, reference,
 subject, opening) is owned by LaTeX on PDF: the recipient block sits
@@ -520,6 +530,22 @@ The cease and desist head on PDF is a centred CEASE AND DESIST
 masthead with the recipient, date, and reference lines. The demand
 sections render in the body.
 
+The HR letter heads on PDF are centred mastheads (OFFER LETTER,
+TERMINATION LETTER, RESIGNATION LETTER, WARNING LETTER) with the
+employee, date, and role lines. The letter body renders below.
+The disciplinary notice head is a centred DISCIPLINARY NOTICE
+masthead with the employee, date, and meeting date lines. The job
+description head is a centred JOB DESCRIPTION masthead with the
+role, department, date, and location lines. The exit interview head
+is a centred EXIT INTERVIEW masthead with the employee, department,
+date, and interviewer lines. The individual development plan head is
+a centred INDIVIDUAL DEVELOPMENT PLAN masthead with the employee,
+role, date, and manager lines. The onboarding checklist head is a
+centred ONBOARDING CHECKLIST masthead with the employee, role, start
+date, and manager lines. The timesheet head is a centred TIMESHEET
+masthead with the employee, period, date, and manager lines. All use
+flush-left `Label: value` lines; no bordered table is used on PDF.
+
 The examples (`template-letter.qmd`, `template-memo.qmd`,
 `template-agenda.qmd`, `template-brief.qmd`, `template-decision.qmd`,
 `template-minutes.qmd`, `template-contract.qmd`,
@@ -544,7 +570,12 @@ The examples (`template-letter.qmd`, `template-memo.qmd`,
 `template-procedure-document.qmd`, `template-framework-document.qmd`,
 `template-terms-conditions.qmd`, `template-dpa.qmd`,
 `template-privacy-policy.qmd`, `template-non-compete.qmd`,
-`template-cease-desist.qmd`) show
+`template-cease-desist.qmd`, `template-offer-letter.qmd`,
+`template-termination-letter.qmd`, `template-resignation-letter.qmd`,
+`template-warning-letter.qmd`, `template-disciplinary-notice.qmd`,
+`template-job-description.qmd`, `template-exit-interview.qmd`,
+`template-idp.qmd`, `template-onboarding-checklist.qmd`,
+`template-timesheet.qmd`) show
 each block
 filled in. The schema
 for IDE completion lives in `_extensions/obsidian/_schema.yml`, and

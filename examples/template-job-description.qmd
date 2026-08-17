@@ -1,0 +1,58 @@
+---
+title: "Systems Consultant"
+subtitle: "Template: job description for a role"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["job", "description", "template"]
+reference: "OS-JD-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Job Description"
+doc-type: "Job Description"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+job-description:
+  department: "Professional Services"
+  location: "London"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-job-description}
+:::
+
+State the purpose of the role in one paragraph. Name the team, the
+reporting line, and the main contribution.
+
+# Key responsibilities
+
+List the responsibilities in order of importance.
+
+- Deliver projects to scope, time and budget.
+- Advise clients on system design.
+- Write technical documentation.
+- Support the sales team with estimates.
+
+# Person specification
+
+List the essential and desirable criteria. Use two sub sections.
+
+**Essential.** The skills and experience the role requires.
+
+**Desirable.** The skills that add value but are not essential.
+
+# Working arrangements
+
+State the working location, the travel expectations, and the
+reporting line.
+
+# How to apply
+
+State the application process and the deadline.

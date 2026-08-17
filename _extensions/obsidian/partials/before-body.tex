@@ -180,8 +180,28 @@ $if(doc-type)$
                                                                                                   \ifdefstring{\docform}{Data Processing Agreement}{\renewcommand{\docformatplain}{1}}{%
                                                                                                     \ifdefstring{\docform}{Privacy Policy}{\renewcommand{\docformatplain}{1}}{%
                                                                                                       \ifdefstring{\docform}{Non-Compete Agreement}{\renewcommand{\docformatplain}{1}}{%
-                                                                                                        \ifdefstring{\docform}{Cease and Desist}{\renewcommand{\docformatplain}{1}}{}%
+\ifdefstring{\docform}{Cease and Desist}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                        \ifdefstring{\docform}{Offer Letter}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                          \ifdefstring{\docform}{Termination Letter}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                            \ifdefstring{\docform}{Resignation Letter}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                              \ifdefstring{\docform}{Warning Letter}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                \ifdefstring{\docform}{Disciplinary Notice}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                  \ifdefstring{\docform}{Job Description}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                    \ifdefstring{\docform}{Exit Interview}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                      \ifdefstring{\docform}{Individual Development Plan}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                        \ifdefstring{\docform}{Onboarding Checklist}{\renewcommand{\docformatplain}{1}}{%
+                                                                                                                          \ifdefstring{\docform}{Timesheet}{\renewcommand{\docformatplain}{1}}{}%
+                                                                                                                        }%
+                                                                                                                      }%
+                                                                                                                    }%
+                                                                                                                  }%
+                                                                                                                }%
+                                                                                                              }%
+                                                                                                            }%
+                                                                                                          }%
+                                                                                                        }%
                                                                                                       }%
+                                                                                                    }%
                                                                                                     }%
                                                                                                   }%
                                                                                                 }%
@@ -250,8 +270,11 @@ $endif$
 % legal memos, board minutes, corporate resolutions, board packs,
 % strategy papers, policy documents, procedure documents, framework
 % documents, terms and conditions, data processing agreements,
-% privacy policies, non-compete agreements and cease and desist
-% letters are single-flow business documents:
+% privacy policies, non-compete agreements, cease and desist
+% letters, offer letters, termination letters, resignation letters,
+% warning letters, disciplinary notices, job descriptions, exit
+% interviews, individual development plans, onboarding checklists
+% and timesheets are single-flow business documents:
 % no cover, no separate front matter, paginate from 1.
 $if(titlepage-none)$
 \pagenumbering{arabic}
@@ -271,8 +294,11 @@ $if(titlepage-none)$
 % legal memos, board minutes, corporate resolutions, board packs,
 % strategy papers, policy documents, procedure documents, framework
 % documents, terms and conditions, data processing agreements,
-% privacy policies, non-compete agreements and cease and desist
-% letters use the minimal plain style
+% privacy policies, non-compete agreements, cease and desist
+% letters, offer letters, termination letters, resignation letters,
+% warning letters, disciplinary notices, job descriptions, exit
+% interviews, individual development plans, onboarding checklists
+% and timesheets use the minimal plain style
 % (classification bands only) on every page; page 1 carries the
 % format's own letterhead, masthead or header block instead.
 $if(doc-type)$
@@ -1339,7 +1365,222 @@ $endif$
                                                                                                         \vspace{0.5em}
                                                                                                         {\color{obsidian}\hrule height 0.8pt}\par
                                                                                                         \vspace{0.8em}
-                                                                                                      }{}%
+                                                                                                      }{%
+                                                                                                        \ifdefstring{\docform}{Offer Letter}{%
+                                                                                                          % Offer letter head:
+                                                                                                          % centred masthead,
+                                                                                                          % then the employment
+                                                                                                          % lines.
+                                                                                                          \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle OFFER LETTER\par}\end{center}%
+                                                                                                          {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                          \vspace{0.5em}
+                                                                                                          \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                            \textbf{Employee:} & $offer-letter.employee$ \\
+                                                                                                            \textbf{Position:} & $offer-letter.position$ \\
+                                                                                                            \textbf{Date:} & $date$ \\
+                                                                                                            $if(offer-letter.start-date)$\textbf{Start date:} & $offer-letter.start-date$ \\$endif$
+                                                                                                            $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                          \end{tabular}\par
+                                                                                                          \vspace{0.5em}
+                                                                                                          {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                          \vspace{0.8em}
+                                                                                                        }{%
+                                                                                                          \ifdefstring{\docform}{Termination Letter}{%
+                                                                                                            % Termination letter
+                                                                                                            % head: centred
+                                                                                                            % masthead, then the
+                                                                                                            % employee lines.
+                                                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle TERMINATION LETTER\par}\end{center}%
+                                                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                            \vspace{0.5em}
+                                                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                              \textbf{Employee:} & $termination-letter.employee$ \\
+                                                                                                              \textbf{Date:} & $date$ \\
+                                                                                                              $if(termination-letter.last-day)$\textbf{Last day:} & $termination-letter.last-day$ \\$endif$
+                                                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                            \end{tabular}\par
+                                                                                                            \vspace{0.5em}
+                                                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                            \vspace{0.8em}
+                                                                                                          }{%
+                                                                                                            \ifdefstring{\docform}{Resignation Letter}{%
+                                                                                                              % Resignation
+                                                                                                              % letter head:
+                                                                                                              % centred masthead,
+                                                                                                              % then the employee
+                                                                                                              % lines.
+                                                                                                              \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle RESIGNATION LETTER\par}\end{center}%
+                                                                                                              {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                              \vspace{0.5em}
+                                                                                                              \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                \textbf{Employee:} & $resignation-letter.employee$ \\
+                                                                                                                \textbf{Date:} & $date$ \\
+                                                                                                                $if(resignation-letter.last-day)$\textbf{Last day:} & $resignation-letter.last-day$ \\$endif$
+                                                                                                                $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                              \end{tabular}\par
+                                                                                                              \vspace{0.5em}
+                                                                                                              {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                              \vspace{0.8em}
+                                                                                                            }{%
+                                                                                                              \ifdefstring{\docform}{Warning Letter}{%
+                                                                                                                % Warning letter
+                                                                                                                % head: centred
+                                                                                                                % masthead, then
+                                                                                                                % the employee
+                                                                                                                % lines.
+                                                                                                                \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle WARNING LETTER\par}\end{center}%
+                                                                                                                {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                \vspace{0.5em}
+                                                                                                                \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                  \textbf{Employee:} & $warning-letter.employee$ \\
+                                                                                                                  \textbf{Subject:} & $title$ \\
+                                                                                                                  \textbf{Date:} & $date$ \\
+                                                                                                                  $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                \end{tabular}\par
+                                                                                                                \vspace{0.5em}
+                                                                                                                {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                \vspace{0.8em}
+                                                                                                              }{%
+                                                                                                                \ifdefstring{\docform}{Disciplinary Notice}{%
+                                                                                                                  % Disciplinary
+                                                                                                                  % notice head:
+                                                                                                                  % centred
+                                                                                                                  % masthead, then
+                                                                                                                  % the meeting
+                                                                                                                  % lines.
+                                                                                                                  \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle DISCIPLINARY NOTICE\par}\end{center}%
+                                                                                                                  {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                  \vspace{0.5em}
+                                                                                                                  \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                    \textbf{Employee:} & $disciplinary-notice.employee$ \\
+                                                                                                                    \textbf{Date:} & $date$ \\
+                                                                                                                    $if(disciplinary-notice.meeting-date)$\textbf{Meeting date:} & $disciplinary-notice.meeting-date$ \\$endif$
+                                                                                                                    $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                  \end{tabular}\par
+                                                                                                                  \vspace{0.5em}
+                                                                                                                  {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                  \vspace{0.8em}
+                                                                                                                }{%
+                                                                                                                  \ifdefstring{\docform}{Job Description}{%
+                                                                                                                    % Job
+                                                                                                                    % description
+                                                                                                                    % head: centred
+                                                                                                                    % masthead,
+                                                                                                                    % then the role
+                                                                                                                    % lines.
+                                                                                                                    \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle JOB DESCRIPTION\par}\end{center}%
+                                                                                                                    {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                    \vspace{0.5em}
+                                                                                                                    \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                      \textbf{Role:} & $title$ \\
+                                                                                                                      $if(job-description.department)$\textbf{Department:} & $job-description.department$ \\$endif$
+                                                                                                                      \textbf{Date:} & $date$ \\
+                                                                                                                      $if(job-description.location)$\textbf{Location:} & $job-description.location$ \\$endif$
+                                                                                                                      $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                    \end{tabular}\par
+                                                                                                                    \vspace{0.5em}
+                                                                                                                    {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                    \vspace{0.8em}
+                                                                                                                  }{%
+                                                                                                                    \ifdefstring{\docform}{Exit Interview}{%
+                                                                                                                      % Exit
+                                                                                                                      % interview
+                                                                                                                      % head:
+                                                                                                                      % centred
+                                                                                                                      % masthead,
+                                                                                                                      % then the
+                                                                                                                      % employee
+                                                                                                                      % lines.
+                                                                                                                      \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle EXIT INTERVIEW\par}\end{center}%
+                                                                                                                      {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                      \vspace{0.5em}
+                                                                                                                      \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                        \textbf{Employee:} & $exit-interview.employee$ \\
+                                                                                                                        $if(exit-interview.department)$\textbf{Department:} & $exit-interview.department$ \\$endif$
+                                                                                                                        \textbf{Date:} & $date$ \\
+                                                                                                                        $if(exit-interview.interviewer)$\textbf{Interviewer:} & $exit-interview.interviewer$ \\$endif$
+                                                                                                                        $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                      \end{tabular}\par
+                                                                                                                      \vspace{0.5em}
+                                                                                                                      {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                      \vspace{0.8em}
+                                                                                                                    }{%
+                                                                                                                      \ifdefstring{\docform}{Individual Development Plan}{%
+                                                                                                                        % IDP head:
+                                                                                                                        % centred
+                                                                                                                        % masthead,
+                                                                                                                        % then the
+                                                                                                                        % employee
+                                                                                                                        % lines.
+                                                                                                                        \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle INDIVIDUAL DEVELOPMENT PLAN\par}\end{center}%
+                                                                                                                        {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                        \vspace{0.5em}
+                                                                                                                        \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                          \textbf{Employee:} & $idp.employee$ \\
+                                                                                                                          $if(idp.role)$\textbf{Role:} & $idp.role$ \\$endif$
+                                                                                                                          \textbf{Date:} & $date$ \\
+                                                                                                                          $if(idp.manager)$\textbf{Manager:} & $idp.manager$ \\$endif$
+                                                                                                                          $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                        \end{tabular}\par
+                                                                                                                        \vspace{0.5em}
+                                                                                                                        {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                        \vspace{0.8em}
+                                                                                                                      }{%
+                                                                                                                        \ifdefstring{\docform}{Onboarding Checklist}{%
+                                                                                                                          % Onboarding
+                                                                                                                          % checklist
+                                                                                                                          % head:
+                                                                                                                          % centred
+                                                                                                                          % masthead,
+                                                                                                                          % then the
+                                                                                                                          % employee
+                                                                                                                          % lines.
+                                                                                                                          \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle ONBOARDING CHECKLIST\par}\end{center}%
+                                                                                                                          {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                          \vspace{0.5em}
+                                                                                                                          \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                            \textbf{Employee:} & $onboarding-checklist.employee$ \\
+                                                                                                                            $if(onboarding-checklist.role)$\textbf{Role:} & $onboarding-checklist.role$ \\$endif$
+                                                                                                                            $if(onboarding-checklist.start-date)$\textbf{Start date:} & $onboarding-checklist.start-date$ \\$endif$
+                                                                                                                            $if(onboarding-checklist.manager)$\textbf{Manager:} & $onboarding-checklist.manager$ \\$endif$
+                                                                                                                            $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                          \end{tabular}\par
+                                                                                                                          \vspace{0.5em}
+                                                                                                                          {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                          \vspace{0.8em}
+                                                                                                                        }{%
+                                                                                                                          \ifdefstring{\docform}{Timesheet}{%
+                                                                                                                            % Timesheet
+                                                                                                                            % head:
+                                                                                                                            % centred
+                                                                                                                            % masthead,
+                                                                                                                            % then the
+                                                                                                                            % employee
+                                                                                                                            % lines.
+                                                                                                                            \begin{center}{\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle TIMESHEET\par}\end{center}%
+                                                                                                                            {\color{obsidian}\hrule height 1.2pt}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            \noindent\begin{tabular}{@{}l@{\hspace{1.5em}}l@{}}
+                                                                                                                              \textbf{Employee:} & $timesheet.employee$ \\
+                                                                                                                              $if(timesheet.period)$\textbf{Period:} & $timesheet.period$ \\$endif$
+                                                                                                                              \textbf{Date:} & $date$ \\
+                                                                                                                              $if(timesheet.manager)$\textbf{Manager:} & $timesheet.manager$ \\$endif$
+                                                                                                                              $if(reference)$\textbf{Reference:} & $reference$ \\$endif$
+                                                                                                                            \end{tabular}\par
+                                                                                                                            \vspace{0.5em}
+                                                                                                                            {\color{obsidian}\hrule height 0.8pt}\par
+                                                                                                                            \vspace{0.8em}
+                                                                                                                          }{}%
+                                                                                                                        }%
+                                                                                                                      }%
+                                                                                                                    }%
+                                                                                                                  }%
+                                                                                                                }%
+                                                                                                              }%
+                                                                                                            }%
+                                                                                                          }%
+                                                                                                        }%
+                                                                                                      }%
                                                                                                     }%
                                                                                                   }%
                                                                                                 }%

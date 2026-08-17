@@ -1,0 +1,56 @@
+---
+title: "Exit Interview"
+subtitle: "Template: record of a leaver interview"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["exit", "interview", "template"]
+reference: "OS-EXI-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Exit Interview"
+doc-type: "Exit Interview"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+exit-interview:
+  employee: "Employee name"
+  department: "Professional Services"
+  interviewer: "HR name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-exit-interview}
+:::
+
+State the purpose of the interview in one paragraph. Record the
+employee's reasons for leaving in their own words.
+
+# The role
+
+Record the employee's view of the role. Note what they enjoyed and
+what they found difficult.
+
+# The team and management
+
+Record the employee's view of the team and the management style.
+
+# Pay and conditions
+
+Record the employee's view of pay, benefits, and working
+conditions.
+
+# Suggestions
+
+Record any suggestions for improvement the employee offers.
+
+# Next steps
+
+Record the handover status and any actions the organisation will
+take.
