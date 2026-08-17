@@ -1,0 +1,49 @@
+---
+title: "Automated document classification"
+subtitle: "Template: research proposal for a funded study"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["research", "proposal", "template"]
+reference: "OS-RSP-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Research Proposal"
+doc-type: "Research Proposal"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+research-proposal:
+  supervisor: "Supervisor name"
+  duration: "12 months"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-research-proposal}
+:::
+
+State the research question in one paragraph. Name the gap in the
+literature and the contribution the study will make.
+
+# Objectives
+
+State the objectives. Make each objective specific and testable.
+
+# Methodology
+
+Describe the method. Name the data, the collection approach, and
+the analysis technique.
+
+# Timeline
+
+Give the milestones with their dates. Use a table.
+
+# Resources
+
+State the resources needed: funding, equipment, and access.

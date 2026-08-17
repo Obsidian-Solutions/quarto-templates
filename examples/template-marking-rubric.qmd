@@ -1,0 +1,45 @@
+---
+title: "Capstone report"
+subtitle: "Template: marking rubric for an assessed piece of work"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["rubric", "marking", "template"]
+reference: "OS-RUB-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Marking Rubric"
+doc-type: "Marking Rubric"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+marking-rubric:
+  course: "Module name"
+  marker: "Marker name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-marking-rubric}
+:::
+
+State the purpose of the rubric in one paragraph. Name the
+assignment and how to apply the marks.
+
+# Criteria
+
+| Criterion | Weight | Excellent | Satisfactory | Weak |
+|---|---|---|---|---|
+| Analysis | 40% | Original argument | Sound argument | Descriptive |
+| Evidence | 30% | Sources engaged | Sources cited | Sources listed |
+| Clarity | 30% | Fluent structure | Clear structure | Confused structure |
+
+# How to use
+
+Explain how to apply the rubric. State the marking process and the
+appeal route.

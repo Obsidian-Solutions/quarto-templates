@@ -1,0 +1,50 @@
+---
+title: "The case for a single knowledge platform"
+subtitle: "Template: argumentative essay"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["essay", "template"]
+reference: "OS-ESS-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Essay"
+doc-type: "Essay"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: true
+essay:
+  course: "Module name"
+  word-count: "2000 words"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-essay}
+:::
+
+State the thesis in the introduction. Name the position the essay
+defends and the ground it covers.
+
+# Argument
+
+Develop the argument in stages. Use one section per stage. Support
+each claim with evidence and address the strongest objection.
+
+# Counterargument
+
+State the strongest objection to the thesis and answer it.
+
+# Conclusion
+
+Restate the thesis in the light of the argument. Name the limits of
+the essay and the questions it leaves open.
+
+# References
+
+List the sources cited in the essay.

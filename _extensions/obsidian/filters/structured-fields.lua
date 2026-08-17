@@ -1100,6 +1100,223 @@ local function render_sla(m)
   return pandoc.Div(blocks, { class = "obsidian-doc-sla" })
 end
 
+-- ---- Exam paper ----
+local function render_exam_paper(m)
+  local exam = meta_map(m, "exam-paper")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Exam paper") }))
+    local rows = {
+      { "Course", meta_str(exam, "course") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Duration", meta_str(exam, "duration") or "" },
+      { "Examiner", meta_str(exam, "examiner") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-exam-paper" })
+end
+
+-- ---- Laboratory report ----
+local function render_lab_report(m)
+  local lab = meta_map(m, "lab-report")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Laboratory report") }))
+    local rows = {
+      { "Experiment", meta_str(m, "title") or "" },
+      { "Course", meta_str(lab, "course") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Student", meta_str(lab, "student") or "" },
+      { "Partner", meta_str(lab, "partner") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-lab-report" })
+end
+
+-- ---- Syllabus ----
+local function render_syllabus(m)
+  local syl = meta_map(m, "syllabus")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Syllabus") }))
+    local rows = {
+      { "Course", meta_str(m, "title") or "" },
+      { "Code", meta_str(syl, "code") or "" },
+      { "Term", meta_str(syl, "term") or "" },
+      { "Instructor", meta_str(syl, "instructor") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-syllabus" })
+end
+
+-- ---- Essay ----
+local function render_essay(m)
+  local essay = meta_map(m, "essay")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Essay") }))
+    local rows = {
+      { "Title", meta_str(m, "title") or "" },
+      { "Course", meta_str(essay, "course") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Word count", meta_str(essay, "word-count") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-essay" })
+end
+
+-- ---- Research proposal ----
+local function render_research_proposal(m)
+  local rp = meta_map(m, "research-proposal")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Research proposal") }))
+    local rows = {
+      { "Proposal", meta_str(m, "title") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Supervisor", meta_str(rp, "supervisor") or "" },
+      { "Duration", meta_str(rp, "duration") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-research-proposal" })
+end
+
+-- ---- Dissertation proposal ----
+local function render_dissertation_proposal(m)
+  local dp = meta_map(m, "dissertation-proposal")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Dissertation proposal") }))
+    local rows = {
+      { "Dissertation", meta_str(m, "title") or "" },
+      { "Degree", meta_str(dp, "degree") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Supervisor", meta_str(dp, "supervisor") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-dissertation-proposal" })
+end
+
+-- ---- Literature review ----
+local function render_literature_review(m)
+  local lr = meta_map(m, "literature-review")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Literature review") }))
+    local rows = {
+      { "Topic", meta_str(m, "title") or "" },
+      { "Scope", meta_str(lr, "scope") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Reviewer", meta_str(lr, "reviewer") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-literature-review" })
+end
+
+-- ---- Marking rubric ----
+local function render_marking_rubric(m)
+  local rubric = meta_map(m, "marking-rubric")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Marking rubric") }))
+    local rows = {
+      { "Assignment", meta_str(m, "title") or "" },
+      { "Course", meta_str(rubric, "course") or "" },
+      { "Date", meta_str(m, "date") or "" },
+      { "Marker", meta_str(rubric, "marker") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-marking-rubric" })
+end
+
+-- ---- Lecture notes ----
+local function render_lecture_notes(m)
+  local notes = meta_map(m, "lecture-notes")
+
+  local blocks = {}
+  -- The PDF header block lives in before-body.tex; the filter emits
+  -- nothing for LaTeX.
+  if FORMAT ~= "latex" then
+    table.insert(blocks, pandoc.Header(2, { pandoc.Str("Lecture notes") }))
+    local rows = {
+      { "Lecture", meta_str(m, "title") or "" },
+      { "Course", meta_str(notes, "course") or "" },
+      { "Date", meta_str(notes, "date") or "" },
+      { "Speaker", meta_str(notes, "speaker") or "" },
+      { "Reference", meta_str(m, "reference") or "" },
+    }
+    local tbl = label_table(rows)
+    if tbl ~= nil then
+      table.insert(blocks, tbl)
+    end
+  end
+  return pandoc.Div(blocks, { class = "obsidian-doc-lecture-notes" })
+end
+
 -- ---- Document walk ----
 -- The marker Divs carry the class. Replace each with the rendered
 -- block. The letter marker splits into two parts: the opening block
@@ -1137,6 +1354,15 @@ local renderers = {
   ["obsidian-test-report"] = render_test_report,
   ["obsidian-rfp"] = render_rfp,
   ["obsidian-sla"] = render_sla,
+  ["obsidian-exam-paper"] = render_exam_paper,
+  ["obsidian-lab-report"] = render_lab_report,
+  ["obsidian-syllabus"] = render_syllabus,
+  ["obsidian-essay"] = render_essay,
+  ["obsidian-research-proposal"] = render_research_proposal,
+  ["obsidian-dissertation-proposal"] = render_dissertation_proposal,
+  ["obsidian-literature-review"] = render_literature_review,
+  ["obsidian-marking-rubric"] = render_marking_rubric,
+  ["obsidian-lecture-notes"] = render_lecture_notes,
 }
 
 local function has_class(el, wanted)

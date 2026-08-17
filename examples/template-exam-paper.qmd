@@ -1,0 +1,44 @@
+---
+title: "Term examination"
+subtitle: "Template: exam paper with questions and marks"
+author: "Obsidian Solutions"
+date: "2026-08-14"
+lang: en-GB
+keywords: ["exam", "paper", "template"]
+reference: "OS-EXM-001"
+version: "1.0.0"
+confidentiality: "Internal"
+short-title: "Exam Paper"
+doc-type: "Exam Paper"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: false
+number-sections: false
+exam-paper:
+  course: "Module name"
+  duration: "2 hours"
+  examiner: "Examiner name"
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-exam-paper}
+:::
+
+Answer all questions. Each question carries the marks shown.
+
+# Section A
+
+1. First question. [10 marks]
+
+2. Second question. [10 marks]
+
+# Section B
+
+3. Third question. [15 marks]
+
+4. Fourth question. [15 marks]

@@ -661,6 +661,128 @@ options:
         type: string
         description: "Agreement term."
 
+  # ---- Exam paper ----
+  exam-paper:
+    type: object
+    description: "Structured exam paper fields."
+    properties:
+      course:
+        type: string
+        required: true
+        description: "Course name (required)."
+      duration:
+        type: string
+        description: "Exam duration."
+      examiner:
+        type: string
+        description: "Examiner."
+
+  # ---- Laboratory report ----
+  lab-report:
+    type: object
+    description: "Structured laboratory report fields."
+    properties:
+      course:
+        type: string
+        description: "Course name."
+      student:
+        type: string
+        description: "Student name."
+      partner:
+        type: string
+        description: "Lab partner."
+
+  # ---- Syllabus ----
+  syllabus:
+    type: object
+    description: "Structured course syllabus fields."
+    properties:
+      code:
+        type: string
+        description: "Course code."
+      term:
+        type: string
+        description: "Academic term."
+      instructor:
+        type: string
+        description: "Instructor name."
+
+  # ---- Essay ----
+  essay:
+    type: object
+    description: "Structured essay fields."
+    properties:
+      course:
+        type: string
+        description: "Course name."
+      word-count:
+        type: string
+        description: "Word count."
+
+  # ---- Research proposal ----
+  research-proposal:
+    type: object
+    description: "Structured research proposal fields."
+    properties:
+      supervisor:
+        type: string
+        description: "Supervisor name."
+      duration:
+        type: string
+        description: "Proposed duration."
+
+  # ---- Dissertation proposal ----
+  dissertation-proposal:
+    type: object
+    description: "Structured dissertation proposal fields."
+    properties:
+      degree:
+        type: string
+        description: "Degree programme."
+      supervisor:
+        type: string
+        description: "Supervisor name."
+
+  # ---- Literature review ----
+  literature-review:
+    type: object
+    description: "Structured literature review fields."
+    properties:
+      scope:
+        type: string
+        description: "Review scope."
+      reviewer:
+        type: string
+        description: "Reviewer name."
+
+  # ---- Marking rubric ----
+  marking-rubric:
+    type: object
+    description: "Structured marking rubric fields."
+    properties:
+      course:
+        type: string
+        description: "Course name."
+      marker:
+        type: string
+        description: "Marker name."
+
+  # ---- Lecture notes ----
+  lecture-notes:
+    type: object
+    description: "Structured lecture notes fields."
+    properties:
+      course:
+        type: string
+        description: "Course name."
+      date:
+        type: string
+        format: date
+        description: "Lecture date."
+      speaker:
+        type: string
+        description: "Lecturer name."
+
   # ---- Invoice ----
   invoice:
     type: object
