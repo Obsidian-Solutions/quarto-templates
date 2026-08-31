@@ -67,11 +67,11 @@ if [[ -n "$CLASSIFICATION" ]]; then
 	OFFICIAL-SENSITIVE | SECRET | "TOP SECRET")
 		DO_SIGN=true
 		DO_ENCRYPT=true
-		[[ -z "$PDF_STANDARD" ]] && PDF_STANDARD="pdfa-4f"
+		[[ -z "$PDF_STANDARD" ]] && PDF_STANDARD="a-4f"
 		echo "render.sh: GSCP ${CLASSIFICATION} — auto-enabled sign + encrypt + PDF/A-4f" >&2
 		;;
 	OFFICIAL)
-		[[ -z "$PDF_STANDARD" ]] && PDF_STANDARD="pdfa-2b"
+		[[ -z "$PDF_STANDARD" ]] && PDF_STANDARD="a-2b"
 		echo "render.sh: GSCP OFFICIAL — auto-enabled validate (PDF/A-2b)" >&2
 		;;
 	esac
@@ -81,6 +81,13 @@ fi
 PDF_OUTPUT="${INPUT%.qmd}.pdf"
 echo "render.sh: rendering $INPUT → $PDF_OUTPUT" >&2
 
+# Find project root (directory containing _quarto.yml)
+PROJECT_ROOT=""
+while IFS= read -r -d '' f; do
+	PROJECT_ROOT="$(dirname "$f")"
+	break
+done < <(find "$(pwd)" -name '_quarto.yml' -print0 -maxdepth 3 2>/dev/null)
+
 # Try Quarto first, fall back to direct pandoc
 if command -v quarto &>/dev/null; then
 	quarto render "$INPUT" --to pdf 2>&1
@@ -89,6 +96,18 @@ elif command -v pandoc &>/dev/null; then
 else
 	echo "render.sh: neither quarto nor pandoc found — cannot render" >&2
 	exit 2
+fi
+
+# Check output location. Quarto may redirect to _output/ via output-dir in _quarto.yml.
+if [[ ! -f "$PDF_OUTPUT" ]]; then
+	# Ponytail: _output/ fallback is project-layout specific, not a hack.
+	# If _quarto.yml output-dir changes, update this fallback too.
+	OUTPUT_SUBDIR="${PDF_OUTPUT}"
+	if [[ -n "$PROJECT_ROOT" && -f "${PROJECT_ROOT}/_output/${OUTPUT_SUBDIR}" ]]; then
+		PDF_OUTPUT="${PROJECT_ROOT}/_output/${OUTPUT_SUBDIR}"
+	elif [[ -f "_output/${OUTPUT_SUBDIR}" ]]; then
+		PDF_OUTPUT="_output/${OUTPUT_SUBDIR}"
+	fi
 fi
 
 if [[ ! -f "$PDF_OUTPUT" ]]; then

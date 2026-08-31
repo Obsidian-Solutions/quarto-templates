@@ -25,9 +25,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PYHANKO="uv run --project $SCRIPT_DIR pyhanko"
 
 if ! command -v uv &>/dev/null; then
-	echo "sign.sh: uv not installed — skipping signing" >&2
+	echo "sign.sh: uv not installed — cannot sign" >&2
 	echo "  Install: curl -LsSf https://astral.sh/uv/install.sh | sh" >&2
-	exit 0
+	exit 2
 fi
 
 # Ensure pyHanko is available via uv
@@ -42,13 +42,13 @@ FIELD="${SIGNING_FIELD:-Obsidian Solutions}"
 REASON="${SIGNING_REASON:-Document signed by Obsidian Solutions}"
 
 if [[ -z "$CERT" || -z "$KEY" ]]; then
-	echo "sign.sh: SIGNING_CERT and SIGNING_KEY not set — skipping signing" >&2
-	exit 0
+	echo "sign.sh: SIGNING_CERT and SIGNING_KEY not set — cannot sign classified document" >&2
+	exit 2
 fi
 
 if [[ ! -f "$CERT" || ! -f "$KEY" ]]; then
 	echo "sign.sh: certificate or key not found (CERT=$CERT, KEY=$KEY)" >&2
-	exit 0
+	exit 2
 fi
 
 echo "sign.sh: signing $INPUT → $OUTPUT" >&2
