@@ -206,10 +206,17 @@
 }
 
 % ---- QR codes and forms ----
-% Loaded unconditionally; inert unless the document uses the features.
-% The qrcode package generates QR code images directly in LaTeX (no
-% external tools). eforms provides AcroForm field commands for
-% fillable PDFs. hyperref (already loaded above) provides the
-% underlying form machinery; eforms extends it.
-\usepackage{qrcode}
-\usepackage{eforms}
+% Conditionally loaded; inert unless the document uses the features
+% AND the LaTeX package is installed. IfFileExists avoids a hard
+% build failure on CI runners or systems that lack these packages:
+% QR and form features silently degrade to no-ops.
+\IfFileExists{qrcode.sty}{\usepackage{qrcode}}{\typeout{INFO: qrcode.sty not found — QR features disabled}}
+\IfFileExists{eforms.sty}{\usepackage{eforms}}{%
+  \typeout{INFO: eforms.sty not found — form features disabled}%
+  % Stubs so form-fields.lua output does not cause undefined-control-sequence
+  \newcommand{\formTextField}[5]{}%
+  \newcommand{\checkBox}[5]{}%
+  \newcommand{\radioButton}[5]{}%
+  \newcommand{\choiceMenu}[5]{}%
+  \newcommand{\sigField}[4]{}%
+}
