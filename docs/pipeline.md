@@ -102,26 +102,6 @@ scripts/encrypt.sh document.pdf
 python3 scripts/fill-forms.py form.pdf data.yaml filled.pdf
 ```
 
-## Installation
-
-### Python packages
-
-```bash
-pip install pyHanko[pkcs11] pypdf pyyaml pymupdf
-```
-
-### System packages (Debian/Ubuntu)
-
-```bash
-sudo apt install qpdf ghostscript verapdf
-```
-
-### macOS
-
-```bash
-brew install qpdf ghostscript vera-pdf
-```
-
 ## Environment Variables
 
 | Variable | Purpose | Default |
@@ -262,23 +242,50 @@ cd scripts && uv sync
 pip install pyHanko[pkcs11] pypdf pyyaml pymupdf
 ```
 
-### System packages (Debian/Ubuntu)
+### System packages
+
+Debian / Ubuntu:
 
 ```bash
 sudo apt install qpdf ghostscript verapdf
 ```
 
-### Arch Linux
+Fedora / RHEL:
+
+```bash
+sudo dnf install qpdf ghostscript verapdf
+```
+
+Arch Linux:
 
 ```bash
 sudo pacman -S qpdf ghostscript verapdf
 ```
 
-### macOS
+openSUSE:
+
+```bash
+sudo zypper install qpdf ghostscript verapdf
+```
+
+macOS:
 
 ```bash
 brew install qpdf ghostscript vera-pdf
 ```
+
+### Detecting your package manager
+
+The pipeline scripts do not install system packages for you. Check
+which package manager is available:
+
+| Manager | Command | Distros |
+|---------|---------|---------|
+| `apt` | `sudo apt install` | Debian, Ubuntu, Mint, Pop!_OS |
+| `dnf` | `sudo dnf install` | Fedora, RHEL, CentOS, Rocky, Alma |
+| `pacman` | `sudo pacman -S` | Arch, Manjaro, EndeavourOS |
+| `zypper` | `sudo zypper install` | openSUSE Leap, Tumbleweed |
+| `brew` | `brew install` | macOS, Linux (Homebrew) |
 
 ## Troubleshooting
 
@@ -295,7 +302,8 @@ exist. Install pyHanko with `cd scripts && uv sync`.
 ### Encryption is skipped
 
 Check that qpdf is installed: `qpdf --version`. Install with
-`sudo pacman -S qpdf` (Arch) or `sudo apt install qpdf` (Debian).
+`sudo apt install qpdf` (Debian), `sudo dnf install qpdf` (Fedora),
+or `sudo pacman -S qpdf` (Arch).
 
 ### Forms do not render
 
