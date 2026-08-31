@@ -136,6 +136,150 @@ brew install qpdf ghostscript vera-pdf
 | `QPDF_EXTRACT` | Extract permission | `y` |
 | `QPDF_MODIFY` | Modify permission | `n` |
 
+## Digital Signing
+
+### What is a signing certificate?
+
+A signing certificate is an X.509 digital identity document. It
+proves the signer is who they claim to be. PDF readers display the
+signer name and a validity chain when a signed document is opened.
+
+Two files are needed:
+
+- **Certificate** (`SIGNING_CERT`): the public identity. PEM format.
+  Contains the signer name, organisation, validity dates, and the
+  issuing Certificate Authority (CA).
+- **Private key** (`SIGNING_KEY`): proves ownership of the certificate.
+  PEM format. Keep this secret. Never commit it to a repository.
+
+Together, these create a PAdES B-LT electronic signature (the European
+standard for long-term PDF signing, defined in ETSI EN 319 142).
+
+### Self-signed certificates (testing and internal use)
+
+A self-signed certificate is one where the signer is also the CA.
+No external authority vouches for it. PDF readers show "unknown
+signer" but the signature is cryptographically valid.
+
+Generate a self-signed certificate for testing:
+
+```bash
+# Generate a 4096-bit RSA key pair
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem \
+  -days 365 -nodes \
+  -subj "/CN=Obsidian Solutions/O=Obsidian Solutions/C=GB"
+
+# Verify the certificate
+openssl x509 -in cert.pem -text -noout
+```
+
+This creates two files:
+
+- `cert.pem` — the certificate (set as `SIGNING_CERT`)
+- `key.pem` — the private key (set as `SIGNING_KEY`)
+
+### CA-signed certificates (production use)
+
+For production documents seen by external parties, use a certificate
+issued by a trusted Certificate Authority. The CA verifies your
+identity and their root certificate is pre-installed in PDF readers
+and operating systems.
+
+Options for obtaining a CA-signed certificate:
+
+| Provider | Type | Use case |
+|----------|------|----------|
+| Sectigo | Organisation Validation (OV) | Business documents |
+| DigiCert | Extended Validation (EV) | High-assurance documents |
+| Let's Encrypt | Domain Validation (DV) | Not suitable for PDF signing (only TLS) |
+| Self-hosted CA | Internal | Organisations with their own PKI |
+
+For government use, certificates from the UK Government's List of
+Approved Accreditation Services or similar national schemes may be
+required.
+
+### Hardware security modules (PKCS#11)
+
+For the highest assurance, store the private key on a hardware
+device (smart card, USB token, HSM). pyHanko supports PKCS#11
+devices via the `pkcs11` extra:
+
+```bash
+pip install "pyHanko[pkcs11]"
+```
+
+Set the PKCS#11 PIN:
+
+```bash
+export SIGNING_PIN=1234
+```
+
+The sign.sh script passes the PIN to pyHanko. The certificate and
+key paths in `SIGNING_CERT` and `SIGNING_KEY` should point to the
+PEM exports of the certificate stored on the device.
+
+### Verifying a signed document
+
+```bash
+# Check signature with pyHanko
+pyhanko validate --signing-cert cert.pem document.pdf
+
+# Or use veraPDF for PDF/A signature validation
+verapdf --level 2 document.pdf
+```
+
+PDF readers (Adobe Acrobat, Foxit, Okular) display signature
+details when a signed document is opened.
+
+### Signature fields
+
+The pipeline creates a visible signature field. By default:
+
+- **Field name**: `Obsidian Solutions` (set via `SIGNING_FIELD`)
+- **Reason**: `Document signed by Obsidian Solutions` (set via `SIGNING_REASON`)
+- **Position**: determined by the Lua filter in the template
+
+To create an invisible signature (no visual mark), modify the
+form-fields.lua filter to set `/Ff 12` (invisible flag).
+
+## Installation
+
+### Python packages (recommended)
+
+The pipeline uses `uv` for Python dependency management. First run
+of any script installs dependencies automatically into the project.
+
+```bash
+# Dependencies are in scripts/pyproject.toml
+# First run of render.sh handles installation automatically
+# Or install manually:
+cd scripts && uv sync
+```
+
+### Python packages (manual)
+
+```bash
+pip install pyHanko[pkcs11] pypdf pyyaml pymupdf
+```
+
+### System packages (Debian/Ubuntu)
+
+```bash
+sudo apt install qpdf ghostscript verapdf
+```
+
+### Arch Linux
+
+```bash
+sudo pacman -S qpdf ghostscript verapdf
+```
+
+### macOS
+
+```bash
+brew install qpdf ghostscript vera-pdf
+```
+
 ## Troubleshooting
 
 ### Validation fails after render
@@ -146,12 +290,12 @@ first. If that fails, run `convert-pdf-a.sh` for a full re-conversion.
 ### Signing is skipped
 
 Check that `SIGNING_CERT` and `SIGNING_KEY` are set and the files
-exist. Install pyHanko with `pip install pyHanko[pkcs11]`.
+exist. Install pyHanko with `cd scripts && uv sync`.
 
 ### Encryption is skipped
 
 Check that qpdf is installed: `qpdf --version`. Install with
-`sudo apt install qpdf`.
+`sudo pacman -S qpdf` (Arch) or `sudo apt install qpdf` (Debian).
 
 ### Forms do not render
 
