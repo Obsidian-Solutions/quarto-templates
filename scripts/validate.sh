@@ -34,13 +34,13 @@ fi
 
 REPORT="${INPUT%.pdf}-validation.txt"
 
-# Map standard name to veraPDF profile
+# Map standard name to veraPDF profile (handles both Quarto and veraPDF naming)
 case "$STANDARD" in
-pdfa-1b) PROFILE="PDF/A-1b validation profile" ;;
-pdfa-2b) PROFILE="PDF/A-2b validation profile" ;;
-pdfa-3u) PROFILE="PDF/A-3u validation profile" ;;
-pdfa-4f) PROFILE="PDF/A-4f validation profile" ;;
-pdfua-1) PROFILE="PDF/UA-1 validation profile" ;;
+pdfa-1b | a-1b) PROFILE="PDF/A-1b validation profile" ;;
+pdfa-2b | a-2b) PROFILE="PDF/A-2b validation profile" ;;
+pdfa-3u | a-3u) PROFILE="PDF/A-3u validation profile" ;;
+pdfa-4f | a-4f) PROFILE="PDF/A-4f validation profile" ;;
+pdfua-1 | ua-1) PROFILE="PDF/UA-1 validation profile" ;;
 *) PROFILE="PDF/A-2b validation profile" ;;
 esac
 

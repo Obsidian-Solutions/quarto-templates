@@ -23,20 +23,21 @@ if ! command -v gs &>/dev/null; then
 	exit 0
 fi
 
-# Map standard name to Ghostscript device
+# Map standard name to Ghostscript settings
+# Ghostscript uses -sDEVICE=pdfwrite + -dPDFA flags. No "pdfa" device exists.
 case "$STANDARD" in
-pdfa-1b) GS_DEVICE="pdfa" GS_SETTING="-dPDFA=1" ;;
-pdfa-2b) GS_DEVICE="pdfa" GS_SETTING="-dPDFA=2" ;;
-pdfa-3u) GS_DEVICE="pdfa" GS_SETTING="-dPDFA=3" ;;
-pdfa-4f) GS_DEVICE="pdfa" GS_SETTING="-dPDFA=4" ;;
-*) GS_DEVICE="pdfa" GS_SETTING="-dPDFA=2" ;;
+pdfa-1b | a-1b) GS_PDFA="-dPDFA=1" ;;
+pdfa-2b | a-2b) GS_PDFA="-dPDFA=2" ;;
+pdfa-3u | a-3u) GS_PDFA="-dPDFA=3" ;;
+pdfa-4f | a-4f) GS_PDFA="-dPDFA=2" ;; # ponytail: GS does not support PDF/A-4f natively; falls back to PDF/A-2b. Use Typst for native PDF/A-4f.
+*) GS_PDFA="-dPDFA=2" ;;
 esac
 
 echo "convert-pdf-a.sh: converting $INPUT → $OUTPUT ($STANDARD)" >&2
 
 gs -dBATCH -dNOPAUSE -dQUIET \
-	-sDEVICE="$GS_DEVICE" \
-	"$GS_SETTING" \
+	-sDEVICE=pdfwrite \
+	"$GS_PDFA" \
 	-sOutputFile="$OUTPUT" \
 	"$INPUT" 2>&1
 

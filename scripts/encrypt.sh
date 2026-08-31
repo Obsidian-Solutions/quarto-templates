@@ -31,10 +31,10 @@ fi
 OWNER_PW="${QPDF_OWNER_PASSWORD:-$(head -c 16 /dev/urandom | base64 | tr -dc 'a-zA-Z0-9' | head -c 16)}"
 USER_PW="${QPDF_USER_PASSWORD:-}"
 
-# Map permissions
+# Map permissions (qpdf requires --modify=all|annotate|assembly|form|none)
 PRINT="${QPDF_PRINT:-full}"
 EXTRACT="${QPDF_EXTRACT:-y}"
-MODIFY="${QPDF_MODIFY:-n}"
+MODIFY="${QPDF_MODIFY:-none}"
 
 echo "encrypt.sh: encrypting $INPUT → $OUTPUT (AES-256)" >&2
 
