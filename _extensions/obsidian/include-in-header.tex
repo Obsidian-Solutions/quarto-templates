@@ -204,3 +204,12 @@
   \let\oldtoc\tableofcontents
   \renewcommand{\tableofcontents}{\clearpage\thispagestyle{fancy}\oldtoc\clearpage}%
 }
+
+% ---- QR codes and forms ----
+% Loaded unconditionally; inert unless the document uses the features.
+% The qrcode package generates QR code images directly in LaTeX (no
+% external tools). eforms provides AcroForm field commands for
+% fillable PDFs. hyperref (already loaded above) provides the
+% underlying form machinery; eforms extends it.
+\usepackage{qrcode}
+\usepackage{eforms}

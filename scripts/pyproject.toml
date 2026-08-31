@@ -1,0 +1,14 @@
+[project]
+name = "obsidian-quarto-tools"
+version = "1.0.0"
+description = "Post-render tooling for Obsidian Solutions quarto-templates"
+requires-python = ">=3.10"
+dependencies = [
+    "pyhanko[pkcs11]>=0.25.0",
+    "pypdf>=5.0.0",
+    "pyyaml>=6.0",
+    "pymupdf>=1.25.0",
+]
+
+[project.scripts]
+fill-forms = "fill_forms:main"

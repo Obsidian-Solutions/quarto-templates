@@ -94,6 +94,12 @@ contributes:
         - filters/embed.lua
         - filters/review-overdue.lua
         - filters/has-floats.lua
+        # Form-fillable PDF fields: text, checkbox, radio, dropdown, signature.
+        # Active when `forms: true` in front matter.
+        - filters/form-fields.lua
+        # QR code rendering from `.qr` Divs or inline shortcodes.
+        # Active when `qr: true` or a `.qr` block is present.
+        - filters/qr.lua
       # Monochrome callouts: Quarto's default callout-warning draws an
       # amber triangle. Disable the icon and use a near-black border so
       # the palette stays clean.
@@ -167,6 +173,10 @@ contributes:
         # Maps definition lists to the summary-list component (an
         # opt-in key/value table for the HTML companion).
         - filters/summary-list.lua
+        # Form-fillable fields rendered as native HTML inputs.
+        - filters/form-fields.lua
+        # QR code rendering for HTML.
+        - filters/qr.lua
         # Renders the invoice fields at the marker Div, so the
         # accessible companion carries the same bill-to block and
         # line items as the PDF.
