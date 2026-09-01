@@ -7,6 +7,25 @@
 
 \usepackage{graphicx}
 \usepackage{xcolor}
+% TeX Live 2026 xcolor-patches-tmp-ltx.sty can leak expl3 colour
+% commands (e.g. \__color_backend_raw_rgb:n) literally into PDF
+% content streams.  Patch \__kernel_color_backend_stack_push:nn —
+% all l3backend paths (color_select, fill, stroke) flow through it.
+% Force \expanded so every content-stream entry is a valid PDF
+% operator.
+%
+% This catches most leaks at the TeX level.  A render.sh pikepdf
+% post-processing step catches any remaining raw macros that
+% bypass the TeX patch (e.g. paths that do not call the stack
+% push).
+\begingroup\ExplSyntaxOn
+\cs_gset_protected:Npn \__kernel_color_backend_stack_push:nn #1#2
+  {
+    \tex_pdfextension:D colorstack ~
+      \int_eval:n { #1 } ~ push ~ { \expanded{#2} }
+  }
+\ExplSyntaxOff
+\endgroup
 \usepackage{titlesec}
 \usepackage{fancyhdr}
 \usepackage{lastpage}

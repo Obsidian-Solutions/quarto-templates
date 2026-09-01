@@ -77,6 +77,53 @@ if [ "$ENGINE" = "typst" ]; then
 else
   quarto render "$FILE" -M baseline="$HASH, $DATE"
 fi
+# Content-stream sanitiser (LaTeX engine only).  TeX Live 2026
+# xcolor-patches-tmp-ltx.sty can leak expl3 colour macros (e.g.
+# \__color_backend_raw_rgb:n) literally into PDF content streams.
+# The verapdf PDF/A-4f gate rejects undefined operators, so replace
+# any raw l3 colour commands with their valid PDF equivalents before
+# downstream gates inspect the file.
+if [ "$ENGINE" = "latex" ] && [ -f "${OUT}/${BASE}.pdf" ]; then
+  python3 - "$OUT/$BASE.pdf" <<'PYEOF'
+import sys, re, pikepdf
+
+pdf = pikepdf.open(sys.argv[1], allow_overwriting_input=True)
+changed = False
+for page in pdf.pages:
+    contents = page.get("/Contents")
+    if contents is None:
+        continue
+    streams = (
+        [pdf.get_object(x.objgen) for x in contents]
+        if isinstance(contents, pikepdf.Array)
+        else [pdf.get_object(contents.objgen)]
+    )
+    for stream in streams:
+        raw = stream.read_bytes()
+        text = raw.decode("latin-1")
+        # \__color_backend_raw_rgb:n {R G B}  ->  R G B rg R G B RG
+        pat = re.compile(
+            r"\\__color_backend_raw_rgb:n\s*\{([^}]+)\}"
+        )
+        new = pat.sub(r"\1 rg \1 RG", text)
+        # \__color_backend_raw_cmyk:n {C M Y K}  ->  C M Y K k C M Y K K
+        pat2 = re.compile(
+            r"\\__color_backend_raw_cmyk:n\s*\{([^}]+)\}"
+        )
+        new = pat2.sub(r"\1 k \1 K", new)
+        # \__color_backend_raw_gray:n {G}  ->  G g G G
+        pat3 = re.compile(
+            r"\\__color_backend_raw_gray:n\s*\{([^}]+)\}"
+        )
+        new = pat3.sub(r"\1 g \1 G", new)
+        if new != text:
+            stream.write(new.encode("latin-1"))
+            changed = True
+if changed:
+    pdf.save(sys.argv[1])
+PYEOF
+fi
+
 
 # Deck branding (pptx). Quarto's pptx rebuild drops media referenced
 # only from the slide master, so the reference-doc logo never
