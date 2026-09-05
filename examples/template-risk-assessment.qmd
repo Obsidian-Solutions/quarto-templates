@@ -1,0 +1,135 @@
+---
+title: "Data processing risk assessment"
+subtitle: "Template: security risk assessment with STRIDE threat catalogue"
+author: "Obsidian Solutions"
+date: "2026-09-05"
+lang: en-GB
+keywords: ["risk", "assessment", "security", "template"]
+reference: "OS-RA-001"
+version: "1.0.0"
+confidentiality: "OFFICIAL-SENSITIVE"
+short-title: "Risk Assessment"
+doc-type: "Risk Assessment"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: true
+toc-depth: 3
+number-sections: true
+gscp: true
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-audit-report}
+:::
+
+State the purpose and scope of the risk assessment in one paragraph.
+Name the system, the assessment period, and the standards applied
+(e.g., ISO 31000, JSP 940).
+
+# Asset inventory
+
+List the assets within scope. For each asset, state its classification,
+its value, and the owner.
+
+| Asset | Classification | Value | Owner |
+|-------|----------------|-------|-------|
+| User database | OFFICIAL-SENSITIVE | High | Data Controller |
+| Search index | OFFICIAL-SENSITIVE | High | System Owner |
+| API gateway | OFFICIAL | Medium | Platform Owner |
+
+# Threat catalogue (STRIDE)
+
+Apply the STRIDE threat model to each asset. For each threat, state
+the likelihood and impact.
+
+## Spoofing
+
+What threats allow an attacker to impersonate a legitimate user or
+component?
+
+| Threat | Asset | Likelihood | Impact |
+|--------|-------|------------|--------|
+| Credential theft | User database | Medium | High |
+| API key compromise | API gateway | Low | High |
+
+## Tampering
+
+What threats allow an attacker to modify data or code?
+
+| Threat | Asset | Likelihood | Impact |
+|--------|-------|------------|--------|
+| SQL injection | User database | Low | Critical |
+| Man-in-the-middle | API gateway | Low | High |
+
+## Repudiation
+
+What threats allow a user to deny an action?
+
+| Threat | Asset | Likelihood | Impact |
+|--------|-------|------------|--------|
+| Audit log tampering | User database | Low | High |
+
+## Information disclosure
+
+What threats allow an attacker to access sensitive data?
+
+| Threat | Asset | Likelihood | Impact |
+|--------|-------|------------|--------|
+| Data exfiltration | Search index | Medium | Critical |
+| Unauthorized query | API gateway | Medium | High |
+
+## Denial of service
+
+What threats allow an attacker to disrupt availability?
+
+| Threat | Asset | Likelihood | Impact |
+|--------|-------|------------|--------|
+| Volumetric attack | API gateway | High | Medium |
+| Resource exhaustion | Search index | Medium | High |
+
+## Elevation of privilege
+
+What threats allow an attacker to gain unauthorized access?
+
+| Threat | Asset | Likelihood | Impact |
+|--------|-------|------------|--------|
+| Privilege escalation | User database | Low | Critical |
+| Container escape | API gateway | Low | Critical |
+
+# Risk matrix
+
+Map each risk to the matrix. The rating is likelihood multiplied
+by impact.
+
+| Likelihood \ Impact | Low | Medium | High | Critical |
+|---------------------|-----|--------|------|----------|
+| High | Medium | High | Critical | Critical |
+| Medium | Low | Medium | High | Critical |
+| Low | Low | Low | Medium | High |
+
+# Risk register
+
+For each identified risk, state the rating, the mitigation, and
+the residual risk.
+
+| Risk | Rating | Mitigation | Owner | Residual |
+|------|--------|------------|-------|----------|
+| Credential theft | High | MFA + rotation | Security Lead | Medium |
+| SQL injection | Critical | Parameterized queries + WAF | Dev Lead | Low |
+| Data exfiltration | Critical | Encryption + DLP | Data Controller | Medium |
+| Volumetric attack | High | CDN + rate limiting | Platform Owner | Medium |
+
+# Acceptance criteria
+
+State the risk appetite. Which risks are accepted, which require
+mitigation, and which are unacceptable?
+
+# Appendices
+
+State any supplementary material: assumptions, glossary, or
+references.

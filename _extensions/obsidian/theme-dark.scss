@@ -5,9 +5,9 @@
    9.4:1 (both pass AAA). The rules section mirrors theme.scss; keep
    the two files in step when you change shared styles. */
 
-/* Dark theme inverts the house roles: light text on dark ground.
-   The inverted values are deliberate dark-mode choices, not token
-   roles; the light theme's roles come from brand.yml. */
+/* Dark theme tokens from brand.yml: use $token-* variables for
+   consistency with the light theme. The dark-* tokens in brand.yml
+   are the single source of truth for dark-mode values. */
 /*-- scss:defaults --*/
 $theme-obsidian: #f2f2f2;   /* primary text, 16.6:1 on #121212 */
 $theme-obsidianl: #b8b8b8;  /* secondary text, 9.4:1 (AAA)      */
