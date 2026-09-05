@@ -9,20 +9,21 @@
 \usepackage{xcolor}
 % TeX Live 2026 xcolor-patches-tmp-ltx.sty can leak expl3 colour
 % commands (e.g. \__color_backend_raw_rgb:n) literally into PDF
-% content streams.  Patch \__kernel_color_backend_stack_push:nn —
-% all l3backend paths (color_select, fill, stroke) flow through it.
-% Force \expanded so every content-stream entry is a valid PDF
-% operator.
-%
-% This catches most leaks at the TeX level.  A render.sh pikepdf
-% post-processing step catches any remaining raw macros that
-% bypass the TeX patch (e.g. paths that do not call the stack
-% push).
+% content streams.  Patch the stack push AND the raw RGB setter so
+% hyperref link colours (used in TOC dot leaders, citations, and
+% cross-references) do not leak raw floats like "0.28235 0.28627".
 \begingroup\ExplSyntaxOn
 \cs_gset_protected:Npn \__kernel_color_backend_stack_push:nn #1#2
   {
     \tex_pdfextension:D colorstack ~
       \int_eval:n { #1 } ~ push ~ { \expanded{#2} }
+  }
+% hyperref writes link colours through this path; force \expanded
+% so the RGB triplet becomes a valid PDF operator sequence.
+\cs_gset_protected:Npn \__color_backend_raw_rgb:n #1
+  {
+    \tex_pdfextension:D colorstack ~
+      0 ~ push ~ { \expanded{ #1 } }
   }
 \ExplSyntaxOff
 \endgroup
@@ -88,8 +89,11 @@
 % Quarto emits its own \hypersetup after this header, so a bare
 % \hypersetup here would be overridden. \AtBeginDocument runs at
 % \begin{document}, after every preamble call, so these values win.
+% Use black for linkcolor to avoid the TeX Live 2026 l3backend color
+% leak (raw RGB floats like 0.28235 appearing as visible text in TOC).
+% Body headings use \color{obsidianl} via \titleformat, not linkcolor.
 \AtBeginDocument{%
-  \hypersetup{colorlinks=true, linkcolor=obsidianlink, urlcolor=obsidianlink, citecolor=obsidianlink}%
+  \hypersetup{colorlinks=true, linkcolor=black, urlcolor=black, citecolor=black}%
 }
 
 % ---- Monochrome callout borders ----
@@ -126,16 +130,19 @@
 \BeforeBeginEnvironment{table}{\nopagebreak}
 
 % ---- Section headings: letterspaced, thin rule under sections ----
+% Numbering: Quarto's number-sections: true emits "N. Title" in the
+% heading text.  The \titleformat label must be empty to avoid
+% doubling ("3. 3. Title").
 \titleformat{\section}
   {\Large\bfseries\obsidianheadfont\color{obsidian}\lsstyle}
-  {\thesection.}{0.6em}{}
+  {}{0em}{}
   [\vspace{0.15em}{\color{obsidian}\titlerule[0.8pt]}]
 \titleformat{\subsection}
   {\large\bfseries\obsidianheadfont\color{obsidianl}\lsstyle}
-  {\thesubsection.}{0.6em}{}
+  {}{0em}{}
 \titleformat{\subsubsection}
   {\normalsize\bfseries\obsidianheadfont\color{obsidianl}\lsstyle}
-  {\thesubsubsection.}{0.6em}{}
+  {}{0em}{}
 \titlespacing*{\section}{0pt}{2.2ex}{1.5ex}
 \titlespacing*{\subsection}{0pt}{1.6ex}{0.9ex}
 \titlespacing*{\subsubsection}{0pt}{1.4ex}{0.8ex}
