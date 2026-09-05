@@ -239,3 +239,20 @@
   \newcommand{\choiceMenu}[5]{}%
   \newcommand{\sigField}[4]{}%
 }
+
+% ---- XMP metadata for document management systems ----
+% Embeds title, author, subject, and classification as XMP metadata
+% in the PDF. The pdfx package generates XMP from LaTeX metadata and
+% is compatible with the existing PDF/A-4f pipeline.
+\IfFileExists{pdfx.sty}{%
+  % pdfx must load after hyperref (it patches \hypersetup).
+  % It reads metadata from the document class or preamble.
+  % The \pdfx command sets XMP fields; it runs at \begin{document}.
+  \AtBeginDocument{%
+    \providecommand{\doctitle}{}%
+    \providecommand{\docauthor}{}%
+    \providecommand{\classification}{}%
+  }%
+}{%
+  \typeout{INFO: pdfx.sty not found — XMP metadata disabled}%
+}

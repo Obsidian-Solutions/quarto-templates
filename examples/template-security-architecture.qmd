@@ -1,0 +1,126 @@
+---
+title: "Secure Search Service"
+subtitle: "Template: security architecture and threat model document"
+author: "Obsidian Solutions"
+date: "2026-09-05"
+lang: en-GB
+keywords: ["security", "architecture", "threat model", "template"]
+reference: "OS-SEC-001"
+version: "1.0.0"
+confidentiality: "OFFICIAL-SENSITIVE"
+short-title: "Security Architecture"
+doc-type: "Security Architecture Document"
+edition: "First Edition"
+draft: true
+titlepage: none
+toc: true
+toc-depth: 3
+number-sections: true
+gscp: true
+format:
+  obsidian-pdf: default
+  obsidian-html: default
+  obsidian-docx: default
+  obsidian-epub: default
+---
+
+::: {.obsidian-technical-design}
+:::
+
+State the purpose and scope of the security architecture in one
+paragraph. Name the system, the security objectives, and the
+standards applied (e.g., JSP 815, Def Stan 05-138, AQAP 2210).
+
+# System boundary
+
+Describe the system boundary. Name the assets, data flows, and
+trust boundaries. Identify what is inside and outside the control
+of the system.
+
+## Assets
+
+List the assets within the system boundary. For each asset, state
+its classification, its value, and the owner.
+
+## Data flows
+
+Map the data flows between system components. For each flow, state
+the classification of the data, the protocol, and the protection
+measures.
+
+## Trust boundaries
+
+Identify the trust boundaries. State where the trust level changes
+and what controls enforce the boundary.
+
+# Threat model (STRIDE)
+
+Apply the STRIDE threat model to each system component. For each
+threat, state the likelihood, the impact, and the mitigations.
+
+## Spoofing
+
+What threats allow an attacker to impersonate a legitimate user or
+component? State the mitigations.
+
+## Tampering
+
+What threats allow an attacker to modify data or code in transit
+or at rest? State the mitigations.
+
+## Repudiation
+
+What threats allow a user to deny an action? State the audit and
+logging controls.
+
+## Information disclosure
+
+What threats allow an attacker to access sensitive data? State the
+encryption and access controls.
+
+## Denial of service
+
+What threats allow an attacker to disrupt availability? State the
+capacity and resilience controls.
+
+## Elevation of privilege
+
+What threats allow an attacker to gain unauthorised access? State
+the authentication and authorisation controls.
+
+# Security controls
+
+For each security control, state the control objective, the
+implementation, and the verification method. Use a table.
+
+| Control | Objective | Implementation | Verification |
+|---------|-----------|----------------|--------------|
+| Access control | Restrict access to authorised users | Role-based access control | Quarterly access review |
+| Encryption | Protect data in transit and at rest | TLS 1.3, AES-256 | Penetration testing |
+| Audit logging | Record all security-relevant events | Centralized log aggregation | Log review |
+
+# Risk assessment
+
+For each identified risk, state the likelihood, the impact, and
+the residual risk after mitigations. Use the risk matrix.
+
+| Risk | Likelihood | Impact | Rating | Mitigation | Residual |
+|------|------------|--------|--------|------------|----------|
+| Unauthorised access | Medium | High | High | RBAC + MFA | Low |
+| Data breach | Low | Critical | High | Encryption + monitoring | Medium |
+
+# Compliance
+
+Map the security controls to the applicable standards. State the
+compliance status for each standard.
+
+| Standard | Control | Status |
+|----------|---------|--------|
+| JSP 815 | Safety management | Compliant |
+| Def Stan 05-138 | Information security | Compliant |
+| AQAP 2210 | Software quality | Compliant |
+
+# Appendices
+
+State any supplementary material: assumptions, glossary, or
+references.
