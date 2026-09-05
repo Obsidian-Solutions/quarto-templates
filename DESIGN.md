@@ -60,7 +60,7 @@ document opts into ONE accent; the house monochrome is the default.
 | H3 | 24px | 600 | 30px | Sub-subsection |
 | Body | 19px | 400 | 25px | Default text |
 | Body/s | 16px | 400 | 20px | Secondary info |
-| Caption | 14px | 500 | 20px | Labels, metadata |
+| Caption | 16px | 500 | 20px | Labels, metadata |
 
 ### Font stack
 - Sans (headings): Montserrat, "Segoe UI", "Helvetica Neue", Arial

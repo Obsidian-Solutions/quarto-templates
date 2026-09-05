@@ -23,6 +23,13 @@ color:
   surface: "#f3f3f3"     # raised panels, callout background
   link: "#484949"        # underlined links (same as secondary)
 
+  # ---- Dark theme tokens ----
+  dark-bg: "#121212"       # dark theme background
+  dark-primary: "#f2f2f2"  # dark theme primary text (16.6:1 on dark-bg)
+  dark-secondary: "#b8b8b8" # dark theme secondary text (9.4:1, AAA)
+  dark-border: "#484949"   # dark theme hairlines, visible on dark
+  dark-surface: "#1e1e1e"  # dark theme raised surface
+
   # ---- Neutral palette ----
   # Accent swatches for documents that want a colour. Each name
   # describes the colour; contrast floors are on white.
@@ -77,7 +84,7 @@ type:
   body-l: [24, 30]
   body: [19, 25]
   body-s: [16, 20]
-  caption: [14, 20]
+  caption: [16, 20]
 
 spacing:
   # Spacing scale, 5px base.

@@ -53,6 +53,26 @@ function Pandoc(doc)
     local div = pandoc.Div({ pandoc.Para({ pandoc.Str(text) }) })
     div.attributes['custom-style'] = 'ClassificationBanner'
     block = div
+  elseif FORMAT == 'revealjs' then
+    -- Revealjs: inject the classification on every slide.
+    -- Walk the block list and insert the banner before each slide
+    -- (## heading = slide boundary). Also insert at the very start
+    -- so the first slide carries the marking.
+    local new_blocks = {}
+    local banner_html = '<div class="obsidian-classification"><span class="status">'
+      .. text .. '</span></div>'
+    local banner_block = pandoc.RawBlock('html', banner_html)
+    for _, b in ipairs(doc.blocks) do
+      -- Insert banner before each Header at slide level (## = level 2)
+      if b.t == 'Header' and b.level == 2 then
+        table.insert(new_blocks, banner_block)
+      end
+      table.insert(new_blocks, b)
+    end
+    -- Also insert at the very start (before any heading)
+    table.insert(new_blocks, 1, banner_block)
+    doc.blocks = new_blocks
+    return doc
   else
     block = pandoc.RawBlock(
       'html',

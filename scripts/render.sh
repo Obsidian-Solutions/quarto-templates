@@ -77,6 +77,20 @@ if [[ -n "$CLASSIFICATION" ]]; then
 	esac
 fi
 
+# --- Step 0: STE prose gate ---
+# ASD-STE100 controlled language check on the source .qmd.
+# Skip when: file is exempt-by-design, ste: false in front matter, or
+# check-ste.py is absent (first-run / air-gap without tools/).
+STE_TOOL="${SCRIPT_DIR}/../tools/check-ste.py"
+STE_OPTOUT=$(extract_meta "ste" "")
+if [[ -f "$STE_TOOL" && "${STE_OPTOUT,,}" != "false" && "${STE_OPTOUT,,}" != "no" ]]; then
+	echo "render.sh: STE prose gate → $INPUT" >&2
+	if ! python3 "$STE_TOOL" "$INPUT"; then
+		echo "render.sh: STE gate failed — fix violations or set ste: false" >&2
+		exit 1
+	fi
+fi
+
 # --- Step 1: Render ---
 PDF_OUTPUT="${INPUT%.qmd}.pdf"
 echo "render.sh: rendering $INPUT → $PDF_OUTPUT" >&2
